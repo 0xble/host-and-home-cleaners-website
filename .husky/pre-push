@@ -1,0 +1,7 @@
+confirm "Run lint checks?" || exit 0
+
+yarn lint
+
+confirm "Continue?" || exit 0
+
+yarn build
