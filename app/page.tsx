@@ -13,8 +13,8 @@ import Page from '@/components/Page'
 import TestimonialCarousel from '@/components/TestimonialCarousel'
 
 export const metadata: Metadata = {
-  title: `${NAME} | #1 House Cleaning`,
-  description: `100% satisfaction guaranteed, or we'll redo it for free. High-quality cleaning, fast turnaround, at an affordable price. Book now!`,
+  title: `${NAME} | \#1 House Cleaning`,
+  description: `100\% satisfaction guaranteed, or we'll redo it for free. High-quality cleaning, fast turnaround, at an affordable price. Book now!`,
 }
 
 export default function Home() {

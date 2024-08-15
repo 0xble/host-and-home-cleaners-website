@@ -14,8 +14,8 @@ import Page from '@/components/Page'
 import TestimonialCarousel from '@/components/TestimonialCarousel'
 
 export const metadata: Metadata = {
-  title: `${NAME} | #1 House Cleaning in ${AREA}`,
-  description: `${NAME} is the #1 quality and reliable house cleaning service in ${AREA}. We offer a wide range of residential cleaning services, fast turnaround, and affordable prices.`,
+  title: `${NAME} | \#1 House Cleaning in ${AREA}`,
+  description: `${NAME} is the \#1 quality and reliable house cleaning service in ${AREA}. We offer a wide range of residential cleaning services, fast turnaround, and affordable prices.`,
 }
 
 export default function MyrtleBeach() {
