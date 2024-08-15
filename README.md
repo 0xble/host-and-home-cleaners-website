@@ -6,9 +6,15 @@ This is a [Next.js](https://nextjs.org/) project.
 
 Uses the following tech stack:
 
+### Frontend
+
 - [Next.js](https://nextjs.org/)
 - [TypeScript](https://www.typescriptlang.org/)
 - [Tailwind CSS](https://tailwindcss.com/)
+
+### Component Libraries
+
+- [Shadcn/UI](https://ui.shadcn.com/)
 - [Flowbite](https://flowbite.com/)
 
 ## Notes
