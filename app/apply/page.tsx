@@ -42,11 +42,10 @@ export default function Apply() {
             </Link>
           </div>
           <Image
-            className='mb-5 mr-4 w-[550px] rounded-lg lg:col-span-3 lg:mb-0 lg:mt-0'
+            className='mb-5 mr-4 w-[650px] rounded-lg lg:col-span-3 lg:mb-0 lg:mt-0'
             src={require('@/public/cleaner-work.gif')}
             alt='Cleaner working in a home'
             style={{ objectFit: 'contain' }}
-            placeholder='blur'
           />
         </div>
       </section>
