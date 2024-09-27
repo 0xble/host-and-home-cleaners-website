@@ -273,28 +273,6 @@ export default function Footer({ location }: FooterProps) {
     }
   }
 
-  const getLocations = (location: Location | undefined) => {
-    switch (location) {
-      case Location.MYRTLE_BEACH:
-        return (
-          <div className='hidden lg:inline'>
-            <h4 className='mb-6 text-sm uppercase text-gray-900 dark:text-white'>
-              Locations
-            </h4>
-            <ul className='text-gray-500 dark:text-gray-400'>
-              {MYRTLE_BEACH_LOCATIONS.map((location) => (
-                <li key={location.name} className='mb-4'>
-                  <FooterLink href={location.href}>{location.name}</FooterLink>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )
-      default:
-        return null
-    }
-  }
-
   return (
     <footer className='bg-gray-100 dark:bg-gray-800'>
       <div className='mx-auto max-w-screen-xl p-4 md:p-10'>
