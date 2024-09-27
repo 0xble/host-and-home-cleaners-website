@@ -1,11 +1,14 @@
+import {
+  LOCATIONS as MYRTLE_BEACH_LOCATIONS,
+  PHONE_NUMBER as MYRTLE_BEACH_PHONE_NUMBER,
+} from '@/app/house-cleaning-services-myrtle-beach/local'
+import { EMAIL, NAME } from '@/lib/globals'
+import { COMPANY_PAGES, LEGAL_PAGES, SERVICE_PAGES } from '@/lib/pages'
+import { Location } from '@/store/useLocationStore'
+import { chunk } from 'lodash'
 import Link from 'next/link'
 import Brand from './Brand'
 import PhoneLink from './PhoneLink'
-import { NAME, EMAIL } from '@/lib/globals'
-import { COMPANY_PAGES, LEGAL_PAGES, SERVICE_PAGES } from '@/lib/pages'
-import { PHONE_NUMBER as MYRTLE_BEACH_PHONE_NUMBER } from '@/app/house-cleaning-services-myrtle-beach/local'
-import { LOCATIONS as MYRTLE_BEACH_LOCATIONS } from '@/app/house-cleaning-services-myrtle-beach/local'
-import { Location } from '@/store/useLocationStore'
 
 type FooterLinkProps = {
   href: string
@@ -23,6 +26,35 @@ function FooterLink({ href, children }: FooterLinkProps) {
     <Link href={href} className={className}>
       {children}
     </Link>
+  )
+}
+
+type FooterColumnProps = {
+  title: string
+  links: { name: string; href: string }[]
+  columns?: number
+}
+
+function FooterColumn({ title, links, columns = 1 }: FooterColumnProps) {
+  const chunkedLinks = chunk(links, Math.ceil(links.length / columns))
+
+  return (
+    <div>
+      <h4 className='mb-6 text-sm uppercase text-gray-900 dark:text-white'>
+        {title}
+      </h4>
+      <div className={`grid grid-cols-${columns} gap-8`}>
+        {chunkedLinks.map((columnLinks, index) => (
+          <ul key={index} className='text-gray-500 dark:text-gray-400'>
+            {columnLinks.map((link) => (
+              <li key={link.name} className='mb-4'>
+                <FooterLink href={link.href}>{link.name}</FooterLink>
+              </li>
+            ))}
+          </ul>
+        ))}
+      </div>
+    </div>
   )
 }
 
@@ -266,48 +298,25 @@ export default function Footer({ location }: FooterProps) {
   return (
     <footer className='bg-gray-100 dark:bg-gray-800'>
       <div className='mx-auto max-w-screen-xl p-4 md:p-10'>
-        <div className='flex flex-col justify-center gap-8 py-10 md:flex-row md:gap-20 md:py-0'>
-          <div>
+        <div
+          className={`grid grid-cols-1 gap-8 py-10 md:grid-cols-2 md:py-0 lg:grid-cols-${
+            location === Location.NONE ? '5' : '6'
+          }`}
+        >
+          <div className='md:col-span-2'>
             {getContacts(location)}
             {getSocials(location)}
           </div>
-          <div className=''>
-            <h4 className='mb-6 text-sm uppercase text-gray-900 dark:text-white'>
-              Company
-            </h4>
-            <ul className='text-gray-500 dark:text-gray-400'>
-              {COMPANY_PAGES.map((link) => (
-                <li key={link.name} className='mb-4'>
-                  <FooterLink href={link.href}>{link.name}</FooterLink>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className=''>
-            <h4 className='mb-6 text-sm uppercase text-gray-900 dark:text-white'>
-              Services
-            </h4>
-            <ul className='text-gray-500 dark:text-gray-400'>
-              {SERVICE_PAGES.map((link) => (
-                <li key={link.name} className='mb-4'>
-                  <FooterLink href={link.href}>{link.name}</FooterLink>
-                </li>
-              ))}
-            </ul>
-          </div>
-          {getLocations(location)}
-          <div className=''>
-            <h4 className='mb-6 text-sm uppercase text-gray-900 dark:text-white'>
-              Legal
-            </h4>
-            <ul className='text-gray-500 dark:text-gray-400'>
-              {LEGAL_PAGES.map((page) => (
-                <li key={page.name} className='mb-4'>
-                  <FooterLink href={page.href}>{page.name}</FooterLink>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <FooterColumn title='Company' links={COMPANY_PAGES} />
+          <FooterColumn title='Services' links={SERVICE_PAGES} />
+          {location === Location.MYRTLE_BEACH && (
+            <FooterColumn
+              title='Locations'
+              links={MYRTLE_BEACH_LOCATIONS}
+              columns={1}
+            />
+          )}
+          <FooterColumn title='Legal' links={LEGAL_PAGES} />
         </div>
         <hr className='my-6 border-gray-200 dark:border-gray-700 sm:mx-auto md:my-8' />
         <div className='pb-10 pt-6 text-center md:p-0'>

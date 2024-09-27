@@ -1,11 +1,11 @@
-import Image from 'next/image'
 import ApplyForm from '@/components/ApplyForm'
-import { NAME } from '@/lib/globals'
 import BonusesTable from '@/components/BonusesTable'
-import Link from 'next/link'
 import MapFrame from '@/components/MapFrame'
-import { Metadata } from 'next'
+import { NAME } from '@/lib/globals'
 import { getLocationsString } from '@/lib/utils'
+import { Metadata } from 'next'
+import Image from 'next/image'
+import Link from 'next/link'
 import { AREA, LOCATIONS } from '../house-cleaning-services-myrtle-beach/local'
 
 // TODO: Do not make location specific, update form to redirect to appropriate location
@@ -68,13 +68,16 @@ export default function Apply() {
           Are you in our service area?
         </h2>
         <p>Proudly serving all areas of the greater {AREA} metro area.</p>
-        <ul className='mt-4 flex flex-col items-center justify-center gap-2 sm:flex-row sm:gap-5'>
+        <div className='mx-auto mt-4 grid max-w-4xl grid-cols-[repeat(auto-fit,minmax(120px,1fr))] justify-center gap-2'>
           {LOCATIONS.map((location) => (
-            <li key={location.name}>
+            <div
+              key={location.name}
+              className='flex items-center justify-center'
+            >
               <span className='font-normal text-gray-900'>{location.name}</span>
-            </li>
+            </div>
           ))}
-        </ul>
+        </div>
         <MapFrame className='mx-auto mt-8 h-[400px] max-w-screen-lg rounded-xl sm:h-[550px]' />
         {/* Form Anchor */}
         <div id='form' />

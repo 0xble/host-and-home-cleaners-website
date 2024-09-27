@@ -1,17 +1,17 @@
-import Link from 'next/link'
-import Image from 'next/image'
-import type { Metadata } from 'next'
-import { CHECKLIST_NAME, NAME } from '@/lib/globals'
-import HowItWorksCard from '@/components/HowItWorksCard'
 import BookingCard from '@/components/BookingCard'
-import TrustSection from '@/components/TrustSection'
-import FeaturedCarousel from '@/components/FeaturedCarousel'
 import CompetitorComparisonTable from '@/components/CompetitorComparisonTable'
 import CTAButtons from '@/components/CTAButtons'
+import FeaturedCarousel from '@/components/FeaturedCarousel'
+import HowItWorksCard from '@/components/HowItWorksCard'
 import MapFrame from '@/components/MapFrame'
-import { AREA, LOCATIONS, PHONE_NUMBER } from './local'
 import Page from '@/components/Page'
 import TestimonialCarousel from '@/components/TestimonialCarousel'
+import TrustSection from '@/components/TrustSection'
+import { CHECKLIST_NAME, NAME } from '@/lib/globals'
+import type { Metadata } from 'next'
+import Image from 'next/image'
+import Link from 'next/link'
+import { AREA, LOCATIONS, PHONE_NUMBER } from './local'
 
 export const metadata: Metadata = {
   title: `${NAME} | \#1 House Cleaning in ${AREA}`,
@@ -62,17 +62,22 @@ export default function MyrtleBeach() {
       {/* Locations */}
       <section className='flex flex-col p-8 text-center'>
         <h2 className='mb-4 tracking-tight text-gray-900 dark:text-white'>
-          We&apos;re in your neighborhood!
+          Are you in our service area?
         </h2>
         <p>Proudly serving all areas of the greater {AREA} metro area.</p>
-        <ul className='mt-4 flex flex-col items-center justify-center gap-2 sm:flex-row sm:gap-5'>
+        <div className='mx-auto mt-4 grid max-w-4xl grid-cols-[repeat(auto-fit,minmax(120px,1fr))] justify-center gap-2'>
           {LOCATIONS.map((location) => (
-            <li key={location.name}>
+            <div
+              key={location.name}
+              className='flex items-center justify-center'
+            >
               <span className='font-normal text-gray-900'>{location.name}</span>
-            </li>
+            </div>
           ))}
-        </ul>
+        </div>
         <MapFrame className='mx-auto mt-8 h-[400px] max-w-screen-lg rounded-xl sm:h-[550px]' />
+        {/* Form Anchor */}
+        <div id='form' />
       </section>
 
       {/* How it works */}
