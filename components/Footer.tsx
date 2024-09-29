@@ -2,7 +2,7 @@ import {
   LOCATIONS as MYRTLE_BEACH_LOCATIONS,
   PHONE_NUMBER as MYRTLE_BEACH_PHONE_NUMBER,
 } from '@/app/house-cleaning-services-myrtle-beach/local'
-import { EMAIL, NAME } from '@/lib/globals'
+import { EMAIL, LOCATIONS, NAME } from '@/lib/globals'
 import { COMPANY_PAGES, LEGAL_PAGES, SERVICE_PAGES } from '@/lib/pages'
 import { Location } from '@/store/useLocationStore'
 import { chunk } from 'lodash'
@@ -287,6 +287,9 @@ export default function Footer({ location }: FooterProps) {
           </div>
           <FooterColumn title='Company' links={COMPANY_PAGES} />
           <FooterColumn title='Services' links={SERVICE_PAGES} />
+          {location === Location.NONE && (
+            <FooterColumn title='Locations' links={LOCATIONS} columns={1} />
+          )}
           {location === Location.MYRTLE_BEACH && (
             <FooterColumn
               title='Locations'
