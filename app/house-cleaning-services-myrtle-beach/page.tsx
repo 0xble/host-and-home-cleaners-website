@@ -791,7 +791,7 @@ export default function MyrtleBeach() {
           <p className=''>
             Get an{' '}
             <Link
-              href='https://pristinemaidcleaning.bookingkoala.com/booknow'
+              href='https://bookings.pristinemaidcleaning.com/booknow'
               className='link'
             >
               instant, no-obligation quote online

@@ -1,6 +1,6 @@
-import Link from 'next/link'
-import { PhoneIcon } from '@heroicons/react/24/solid'
 import { cn } from '@/lib/utils'
+import { PhoneIcon } from '@heroicons/react/24/solid'
+import Link from 'next/link'
 
 type CTAButtonsProps = {
   className?: string
@@ -11,7 +11,7 @@ export default function CTAButtons({ className, phone }: CTAButtonsProps) {
   return (
     <div className={cn('lg:flex-rows flex items-center gap-6', className)}>
       <Link
-        href='https://pristinemaidcleaning.bookingkoala.com/booknow'
+        href='https://bookings.pristinemaidcleaning.com/booknow'
         className='inline-flex items-center justify-center rounded-xl bg-primary-700 p-4 text-center font-medium text-white hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900 lg:mr-3 lg:px-6 lg:py-4 lg:text-xl '
       >
         Book now

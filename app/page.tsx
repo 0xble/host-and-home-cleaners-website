@@ -1,16 +1,16 @@
-import Head from 'next/head'
-import Link from 'next/link'
-import Image from 'next/image'
-import type { Metadata } from 'next'
-import { CHECKLIST_NAME, NAME } from '@/lib/globals'
-import HowItWorksCard from '@/components/HowItWorksCard'
 import BookingCard from '@/components/BookingCard'
-import TrustSection from '@/components/TrustSection'
-import FeaturedCarousel from '@/components/FeaturedCarousel'
 import CompetitorComparisonTable from '@/components/CompetitorComparisonTable'
+import FeaturedCarousel from '@/components/FeaturedCarousel'
 import FindLocationInput from '@/components/FindLocationInput'
+import HowItWorksCard from '@/components/HowItWorksCard'
 import Page from '@/components/Page'
 import TestimonialCarousel from '@/components/TestimonialCarousel'
+import TrustSection from '@/components/TrustSection'
+import { CHECKLIST_NAME, NAME } from '@/lib/globals'
+import type { Metadata } from 'next'
+import Head from 'next/head'
+import Image from 'next/image'
+import Link from 'next/link'
 
 export const metadata: Metadata = {
   title: `${NAME} | \#1 House Cleaning`,
@@ -45,7 +45,7 @@ export default function Home() {
             </p>
             <div className='flex items-center gap-6'>
               <Link
-                href='https://pristinemaidcleaning.bookingkoala.com/booknow'
+                href='https://bookings.pristinemaidcleaning.com/booknow'
                 className='hidden items-center justify-center rounded-xl bg-primary-700 p-4 text-center font-medium text-white hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900 sm:inline-flex lg:mr-3 lg:px-6 lg:py-4 lg:text-xl'
               >
                 Book now
@@ -802,7 +802,7 @@ export default function Home() {
           </p>
           <div className='flex items-center gap-6'>
             <Link
-              href='https://pristinemaidcleaning.bookingkoala.com/booknow'
+              href='https://bookings.pristinemaidcleaning.com/booknow'
               className='inline-flex items-center justify-center rounded-xl bg-primary-700 p-4 text-center font-medium text-white hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900 lg:mr-3 lg:px-6 lg:py-4 lg:text-xl '
             >
               Book now

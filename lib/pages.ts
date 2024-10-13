@@ -27,7 +27,7 @@ export const COMPANY_PAGES: Page[] = [
   },
   {
     name: 'Booking',
-    href: 'https://pristinemaidcleaning.bookingkoala.com/booknow',
+    href: 'https://bookings.pristinemaidcleaning.com/booknow',
     priority: 0.8,
     changeFrequency: 'weekly',
   },

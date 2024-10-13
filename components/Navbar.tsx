@@ -1,17 +1,17 @@
 'use client'
-import Link from 'next/link'
-import { Bars3Icon } from '@heroicons/react/24/solid'
-import { usePathname } from 'next/navigation'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { cn } from '@/lib/utils'
-import Brand from './Brand'
 import { SERVICE_PAGES } from '@/lib/pages'
+import { cn } from '@/lib/utils'
 import { Location } from '@/store/useLocationStore'
+import { Bars3Icon } from '@heroicons/react/24/solid'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import Brand from './Brand'
 
 type NavbarLinkProps = {
   href: string
@@ -89,7 +89,7 @@ export default function Navbar({
               />
             )}
             <Link
-              href='https://pristinemaidcleaning.bookingkoala.com/booknow'
+              href='https://bookings.pristinemaidcleaning.com/booknow'
               className='rounded-lg bg-primary-700 p-3 text-center text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 lg:text-base'
             >
               Book now
@@ -155,7 +155,7 @@ export default function Navbar({
                 <NavbarLink href='/about'>About</NavbarLink>
               </li>
               <li>
-                <NavbarLink href='https://pristinemaidcleaning.bookingkoala.com/booknow'>
+                <NavbarLink href='https://bookings.pristinemaidcleaning.com/booknow'>
                   Booking
                 </NavbarLink>
               </li>

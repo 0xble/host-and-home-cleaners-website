@@ -782,7 +782,7 @@ export default function GardenCity() {
           <p className=''>
             Obtain a{' '}
             <Link
-              href='https://pristinemaidcleaning.bookingkoala.com/booknow'
+              href='https://bookings.pristinemaidcleaning.com/booknow'
               className='link'
             >
               quick, no-commitment online estimate

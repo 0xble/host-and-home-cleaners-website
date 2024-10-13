@@ -1,7 +1,7 @@
-import Image from 'next/image'
-import CTAButtons from './CTAButtons'
-import Link from 'next/link'
 import { cn } from '@/lib/utils'
+import Image from 'next/image'
+import Link from 'next/link'
+import CTAButtons from './CTAButtons'
 
 type CTASectionProps = {
   cta?: string
@@ -31,7 +31,7 @@ export default function CTASection({ cta, className, phone }: CTASectionProps) {
         <p className='mb-12'>
           Get an{' '}
           <Link
-            href='https://pristinemaidcleaning.bookingkoala.com/booknow'
+            href='https://bookings.pristinemaidcleaning.com/booknow'
             className='link'
           >
             instant, no-obligation quote online
