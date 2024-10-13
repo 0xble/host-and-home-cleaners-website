@@ -22,7 +22,7 @@ const bonuses = [
   },
   {
     criteria: 'Making every appointment on time for the month',
-    bonus: '$70 per month',
+    bonus: '$100 every month',
     icon: (
       <svg
         className='mr-2 h-5 w-5 fill-current text-primary-700'
