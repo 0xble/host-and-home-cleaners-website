@@ -1,9 +1,11 @@
-import Image from 'next/image'
+import Image, { ImageProps } from 'next/image'
 
 type HowItWorksCardType = {
-  src: string
+  src: ImageProps['src']
   alt: string
   title: string
+  width?: number
+  height?: number
   description: string | JSX.Element
 }
 
@@ -11,6 +13,8 @@ export default function HowItWorksCard({
   src,
   alt,
   title,
+  width,
+  height,
   description,
 }: HowItWorksCardType) {
   return (
@@ -19,6 +23,8 @@ export default function HowItWorksCard({
         className='mb-5 mr-4 h-48 w-min rounded-lg md:h-auto md:w-full lg:mb-0'
         src={src}
         alt={alt}
+        width={width}
+        height={height}
         style={{ objectFit: 'contain' }}
         placeholder='blur'
       />

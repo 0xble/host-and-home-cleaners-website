@@ -1,7 +1,8 @@
-import Image from 'next/image'
 import CTASection from '@/components/CTASection'
-import { Metadata } from 'next'
 import Page from '@/components/Page'
+import { NAME } from '@/lib/globals'
+import { Metadata } from 'next'
+import Image from 'next/image'
 
 export const metadata: Metadata = {
   title: 'Pristine Office Cleaning Services',
@@ -15,10 +16,11 @@ export default function OfficeCleaning() {
       <section className='px-4 text-center'>
         <Image
           className='mx-auto mb-24 h-[300px] w-full max-w-screen-lg md:h-[450px] lg:rounded-b'
-          src={require('@/public/office.jpeg')}
+          src='/office.jpeg'
           alt='office environment being cleaned'
           style={{ objectFit: 'cover' }}
-          placeholder='blur'
+          width={1280}
+          height={960}
         />
         <h1 className='mb-8 text-4xl sm:text-[45px]'>
           Office Cleaning Services
@@ -89,8 +91,8 @@ export default function OfficeCleaning() {
           Customer reviews testify to our unwavering commitment to excellence,
           highlighting our consistent performance and exceptional customer
           service. You embark on a journey toward a cleaner, healthier, and more
-          productive workplace by choosing Pristine Maid Cleaning as your
-          trusted cleaning partner.
+          productive workplace by choosing {NAME} as your trusted cleaning
+          partner.
         </p>
 
         <h2>Eco-Friendly Solutions for Sustainable Cleaning</h2>
@@ -114,9 +116,8 @@ export default function OfficeCleaning() {
           Transform your office environment with our expert cleaning services,
           including move-in/move-out cleaning, tailored to meet your unique
           needs and exceed your expectations. Experience the difference with
-          Pristine Maid Cleaning, a leading cleaning company, and elevate
-          cleanliness, productivity, and employee satisfaction in your
-          workplace.
+          {NAME}, a leading cleaning company, and elevate cleanliness,
+          productivity, and employee satisfaction in your workplace.
         </p>
       </section>
 

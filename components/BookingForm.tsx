@@ -12,7 +12,7 @@ export default function BookingForm() {
         src={
           id && name
             ? `https://pristinemaidcleaning.bookingkoala.com/booking-quote/${id}/${name}?embed=true`
-            : 'https://bookings.pristinemaidcleaning.com/booknow?embed=true'
+            : 'https://bookings.hostandhomecleaners.com/booknow?embed=true'
         }
         loading='eager'
         scrolling='no'

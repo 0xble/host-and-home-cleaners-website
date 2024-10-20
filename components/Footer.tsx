@@ -1,7 +1,7 @@
 import {
   LOCATIONS as MYRTLE_BEACH_LOCATIONS,
   PHONE_NUMBER as MYRTLE_BEACH_PHONE_NUMBER,
-} from '@/app/house-cleaning-services-myrtle-beach/local'
+} from '@/app/myrtle-beach/local'
 import { EMAIL, LOCATIONS, NAME } from '@/lib/globals'
 import { COMPANY_PAGES, LEGAL_PAGES, SERVICE_PAGES } from '@/lib/pages'
 import { Location } from '@/store/useLocationStore'

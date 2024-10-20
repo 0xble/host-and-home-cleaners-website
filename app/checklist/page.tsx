@@ -5,7 +5,7 @@ import { CHECKLIST_NAME } from '@/lib/globals'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Pristine Clean 72-point Checklist™',
+  title: CHECKLIST_NAME,
   description: 'See how we leave your home spotless and pristine, every time.',
 }
 

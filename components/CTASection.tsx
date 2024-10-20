@@ -31,7 +31,7 @@ export default function CTASection({ cta, className, phone }: CTASectionProps) {
         <p className='mb-12'>
           Get an{' '}
           <Link
-            href='https://bookings.pristinemaidcleaning.com/booknow'
+            href='https://bookings.hostandhomecleaners.com/booknow'
             className='link'
           >
             instant, no-obligation quote online

@@ -1,7 +1,7 @@
-import { Inter } from 'next/font/google'
-import { Metadata } from 'next'
-import { DOMAIN } from '@/lib/globals'
 import { Toaster } from '@/components/ui/toaster'
+import { DOMAIN } from '@/lib/globals'
+import { Metadata } from 'next'
+import { Inter } from 'next/font/google'
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -25,7 +25,7 @@ export default function RootLayout({
     <html lang='en'>
       <body className={inter.className}>
         {children}
-        <script async src='dist/flowbite.min.js'></script>
+        <script async src='dist/flowbite.min.js' />
         <Toaster />
       </body>
     </html>

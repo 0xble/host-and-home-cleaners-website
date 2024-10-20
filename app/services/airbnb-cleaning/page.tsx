@@ -1,7 +1,8 @@
-import Image from 'next/image'
 import CTASection from '@/components/CTASection'
-import { Metadata } from 'next'
 import Page from '@/components/Page'
+import { NAME } from '@/lib/globals'
+import { Metadata } from 'next'
+import Image from 'next/image'
 
 export const metadata: Metadata = {
   title: 'Airbnb Cleaning Services',
@@ -15,10 +16,11 @@ export default function AirbnbCleaning() {
       <section className='px-4 text-center'>
         <Image
           className='mx-auto mb-24 h-[300px] w-full max-w-screen-lg md:h-[450px] lg:rounded-b'
-          src={require('@/public/rental.jpg')}
+          src='/rental.jpg'
           alt='cleaner walking with supplies'
           style={{ objectFit: 'cover' }}
-          placeholder='blur'
+          width={724}
+          height={483}
         />
         <h1 className='mb-8 text-4xl sm:text-[45px]'>
           Airbnb Cleaning Services
@@ -31,11 +33,11 @@ export default function AirbnbCleaning() {
 
       <section className='prose mx-auto mb-24 max-w-screen-md'>
         <p>
-          At Pristine Maid Cleaning, we understand the unique demands of
-          maintaining an Airbnb property. Our specialized Airbnb cleaning
-          services are designed to synchronize with your guest check-in/out
-          calendar, ensuring your property is always spotless and ready for the
-          next guest without you having to lift a finger.
+          At {NAME}, we understand the unique demands of maintaining an Airbnb
+          property. Our specialized Airbnb cleaning services are designed to
+          synchronize with your guest check-in/out calendar, ensuring your
+          property is always spotless and ready for the next guest without you
+          having to lift a finger.
         </p>
 
         <h2>Why Choose Our Airbnb Cleaning Services?</h2>
@@ -81,12 +83,11 @@ export default function AirbnbCleaning() {
           managing your Airbnb property as stress-free as possible.
         </p>
 
-        <h2>Experience the Pristine Difference</h2>
+        <h2>Experience the {NAME} Difference</h2>
         <p>
-          Experience the Pristine difference today and elevate your Airbnb
-          property with our professional cleaning services. Let us handle the
-          cleaning, so you can focus on providing an exceptional experience for
-          your guests.
+          Experience the difference today and elevate your Airbnb property with
+          our professional cleaning services. Let us handle the cleaning, so you
+          can focus on providing an exceptional experience for your guests.
         </p>
       </section>
 

@@ -1,7 +1,8 @@
-import Image from 'next/image'
 import CTASection from '@/components/CTASection'
-import { Metadata } from 'next'
 import Page from '@/components/Page'
+import { NAME } from '@/lib/globals'
+import { Metadata } from 'next'
+import Image from 'next/image'
 
 export const metadata: Metadata = {
   title: 'Pristine Standard Cleaning',
@@ -9,13 +10,13 @@ export const metadata: Metadata = {
     'Recommended as a recurring service for maintaining the cleanliness of a home after a deep clean.',
 }
 
-export default function StandardCleaning() {
+export default async function StandardCleaning() {
   return (
     <Page className='pb-24'>
       <section className='px-4 text-center'>
         <Image
           className='mx-auto mb-24 h-[300px] w-full max-w-screen-lg md:h-[450px] lg:rounded-b'
-          src={require('@/public/home3.jpeg')}
+          src={await import('@/public/home3.jpeg')}
           alt='cleaner walking with supplies'
           style={{ objectFit: 'cover' }}
           placeholder='blur'
@@ -31,36 +32,35 @@ export default function StandardCleaning() {
 
       <section className='prose mx-auto mb-24 max-w-screen-md'>
         <p>
-          At Pristine Maid Cleaning, we redefine excellence in the cleaning
-          industry, offering unparalleled quality, cost efficiency, and
-          professionalism. Our comprehensive range of tailored services,
-          cutting-edge equipment, and eco-friendly products ensure that your
-          space receives the highest standard of care.
+          At {NAME}, we redefine excellence in the cleaning industry, offering
+          unparalleled quality, cost efficiency, and professionalism. Our
+          comprehensive range of tailored services, cutting-edge equipment, and
+          eco-friendly products ensure that your space receives the highest
+          standard of care.
         </p>
 
         <h2>Why Opt for Standard Cleaning Services?</h2>
 
         <p>
-          When it comes to top-tier cleaning services, Pristine Maid Cleaning is
-          your premier choice. We prioritize cost efficiency, providing
-          affordable solutions without compromising on quality. Our competitive
-          pricing packages cater to your needs and budget, delivering
-          exceptional value for money. Time is precious, which is why we focus
-          on time-saving solutions. With our team of skilled professionals and
-          efficient cleaning methods, you can enjoy prompt and thorough cleaning
-          services without sacrificing quality. We understand the importance of
-          your time and ensure that your space is impeccably cleaned in a timely
-          manner.
+          When it comes to top-tier cleaning services, {NAME} is your premier
+          choice. We prioritize cost efficiency, providing affordable solutions
+          without compromising on quality. Our competitive pricing packages
+          cater to your needs and budget, delivering exceptional value for
+          money. Time is precious, which is why we focus on time-saving
+          solutions. With our team of skilled professionals and efficient
+          cleaning methods, you can enjoy prompt and thorough cleaning services
+          without sacrificing quality. We understand the importance of your time
+          and ensure that your space is impeccably cleaned in a timely manner.
         </p>
 
         <h2>Comprehensive Services Tailored to Your Needs</h2>
         <p>
-          At Pristine Maid Cleaning, we provide an extensive array of
-          professional cleaning solutions customized to suit your specific
-          needs. Our team of skilled professionals is adept in various cleaning
-          techniques, encompassing dusting, vacuuming, sanitizing, and
-          polishing. We utilize industry best practices and cutting-edge
-          equipment to deliver consistent, high-quality results.
+          At {NAME}, we provide an extensive array of professional cleaning
+          solutions customized to suit your specific needs. Our team of skilled
+          professionals is adept in various cleaning techniques, encompassing
+          dusting, vacuuming, sanitizing, and polishing. We utilize industry
+          best practices and cutting-edge equipment to deliver consistent,
+          high-quality results.
         </p>
         <p>
           We are committed to sustainability and prioritize eco-friendly
@@ -106,8 +106,8 @@ export default function StandardCleaning() {
           earning the trust and loyalty of our clients.
         </p>
         <p>
-          Experience the Pristine Maid Cleaning difference today and elevate
-          your cleaning standards.
+          Experience the {NAME} difference today and elevate your cleaning
+          standards.
         </p>
       </section>
 

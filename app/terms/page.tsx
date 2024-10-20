@@ -1,6 +1,6 @@
-import { Metadata } from 'next'
 import { DOMAIN, EMAIL, NAME } from '@/lib/globals'
-import { STATE } from '../house-cleaning-services-myrtle-beach/local'
+import { Metadata } from 'next'
+import { STATE } from '../myrtle-beach/local'
 
 export const metadata: Metadata = {
   title: 'Terms of Service',
@@ -16,15 +16,14 @@ export default function TermsOfService() {
         </h1>
         <p>
           Please read these Terms of Service (&quot;Terms&quot;) carefully
-          before using the
-          {DOMAIN} website (&quot;Website&quot;) or booking any cleaning
-          services (&quot;Services&quot;) offered by {NAME} (&quot;us&quot;,
-          &quot;we&quot;, or &quot;our&quot;). Your access to and use of the
-          Website and our Services is conditioned upon your acceptance of and
-          compliance with these Terms. By accessing or using the Website and/or
-          our Services, you agree to be bound by these Terms. If you disagree
-          with any part of the Terms, then you do not have permission to access
-          the Website or use our Services.
+          before using the {DOMAIN} website (&quot;Website&quot;) or booking any
+          cleaning services (&quot;Services&quot;) offered by {NAME}{' '}
+          (&quot;us&quot;, &quot;we&quot;, or &quot;our&quot;). Your access to
+          and use of the Website and our Services is conditioned upon your
+          acceptance of and compliance with these Terms. By accessing or using
+          the Website and/or our Services, you agree to be bound by these Terms.
+          If you disagree with any part of the Terms, then you do not have
+          permission to access the Website or use our Services.
         </p>
         <p>
           Your access to and use of the Website and our Services is conditioned
@@ -160,7 +159,7 @@ export default function TermsOfService() {
             <strong>Opt in for SMS using our Toll Free numbers:</strong> When
             receiving SMS messages from {NAME} or from any of our toll free
             numbers Msg & data rates may apply. For help, contact
-            {EMAIL}.When receiving incoming messages, you may opt out by
+            {EMAIL}. When receiving incoming messages, you may opt out by
             replying “Stop.”
           </li>
         </ol>

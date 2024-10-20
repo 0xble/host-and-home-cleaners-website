@@ -40,7 +40,7 @@ export default function BookingCard({
       </span>
       <p className='text-xs'>*starting at price</p>
       <Link
-        href='https://bookings.pristinemaidcleaning.com/booknow'
+        href='https://bookings.hostandhomecleaners.com/booknow'
         className={cn(
           'my-4 rounded-lg bg-gray-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:ring-4 focus:ring-gray-200 dark:bg-gray-600 dark:text-white  dark:hover:bg-gray-500 dark:focus:ring-gray-600',
           highlighted &&

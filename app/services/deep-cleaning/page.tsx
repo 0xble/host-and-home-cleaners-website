@@ -1,10 +1,11 @@
-import Image from 'next/image'
 import CTASection from '@/components/CTASection'
-import { Metadata } from 'next'
 import Page from '@/components/Page'
+import { NAME } from '@/lib/globals'
+import { Metadata } from 'next'
+import Image from 'next/image'
 
 export const metadata: Metadata = {
-  title: 'Pristine Deep Cleaning',
+  title: `${NAME} Deep Cleaning`,
   description:
     'Recommended as an initial cleaning to get your home to a high standard of cleanliness to maintain with recurring standard cleanings.',
 }
@@ -15,10 +16,11 @@ export default function DeepCleaning() {
       <section className='px-4 text-center'>
         <Image
           className='mx-auto mb-24 h-[300px] w-full max-w-screen-lg md:h-[450px] lg:rounded-b'
-          src={require('@/public/home2.jpeg')}
+          src='/home2.jpeg'
           alt='cleaner walking with supplies'
           style={{ objectFit: 'cover' }}
-          placeholder='blur'
+          width={1280}
+          height={853}
         />
         <h1 className='mb-8 text-4xl sm:text-[45px]'>Deep Cleaning Services</h1>
         <p className='mx-auto mb-20'>
@@ -29,11 +31,11 @@ export default function DeepCleaning() {
 
       <section className='prose mx-auto mb-24 max-w-screen-md'>
         <p>
-          At Pristine Maid Cleaning, we recognize the paramount importance of
-          maintaining cleanliness and health in your surroundings. Our deep
-          professional cleaning services offer a holistic solution tailored to
-          target overlooked areas and elevate indoor air quality, ensuring
-          impeccable sanitation and hygiene standards.
+          At {NAME}, we recognize the paramount importance of maintaining
+          cleanliness and health in your surroundings. Our deep professional
+          cleaning services offer a holistic solution tailored to target
+          overlooked areas and elevate indoor air quality, ensuring impeccable
+          sanitation and hygiene standards.
         </p>
 
         <h2>Why Choose Deep Cleaning?</h2>
@@ -126,16 +128,14 @@ export default function DeepCleaning() {
           your premises.
         </p>
 
-        <h2>Experience the Pristine Difference</h2>
+        <h2>Experience the Excellence of {NAME}&apos;s Deep Cleaning</h2>
         <p>
-          Experience the Pristine difference today and elevate your space with
-          our professional deep cleaning services. From routine maintenance to{' '}
-          post-construction cleaning, we specialize in transforming spaces into
-          immaculate sanctuaries. Let us alleviate the burden of cleaning,
-          allowing you to enjoy a cleaner, healthier, and more inviting
-          environment. Whether it&apos;s dusting off the last remnants of
-          construction debris or ensuring every nook and cranny is spotless, we
-          are dedicated to exceeding your expectations.
+          Transform your space with our expert deep cleaning services. Whether
+          it&apos;s regular maintenance or thorough post-renovation cleaning, we
+          specialize in creating pristine environments. Let us handle the
+          cleaning tasks, so you can enjoy a cleaner, healthier, and more
+          inviting space. From removing construction dust to ensuring every
+          corner is spotless, our goal is to exceed your expectations.
         </p>
       </section>
 

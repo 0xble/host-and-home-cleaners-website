@@ -1,7 +1,8 @@
-export const NAME = 'Pristine Maid Cleaning'
-export const DOMAIN = 'pristinemaidcleaning.com'
+export const NAME = 'Host & Home Cleaners'
+export const DOMAIN = 'hostandhomecleaners.com'
 export const EMAIL = `support@${DOMAIN}`
-export const CHECKLIST_NAME = 'Pristine Clean 72-point Checklist™'
+export const CHECKLIST_NAME = 'Host & Home 72-point Checklist™'
+export const BOOKING_URL = 'https://bookings.hostandhomecleaners.com/booknow'
 export const LOCATIONS = [
   {
     name: 'Myrtle Beach',

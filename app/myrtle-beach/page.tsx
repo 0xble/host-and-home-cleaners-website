@@ -14,11 +14,11 @@ import Link from 'next/link'
 import { AREA, LOCATIONS, PHONE_NUMBER } from './local'
 
 export const metadata: Metadata = {
-  title: `${NAME} | \#1 House Cleaning in ${AREA}`,
-  description: `${NAME} is the \#1 quality and reliable house cleaning service in ${AREA}. We offer a wide range of residential cleaning services, fast turnaround, and affordable prices.`,
+  title: `${NAME} | #1 House Cleaning in ${AREA}`,
+  description: `${NAME} is the #1 quality and reliable house cleaning service in ${AREA}. We offer a wide range of residential cleaning services, fast turnaround, and affordable prices.`,
 }
 
-export default function GardenCity() {
+export default async function MyrtleBeach() {
   return (
     <Page className='mb-24 flex min-h-screen flex-col gap-12 lg:mb-32 lg:gap-12'>
       {/* Hero */}
@@ -28,17 +28,16 @@ export default function GardenCity() {
             <h1 className='mb-4 text-3xl leading-none tracking-tight dark:text-white md:text-5xl'>
               {AREA}, SC&apos;s
               <br />
-              #1 Top Notch Cleaning Services
+              #1 Quality & Reliable Cleaners
             </h1>
             <h3 className='mb-4 text-gray-800 md:text-3xl'>
               <mark>100% satisfaction</mark> guaranteed, <br /> or we&apos;ll{' '}
               <mark>redo it for FREE</mark>.
             </h3>
             <p className='mb-6 max-w-2xl lg:mb-8'>
-              Over 92% of our clients report increased satisfaction after
-              utilizing our services, so the demand for expert cleaning
-              solutions in {AREA}, SC, continues to rise. Our commitment to
-              excellence goes beyond surface cleaning.
+              High-quality residential cleaning services, fast turnaround, at
+              affordable prices — this is why home owners, Airbnb short-term
+              vacation rentals, and realtors all go with us!
             </p>
             <CTAButtons className='mt-12 lg:mt-8' phone={PHONE_NUMBER} />
           </div>
@@ -55,7 +54,7 @@ export default function GardenCity() {
       {/* Testimonials */}
       <section className='my-12 flex flex-col p-8 text-center'>
         <h2 className='mb-12 tracking-tight text-gray-900 dark:text-white'>
-          Hear from our happy clients
+          What our clients say
         </h2>
         <TestimonialCarousel />
       </section>
@@ -63,12 +62,9 @@ export default function GardenCity() {
       {/* Locations */}
       <section className='flex flex-col p-8 text-center'>
         <h2 className='mb-4 tracking-tight text-gray-900 dark:text-white'>
-          Serving your local area!
+          Are you in our service area?
         </h2>
-        <p>
-          We proudly cover all neighborhoods within the greater {AREA} metro
-          region.
-        </p>
+        <p>Proudly serving all areas of the greater {AREA} metro area.</p>
         <div className='mx-auto mt-4 grid max-w-4xl grid-cols-[repeat(auto-fit,minmax(120px,1fr))] justify-center gap-2'>
           {LOCATIONS.map((location) => (
             <div
@@ -89,59 +85,60 @@ export default function GardenCity() {
         <div className='mx-auto max-w-screen-xl px-4 py-8 lg:px-6 lg:py-16'>
           <div className='text-center text-gray-900'>
             <h2 className='mb-4 tracking-tight text-gray-900 dark:text-white'>
-              Our process
+              How do our services work?
             </h2>
           </div>
           <div className='mt-12 grid gap-6 font-light md:grid-cols-3 lg:mt-14 lg:gap-12'>
             <HowItWorksCard
-              src={require('@/public/scheduling.jpg')}
+              src={await import('@/public/scheduling.jpg')}
               alt='online booking for house cleaning'
-              title='1. Book Your Cleaning'
+              title='1. Schedule your cleaning session'
               description={
                 <ul>
                   <li>
-                    Easily book online or call us for a free, no-obligation
-                    quote.
+                    Secure your booking online swiftly or call us for a
+                    complimentary quote without any commitment.
                   </li>
                   <li>
-                    Enjoy a hassle-free, straightforward booking experience.
+                    Experience a streamlined, straightforward booking process.
                   </li>
                   <li>
-                    Provide us with your specific needs and preferred schedule.
+                    Share your specific requirements and preferred timings with
+                    us.
                   </li>
                 </ul>
               }
             />
             <HowItWorksCard
-              src={require('@/public/cleaner-work.jpg')}
+              src={await import('@/public/cleaner-work.jpg')}
               alt='professional house cleaners at work'
-              title='2. We Handle the Cleaning'
+              title='2. Let us take it from here'
               description={
                 <ul>
                   <li>
-                    Relax while our certified cleaners prepare to make your
-                    space spotless.
+                    Relax after scheduling as our certified cleaners prepare to
+                    transform your space.
                   </li>
                   <li>
-                    Our team arrives on time, equipped with a detailed cleaning
-                    plan.
+                    Expect our team, equipped with a comprehensive cleaning
+                    plan, to arrive punctually at your residence.
                   </li>
                 </ul>
               }
             />
             <HowItWorksCard
-              src={require('@/public/home.jpg')}
+              src={await import('@/public/home.jpg')}
               alt='spotless clean home interior'
-              title='3. Enjoy Your Clean Home'
+              title='3. Walk into a newly cleaned space'
               description={
                 <ul>
                   <li>
-                    Experience the joy of a thoroughly cleaned home that feels
-                    fresh and revitalized.
+                    Discover the delight of a meticulously cleaned home that
+                    feels fresh and revitalized.
                   </li>
                   <li>
-                    Benefit from the comfort and health advantages of a
-                    professionally cleaned living space.
+                    Enjoy the comfort and health benefits of a professionally
+                    cleaned living space.
                   </li>
                 </ul>
               }
@@ -149,8 +146,8 @@ export default function GardenCity() {
           </div>
         </div>
         <p className='prose mx-auto text-center text-xl text-gray-600 dark:text-white'>
-          <span className='font-medium'>Curious to Learn More?</span> Check out
-          our <br className='sm:hidden' />
+          <span className='font-medium'>Want to know more?</span> View our{' '}
+          <br className='sm:hidden' />
           <Link className='font-light text-primary-600' href='/checklist'>
             {CHECKLIST_NAME}
           </Link>
@@ -163,19 +160,19 @@ export default function GardenCity() {
         <div className='mx-auto max-w-screen-xl px-4 py-8 sm:py-16 lg:px-6'>
           <div className='mx-auto mb-8 max-w-[1100px] text-center lg:mb-12'>
             <h2 className='mb-4 tracking-tight text-gray-900 dark:text-white'>
-              Services
+              Bookings
             </h2>
             <p className='mb-4 text-left'>
-              We offer a variety of services, from detailed oven cleaning and
-              comprehensive bathroom sanitation to full kitchen deep cleans. Our
-              expert team provides top-notch residential cleaning services,
-              specializing in end-of-lease cleanings, short-term accommodation
-              refreshes, and thorough spring cleanings.
+              We have it all! From meticulous oven scrubbing, comprehensive
+              bathroom sanitation to full-scale kitchen deep cleans — our expert
+              team delivers top-tier residential cleaning services. Specializing
+              in end-of-lease cleanings, short-term accommodation refreshes, and
+              detailed spring cleanings, we cater to all your cleaning needs.
             </p>
             <p className='text-left'>
-              Our customized move-in and move-out cleaning solutions ensure a
+              Our tailored move-in and move-out cleaning solutions guarantee a
               flawless handover, while our intensive refrigerator cleaning
-              services leave your appliance spotless.
+              services render your appliance spotlessly clean.
             </p>
           </div>
           <div className='grid gap-8 lg:grid-cols-3 lg:gap-10'>
@@ -183,7 +180,7 @@ export default function GardenCity() {
               name='Standard Cleaning'
               estimatedTime='2-3 hours (estimated)'
               estimatedPrice='$129'
-              description='Ideal for maintaining cleanliness in well-kept homes. Perfect for weekly, bi-weekly, or monthly bookings.'
+              description='For maintaining cleanliness in well-kept homes. Ideal for weekly, bi-weekly, or monthly bookings.'
               features={
                 <>
                   <li className='flex items-center space-x-3'>
@@ -266,7 +263,7 @@ export default function GardenCity() {
               estimatedTime='3-4 hours (estimated)'
               estimatedPrice='$169'
               includes='Includes Standard PLUS:'
-              description='Ideal for initial appointments or seasonal deep cleans. Thoroughly addresses neglected spaces and hard-to-reach areas.'
+              description='Recommended for the first visit or once every quarter. Detailed cleaning for often unattended areas.'
               features={
                 <>
                   <li className='flex items-center space-x-3'>
@@ -438,7 +435,7 @@ export default function GardenCity() {
               name='Move In/Out Cleaning'
               estimatedTime='4-5 hours (estimated)'
               estimatedPrice='$189'
-              description='Comprehensive move-in/move-out cleaning service designed to get your space spotless and ready for new occupants.'
+              description='A complete one-time, one-stop service to prepare a space before moving.'
               includes='Includes Deep PLUS:'
               features={
                 <>
@@ -573,9 +570,9 @@ export default function GardenCity() {
             Frequently asked questions
           </h2>
           <p className='mb-8'>
-            Discover answers to common questions about our services. If you have
-            additional queries, don&apos;t hesitate to reach out to us via
-            phone, chat, or email at your convenience.
+            Explore our frequently asked questions. Should you have any
+            inquiries not covered here, please feel free to contact us via
+            phone, chat, or email at any time.
           </p>
           <div>
             <div
@@ -586,140 +583,152 @@ export default function GardenCity() {
             >
               {[
                 {
-                  question: 'What makes your service unique?',
+                  question: 'What sets you apart from the others?',
                   answer: (
                     <>
                       <p className='mb-6'>
-                        Looking for top-tier cleaning services in Myrtle Beach?
-                        Pristine Maid Cleaning stands out with exceptional
-                        quality and commitment.
+                        When it comes to selecting a cleaning company in Myrtle
+                        Beach, our team at {NAME} stands out for several
+                        compelling reasons.
                       </p>
                       <CompetitorComparisonTable />
                     </>
                   ),
                 },
                 {
-                  question: 'Are cleaning supplies provided?',
+                  question: 'Do I need to provide cleaning supplies?',
                   answer: (
                     <>
                       <p>
-                        Absolutely, we supply all eco-friendly cleaning products
-                        and equipment, ensuring top-notch results without any
-                        inconvenience for you.
+                        No, we bring our own eco-friendly cleaning products and
+                        equipment to every job, ensuring optimal results without
+                        any hassle on your part.
                       </p>
                     </>
                   ),
                 },
                 {
                   question:
-                    'Do you have insurance and bonding for customer protection?',
+                    'Do you carry insurance and bonding to protect customers?',
                   answer: (
                     <>
                       <p className='mb-2'>
-                        Yes, {NAME} is fully bonded and insured. This ensures
-                        our clients are protected from any liabilities, giving
-                        them peace of mind during and after our services.
+                        Absolutely! {NAME} holds full bonding and insurance
+                        coverage. This offers our clients reassurance that they
+                        are shielded from any liabilities, providing peace of
+                        mind both during and after our services in their spaces
                       </p>
                       <p>
-                        Our commitment to professionalism and client safety is a
-                        key reason why customers repeatedly choose us for their
-                        cleaning needs.
+                        Our unwavering dedication to professionalism and
+                        customer safety is just one of the reasons our clients
+                        consistently choose us for their cleaning requirements.
                       </p>
                     </>
                   ),
                 },
                 {
-                  question: 'How early should I book your services?',
+                  question:
+                    'How far in advance do I need to book your services?',
                   answer: (
                     <>
                       <p>
-                        We advise booking as early as possible, especially
-                        during busy seasons, to secure your preferred schedule.
-                        We also offer flexible same-day appointments when
-                        available, with a $20 surcharge.
+                        We recommend booking our services as far in advance as
+                        possible, especially during peak seasons, to secure your
+                        preferred cleaning schedule. However, we understand that
+                        life can be unpredictable and offer flexible scheduling
+                        to accommodate same-day appointments when possible at
+                        $20 surcharge.
                       </p>
                     </>
                   ),
                 },
                 {
-                  question: 'How often should I schedule cleaning services?',
+                  question:
+                    'What frequency of cleaning service is recommended?',
                   answer: (
                     <>
                       <p>
-                        For best results, we recommend bi-weekly cleanings. For
-                        those needing less frequent services, we offer monthly
-                        deep cleaning to keep your space immaculate.
+                        For optimal cleanliness and maintenance, we suggest
+                        scheduling bi-weekly cleaning sessions. For those who
+                        prefer less frequent services, we offer monthly deep
+                        cleaning options to maintain a pristine environment.
                       </p>
                     </>
                   ),
                 },
                 {
-                  question: 'Do you offer services on weekends or holidays?',
+                  question:
+                    'Are cleaning services available on weekends or holidays?',
                   answer: (
                     <>
                       <p className='mb-2'>
-                        Yes, we provide cleaning services on weekends and select
-                        holidays to fit your schedule. These slots come with an
-                        additional surcharge, so early booking is recommended.
+                        Yes, to accommodate your schedule, we provide cleaning
+                        services on weekends and selected holidays. Please note
+                        that these slots carry an additional surcharge and we
+                        advise early booking to ensure availability.
                       </p>
                     </>
                   ),
                 },
                 {
                   question:
-                    'How do you ensure the quality of your cleaning staff?',
+                    'What measures are in place to ensure the quality of your cleaning staff?',
                   answer: (
                     <>
                       <p className='mb-2'>
-                        Our hiring process includes thorough background checks
-                        and skill assessments. We uphold high standards through
-                        regular performance reviews and detailed cleaning
-                        checklists.
+                        Our hiring process is rigorous, involving comprehensive
+                        background checks and skill assessments. We maintain
+                        high standards through regular performance reviews and
+                        detailed cleaning checklists, ensuring consistent
+                        quality and accountability.
                       </p>
                       <p>
-                        We also value client feedback and use it to continuously
-                        improve our services.
-                      </p>
-                    </>
-                  ),
-                },
-                {
-                  question:
-                    'Can I request specific cleaning tasks or additional services?',
-                  answer: (
-                    <>
-                      <p>
-                        Certainly! We are flexible and can accommodate special
-                        requests or additional services to meet your unique
-                        needs. Just let us know your specific requirements.
+                        We also actively gather and act on client feedback to
+                        continually improve our services.
                       </p>
                     </>
                   ),
                 },
                 {
                   question:
-                    'What is your policy for rescheduling or canceling an appointment?',
+                    'Can I request additional services or specific cleaning tasks?',
                   answer: (
                     <>
                       <p>
-                        We offer easy rescheduling options. Please notify us at
+                        Absolutely! We are flexible and willing to accommodate
+                        special requests or additional services to meet your
+                        specific needs. Whether it’s particular areas of focus,
+                        special cleaning agents, or extra tasks, just let us
+                        know your requirements.
+                      </p>
+                    </>
+                  ),
+                },
+                {
+                  question:
+                    'What is the procedure for rescheduling or canceling a cleaning appointment?',
+                  answer: (
+                    <>
+                      <p>
+                        We understand that plans can change, which is why we
+                        offer easy rescheduling options. Please inform us at
                         least 24 hours in advance if you need to cancel or
-                        reschedule, allowing us to manage our staffing
-                        efficiently.
+                        reschedule to help us efficiently manage our staffing.
                       </p>
                     </>
                   ),
                 },
                 {
                   question:
-                    'How do you ensure customer satisfaction with your cleaning services?',
+                    "How will you make sure I'm satisfied with the cleaning?",
                   answer: (
                     <>
                       <p className='mb-2'>
-                        At {NAME}, your satisfaction is our priority. If
-                        you&apos;re not happy with the cleaning, contact us
-                        within 24 hours. We will promptly address the issue and
-                        offer a complimentary redo to ensure your satisfaction.
+                        Your satisfaction is paramount at {NAME}. If the
+                        cleaning does not meet your expectations, please contact
+                        us within 24 hours. We will promptly address the issue
+                        and offer a complimentary redo of the service to ensure
+                        your satisfaction.
                       </p>
                     </>
                   ),
@@ -770,32 +779,33 @@ export default function GardenCity() {
       <section className='mx-auto max-w-screen-xl items-center gap-8 px-4 py-8 sm:py-16 md:grid md:grid-cols-2 lg:px-6 xl:gap-16'>
         <Image
           className='h-96 rounded-lg lg:h-[600px]'
-          alt='professional house cleaning'
-          src={require('@/public/flamingo-ring.jpeg')}
+          alt='placeholder'
+          src={await import('@/public/flamingo-ring.jpeg')}
           style={{ objectFit: 'cover' }}
           placeholder='blur'
         />
         <div className='mt-4 flex flex-col gap-6 md:mt-0'>
           <h2 className='tracking-tight text-gray-900 dark:text-white sm:text-[58px]'>
-            Discover why we are the top choice!
+            Ready to get a price and reserve a time in 60 seconds?
           </h2>
           <p className=''>
-            Obtain a{' '}
+            Get an{' '}
             <Link
-              href='https://bookings.pristinemaidcleaning.com/booknow'
+              href='https://bookings.hostandhomecleaners.com/booknow'
               className='link'
             >
-              quick, no-commitment online estimate
+              instant, no-obligation quote online
             </Link>{' '}
             or{' '}
             <a
               href={`tel:+${PHONE_NUMBER.replace(/\D/g, '')}`}
               className='link'
             >
-              reach out to us by phone
+              give us a call today
             </a>
-            . If our lines are occupied, please retry later or leave a message,
-            and we will get back to you swiftly!
+            . If you call and the line is busy, don&apos;t worry — try again at
+            a later time or leave a voicemail and we&apos;ll get back to you as
+            soon as we can!
           </p>
           <div className='flex items-center gap-6'>
             <CTAButtons className='mt-12 lg:mt-8' phone={PHONE_NUMBER} />

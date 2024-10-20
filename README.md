@@ -1,4 +1,4 @@
-# Pristine Maid Cleaning Website
+# Host & Home Cleaners Website
 
 This is a [Next.js](https://nextjs.org/) project.
 

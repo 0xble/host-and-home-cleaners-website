@@ -1,3 +1,4 @@
+import { NAME } from '@/lib/globals'
 import { cn } from '@/lib/utils'
 
 type ApplyFormProps = {
@@ -10,7 +11,7 @@ export default function ApplyForm({ className }: ApplyFormProps) {
       <iframe
         className='h-[539px] min-w-full max-w-full border-none'
         id='JotFormIFrame-240823519303148'
-        title='Pristine Maid Cleaning Application'
+        title={`${NAME} Professional House Cleaner Application`}
         allowTransparency={true}
         allow='geolocation; microphone; camera; fullscreen'
         src='https://form.jotform.com/240823519303148'

@@ -27,7 +27,7 @@ export const COMPANY_PAGES: Page[] = [
   },
   {
     name: 'Booking',
-    href: 'https://bookings.pristinemaidcleaning.com/booknow',
+    href: 'https://bookings.hostandhomecleaners.com/booknow',
     priority: 0.8,
     changeFrequency: 'weekly',
   },
@@ -66,7 +66,7 @@ export const SERVICE_PAGES: Page[] = [
   },
   {
     name: 'Move In/Out Cleaning',
-    href: '/services/move-cleaning',
+    href: '/services/move-in-out-cleaning',
     priority: 1,
     changeFrequency: 'monthly',
   },

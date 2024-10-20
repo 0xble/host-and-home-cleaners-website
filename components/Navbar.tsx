@@ -89,7 +89,7 @@ export default function Navbar({
               />
             )}
             <Link
-              href='https://bookings.pristinemaidcleaning.com/booknow'
+              href='https://bookings.hostandhomecleaners.com/booknow'
               className='rounded-lg bg-primary-700 p-3 text-center text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 lg:text-base'
             >
               Book now
@@ -155,7 +155,7 @@ export default function Navbar({
                 <NavbarLink href='/about'>About</NavbarLink>
               </li>
               <li>
-                <NavbarLink href='https://bookings.pristinemaidcleaning.com/booknow'>
+                <NavbarLink href='https://bookings.hostandhomecleaners.com/booknow'>
                   Booking
                 </NavbarLink>
               </li>

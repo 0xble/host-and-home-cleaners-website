@@ -6,18 +6,18 @@ import HowItWorksCard from '@/components/HowItWorksCard'
 import Page from '@/components/Page'
 import TestimonialCarousel from '@/components/TestimonialCarousel'
 import TrustSection from '@/components/TrustSection'
-import { CHECKLIST_NAME, NAME } from '@/lib/globals'
+import { BOOKING_URL, CHECKLIST_NAME, NAME } from '@/lib/globals'
 import type { Metadata } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: `${NAME} | \#1 House Cleaning`,
-  description: `100\% satisfaction guaranteed, or we'll redo it for free. High-quality cleaning, fast turnaround, at an affordable price. Book now!`,
+  title: `${NAME} | #1 House Cleaning`,
+  description: `100% satisfaction guaranteed, or we'll redo it for free. High-quality cleaning, fast turnaround, at an affordable price. Book now!`,
 }
 
-export default function Home() {
+export default async function Home() {
   return (
     <Page className='mb-24 flex min-h-screen flex-col gap-12 lg:mb-32 lg:gap-12'>
       <Head>
@@ -45,7 +45,7 @@ export default function Home() {
             </p>
             <div className='flex items-center gap-6'>
               <Link
-                href='https://bookings.pristinemaidcleaning.com/booknow'
+                href='https://bookings.hostandhomecleaners.com/booknow'
                 className='hidden items-center justify-center rounded-xl bg-primary-700 p-4 text-center font-medium text-white hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900 sm:inline-flex lg:mr-3 lg:px-6 lg:py-4 lg:text-xl'
               >
                 Book now
@@ -81,8 +81,6 @@ export default function Home() {
           </div>
           <div className='mt-12 grid gap-6 font-light md:grid-cols-3 lg:mt-14 lg:gap-12'>
             <HowItWorksCard
-              src={require('@/public/scheduling.jpg')}
-              alt='online booking or call'
               title='1. Schedule and book a time.'
               description={
                 <ul>
@@ -94,10 +92,10 @@ export default function Home() {
                   <li>Tell us your needs, preferences, and schedule a time.</li>
                 </ul>
               }
+              src={await import('@/public/scheduling.jpg')}
+              alt='online booking or call'
             />
             <HowItWorksCard
-              src={require('@/public/cleaner-work.jpg')}
-              alt='cleaning checklist'
               title='2. Leave us to work our magic.'
               description={
                 <ul>
@@ -111,10 +109,10 @@ export default function Home() {
                   </li>
                 </ul>
               }
+              src={await import('@/public/cleaner-work.jpg')}
+              alt='cleaning checklist'
             />
             <HowItWorksCard
-              src={require('@/public/home.jpg')}
-              alt='walk in'
               title='3. Enjoy your pristinely clean home.'
               description={
                 <ul>
@@ -126,6 +124,8 @@ export default function Home() {
                   <li>Breathe easier in your new home!</li>
                 </ul>
               }
+              src={await import('@/public/home.jpg')}
+              alt='walk in'
             />
           </div>
         </div>
@@ -785,7 +785,7 @@ export default function Home() {
         <Image
           className='h-96 rounded-lg lg:h-[600px]'
           alt='placeholder'
-          src={require('@/public/flamingo-ring.jpeg')}
+          src={await import('@/public/flamingo-ring.jpeg')}
           style={{ objectFit: 'cover' }}
           placeholder='blur'
         />
@@ -795,14 +795,13 @@ export default function Home() {
           </h2>
           <p className=''>
             Spend your life enjoying, not worrying about household chores. Let
-            Pristine Maid Cleaning take care of the cleaning while you focus on
-            making memories with your loved ones. Whether you need a one-time
-            residential deep clean or ongoing maintenance, our company got you
-            covered.
+            {NAME} take care of the cleaning while you focus on making memories
+            with your loved ones. Whether you need a one-time residential deep
+            clean or ongoing maintenance, our company got you covered.
           </p>
           <div className='flex items-center gap-6'>
             <Link
-              href='https://bookings.pristinemaidcleaning.com/booknow'
+              href={BOOKING_URL}
               className='inline-flex items-center justify-center rounded-xl bg-primary-700 p-4 text-center font-medium text-white hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900 lg:mr-3 lg:px-6 lg:py-4 lg:text-xl '
             >
               Book now

@@ -1,10 +1,10 @@
-import fs from 'fs'
-import path from 'path'
 import CTASection from '@/components/CTASection'
-import Image from 'next/image'
-import { Metadata } from 'next'
-import { NAME } from '@/lib/globals'
 import Page from '@/components/Page'
+import { NAME } from '@/lib/globals'
+import fs from 'fs'
+import { Metadata } from 'next'
+import Image from 'next/image'
+import path from 'path'
 
 export const metadata: Metadata = {
   title: 'About Us',
@@ -31,7 +31,7 @@ const getTeamImageData = () => {
       // Remove leading and trailing spaces
       .trim(),
     experience: parseInt(filename.match(/\d+/)?.[0] || '0', 10),
-    image: require(`@/public/team/${filename}`),
+    image: `/team/${filename}`,
   }))
 }
 
@@ -66,27 +66,35 @@ export default function About() {
         <div className='grid w-full max-w-screen-lg grid-cols-1 gap-2 sm:grid-cols-2 md:w-1/2 md:flex-shrink-0'>
           <Image
             className='h-[200px] w-full rounded sm:h-[300px]'
-            src={require('@/public/about/clean-fan.jpg')}
+            src='/about/clean-fan.jpg'
             alt='clean fan'
             style={{ objectFit: 'cover' }}
+            width={300}
+            height={200}
           />
           <Image
             className='h-[200px] w-full rounded sm:h-[300px]'
-            src={require('@/public/about/clean-kitchen.jpg')}
+            src='/about/clean-kitchen.jpg'
             alt='clean kitchen'
             style={{ objectFit: 'cover' }}
+            width={300}
+            height={200}
           />
           <Image
             className='h-[200px] w-full rounded sm:h-[300px]'
-            src={require('@/public/about/clean-microwave.jpg')}
+            src='/about/clean-microwave.jpg'
             alt='clean microwave'
             style={{ objectFit: 'cover' }}
+            width={300}
+            height={200}
           />
           <Image
             className='h-[200px] w-full rounded sm:h-[300px]'
-            src={require('@/public/about/clean-shelf.jpg')}
+            src='/about/clean-shelf.jpg'
             alt='clean shelf'
             style={{ objectFit: 'cover' }}
+            width={300}
+            height={200}
           />
         </div>
       </section>
@@ -111,6 +119,8 @@ export default function About() {
                 src={image}
                 alt={name}
                 style={{ objectFit: 'cover' }}
+                width={300}
+                height={300}
               />
               <h3 className='pt-6 text-center text-lg font-extralight md:pt-12 md:text-xl'>
                 {name}

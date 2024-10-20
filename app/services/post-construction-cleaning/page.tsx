@@ -1,7 +1,7 @@
-import Image from 'next/image'
 import CTASection from '@/components/CTASection'
-import { Metadata } from 'next'
 import Page from '@/components/Page'
+import { Metadata } from 'next'
+import Image from 'next/image'
 
 export const metadata: Metadata = {
   title: 'Pristine Post-Construction Cleaning',
@@ -15,10 +15,11 @@ export default function PostConstructionCleaning() {
       <section className='px-4 text-center'>
         <Image
           className='mx-auto mb-24 h-[300px] w-full max-w-screen-lg md:h-[450px] lg:rounded-b'
-          src={require('@/public/home4.jpeg')}
+          src='/home4.jpeg'
           alt='post-construction cleaning in progress'
           style={{ objectFit: 'cover' }}
-          placeholder='blur'
+          width={1280}
+          height={850}
         />
         <h1 className='mb-8 text-4xl sm:text-[45px]'>
           Post-Construction Cleaning Services
