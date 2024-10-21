@@ -1,6 +1,7 @@
 'use client'
 import Image from 'next/image'
 import Link from 'next/link'
+import { Suspense } from 'react'
 
 import { ROUTES } from '@/lib/routes'
 import type { Location } from '@/lib/types'
@@ -45,7 +46,9 @@ export default function CTASection(props: CTASectionProps) {
                   >
                     Book Now
                   </Link>
-                  <FindLocationInput className='hidden sm:flex' />
+                  <Suspense>
+                    <FindLocationInput className='hidden sm:flex' />
+                  </Suspense>
                 </div>
               )
             : (

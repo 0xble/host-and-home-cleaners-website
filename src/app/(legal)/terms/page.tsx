@@ -1,8 +1,6 @@
 import type { Metadata } from 'next'
 
-import { BUSINESS_NAME, URL } from '@/lib/constants'
-import { getEmail, getState } from '@/lib/utils'
-import { useLocationStore } from '@/store/useLocationStore'
+import { BUSINESS_NAME, EMAIL, URL } from '@/lib/constants'
 
 export const metadata: Metadata = {
   title: 'Terms of Service',
@@ -10,7 +8,6 @@ export const metadata: Metadata = {
 }
 
 export default function TermsOfService() {
-  const { location } = useLocationStore()
   return (
     <main className='prose mx-auto my-32 max-w-2xl prose-headings:font-serif prose-strong:font-serif'>
       <h1 className='text-center'>
@@ -26,7 +23,7 @@ export default function TermsOfService() {
         {' '}
         {URL}
         {' '}
-        website (&quot;Website&quot;) or booking any cleaning
+        website (&quot;Website&quot;) or booking any cleaningd
         services (&quot;Services&quot;) offered by
         {' '}
         {BUSINESS_NAME}
@@ -171,23 +168,13 @@ export default function TermsOfService() {
           <strong>Governing Law/Jurisdiction:</strong>
           {' '}
           This Agreement shall be
-          governed by and construed in accordance with the laws of The State of
-          {getState(location)}
-          . Any action or proceeding commenced regarding this Agreement
-          or the subjects herein shall be brought in
-          {' '}
-          {getState(location)}
-          .
+          governed by and construed in accordance with the laws of the state that the service is located in. Any action or proceeding commenced regarding this Agreement
+          or the subjects herein shall be brought in the same County.
         </li>
         <li>
           <strong>Consent for Use of Electronic Signatures:</strong>
           {' '}
-          This
-          Agreement may be executed by original, facsimile, and electronic
-          signatures, each of which when affixed shall be deemed to be an
-          original that is enforceable against the executing party. The customer
-          may log in to the company website and choose whether to accept or
-          reject this agreement at any time.
+          This Agreement may be executed by original, facsimile, and electronic signatures, each of which when affixed shall be deemed to be an original that is enforceable against the executing party. Client accepts that the completion of the online booking form shall serve as an electronic signature.
         </li>
         <li>
           <strong>Refund Policy:</strong>
@@ -232,7 +219,8 @@ export default function TermsOfService() {
           {' '}
           or from any of our toll free numbers Msg & data rates may
           apply. For help, contact
-          {getEmail(location)}
+          {' '}
+          {EMAIL.SUPPORT}
           . When receiving incoming messages, you may opt out by replying
           “Stop.”
         </li>
@@ -273,18 +261,16 @@ export default function TermsOfService() {
         shall bind any assigns and representatives, and shall be deemed as a
         RELEASE, WAIVER, DISCHARGE, AND COVENANT NOT TO SUE the above-named
         RELEASEES. This Agreement and the provisions contained herein shall be
-        construed, interpreted, and controlled according to the laws of the
-        State of
-        {' '}
-        {getState(location)}
-        .
+        governed by and construed in accordance with the laws of the state that
+        the service is located in. Any action or proceeding commenced regarding
+        this Agreement or the subjects herein shall be brought in the same County.
       </p>
       <p>
         I HEREBY KNOWINGLY AND VOLUNTARILY WAIVE ANY RIGHT TO A JURY TRIAL OF
         ANY DISPUTE ARISING IN CONNECTION WITH THIS AGREEMENT.
       </p>
       <p>
-        Most discounts are for Deep Clean or First Time Cleaning only. Discounts
+        Most discounts are for Deep Clean or first time cleaning only. Discounts
         may be used only 1 time. IN SIGNING THIS AGREEMENT, I ACKNOWLEDGE AND
         REPRESENT THAT I have read the foregoing Waiver of Liability and Hold
         Harmless Agreement, understand it, and sign it voluntarily as my own
@@ -355,11 +341,8 @@ export default function TermsOfService() {
       <h2>Limitation of Liability</h2>
       <p>
         These Terms shall be governed and construed in accordance with the laws
-        of the State of
-        {' '}
-        {getState(location)}
-        , United States, without regard to its conflict
-        of law provisions.
+        of the state that the service is located in, without
+        regard to its conflict of law provisions.
       </p>
       <h2>Governing Law</h2>
       <p>
@@ -379,7 +362,7 @@ export default function TermsOfService() {
       <p>
         If you have any questions about these Terms, please contact us at
         {' '}
-        {getEmail(location)}
+        {EMAIL.SUPPORT}
         . By using our Website and Services, you acknowledge that you
         have read and understand these Terms of Service and agree to be bound by
         them.

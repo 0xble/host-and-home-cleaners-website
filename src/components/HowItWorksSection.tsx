@@ -53,7 +53,7 @@ export type HowItWorksSectionProps = {
   steps: [Step, Step, Step]
 }
 
-export default async function HowItWorksSection({ heading, steps }: HowItWorksSectionProps) {
+export default function HowItWorksSection({ heading, steps }: HowItWorksSectionProps) {
   return (
     <div className='bg-white'>
       <div className='mx-auto max-w-screen-xl px-4 py-8 lg:px-6 lg:py-16'>

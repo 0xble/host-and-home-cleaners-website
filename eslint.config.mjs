@@ -47,9 +47,9 @@ export default antfu(
       'style/jsx-quotes': ['error', 'prefer-single'], // Use single quotes for JSX
       'import/order': 'off', // Avoid conflicts with `simple-import-sort` plugin
       'sort-imports': 'off', // Avoid conflicts with `simple-import-sort` plugin
-      'unused-imports/no-unused-vars': 'off', // Prefer `@typescript-eslint/no-unused-vars` rule
+      'unused-imports/no-unused-vars': 'off', // Prefer `no-unused-vars` rule
       // Disallow unused variables, but ignore if they start with underscore
-      '@typescript-eslint/no-unused-vars': [
+      'no-unused-vars': [
         'error',
         {
           argsIgnorePattern: '_',

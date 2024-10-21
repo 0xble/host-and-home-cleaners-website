@@ -6,7 +6,7 @@ type PackageComparisonTableProps = {
   inclusions: {
     name: string
     services: {
-      [service in keyof typeof SERVICES]: boolean
+      [_service in keyof typeof SERVICES]: boolean
     }
   }[]
 }

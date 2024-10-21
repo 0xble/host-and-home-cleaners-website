@@ -17,10 +17,10 @@ export type Route = {
     | 'never'
 }
 
-export type ServiceRoute = { [service in keyof typeof SERVICES]: Route }
+export type ServiceRoute = { [_ in keyof typeof SERVICES]: Route }
 export type LocationRoute = {
   [location in keyof typeof LOCATIONS]: Route & {
-    SERVICE_AREAS: { [area in Uppercase<SnakeCase<(typeof LOCATIONS)[location]['serviceAreas'][number]>>]: Route }
+    SERVICE_AREAS: { [_ in Uppercase<SnakeCase<(typeof LOCATIONS)[location]['serviceAreas'][number]>>]: Route }
   }
 }
 

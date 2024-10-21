@@ -1,8 +1,6 @@
 import type { Metadata } from 'next'
 
-import { BUSINESS_NAME } from '@/lib/constants'
-import { getEmail } from '@/lib/utils'
-import { useLocationStore } from '@/store/useLocationStore'
+import { BUSINESS_NAME, EMAIL } from '@/lib/constants'
 
 export const metadata: Metadata = {
   title: 'Privacy Policy',
@@ -10,7 +8,6 @@ export const metadata: Metadata = {
 }
 
 export default function PrivacyPolicy() {
-  const { location } = useLocationStore()
   return (
     <main className='prose mx-auto my-32 max-w-2xl prose-headings:font-serif prose-strong:font-serif'>
       <h1 className='text-center'>
@@ -188,7 +185,7 @@ export default function PrivacyPolicy() {
         consent to our processing your data, you can freely withdraw such
         consent at any time. You can do this by emailing us at
         {' '}
-        {getEmail(location)}
+        {EMAIL.SUPPORT}
         . If you
         do withdraw your consent, and if we do not have another legal basis for
         processing your information, then we will stop processing your personal
@@ -204,7 +201,7 @@ export default function PrivacyPolicy() {
       </p>
       <ul>
         <li>
-          Gaining insights from your behaviour on our website or in our app.
+          Gaining insights from your behavior on our website or in our app.
         </li>
         <li>
           Delivering, developing, and improving the
@@ -213,7 +210,7 @@ export default function PrivacyPolicy() {
           service.
         </li>
         <li>
-          Enabling us to enhance, customise, or modify our services and
+          Enabling us to enhance, customize, or modify our services and
           communications.
         </li>
         <li>Determining whether marketing campaigns are effective.</li>
@@ -293,7 +290,7 @@ export default function PrivacyPolicy() {
         data for marketing and if third parties are involved. You can opt out
         from marketing by emailing us at
         {' '}
-        {getEmail(location)}
+        {EMAIL.SUPPORT}
       </p>
 
       <h3>Accessing Information We Hold About You</h3>
@@ -336,9 +333,7 @@ export default function PrivacyPolicy() {
       <h3>Lodging a Complaint</h3>
       <p>
         If you have a complaint regarding our use of your data, please tell us
-        first so we have a chance to address your concerns. If we fail in this,
-        you can address any complaint to the CNIL, either by calling their
-        helpline or as directed on their website.
+        first so we have a chance to address your concerns.
       </p>
 
       <h2>Your Privacy Choices and Rights</h2>
@@ -408,7 +403,8 @@ export default function PrivacyPolicy() {
           {' '}
           You have the right to lodge a
           complaint regarding our use of your data. Please contact us at
-          {getEmail(location)}
+          {' '}
+          {EMAIL.SUPPORT}
           {' '}
           first to give us the opportunity to address your concerns.
         </li>

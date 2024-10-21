@@ -100,7 +100,7 @@ export const metadata: Metadata = {
   description: `Ready to work at the #1 fastest growing home and Airbnb cleaning business? Let's get you more booking in less time!`,
 }
 
-export default async function Apply() {
+export default function Apply() {
   return (
     <main className='mb-36 space-y-24'>
       {/* Hero */}

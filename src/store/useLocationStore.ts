@@ -5,7 +5,7 @@ import type { Location } from '@/lib/types'
 
 export type LocationState = {
   location: Location | null
-  setLocation: (location: LocationState['location']) => void
+  setLocation: (_location: LocationState['location']) => void
 }
 
 export const useLocationStore = create<LocationState>()(
