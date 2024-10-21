@@ -1,14 +1,15 @@
+/* eslint-disable ts/no-require-imports */
 import type { Config } from 'tailwindcss'
 // import colors from 'tailwindcss/colors'
 
 const config = {
-  darkMode: 'class',
   content: [
     './pages/**/*.{ts,tsx}',
     './components/**/*.{ts,tsx}',
     './app/**/*.{ts,tsx}',
     './src/**/*.{ts,tsx}',
   ],
+  darkMode: 'class',
   prefix: '',
   theme: {
     container: {
@@ -45,8 +46,8 @@ const config = {
               color: '#000000',
             },
             a: {
-              color: '#FF6980',
-              fontWeight: 'inherit',
+              'color': '#FF6980',
+              'fontWeight': 'inherit',
               '&:hover': {
                 textDecoration: 'underline',
               },
@@ -73,11 +74,7 @@ const config = {
       },
     },
   },
-  plugins: [
-    require('@tailwindcss/typography'),
-    require('@tailwindcss/forms'),
-    require('tailwindcss-animate'),
-  ],
+  plugins: [require('@tailwindcss/typography'), require('tailwindcss-animate')],
 } satisfies Config
 
 export default config

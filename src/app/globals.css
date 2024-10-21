@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  h1 {
+    @apply text-5xl font-thin;
+  }
+
+  h2 {
+    @apply text-5xl font-thin;
+  }
+
+  h3 {
+    @apply text-2xl font-light;
+  }
+
+  p,
+  ol,
+  ul {
+    @apply text-lg font-light text-gray-500;
+  }
+
+  b {
+    @apply font-light text-primary-600;
+  }
+
+  iframe {
+    @apply overflow-hidden border-none;
+  }
+
+  mark {
+    @apply bg-primary-400;
+  }
+}
+
+@layer components {
+  .link {
+    @apply text-primary-600 hover:underline;
+  }
+}

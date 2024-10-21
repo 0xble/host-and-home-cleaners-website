@@ -1,7 +1,9 @@
+#!/bin/sh
 confirm "Run lint checks?" || exit 0
 
-yarn lint
+# Disable concurent to run `check-types` after ESLint in lint-staged
+cd "$(dirname "$0")/.." && npx --no lint-staged --concurrent false
 
-confirm "Continue?" || exit 0
+confirm "Run build?" || exit 0
 
 yarn build

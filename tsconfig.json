@@ -1,35 +1,67 @@
-{
+/* eslint-disable jsonc/sort-keys */ {
   "compilerOptions": {
+    // Language and Environment
     "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "noEmit": true,
-    "esModuleInterop": true,
     "module": "esnext",
+    "target": "es2017",
+    "jsx": "preserve",
+
+    // Output
+    "outDir": "out",
+    "sourceMap": true,
+    "noEmit": true,
+
+    // Module Resolution
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+
+    // Type Checking
+    "strict": true,
+    "alwaysStrict": true,
+    "strictNullChecks": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "allowUnreachableCode": false,
+    "noFallthroughCasesInSwitch": true,
+
+    // JavaScript Support
+    "allowJs": true,
+    "checkJs": true,
+
+    // Miscellaneous
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
-    "jsx": "preserve",
     "incremental": true,
+
+    // Path aliases
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@/public/*": ["./public/*"]
+    },
+
+    // Editor support
     "plugins": [
       {
         "name": "next"
       }
-    ],
-    "paths": {
-      "@/*": ["./*"]
-    }
+    ]
   },
+  "exclude": ["./out/**/*", "./node_modules/**/*"],
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts",
-    "prettier.config.js",
-    "eslint.config.mjs",
-    "next.config.mjs"
-  ],
-
-  "exclude": ["node_modules"]
+    "**/*.mts",
+    ".next/types/**/*.ts"
+  ]
 }
