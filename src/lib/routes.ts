@@ -67,7 +67,7 @@ export const ROUTES = {
       [service]: {
         name,
         // Replace "/" with "-" to handle "Move In/Out Cleaning"
-        href: `/services/${S(name).replaceAll('/', '-').slugify()}`,
+        href: `/${S(name).replaceAll('/', '-').slugify()}`,
         priority: 1,
         changeFrequency: 'weekly',
       },
