@@ -41,8 +41,4 @@ export default withSentryConfig(bundleAnalyzer(), {
 
   // Disable Sentry telemetry
   telemetry: false,
-}, {
-  experimental: {
-    missingSuspenseWithCSRBailout: false,
-  },
 })
