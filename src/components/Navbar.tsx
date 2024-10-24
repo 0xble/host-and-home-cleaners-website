@@ -56,7 +56,7 @@ export default function Navbar({
   return (
     <>
       <nav className='fixed start-0 top-0 z-50 w-full border-b border-gray-200 bg-white'>
-        <div className='mx-auto flex max-w-screen-xl flex-wrap items-center justify-between p-4'>
+        <div className='mx-auto flex h-[82px] max-w-screen-xl flex-wrap items-center justify-between px-4'>
           <Brand className='text-xs sm:text-xl' location={location} />
           <div className='flex items-center space-x-3 lg:order-2 lg:space-x-0 rtl:space-x-reverse'>
             {phone && (
