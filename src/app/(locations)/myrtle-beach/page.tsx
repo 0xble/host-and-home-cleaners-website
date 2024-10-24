@@ -40,7 +40,7 @@ export default function MyrtleBeach() {
           actions={<CTAButtons className='mt-12 lg:mt-8' phone={PHONE.MYRTLE_BEACH} />}
         />
         <TrustSection />
-        <TestimonialsSection heading='Hear From Our Neighbors' />
+        <TestimonialsSection heading='Hear From Your Neighbors!' />
         <LocationsSection
           heading='Are you in our service area?'
           description='Proudly serving all areas of Myrtle Beach and the Grand Strand!'

@@ -40,7 +40,7 @@ export default function Honolulu() {
           photos='home' // TODO: Change folder name
         />
         <TrustSection />
-        <TestimonialsSection heading='Hear What Our Neighbors Are Saying' />
+        <TestimonialsSection heading='Hear What Your Neighbors Have to Say!' />
         <LocationsSection
           heading='We&apos;re here to serve you!'
           description='Proudly serving all areas of beautiful Oahu and Honolulu!'

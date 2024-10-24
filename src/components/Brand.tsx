@@ -313,7 +313,7 @@ export default function Brand({ className, location }: BrandProps) {
       </svg>
       <div className='flex flex-col items-center justify-center'>
         <div>{BUSINESS_NAME}</div>
-        {/* TODO: Delete this until after March 1, 2025 */}
+        {/* TODO: Delete this until after March 1, 2025 and testimonials are updated */}
         <div className='text-xs font-extralight text-gray-700'>
           Previously Pristine Maid Cleaning
         </div>
