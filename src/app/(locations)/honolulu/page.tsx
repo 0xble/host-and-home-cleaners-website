@@ -97,6 +97,7 @@ export default function Honolulu() {
         />
         <PricingSection
           heading='Our Services'
+          pricing={{ standard: 232, deep: 304, moveInOut: 340, airbnb: 232 }}
           description={(
             <>
               <p className='mb-4 text-left'>

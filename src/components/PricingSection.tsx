@@ -67,9 +67,15 @@ function PricingCard({
 export type PricingSectionProps = {
   heading: string
   description: string | JSX.Element
+  pricing: {
+    standard: number
+    deep: number
+    moveInOut: number
+    airbnb: number
+  }
 }
 
-export default function PricingSection({ heading, description }: PricingSectionProps) {
+export default function PricingSection({ heading, description, pricing }: PricingSectionProps) {
   return (
     <div className='bg-white'>
       <div className='mx-auto max-w-screen-xl px-4 py-8 sm:py-16 lg:px-6'>
@@ -77,11 +83,11 @@ export default function PricingSection({ heading, description }: PricingSectionP
           <h2 className='mb-4 tracking-tight text-gray-900'>{heading}</h2>
           {typeof description === 'string' ? <p className='text-left'>{description}</p> : description}
         </div>
-        <div className='grid gap-8 lg:grid-cols-3 lg:gap-10'>
+        <div className='grid gap-8 lg:grid-cols-4 lg:gap-4'>
           <PricingCard
             name={SERVICES.STANDARD}
             estimatedTime='2-3 hours (estimated)'
-            estimatedPrice='$129'
+            estimatedPrice={`$${pricing.standard.toFixed(0)}`}
             description='For maintaining cleanliness in well-kept homes. Ideal for weekly, bi-weekly, or monthly bookings.'
             features={(
               <>
@@ -163,7 +169,7 @@ export default function PricingSection({ heading, description }: PricingSectionP
             highlighted
             name='Deep Cleaning'
             estimatedTime='3-4 hours (estimated)'
-            estimatedPrice='$169'
+            estimatedPrice={`$${pricing.deep.toFixed(0)}`}
             includes='Includes Standard PLUS:'
             description='Recommended for the first visit or once every quarter. Detailed cleaning for often unattended areas.'
             features={(
@@ -306,7 +312,7 @@ export default function PricingSection({ heading, description }: PricingSectionP
           <PricingCard
             name='Move In/Out Cleaning'
             estimatedTime='4-5 hours (estimated)'
-            estimatedPrice='$189'
+            estimatedPrice={`$${pricing.moveInOut.toFixed(0)}`}
             description='A complete one-time, one-stop service to prepare a space before moving.'
             includes='Includes Deep PLUS:'
             features={(
@@ -423,7 +429,65 @@ export default function PricingSection({ heading, description }: PricingSectionP
               </>
             )}
           />
-          {/* TODO: Add pricing card for Airbnb cleaning */}
+          <PricingCard
+            name={SERVICES.AIRBNB}
+            estimatedTime='2-3 hours (estimated)'
+            estimatedPrice={`$${pricing.airbnb.toFixed(0)}`}
+            description='Perfect for Airbnb/VRBO hosts. Ensures your property is spotless and ready for guests.'
+            includes='Includes all PLUS'
+            features={(
+              <>
+                <li className='flex items-center space-x-3'>
+                  <svg className='size-5 shrink-0' xmlns='http://www.w3.org/2000/svg' enable-background='new 0 0 24 24' viewBox='0 0 24 24' id='calendar'>
+                    <path d='M19,4h-1V3c0-0.6-0.4-1-1-1s-1,0.4-1,1v1H8V3c0-0.6-0.4-1-1-1S6,2.4,6,3v1H5C3.3,4,2,5.3,2,7v1h20V7C22,5.3,20.7,4,19,4z M2,19c0,1.7,1.3,3,3,3h14c1.7,0,3-1.3,3-3v-9H2V19z M17,12c0.6,0,1,0.4,1,1s-0.4,1-1,1s-1-0.4-1-1S16.4,12,17,12z M17,16 c0.6,0,1,0.4,1,1s-0.4,1-1,1s-1-0.4-1-1S16.4,16,17,16z M12,12c0.6,0,1,0.4,1,1s-0.4,1-1,1s-1-0.4-1-1S11.4,12,12,12z M12,16 c0.6,0,1,0.4,1,1s-0.4,1-1,1s-1-0.4-1-1S11.4,16,12,16z M7,12c0.6,0,1,0.4,1,1s-0.4,1-1,1s-1-0.4-1-1S6.4,12,7,12z M7,16 c0.6,0,1,0.4,1,1s-0.4,1-1,1s-1-0.4-1-1S6.4,16,7,16z' />
+                  </svg>
+                  <span>Sync with your calendar</span>
+                </li>
+                <li className='flex items-center space-x-3'>
+                  <svg className='size-5 shrink-0' xmlns='http://www.w3.org/2000/svg' id='phone' x='0' y='0' version='1.1' viewBox='0 0 29 29'>
+                    <path d='m20.914 17.743-2.091 1.178a1.319 1.319 0 0 1-1.58-.217l-6.979-6.979a1.32 1.32 0 0 1-.217-1.58l1.178-2.091a1.978 1.978 0 0 0-.325-2.37L7.766 2.55a1.978 1.978 0 0 0-2.798 0L3.545 3.972a5.276 5.276 0 0 0-.793 6.446l.714 1.19a41.36 41.36 0 0 0 14.946 14.631l.141.081c2.102 1.201 4.699.851 6.382-.831l1.486-1.486a1.978 1.978 0 0 0 0-2.798l-3.136-3.136a1.978 1.978 0 0 0-2.371-.326z'></path>
+                  </svg>
+                  <span>Dedicated support 8AM-8PM 7 days/week</span>
+                </li>
+                <li className='flex items-center space-x-3'>
+                  <svg className='size-5 shrink-0' xmlns='http://www.w3.org/2000/svg' width='50' height='50' baseProfile='tiny' overflow='inherit' version='1.2' viewBox='0 0 50 50' id='laundry'>
+                    <path d='M6 11v33.74C6 46.21 7.237 48 8.76 48h33.218C43.497 48 45 46.21 45 44.74V11H6zm19.46 26.776c-5.86 0-10.611-4.594-10.611-10.263S19.6 17.25 25.46 17.25s10.611 4.594 10.611 10.263c0 5.67-4.751 10.263-10.611 10.263zM41.978 1H8.76C7.237 1 6 2.033 6 3.505V9h39V3.505C45 2.033 43.497 1 41.978 1zM19 7H8V3h11v4zm19.146-.28c-1.249 0-2.258-.979-2.258-2.188 0-1.207 1.009-2.186 2.258-2.186s2.261.979 2.261 2.186c-.001 1.208-1.012 2.188-2.261 2.188z'></path>
+                  </svg>
+                  <span>Laundry service</span>
+                </li>
+                <li className='flex items-center space-x-3'>
+                  <svg className='size-5 shrink-0' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' id='blanket'>
+                    <path fill='#231f20' d='M15 15h45v-1a7.008 7.008 0 0 0-7-7H13a8.994 8.994 0 0 0-4.104 17 8.984 8.984 0 0 0 0 16A8.994 8.994 0 0 0 13 57h40a7.008 7.008 0 0 0 7-7v-1H15a1 1 0 0 1 0-2h45v-1a6.996 6.996 0 0 0-3.413-6A6.996 6.996 0 0 0 60 34v-1H15a1 1 0 0 1 0-2h45v-1a6.996 6.996 0 0 0-3.413-6A6.996 6.996 0 0 0 60 18v-1H15a1 1 0 0 1 0-2Z'></path>
+                  </svg>
+                  <span>Optional linen services</span>
+                </li>
+                <li className='flex items-center space-x-3'>
+                  <svg className='size-5 shrink-0' xmlns='http://www.w3.org/2000/svg' enable-background='new 0 0 512 512' viewBox='0 0 512 512' id='toilet-paper'>
+                    <path d='M179.3,384.2c-8.8,11.5-17.8,20.6-31.4,28.8h56.6v-78.9C194,366.8,179.3,383.8,179.3,384.2z'></path>
+                    <path d='M110.2,413c52,0,94.2-66.6,94.2-148.5s-42.2-148.4-94.2-148.4c-11.2,0-22.2,3-32.4,9v87.6c0,4.4,1.2,8.6,3.5,12.2c7.1-12.2,17.5-19.4,29-19.4c14.7,0,27.6,12.2,34.1,31c1.2,3.3,2,6.9,2.8,10.6h-45.5c-7,0-13.8-2.1-19.6-6.1c-9.3-6.4-14.9-17-14.9-28.3V97.1c0-19,15.5-34.3,34.5-34.3h118.7c-1.8-5.5-2.8-11.4-2.8-17.5s1-12,2.8-17.5H101.6c-38.2,0-69.4,31.1-69.4,69.3v115.5c0,28.1,16.9,53.2,42.9,64.1c8.4,3.5,17.3,5.3,26.5,5.3h45.5c-0.7,3.7-1.6,7.3-2.8,10.6c-6.5,18.8-19.3,31-34.1,31c-16.1,0-29.8-14.2-35.6-35.6c-1.2-0.5-2.4-1-3.6-1.4c-29.7-12.4-49-40.9-49.4-72.9C17.9,229.8,16,247,16,264.5C15.9,346.4,58.2,413,110.2,413z'></path>
+                    <circle cx='273.4' cy='45.3' r='45.3'></circle>
+                    <path d='M213.5,236.7c0.2,1.7,0.4,3.3,0.5,5c0.2,2,0.4,3.9,0.5,6c0,0.3,0.1,0.5,0.1,0.7c0.4,5.3,0.6,10.6,0.6,16.1v217.9c0,16.3,13.3,29.6,29.6,29.6h221.7c16.3,0,29.6-13.3,29.6-29.6V264.5c0-81.9-42.2-148.5-94.2-148.5H147.8C181.6,135.7,207.1,181.3,213.5,236.7z M481,259.2h5.3c2.9,0,5.3,2.4,5.3,5.3s-2.4,5.3-5.3,5.3H481c-2.9,0-5.3-2.4-5.3-5.3S478,259.2,481,259.2z M449,259.2h5.3c2.9,0,5.3,2.4,5.3,5.3s-2.4,5.3-5.3,5.3H449c-2.9,0-5.3-2.4-5.3-5.3S446,259.2,449,259.2z M417,259.2h5.3c2.9,0,5.3,2.4,5.3,5.3s-2.4,5.3-5.3,5.3H417c-2.9,0-5.3-2.4-5.3-5.3S414,259.2,417,259.2z M385,259.2h5.3c2.9,0,5.3,2.4,5.3,5.3s-2.4,5.3-5.3,5.3H385c-2.9,0-5.3-2.4-5.3-5.3S382,259.2,385,259.2z M353,259.2h5.3c2.9,0,5.3,2.4,5.3,5.3s-2.4,5.3-5.3,5.3H353c-2.9,0-5.3-2.4-5.3-5.3S350,259.2,353,259.2z M320.9,259.2h5.3c2.9,0,5.3,2.4,5.3,5.3s-2.4,5.3-5.3,5.3h-5.3c-2.9,0-5.3-2.4-5.3-5.3S318,259.2,320.9,259.2z M288.9,259.2h5.3c2.9,0,5.3,2.4,5.3,5.3s-2.4,5.3-5.3,5.3h-5.3c-2.9,0-5.3-2.4-5.3-5.3S286,259.2,288.9,259.2z M256.9,259.2h5.3c2.9,0,5.3,2.4,5.3,5.3s-2.4,5.3-5.3,5.3h-5.3c-2.9,0-5.3-2.4-5.3-5.3S254,259.2,256.9,259.2z M224.9,259.2h5.3c2.9,0,5.3,2.4,5.3,5.3s-2.4,5.3-5.3,5.3h-5.3c-2.9,0-5.3-2.4-5.3-5.3S222,259.2,224.9,259.2z'></path>
+                  </svg>
+                  <span>Restocking and inventory management</span>
+                </li>
+                <li className='flex items-center space-x-3'>
+                  <svg className='size-5 shrink-0' xmlns='http://www.w3.org/2000/svg' enable-background='new 0 0 24 24' viewBox='0 0 24 24' id='photo'>
+                    <path d='M19.5,4h-14c-1.7,0-3,1.3-3,3v10c0,1.7,1.3,3,3,3h14c1.7,0,3-1.3,3-3V7C22.5,5.3,21.2,4,19.5,4z M20.5,13.8l-1.9-1.9
+	c-1.2-1.1-3.1-1.1-4.2,0l-0.9,0.9l-2.9-2.9c-1.2-1.1-3.1-1.1-4.2,0l-1.9,1.9V7c0-0.6,0.4-1,1-1h14c0.6,0,1,0.4,1,1V13.8z'
+                    />
+                  </svg>
+                  <span>Photos after every cleaning</span>
+                </li>
+                <li className='flex items-center space-x-3'>
+                  <svg className='size-5 shrink-0' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' id='checklist'>
+                    <path fill='#222' d='M11.55 22A2 2 0 0 1 10 18.8l7.82-10.54A2 2 0 1 1 21 10.65L13.16 21.2a2 2 0 0 1-1.61.8Z'></path>
+                    <path fill='#222' d='M11.56 22a2 2 0 0 1-1.56-.7L5.45 16a2 2 0 0 1 3-2.6l4.58 5.35A2 2 0 0 1 11.56 22zM57 18.48h-1a2 2 0 0 1 0-4h1a2 2 0 0 1 0 4zm-6.59 0h-24a2 2 0 0 1 0-4h24a2 2 0 0 1 0 4zM57 35.76h-1a2 2 0 0 1 0-4h1a2 2 0 1 1 0 4zm-6.59 0h-24a2 2 0 0 1 0-4h24a2 2 0 1 1 0 4zM57 53h-1a2 2 0 1 1 0-4h1a2 2 0 0 1 0 4zm-6.59 0h-24a2 2 0 1 1 0-4h24a2 2 0 0 1 0 4zM11.55 39.27a2 2 0 0 1-1.55-.69l-4.55-5.35a2 2 0 0 1 3-2.61l3 3.45 6.37-8.54A2 2 0 1 1 21 27.92l-7.84 10.55a2 2 0 0 1-1.54.8zm0 17.28a2 2 0 0 1-1.51-.7L5.45 50.5a2 2 0 1 1 3-2.6l3 3.45 6.37-8.55A2 2 0 0 1 21 45.2l-7.84 10.54a2 2 0 0 1-1.54.81z'></path>
+                  </svg>
+                  <span>Customized checklist unique to your property</span>
+                </li>
+              </>
+            )}
+          />
         </div>
       </div>
     </div>

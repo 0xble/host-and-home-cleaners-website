@@ -96,6 +96,7 @@ export default function GardenCity() {
         />
         <PricingSection
           heading='Bookings'
+          pricing={{ standard: 129, deep: 169, moveInOut: 189, airbnb: 129 }}
           description={(
             <>
               <p className='mb-4 text-left'>
