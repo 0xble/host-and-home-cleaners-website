@@ -78,12 +78,12 @@ export type PricingSectionProps = {
 export default function PricingSection({ heading, description, pricing }: PricingSectionProps) {
   return (
     <div className='bg-white'>
-      <div className='mx-auto max-w-screen-xl px-4 py-8 sm:py-16 lg:px-6'>
-        <div className='mx-auto mb-8 max-w-[1100px] text-center lg:mb-12'>
+      <div className='mx-auto px-4 py-8 sm:py-16 lg:max-w-screen-lg lg:px-6 xl:max-w-screen-2xl'>
+        <div className='mx-auto mb-8 max-w-screen-md text-center lg:mb-12'>
           <h2 className='mb-4 tracking-tight text-gray-900'>{heading}</h2>
           {typeof description === 'string' ? <p className='text-left'>{description}</p> : description}
         </div>
-        <div className='grid gap-8 lg:grid-cols-4 lg:gap-4'>
+        <div className='grid gap-8 sm:grid-cols-2 sm:gap-10 xl:grid-cols-4 xl:gap-4'>
           <PricingCard
             name={SERVICES.STANDARD}
             estimatedTime='2-3 hours (estimated)'
@@ -438,7 +438,7 @@ export default function PricingSection({ heading, description, pricing }: Pricin
             features={(
               <>
                 <li className='flex items-center space-x-3'>
-                  <svg className='size-5 shrink-0' xmlns='http://www.w3.org/2000/svg' enable-background='new 0 0 24 24' viewBox='0 0 24 24' id='calendar'>
+                  <svg className='size-5 shrink-0' xmlns='http://www.w3.org/2000/svg' enableBackground='new 0 0 24 24' viewBox='0 0 24 24' id='calendar'>
                     <path d='M19,4h-1V3c0-0.6-0.4-1-1-1s-1,0.4-1,1v1H8V3c0-0.6-0.4-1-1-1S6,2.4,6,3v1H5C3.3,4,2,5.3,2,7v1h20V7C22,5.3,20.7,4,19,4z M2,19c0,1.7,1.3,3,3,3h14c1.7,0,3-1.3,3-3v-9H2V19z M17,12c0.6,0,1,0.4,1,1s-0.4,1-1,1s-1-0.4-1-1S16.4,12,17,12z M17,16 c0.6,0,1,0.4,1,1s-0.4,1-1,1s-1-0.4-1-1S16.4,16,17,16z M12,12c0.6,0,1,0.4,1,1s-0.4,1-1,1s-1-0.4-1-1S11.4,12,12,12z M12,16 c0.6,0,1,0.4,1,1s-0.4,1-1,1s-1-0.4-1-1S11.4,16,12,16z M7,12c0.6,0,1,0.4,1,1s-0.4,1-1,1s-1-0.4-1-1S6.4,12,7,12z M7,16 c0.6,0,1,0.4,1,1s-0.4,1-1,1s-1-0.4-1-1S6.4,16,7,16z' />
                   </svg>
                   <span>Sync with your calendar</span>
@@ -462,7 +462,7 @@ export default function PricingSection({ heading, description, pricing }: Pricin
                   <span>Optional linen services</span>
                 </li>
                 <li className='flex items-center space-x-3'>
-                  <svg className='size-5 shrink-0' xmlns='http://www.w3.org/2000/svg' enable-background='new 0 0 512 512' viewBox='0 0 512 512' id='toilet-paper'>
+                  <svg className='size-5 shrink-0' xmlns='http://www.w3.org/2000/svg' enableBackground='new 0 0 512 512' viewBox='0 0 512 512' id='toilet-paper'>
                     <path d='M179.3,384.2c-8.8,11.5-17.8,20.6-31.4,28.8h56.6v-78.9C194,366.8,179.3,383.8,179.3,384.2z'></path>
                     <path d='M110.2,413c52,0,94.2-66.6,94.2-148.5s-42.2-148.4-94.2-148.4c-11.2,0-22.2,3-32.4,9v87.6c0,4.4,1.2,8.6,3.5,12.2c7.1-12.2,17.5-19.4,29-19.4c14.7,0,27.6,12.2,34.1,31c1.2,3.3,2,6.9,2.8,10.6h-45.5c-7,0-13.8-2.1-19.6-6.1c-9.3-6.4-14.9-17-14.9-28.3V97.1c0-19,15.5-34.3,34.5-34.3h118.7c-1.8-5.5-2.8-11.4-2.8-17.5s1-12,2.8-17.5H101.6c-38.2,0-69.4,31.1-69.4,69.3v115.5c0,28.1,16.9,53.2,42.9,64.1c8.4,3.5,17.3,5.3,26.5,5.3h45.5c-0.7,3.7-1.6,7.3-2.8,10.6c-6.5,18.8-19.3,31-34.1,31c-16.1,0-29.8-14.2-35.6-35.6c-1.2-0.5-2.4-1-3.6-1.4c-29.7-12.4-49-40.9-49.4-72.9C17.9,229.8,16,247,16,264.5C15.9,346.4,58.2,413,110.2,413z'></path>
                     <circle cx='273.4' cy='45.3' r='45.3'></circle>
@@ -471,7 +471,7 @@ export default function PricingSection({ heading, description, pricing }: Pricin
                   <span>Restocking and inventory management</span>
                 </li>
                 <li className='flex items-center space-x-3'>
-                  <svg className='size-5 shrink-0' xmlns='http://www.w3.org/2000/svg' enable-background='new 0 0 24 24' viewBox='0 0 24 24' id='photo'>
+                  <svg className='size-5 shrink-0' xmlns='http://www.w3.org/2000/svg' enableBackground='new 0 0 24 24' viewBox='0 0 24 24' id='photo'>
                     <path d='M19.5,4h-14c-1.7,0-3,1.3-3,3v10c0,1.7,1.3,3,3,3h14c1.7,0,3-1.3,3-3V7C22.5,5.3,21.2,4,19.5,4z M20.5,13.8l-1.9-1.9
 	c-1.2-1.1-3.1-1.1-4.2,0l-0.9,0.9l-2.9-2.9c-1.2-1.1-3.1-1.1-4.2,0l-1.9,1.9V7c0-0.6,0.4-1,1-1h14c0.6,0,1,0.4,1,1V13.8z'
                     />
