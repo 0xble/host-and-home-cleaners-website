@@ -18,6 +18,7 @@ export default function Checklist() {
         <div className='px-4 text-center'>
           <h1 className='mb-8 text-4xl sm:text-[45px]'>
             The
+            {' '}
             {CHECKLIST_NAME}
           </h1>
           <p className='mb-20'>
