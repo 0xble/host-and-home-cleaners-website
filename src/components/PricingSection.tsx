@@ -472,9 +472,7 @@ export default function PricingSection({ heading, description, pricing }: Pricin
                 </li>
                 <li className='flex items-center space-x-3'>
                   <svg className='size-5 shrink-0' xmlns='http://www.w3.org/2000/svg' enableBackground='new 0 0 24 24' viewBox='0 0 24 24' id='photo'>
-                    <path d='M19.5,4h-14c-1.7,0-3,1.3-3,3v10c0,1.7,1.3,3,3,3h14c1.7,0,3-1.3,3-3V7C22.5,5.3,21.2,4,19.5,4z M20.5,13.8l-1.9-1.9
-	c-1.2-1.1-3.1-1.1-4.2,0l-0.9,0.9l-2.9-2.9c-1.2-1.1-3.1-1.1-4.2,0l-1.9,1.9V7c0-0.6,0.4-1,1-1h14c0.6,0,1,0.4,1,1V13.8z'
-                    />
+                    <path d='M19.5,4h-14c-1.7,0-3,1.3-3,3v10c0,1.7,1.3,3,3,3h14c1.7,0,3-1.3,3-3V7C22.5,5.3,21.2,4,19.5,4z M20.5,13.8l-1.9-1.9 c-1.2-1.1-3.1-1.1-4.2,0l-0.9,0.9l-2.9-2.9c-1.2-1.1-3.1-1.1-4.2,0l-1.9,1.9V7c0-0.6,0.4-1,1-1h14c0.6,0,1,0.4,1,1V13.8z' />
                   </svg>
                   <span>Photos after every cleaning</span>
                 </li>
