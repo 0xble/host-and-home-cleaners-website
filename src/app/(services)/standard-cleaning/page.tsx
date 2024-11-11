@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 export default function StandardCleaning() {
   return (
     <Suspense>
-      <Page location='CACHED' className='pb-24'>
+      <Page location='CACHED' className='mx-4 pb-24'>
         <section className='px-4 text-center'>
           <Image
             className='mx-auto mb-24 h-[300px] w-full max-w-screen-lg md:h-[450px] lg:rounded-b'
