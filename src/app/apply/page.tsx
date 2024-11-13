@@ -97,7 +97,7 @@ const badges = [
 // TODO: Do not make location specific, update form to redirect to appropriate location
 export const metadata: Metadata = {
   title: 'Apply Now! | Cleaners Wanted',
-  description: `Ready to work at the #1 fastest growing home and Airbnb cleaning business? Let's get you more booking in less time!`,
+  description: `Ready to work at the #1 fastest growing home and Airbnb cleaning business? Let us get you more booking in less time!`,
 }
 
 export default function Apply() {
