@@ -16,8 +16,10 @@ import TrustSection from '@/components/TrustSection'
 import { BUSINESS_NAME, LOCATIONS, PHONE, TAGLINE } from '@/lib/constants'
 import { ROUTES } from '@/lib/routes'
 
+const SPECIFIC_BUSINESS_NAME = `${BUSINESS_NAME} ${LOCATIONS.HONOLULU.name}`
+
 export const metadata: Metadata = {
-  title: `#1 House & Airbnb Cleaning in ${LOCATIONS.HONOLULU.stateAbbrev} | ${BUSINESS_NAME}`,
+  title: `#1 House & Airbnb Cleaning in ${LOCATIONS.HONOLULU.stateAbbrev} | ${SPECIFIC_BUSINESS_NAME}`,
   description: `${TAGLINE}. Proudly serving all areas of beautiful Oahu and ${LOCATIONS.HONOLULU.name}.`,
 }
 
@@ -119,7 +121,11 @@ export default function Honolulu() {
                 <>
                   <p className='mb-6'>
                     When it comes to choosing a cleaning service in
-                    Honolulu, Host & Home Cleaners Honolulu stands out for
+                    Honolulu,
+                    {' '}
+                    {SPECIFIC_BUSINESS_NAME}
+                    {' '}
+                    stands out for
                     several key reasons.
                   </p>
                   <CompetitorComparisonTable />
@@ -141,7 +147,11 @@ export default function Honolulu() {
               answer: (
                 <>
                   <p className='mb-2'>
-                    Absolutely! Host & Home Cleaners Honolulu is fully
+                    Absolutely!
+                    {' '}
+                    {SPECIFIC_BUSINESS_NAME}
+                    {' '}
+                    is fully
                     bonded and insured. This provides our clients with peace
                     of mind, knowing they are protected from any liabilities
                     during and after our services.
@@ -234,8 +244,10 @@ export default function Honolulu() {
               question: 'How do you ensure I’m happy with the cleaning?',
               answer: (
                 <p className='mb-2'>
-                  Your happiness is our priority at Host & Home Cleaners
-                  Honolulu. If you’re not completely satisfied, contact us
+                  Your happiness is our priority at
+                  {' '}
+                  {SPECIFIC_BUSINESS_NAME}
+                  . If you’re not completely satisfied, contact us
                   within 24 hours, and we’ll promptly address the issue with
                   a complimentary redo to ensure you’re pleased with the
                   service.
