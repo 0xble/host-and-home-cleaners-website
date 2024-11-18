@@ -170,7 +170,7 @@ export default function PricingSection({ heading, description, pricing }: Pricin
             name='Deep Cleaning'
             estimatedTime='3-4 hours (estimated)'
             estimatedPrice={`$${pricing.deep.toFixed(0)}`}
-            includes='Includes Standard PLUS:'
+            includes='Includes Standard PLUS'
             description='Recommended for the first visit or once every quarter. Detailed cleaning for often unattended areas.'
             features={(
               <>
@@ -314,7 +314,7 @@ export default function PricingSection({ heading, description, pricing }: Pricin
             estimatedTime='4-5 hours (estimated)'
             estimatedPrice={`$${pricing.moveInOut.toFixed(0)}`}
             description='A complete one-time, one-stop service to prepare a space before moving.'
-            includes='Includes Deep PLUS:'
+            includes='Includes Deep PLUS'
             features={(
               <>
                 <li className='flex items-center space-x-3'>
