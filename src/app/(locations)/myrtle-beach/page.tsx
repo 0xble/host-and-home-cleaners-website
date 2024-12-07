@@ -19,7 +19,7 @@ import { ROUTES } from '@/lib/routes'
 const SPECIFIC_BUSINESS_NAME = `${BUSINESS_NAME} ${LOCATIONS.MYRTLE_BEACH.name}`
 
 export const metadata: Metadata = {
-  title: `#1 House & Airbnb Cleaning in ${LOCATIONS.MYRTLE_BEACH.stateAbbrev} | ${SPECIFIC_BUSINESS_NAME}`,
+  title: `${SPECIFIC_BUSINESS_NAME} | #1 House & Airbnb Cleaning in ${LOCATIONS.MYRTLE_BEACH.stateAbbrev}`,
   description: `${TAGLINE}. We offer a wide range of residential cleaning services, fast turnaround, and affordable prices.`,
 }
 

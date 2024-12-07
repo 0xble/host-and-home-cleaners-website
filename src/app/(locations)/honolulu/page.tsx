@@ -19,7 +19,7 @@ import { ROUTES } from '@/lib/routes'
 const SPECIFIC_BUSINESS_NAME = `${BUSINESS_NAME} ${LOCATIONS.HONOLULU.name}`
 
 export const metadata: Metadata = {
-  title: `#1 House & Airbnb Cleaning in ${LOCATIONS.HONOLULU.stateAbbrev} | ${SPECIFIC_BUSINESS_NAME}`,
+  title: `${SPECIFIC_BUSINESS_NAME} | #1 House & Airbnb Cleaning in ${LOCATIONS.HONOLULU.stateAbbrev}`,
   description: `${TAGLINE}. Proudly serving all areas of beautiful Oahu and ${LOCATIONS.HONOLULU.name}.`,
 }
 
