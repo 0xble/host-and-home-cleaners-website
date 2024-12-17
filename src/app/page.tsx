@@ -25,7 +25,7 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <Suspense>
-      <ReviewsFloatingBadge />
+      <ReviewsFloatingBadge id='ba527c37-e33e-46d1-8a33-08aed36ffd09' />
       <Page location={null} className='mb-24 flex min-h-screen flex-col gap-12 lg:mb-32 lg:gap-12'>
         <HeroSection
           heading={(
@@ -54,7 +54,7 @@ export default function Home() {
         />
         <TrustSection />
         <TestimonialsSection heading='What Are Your Neighbors Saying?' className='mt-12' />
-        <ReviewsMasonry />
+        <ReviewsMasonry id='d0cb12fc-b042-4a4a-a8cc-9ee8cc58588e' />
         <HowItWorksSection
           heading='So, How Does It Work?'
           steps={[

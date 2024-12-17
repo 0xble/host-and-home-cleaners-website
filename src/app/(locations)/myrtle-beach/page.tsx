@@ -28,7 +28,7 @@ export const metadata: Metadata = {
 export default function MyrtleBeach() {
   return (
     <Suspense>
-      <ReviewsFloatingBadge />
+      <ReviewsFloatingBadge id='ba527c37-e33e-46d1-8a33-08aed36ffd09' />
       <Page location='MYRTLE_BEACH' className='mb-24 flex min-h-screen flex-col gap-12 lg:mb-32 lg:gap-12'>
         <HeroSection
           heading={(
@@ -44,7 +44,7 @@ export default function MyrtleBeach() {
         />
         <TrustSection />
         <TestimonialsSection heading='Hear From Your Neighbors!' className='mt-12' />
-        <ReviewsMasonry />
+        <ReviewsMasonry id='d0cb12fc-b042-4a4a-a8cc-9ee8cc58588e' />
         <LocationsSection
           heading='We&apos;re In Your Neighborhood!'
           description='Proudly serving all areas of Myrtle Beach and the Grand Strand!'

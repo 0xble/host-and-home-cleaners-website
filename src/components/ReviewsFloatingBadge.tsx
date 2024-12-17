@@ -1,10 +1,14 @@
 import Script from 'next/script'
 
-export default function ReviewsFloatingBadge() {
+export type ReviewsFloatingBadgeProps = {
+  id: string
+}
+
+export default function ReviewsFloatingBadge({ id }: ReviewsFloatingBadgeProps) {
   return (
     <>
       <Script src='https://static.elfsight.com/platform/platform.js' strategy='lazyOnload' />
-      <div className='elfsight-app-ba527c37-e33e-46d1-8a33-08aed36ffd09' data-elfsight-app-lazy />
+      <div className={`elfsight-app-${id}`} data-elfsight-app-lazy />
     </>
   )
 }

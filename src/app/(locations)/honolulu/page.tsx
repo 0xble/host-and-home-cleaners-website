@@ -28,7 +28,7 @@ export const metadata: Metadata = {
 export default function Honolulu() {
   return (
     <Suspense>
-      <ReviewsFloatingBadge />
+      <ReviewsFloatingBadge id='ba527c37-e33e-46d1-8a33-08aed36ffd09' />
       <Page location='HONOLULU' className='mb-24 flex min-h-screen flex-col gap-12 lg:mb-32 lg:gap-12'>
         <HeroSection
           heading={(
@@ -46,7 +46,7 @@ export default function Honolulu() {
         />
         <TrustSection />
         <TestimonialsSection heading='Hear What Your Neighbors Have to Say!' className='mt-12' />
-        <ReviewsMasonry />
+        <ReviewsMasonry id='8a2da83f-ca84-4420-9a31-71143d5c546e' />
         <LocationsSection
           heading='We&apos;re Here to Serve You!'
           description='Proudly serving all areas of beautiful Oahu and Honolulu!'
