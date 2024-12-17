@@ -10,6 +10,7 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel'
 import { BUSINESS_NAME } from '@/lib/constants'
+import { cn } from '@/lib/utils'
 
 const TestimonialVideo = ({ src }: { src: string }) => (
   <video
@@ -48,8 +49,9 @@ const TestimonialFigure = ({
 
 export type TestimonialsSectionProps = {
   heading: string
+  className?: string
 }
-export default function TestimonialsSection({ heading }: TestimonialsSectionProps) {
+export default function TestimonialsSection({ heading, className }: TestimonialsSectionProps) {
   const plugin = useRef(
     Autoplay({
       delay: 5000,
@@ -59,7 +61,7 @@ export default function TestimonialsSection({ heading }: TestimonialsSectionProp
   )
 
   return (
-    <div className='my-12 flex flex-col text-center'>
+    <div className={cn('my-12 flex flex-col text-center', className)}>
       <h2 className='mb-12 tracking-tight text-gray-900'>{heading}</h2>
       <Carousel
         plugins={[plugin.current]}
@@ -98,7 +100,6 @@ export default function TestimonialsSection({ heading }: TestimonialsSectionProp
         <CarouselPrevious className='max-[860px]:absolute max-[860px]:left-4' />
         <CarouselNext className='max-[860px]:absolute max-[860px]:right-4' />
       </Carousel>
-
     </div>
   )
 }

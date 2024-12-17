@@ -10,6 +10,8 @@ import HeroSection from '@/components/HeroSection'
 import HowItWorksSection from '@/components/HowItWorksSection'
 import Page from '@/components/Page'
 import PricingSection from '@/components/PricingSection'
+import ReviewsFloatingBadge from '@/components/ReviewsFloatingBadge'
+import ReviewsMasonry from '@/components/ReviewsMasonry'
 import TestimonialsSection from '@/components/TestimonialSection'
 import TrustSection from '@/components/TrustSection'
 import { BUSINESS_NAME, TAGLINE } from '@/lib/constants'
@@ -23,6 +25,7 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <Suspense>
+      <ReviewsFloatingBadge />
       <Page location={null} className='mb-24 flex min-h-screen flex-col gap-12 lg:mb-32 lg:gap-12'>
         <HeroSection
           heading={(
@@ -50,9 +53,10 @@ export default function Home() {
           )}
         />
         <TrustSection />
-        <TestimonialsSection heading='What Are Your Neighbors Saying?' />
+        <TestimonialsSection heading='What Are Your Neighbors Saying?' className='mt-12' />
+        <ReviewsMasonry />
         <HowItWorksSection
-          heading='How Does It Work?'
+          heading='So, How Does It Work?'
           steps={[
             {
               title: 'Schedule and book a time.',

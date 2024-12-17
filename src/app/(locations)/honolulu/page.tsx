@@ -11,6 +11,8 @@ import HowItWorksSection from '@/components/HowItWorksSection'
 import LocationsSection from '@/components/LocationsSection'
 import Page from '@/components/Page'
 import PricingSection from '@/components/PricingSection'
+import ReviewsFloatingBadge from '@/components/ReviewsFloatingBadge'
+import ReviewsMasonry from '@/components/ReviewsMasonry'
 import TestimonialsSection from '@/components/TestimonialSection'
 import TrustSection from '@/components/TrustSection'
 import { BUSINESS_NAME, LOCATIONS, PHONE, TAGLINE } from '@/lib/constants'
@@ -26,6 +28,7 @@ export const metadata: Metadata = {
 export default function Honolulu() {
   return (
     <Suspense>
+      <ReviewsFloatingBadge />
       <Page location='HONOLULU' className='mb-24 flex min-h-screen flex-col gap-12 lg:mb-32 lg:gap-12'>
         <HeroSection
           heading={(
@@ -42,15 +45,16 @@ export default function Honolulu() {
           photos='home' // TODO: Change folder name
         />
         <TrustSection />
-        <TestimonialsSection heading='Hear What Your Neighbors Have to Say!' />
+        <TestimonialsSection heading='Hear What Your Neighbors Have to Say!' className='mt-12' />
+        <ReviewsMasonry />
         <LocationsSection
-          heading='We&apos;re here to serve you!'
+          heading='We&apos;re Here to Serve You!'
           description='Proudly serving all areas of beautiful Oahu and Honolulu!'
           iframeSrc='https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d237770.1723966727!2d-157.869932!3d21.3836454!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c4ce057e4bdff0b%3A0xa78d25a714d5f0ae!2sHost%20%26%20Home%20Cleaners%20Honolulu!5e0!3m2!1sen!2sus!4v1729395012053!5m2!1sen!2sus'
           serviceAreas={LOCATIONS.HONOLULU.serviceAreas}
         />
         <HowItWorksSection
-          heading='How Do Our Services Work?'
+          heading='So, What Will Happen?'
           steps={[
             {
               title: 'Set Up Your Cleaning Appointment',

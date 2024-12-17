@@ -11,6 +11,8 @@ import HowItWorksSection from '@/components/HowItWorksSection'
 import LocationsSection from '@/components/LocationsSection'
 import Page from '@/components/Page'
 import PricingSection from '@/components/PricingSection'
+import ReviewsFloatingBadge from '@/components/ReviewsFloatingBadge'
+import ReviewsMasonry from '@/components/ReviewsMasonry'
 import TestimonialsSection from '@/components/TestimonialSection'
 import TrustSection from '@/components/TrustSection'
 import { BUSINESS_NAME, LOCATIONS, PHONE } from '@/lib/constants'
@@ -26,6 +28,7 @@ export const metadata: Metadata = {
 export default function GardenCity() {
   return (
     <Suspense>
+      <ReviewsFloatingBadge />
       <Page location='MYRTLE_BEACH' className='mb-24 flex min-h-screen flex-col gap-12 lg:mb-32 lg:gap-12'>
         <HeroSection
           heading={(
@@ -40,15 +43,16 @@ export default function GardenCity() {
           actions={<CTAButtons className='mt-12 lg:mt-8' phone={PHONE.MYRTLE_BEACH} />}
         />
         <TrustSection />
-        <TestimonialsSection heading='What Are Locals Saying?' />
+        <TestimonialsSection heading='What Are Others Saying?' className='mt-12' />
+        <ReviewsMasonry />
         <LocationsSection
-          heading='Are you in our service area?'
+          heading='We&apos;re Close By!'
           description='Proudly serving all areas of Myrtle Beach and the Grand Strand!'
           iframeSrc='https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d106194.64630830522!2d-78.8788075!3d33.7197455!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x432592cd81e1d561%3A0x2bb5e85088c224ee!2sPristine%20Maid%20Cleaning!5e0!3m2!1sen!2sus!4v1709048737136!5m2!1sen!2sus'
           serviceAreas={LOCATIONS.MYRTLE_BEACH.serviceAreas}
         />
         <HowItWorksSection
-          heading='Our Process'
+          heading='So, What Should I Expect?'
           steps={[
             {
               title: 'Schedule Your Cleaning',
