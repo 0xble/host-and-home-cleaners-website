@@ -402,7 +402,7 @@ export default function PricingSection({ heading, description, pricing }: Pricin
                     />
                   </svg>
                   <span>
-                    Extra rooms and areas cleaned (laundry, patio, garage)
+                    Extra rooms and areas cleaned (laundry, office, etc.)
                   </span>
                 </li>
                 <li className='flex items-center space-x-3'>

@@ -611,7 +611,7 @@ export default function Checklist() {
             ]}
           />
           <PackageComparisonTable
-            title='Extra Rooms (Laundry, Patio, Garage)'
+            title='Extra Rooms (Laundry, Office, etc.)'
             inclusions={[
               {
                 name: 'Removing of cobwebs throughout',
