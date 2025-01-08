@@ -38,41 +38,23 @@ export default function PackageComparisonTable({
             </div>
             {Object.entries(services).map(([service, isIncluded]) => (
               <div key={`${name}: ${service}`}>
-                {isIncluded
-                  ? (
-                      <svg
-                        className='size-4 text-green-500'
-                        aria-hidden='true'
-                        xmlns='http://www.w3.org/2000/svg'
-                        fill='none'
-                        viewBox='0 0 16 12'
-                      >
-                        <path
-                          stroke='currentColor'
-                          strokeLinecap='round'
-                          strokeLinejoin='round'
-                          strokeWidth='2'
-                          d='M1 5.917 5.724 10.5 15 1.5'
-                        />
-                      </svg>
-                    )
-                  : (
-                      <svg
-                        className='size-4 text-red-500'
-                        aria-hidden='true'
-                        xmlns='http://www.w3.org/2000/svg'
-                        fill='none'
-                        viewBox='0 0 14 14'
-                      >
-                        <path
-                          stroke='currentColor'
-                          strokeLinecap='round'
-                          strokeLinejoin='round'
-                          strokeWidth='2'
-                          d='m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6'
-                        />
-                      </svg>
-                    )}
+                {isIncluded && (
+                  <svg
+                    className='size-4 text-green-500'
+                    aria-hidden='true'
+                    xmlns='http://www.w3.org/2000/svg'
+                    fill='none'
+                    viewBox='0 0 16 12'
+                  >
+                    <path
+                      stroke='currentColor'
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      strokeWidth='2'
+                      d='M1 5.917 5.724 10.5 15 1.5'
+                    />
+                  </svg>
+                )}
               </div>
             ))}
           </div>

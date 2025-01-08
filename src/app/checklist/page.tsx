@@ -24,7 +24,8 @@ export default function Checklist() {
           <p className='mb-20'>
             Designed to leave your home spotless and pristine,
             {' '}
-            <span className='text-primary'>every time.</span>
+            <span className='text-primary'>every time</span>
+            .
           </p>
         </div>
         <div className='mx-auto mb-20 flex max-w-[1000px] flex-col items-center justify-center gap-20'>
