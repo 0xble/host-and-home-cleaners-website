@@ -25,7 +25,7 @@ export const getBaseUrl = () => {
     return `https://${process.env.VERCEL_URL}`
   }
 
-  return 'http://localhost:3000'
+  return 'https://localhost:3000'
 }
 
 export type GetLocationOptions = {

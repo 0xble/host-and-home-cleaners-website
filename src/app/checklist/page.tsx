@@ -8,7 +8,7 @@ import { CHECKLIST_NAME } from '@/lib/constants'
 
 export const metadata: Metadata = {
   title: CHECKLIST_NAME,
-  description: 'See how we leave your home spotless and pristine, every time.',
+  description: 'Discover our complete house cleaning checklist that ensures a spotless home every visit. See exactly what we clean and how we exceed expectations. Book your cleaning today!',
 }
 
 export default function Checklist() {

@@ -4,7 +4,7 @@ import { BUSINESS_NAME, EMAIL, URL } from '@/lib/constants'
 
 export const metadata: Metadata = {
   title: 'Terms of Service',
-  description: 'Read our Terms of Service before using the website or booking.',
+  description: 'Learn how our Terms of Service protect your interests and ensure quality cleaning services. Get peace of mind with clear, fair policies. Book your professional cleaning today.',
 }
 
 export default function TermsOfService() {

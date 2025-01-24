@@ -8,8 +8,7 @@ import { BUSINESS_NAME } from '@/lib/constants'
 
 export const metadata: Metadata = {
   title: `${BUSINESS_NAME} Move In/Out Cleaning`,
-  description:
-    'Recommended for a thorough cleaning of spaces before moving in or out.',
+  description: 'Move in/out cleaning services provide deep cleaning, sanitization and detailed attention to every surface. Professional cleaners ensure a pristine space for your transition. Book now!',
 }
 
 export default function MoveCleaning() {

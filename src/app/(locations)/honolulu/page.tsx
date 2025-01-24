@@ -22,7 +22,7 @@ const SPECIFIC_BUSINESS_NAME = `${BUSINESS_NAME} ${LOCATIONS.HONOLULU.name}`
 
 export const metadata: Metadata = {
   title: `${SPECIFIC_BUSINESS_NAME} | #1 House & Airbnb Cleaning in ${LOCATIONS.HONOLULU.stateAbbrev}`,
-  description: `${TAGLINE}. Proudly serving all areas of beautiful Oahu and ${LOCATIONS.HONOLULU.name}.`,
+  description: `${TAGLINE}. Professional house cleaning services in Honolulu and Oahu with flexible scheduling, eco-friendly products, and experienced cleaners. Transform your home and your life, book now!`,
 }
 
 export default function Honolulu() {

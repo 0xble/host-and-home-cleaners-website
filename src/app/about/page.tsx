@@ -10,7 +10,7 @@ import Page from '@/components/Page'
 import { BUSINESS_NAME } from '@/lib/constants'
 
 export const metadata: Metadata = {
-  title: 'About Us',
+  title: `About Us`,
   description: `Learn more about ${BUSINESS_NAME} and our commitment to excellence, reliability, and customer satisfaction.`,
 }
 const getTeamImageData = () => {
