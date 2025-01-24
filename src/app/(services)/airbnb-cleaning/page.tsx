@@ -11,7 +11,7 @@ import { ROUTES } from '@/lib/routes'
 export const metadata: Metadata = {
   title: 'Airbnb Cleaning Services',
   description:
-    'Seamless and thorough Airbnb cleaning services to ensure your property is always guest-ready. We handle everything from scheduling to restocking, giving you peace of mind.',
+    'Professional Airbnb cleaning services that keep your property guest-ready. We handle scheduling, cleaning, and restocking for total peace of mind.',
 }
 
 export default function AirbnbCleaning() {
