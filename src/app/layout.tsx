@@ -11,6 +11,7 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata: Metadata = {
   metadataBase: new URL(getBaseUrl()),
   openGraph: {
+    type: 'website',
     images: '/home/1.jpg',
     url: './',
   },
