@@ -10,9 +10,9 @@ export default function FAQSection({ heading, description, faqs }: FAQSectionPro
   return (
     <section className='mx-auto max-w-screen-md bg-white'>
       <div className='px-4 py-8 sm:py-16 lg:px-6'>
-        <h1 className='mb-6 text-center tracking-tight text-gray-900 lg:mb-8'>
+        <h2 className='mb-6 text-center tracking-tight text-gray-900 lg:mb-8'>
           {heading}
-        </h1>
+        </h2>
         <p className='mb-8'>{description}</p>
         <div>
           <div
