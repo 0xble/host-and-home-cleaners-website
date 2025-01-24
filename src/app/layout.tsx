@@ -12,6 +12,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(getBaseUrl()),
   openGraph: {
     images: '/home/1.jpg',
+    url: './',
   },
   verification: {
     google: 'bgJM5TTuCUrBRo7Yx7jI7n30ZSPeOLpZcISX9mZLcDI',
