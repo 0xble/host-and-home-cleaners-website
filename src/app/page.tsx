@@ -18,7 +18,7 @@ import { BUSINESS_NAME, TAGLINE } from '@/lib/constants'
 import { ROUTES } from '@/lib/routes'
 
 export const metadata: Metadata = {
-  title: `${BUSINESS_NAME} | #1 House & Airbnb Cleaning`,
+  title: `${BUSINESS_NAME} | Professional House & Airbnb Cleaning`,
   description: `${TAGLINE}. Professional 5-star cleaners with dozens of testimonials. Book today!`,
 }
 
