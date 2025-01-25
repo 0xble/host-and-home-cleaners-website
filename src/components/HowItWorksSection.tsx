@@ -11,7 +11,7 @@ type HowItWorksCardType = {
   title: string
   width?: number
   height?: number
-  description: string | JSX.Element
+  description: React.ReactNode
 }
 
 export function HowItWorksCard({
@@ -47,10 +47,14 @@ export function HowItWorksCard({
   )
 }
 
-type Step = { title: string, description: string | JSX.Element }
-export type HowItWorksSectionProps = {
+type Step = {
+  title: string
+  description: React.ReactNode
+}
+
+type HowItWorksSectionProps = {
   heading: string
-  steps: [Step, Step, Step]
+  steps: Step[]
 }
 
 export default function HowItWorksSection({ heading, steps }: HowItWorksSectionProps) {

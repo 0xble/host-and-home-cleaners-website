@@ -1,7 +1,7 @@
 import FeaturedCarousel from '@/components/FeaturedCarousel'
 
 export type HeroSectionProps = {
-  heading: string | JSX.Element
+  heading: React.ReactNode
   description: string
   actions: JSX.Element
   photos: string

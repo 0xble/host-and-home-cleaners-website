@@ -66,7 +66,7 @@ function PricingCard({
 
 export type PricingSectionProps = {
   heading: string
-  description: string | JSX.Element
+  description: React.ReactNode
   pricing: {
     standard: number
     deep: number

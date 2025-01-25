@@ -14,7 +14,7 @@ import FindLocationInput from './FindLocationInput'
 
 export type CTASectionProps = {
   heading: string | JSX.Element
-  body: string | JSX.Element
+  body: React.ReactNode
   location: Location | 'CACHED' | null
 }
 

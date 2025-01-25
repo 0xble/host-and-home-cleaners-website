@@ -28,7 +28,7 @@ const comparisonCriteria = [
     isOfferedByCompetitors: false,
   },
   {
-    criteria: 'Online Booking',
+    criteria: 'Easy Online Booking',
     isOfferedByUs: true,
     isOfferedByCompetitors: false,
   },
@@ -38,7 +38,7 @@ const comparisonCriteria = [
     isOfferedByCompetitors: false,
   },
   {
-    criteria: 'Cleaner Identity Verification',
+    criteria: 'Cleaner Background Check',
     isOfferedByUs: true,
     isOfferedByCompetitors: false,
   },

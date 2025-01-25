@@ -130,3 +130,6 @@ export const LOCATIONS = {
     ],
   },
 } as const
+
+export type Location = typeof LOCATIONS[keyof typeof LOCATIONS]
+export type LocationKey = keyof typeof LOCATIONS

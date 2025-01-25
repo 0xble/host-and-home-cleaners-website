@@ -3,7 +3,10 @@ import { Fragment } from 'react'
 export type FAQSectionProps = {
   heading: string
   description: string
-  faqs: { question: string, answer: string | JSX.Element }[]
+  faqs: Array<{
+    question: string
+    answer: React.ReactNode
+  }>
 }
 
 export default function FAQSection({ heading, description, faqs }: FAQSectionProps) {
