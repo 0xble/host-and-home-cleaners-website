@@ -22,7 +22,7 @@ const SPECIFIC_BUSINESS_NAME = `${BUSINESS_NAME} ${LOCATIONS.MYRTLE_BEACH.name}`
 
 export const metadata: Metadata = {
   title: `${SPECIFIC_BUSINESS_NAME} | #1 House & Airbnb Cleaning in ${LOCATIONS.MYRTLE_BEACH.stateAbbrev}`,
-  description: `${TAGLINE}. Professional house cleaning services in Myrtle Beach with flexible scheduling, eco-friendly products, and experienced cleaners. Transform your home into a pristine sanctuary - book now.`,
+  description: `${TAGLINE}. Proudly serving the Myrtle Beach area. Professional 5-star cleaners with dozens of testimonials. Book today!`,
 }
 
 export default function MyrtleBeach() {

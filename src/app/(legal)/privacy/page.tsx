@@ -4,7 +4,7 @@ import { BUSINESS_NAME, EMAIL } from '@/lib/constants'
 
 export const metadata: Metadata = {
   title: 'Privacy Policy',
-  description: 'Here\'s how we protect your data and respect your privacy.',
+  description: 'Learn how Host & Home Cleaners protects and handles your personal data, including what we collect, how we use it, and your privacy rights as our customer.',
 }
 
 export default function PrivacyPolicy() {

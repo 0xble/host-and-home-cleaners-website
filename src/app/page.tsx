@@ -19,7 +19,7 @@ import { ROUTES } from '@/lib/routes'
 
 export const metadata: Metadata = {
   title: `${BUSINESS_NAME} | #1 House & Airbnb Cleaning`,
-  description: `${TAGLINE}. Professional house cleaning services with 5-star rated cleaners, flexible scheduling, and eco-friendly products. Transform your home into a pristine sanctuary - book now!`,
+  description: `${TAGLINE}. Professional 5-star cleaners with dozens of testimonials. Book today!`,
 }
 
 export default function Home() {

@@ -9,8 +9,7 @@ import homeImage from '@/public/home3.jpeg'
 
 export const metadata: Metadata = {
   title: `Host & Home ${SERVICES.STANDARD}`,
-  description:
-    'Recommended as a recurring service for maintaining the cleanliness of a home after a deep clean.',
+  description: 'Experience our professional standard cleaning service - perfect for maintaining a spotless home with regular visits. Book your recurring cleaning today!',
 }
 
 export default function StandardCleaning() {

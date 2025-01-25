@@ -1,7 +1,7 @@
 import type { ZipCode } from './schemas'
 
 export const BUSINESS_NAME = 'Host & Home Cleaners'
-export const TAGLINE = '100% satisfaction guaranteed, or we\'ll redo it for FREE.'
+export const TAGLINE = '100% satisfaction guaranteed, or we\'ll redo it for FREE'
 export const URL = 'hostandhomecleaners.com'
 export const PHONE = {
   MYRTLE_BEACH: {
