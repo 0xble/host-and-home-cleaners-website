@@ -3,6 +3,8 @@ import type { MetadataRoute } from 'next'
 import { ROUTES } from '@/lib/routes'
 import { getBaseUrl } from '@/lib/utils'
 
+// TODO: Add service-area landing pages to sitemap
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const routes = Object.values(ROUTES).flatMap((route) => {
     if (typeof route === 'object' && 'href' in route) {
