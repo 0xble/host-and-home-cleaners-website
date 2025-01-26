@@ -29,7 +29,7 @@ export default function TrustSection({ className }: TrustSectionProps) {
               <Image
                 src={icon}
                 alt={alt}
-                className='w-40'
+                className='h-auto w-40'
                 style={{ objectFit: 'contain' }}
               />
             </div>
