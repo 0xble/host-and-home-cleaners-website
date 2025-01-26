@@ -221,7 +221,7 @@ export default function Honolulu() {
             ),
           },
           {
-            question: 'How do you ensure I&apos;m happy with the cleaning?',
+            question: 'How do you ensure I\'m happy with the cleaning?',
             answer: (
               <p className='mb-2'>
                 Your happiness is our priority at
@@ -238,13 +238,13 @@ export default function Honolulu() {
         customCTAHeading: 'Get a quote and booking in just 60 seconds!',
         customCTABody: (
           <>
-            Get an
+            Get your
             {' '}
             <Link
               href={ROUTES.BOOKING.href}
               className='link'
             >
-              instant, no-obligation quote online
+              instant quote online
             </Link>
             {' '}
             or
@@ -253,11 +253,35 @@ export default function Honolulu() {
               href={`tel:+${PHONE.HONOLULU.plain}`}
               className='link'
             >
-              give us a call today
+              call our team
             </a>
-            . If you call and the line is busy, don't worry — try again at
-            a later time or leave a voicemail and we'll get back to you as
-            soon as we can!
+            . With
+            {' '}
+            {(() => {
+              const now = new Date()
+              const seasons = [
+                { name: 'peak season', month: 5, day: 20 },
+                { name: 'winter', month: 11, day: 1 },
+                { name: 'spring', month: 2, day: 20 },
+              ]
+
+              const year = now.getFullYear()
+              const dates = seasons.map(({ name, month, day }) => {
+                const date = new Date(year, month, day)
+                if (date < now) {
+                  date.setFullYear(year + 1)
+                }
+                return { name, date }
+              })
+
+              return dates.reduce((closest, curr) =>
+                Math.abs(curr.date.getTime() - now.getTime()) < Math.abs(closest.date.getTime() - now.getTime())
+                  ? curr
+                  : closest,
+              ).name
+            })()}
+            {' '}
+            approaching, book now through our 24/7 online system for immediate confirmation. Join our satisfied customers enjoying pristine homes!
           </>
         ),
       }}

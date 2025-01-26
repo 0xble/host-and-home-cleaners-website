@@ -9,11 +9,11 @@ import { ROUTES } from '@/lib/routes'
 const SPECIFIC_BUSINESS_NAME = `${BUSINESS_NAME} ${LOCATIONS.MYRTLE_BEACH.name}`
 
 export const metadata: Metadata = {
-  title: `Professional House & Airbnb Cleaners in Garden City | ${BUSINESS_NAME}`,
-  description: `${TAGLINE}. Proudly serving Garden City and the Grand Strand area. Professional 5-star cleaners with dozens of testimonials. Book today!`,
+  title: `Professional House & Airbnb Cleaners in Conway | ${BUSINESS_NAME}`,
+  description: `${TAGLINE}. Proudly serving Conway and the Grand Strand area. Professional 5-star cleaners with dozens of testimonials. Book today!`,
 }
 
-export default function GardenCity() {
+export default function Conway() {
   return (
     <LocationPage
       locationKey='MYRTLE_BEACH'
@@ -26,15 +26,15 @@ export default function GardenCity() {
       copy={{
         customHeroHeading: (
           <>
-            Garden City&apos;s
+            Conway&apos;s
             <br />
             #1 Quality & Reliable Cleaners
           </>
         ),
-        customHeroDescription: 'Professional residential cleaning services with quick turnaround times and competitive rates — trusted by Garden City homeowners, vacation rental hosts, and real estate professionals!',
+        customHeroDescription: 'Professional residential cleaning services with quick turnaround times and competitive rates — trusted by Conway homeowners, vacation rental hosts, and real estate professionals!',
         customTestimonialsHeading: 'What Are Others Saying?',
         customLocationsSectionHeading: 'We\'re Close By!',
-        customLocationsSectionDescription: 'Proudly serving all areas of Garden City and the surrounding communities!',
+        customLocationsSectionDescription: 'Proudly serving all areas of Conway and the surrounding communities!',
         customHowItWorksHeading: 'What Should I Expect?',
         customHowItWorksSteps: [
           {
@@ -84,7 +84,7 @@ export default function GardenCity() {
         customPricingSectionDescription: (
           <>
             <p className='mb-4 text-left'>
-              We have it all! From meticulous oven scrubbing, comprehensive bathroom sanitation to full-scale kitchen deep cleans — our expert team delivers top-tier residential cleaning services. Specializing in end-of-lease cleanings, short-term accommodation refreshes, and detailed spring cleanings, we cater to all your cleaning needs in Garden City.
+              We have it all! From meticulous oven scrubbing, comprehensive bathroom sanitation to full-scale kitchen deep cleans — our expert team delivers top-tier residential cleaning services. Specializing in end-of-lease cleanings, short-term accommodation refreshes, and detailed spring cleanings, we cater to all your cleaning needs in Conway.
             </p>
             <p className='text-left'>
               Our tailored move-in and move-out cleaning solutions guarantee a flawless handover, while our intensive refrigerator cleaning services render your appliance spotlessly clean.
@@ -99,7 +99,7 @@ export default function GardenCity() {
             answer: (
               <>
                 <p className='mb-6'>
-                  When it comes to selecting a cleaning company in Garden City, our team at
+                  When it comes to selecting a cleaning company in Conway, our team at
                   {' '}
                   {SPECIFIC_BUSINESS_NAME}
                   {' '}
@@ -202,13 +202,13 @@ export default function GardenCity() {
         customCTAHeading: 'Reserve a time and get a price in 60 seconds!',
         customCTABody: (
           <>
-            Receive an
+            Get your
             {' '}
             <Link
               href={ROUTES.BOOKING.href}
               className='link'
             >
-              instant, no-obligation quote online
+              instant quote online
             </Link>
             {' '}
             or
@@ -217,9 +217,35 @@ export default function GardenCity() {
               href={`tel:+${PHONE.MYRTLE_BEACH.plain}`}
               className='link'
             >
-              call us today
+              call our Conway team
             </a>
-            . Our availability is always in short supply, so book now to secure your preferred time slot!
+            . As Conway's premier cleaning service, we deliver five-star results. With
+            {' '}
+            {(() => {
+              const now = new Date()
+              const seasons = [
+                { name: 'summer', month: 5, day: 20 },
+                { name: 'holiday', month: 11, day: 1 },
+                { name: 'spring', month: 2, day: 20 },
+              ]
+
+              const year = now.getFullYear()
+              const dates = seasons.map(({ name, month, day }) => {
+                const date = new Date(year, month, day)
+                if (date < now) {
+                  date.setFullYear(year + 1)
+                }
+                return { name, date }
+              })
+
+              return dates.reduce((closest, curr) =>
+                Math.abs(curr.date.getTime() - now.getTime()) < Math.abs(closest.date.getTime() - now.getTime())
+                  ? curr
+                  : closest,
+              ).name
+            })()}
+            {' '}
+            season approaching, book now through our 24/7 online system for immediate confirmation. Experience why we're Conway's most trusted cleaning service!
           </>
         ),
       }}

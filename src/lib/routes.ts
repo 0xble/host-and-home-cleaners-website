@@ -86,8 +86,7 @@ export const ROUTES = {
             ...acc,
             [S(area).slugify().s.toUpperCase()]: {
               name: area,
-              // TODO: Replace with service-area landing page
-              href: `https://www.google.com/maps/place/${S(area).slugify()}`,
+              href: `/${S(area).slugify()}`,
               priority: 1,
               changeFrequency: 'weekly',
             },
