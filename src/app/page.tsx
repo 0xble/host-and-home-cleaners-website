@@ -24,8 +24,10 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <Suspense>
-      <ReviewsFloatingBadge id='ba527c37-e33e-46d1-8a33-08aed36ffd09' />
+    <>
+      <Suspense>
+        <ReviewsFloatingBadge id='ba527c37-e33e-46d1-8a33-08aed36ffd09' />
+      </Suspense>
       <Page location={null} className='mb-24 flex min-h-screen flex-col gap-12 lg:mb-32 lg:gap-12'>
         <HeroSection
           heading={(
@@ -173,7 +175,7 @@ export default function Home() {
             },
             {
               question:
-      'How do you ensure the quality and consistency of your cleaning services?',
+    'How do you ensure the quality and consistency of your cleaning services?',
               answer: (
                 <>
                   <p className='mb-2'>
@@ -239,8 +241,7 @@ export default function Home() {
               ),
             },
             {
-              question:
-      'What is your policy on rescheduling or canceling an appointment?',
+              question: 'What is your policy on rescheduling or canceling an appointment?',
               answer: (
                 <p>
                   We understand that life can be unpredictable.
@@ -254,8 +255,7 @@ export default function Home() {
               ),
             },
             {
-              question:
-      'What should I do if I\'m not satisfied with the cleaning service?  ',
+              question: 'What should I do if I\'m not satisfied with the cleaning service?  ',
               answer: (
                 <>
                   <p className='mb-2'>
@@ -284,6 +284,6 @@ export default function Home() {
           />
         </Suspense>
       </Page>
-    </Suspense>
+    </>
   )
 }

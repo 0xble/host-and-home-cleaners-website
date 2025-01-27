@@ -86,8 +86,10 @@ export default function LocationPage({
   },
 }: LocationPageProps) {
   return (
-    <Suspense>
-      <ReviewsFloatingBadge id={reviewsBadgeId} />
+    <>
+      <Suspense>
+        <ReviewsFloatingBadge id={reviewsBadgeId} />
+      </Suspense>
       <Page location={locationKey} className='mb-24 flex min-h-screen flex-col gap-12 lg:mb-32 lg:gap-12'>
         <HeroSection
           heading={customHeroHeading}
@@ -137,6 +139,6 @@ export default function LocationPage({
           />
         </Suspense>
       </Page>
-    </Suspense>
+    </>
   )
 }
