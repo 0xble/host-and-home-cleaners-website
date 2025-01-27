@@ -25,11 +25,7 @@ export default function Kapahulu() {
       pricing={{ standard: 232, deep: 304, moveInOut: 340, airbnb: 232 }}
       copy={{
         customHeroHeading: (
-          <>
-            Kapahulu&apos;s Premier
-            <br />
-            House Cleaning Service
-          </>
+          <>Kapahulu's Trusted Local Residential & Airbnb Cleaners</>
         ),
         customHeroDescription: 'Professional cleaning services tailored for Kapahulu\'s diverse properties. From cozy homes to vacation rentals near Waikiki, we deliver exceptional quality that keeps your space pristine.',
         customTestimonialsHeading: 'Local Reviews',
@@ -91,7 +87,7 @@ export default function Kapahulu() {
             </p>
           </>
         ),
-        customFAQHeading: 'Common Questions',
+        customFAQHeading: 'FAQs',
         customFAQDescription: 'Find answers to frequently asked questions below. Our local team is always available to address any specific concerns.',
         customFAQs: [
           {

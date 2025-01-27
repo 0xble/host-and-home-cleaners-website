@@ -26,9 +26,9 @@ export default function Waialae() {
       copy={{
         customHeroHeading: (
           <>
-            Waialae&apos;s Trusted
+            Waialae's Trusted Local
             <br />
-            Home & Rental Cleaners
+            House & Airbnb Cleaners
           </>
         ),
         customHeroDescription: 'Professional cleaning services tailored for Waialae\'s homes and vacation rentals. We deliver exceptional quality that keeps your property pristine and welcoming.',
@@ -91,7 +91,7 @@ export default function Waialae() {
             </p>
           </>
         ),
-        customFAQHeading: 'Common Questions',
+        customFAQHeading: 'Frequently Asked Questions',
         customFAQDescription: 'Find answers to frequently asked questions below. Our local team is always available to address any specific concerns.',
         customFAQs: [
           {

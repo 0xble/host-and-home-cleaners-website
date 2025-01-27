@@ -120,7 +120,7 @@ export default function Home() {
           )}
         />
         <FAQSection
-          heading='Frequently Asked Questions'
+          heading='FAQs'
           description='We know you have questions, and we have answers. Here are some of the most common questions we get asked.'
           faqs={[
             {

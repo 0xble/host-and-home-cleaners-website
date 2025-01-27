@@ -26,9 +26,9 @@ export default function HawaiiKai() {
       copy={{
         customHeroHeading: (
           <>
-            Hawaii Kai&apos;s Premier
+            Professional House Cleaning
             <br />
-            Home & Airbnb Cleaners
+            in Hawaii Kai
           </>
         ),
         customHeroDescription: 'Professional cleaning services tailored for Hawaii Kai\'s residential community. From family homes to vacation rentals, we deliver exceptional quality that preserves and enhances your property\'s appeal.',
@@ -91,7 +91,7 @@ export default function HawaiiKai() {
             </p>
           </>
         ),
-        customFAQHeading: 'Common Questions',
+        customFAQHeading: 'Frequently Asked Questions',
         customFAQDescription: 'Find answers to frequently asked questions below. Our local team is always available to address any specific concerns.',
         customFAQs: [
           {

@@ -26,9 +26,9 @@ export default function Manoa() {
       copy={{
         customHeroHeading: (
           <>
-            Manoa Valley&apos;s
+            Professional House Cleaners
             <br />
-            Trusted Home & Rental Cleaners
+            in Beautiful Manoa Valley
           </>
         ),
         customHeroDescription: 'Professional cleaning services tailored for Manoa\'s unique homes and climate. From historic properties to family residences, we deliver exceptional quality that respects your home\'s character.',
@@ -91,7 +91,7 @@ export default function Manoa() {
             </p>
           </>
         ),
-        customFAQHeading: 'Common Questions',
+        customFAQHeading: 'FAQs',
         customFAQDescription: 'Find answers to frequently asked questions below. Our local team is always available to address any specific concerns.',
         customFAQs: [
           {

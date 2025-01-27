@@ -26,9 +26,9 @@ export default function SurfsideBeach() {
       copy={{
         customHeroHeading: (
           <>
-            Surfside Beach&apos;s
+            Surfside Beach&apos;s Premier
             <br />
-            Professional House & Vacation Rental Cleaners
+            Vacation Home & Beach Property Cleaners
           </>
         ),
         customHeroDescription: 'Keep your beach home pristine with our professional cleaning services. Whether you\'re a local family, vacation homeowner, or rental property manager in "The Family Beach," we deliver the quality clean you expect.',

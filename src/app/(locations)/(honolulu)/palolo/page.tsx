@@ -25,11 +25,7 @@ export default function Palolo() {
       pricing={{ standard: 232, deep: 304, moveInOut: 340, airbnb: 232 }}
       copy={{
         customHeroHeading: (
-          <>
-            Palolo&apos;s Trusted
-            <br />
-            Home & Rental Cleaners
-          </>
+          <>Professional House Cleaners in Palolo Valley</>
         ),
         customHeroDescription: 'Professional cleaning services tailored for Palolo\'s homes and vacation rentals. We deliver exceptional quality that keeps your property pristine and welcoming.',
         customTestimonialsHeading: 'Client Experiences',
@@ -91,7 +87,7 @@ export default function Palolo() {
             </p>
           </>
         ),
-        customFAQHeading: 'Common Questions',
+        customFAQHeading: 'Frequently Asked Questions',
         customFAQDescription: 'Find answers to frequently asked questions below. Our local team is always available to address any specific concerns.',
         customFAQs: [
           {

@@ -20,15 +20,13 @@ export default function Waikiki() {
       location={LOCATIONS.HONOLULU}
       reviewsMasonryId='8a2da83f-ca84-4420-9a31-71143d5c546e'
       reviewsBadgeId='142009ae-6f8c-4599-9c7e-9d370298abc9'
-      googleMapsEmbedUrl='https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d237770.1723966727!2d-157.869932!3d21.3836454!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c4ce057e4bdff0b%3A0xa78d25a714d5f0ae!2sHost%20%26%20Home%20Cleaners%20Honolulu!5e0!3m2!1sen!2sus!4v1729395012053!5m2!1sen!2sus'
+      googleMapsEmbedUrl='https://www.google.com/maps/embed?pb=!1m14!1m8!1d237770.1723966727!2d-157.869932!3d21.3836454!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c4ce057e4bdff0b%3A0xa78d25a714d5f0ae!2sHost%20%26%20Home%20Cleaners%20Honolulu!5e0!3m2!1sen!2sus!4v1729395012053!5m2!1sen!2sus'
       photosFolder='honolulu'
       pricing={{ standard: 232, deep: 304, moveInOut: 340, airbnb: 232 }}
       copy={{
         customHeroHeading: (
           <>
-            Waikiki&apos;s Premier
-            <br />
-            Cleaning Service
+            Waikiki&apos;s House & Vacation Rental Cleaning Pros
           </>
         ),
         customHeroDescription: 'Experience world-class cleaning services for your Waikiki property. From luxury condos to vacation rentals, we deliver the exceptional quality that this world-famous destination demands.',
@@ -91,7 +89,7 @@ export default function Waikiki() {
             </p>
           </>
         ),
-        customFAQHeading: 'Common Questions',
+        customFAQHeading: 'FAQs',
         customFAQDescription: 'Find answers to frequently asked questions below. Our local team is always available to address any specific concerns.',
         customFAQs: [
           {
@@ -103,7 +101,7 @@ export default function Waikiki() {
                   {' '}
                   {SPECIFIC_BUSINESS_NAME}
                   {' '}
-                  understands the unique needs of luxury condos and vacation properties in this premier location.
+                  understands the unique needs of homes, condos, and vacation rentals in this premier location.
                 </p>
                 <CompetitorComparisonTable />
               </>
@@ -113,7 +111,7 @@ export default function Waikiki() {
             question: 'How do you handle building access and parking?',
             answer: (
               <p>
-                We're experienced with Waikiki's high-rise protocols and security requirements. We coordinate with building management and can arrange parking solutions to ensure smooth service delivery.
+                We're experienced with Waikiki's apartment/condo building and gated community protocols and security requirements. We coordinate with building or community management and can arrange parking solutions to ensure smooth service delivery.
               </p>
             ),
           },

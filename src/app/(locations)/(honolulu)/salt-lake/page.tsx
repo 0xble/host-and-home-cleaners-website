@@ -26,12 +26,12 @@ export default function SaltLake() {
       copy={{
         customHeroHeading: (
           <>
-            Salt Lake, HI&apos;s Premier
+            Salt Lake&apos;s Trusted Local
             <br />
-            Home & Airbnb Cleaners
+            House & Airbnb Cleaners
           </>
         ),
-        customHeroDescription: 'Professional cleaning services tailored for Salt Lake\'s modern lifestyle. From high-rise condos to family homes, we deliver exceptional quality that elevates your living space.',
+        customHeroDescription: 'Professional cleaning services tailored for Salt Lake\'s modern lifestyle. From high-rise condos to family homes, to Airbnb rentals, we deliver exceptional quality that elevates your living space.',
         customTestimonialsHeading: 'Resident Reviews',
         customLocationsSectionHeading: 'Serving All of Salt Lake',
         customLocationsSectionDescription: 'Providing premium cleaning services throughout Salt Lake, from Ala Nioi Place to Salt Lake Boulevard!',
@@ -91,7 +91,7 @@ export default function SaltLake() {
             </p>
           </>
         ),
-        customFAQHeading: 'Common Questions',
+        customFAQHeading: 'Frequently Asked Questions',
         customFAQDescription: 'Find answers to frequently asked questions below. Our local team is always available to address any specific concerns.',
         customFAQs: [
           {
@@ -165,7 +165,7 @@ export default function SaltLake() {
                   Quality is our priority at
                   {' '}
                   {SPECIFIC_BUSINESS_NAME}
-                  . We use detailed checklists specific to high-rise and residential properties and back every clean with our satisfaction guarantee. If anything doesn't meet your expectations, we'll return within 24 hours to make it right.
+                  . We use detailed checklists specific to residential or vacation rentals and back every clean with our satisfaction guarantee. If anything doesn't meet your expectations, we'll return within 24 hours to make it right.
                 </p>
               </>
             ),

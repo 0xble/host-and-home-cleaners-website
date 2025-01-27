@@ -26,9 +26,9 @@ export default function Conway() {
       copy={{
         customHeroHeading: (
           <>
-            Conway&apos;s
+            Residential & Short-Term Rental
             <br />
-            #1 Quality & Reliable Cleaners
+            Cleaning Services in Conway
           </>
         ),
         customHeroDescription: 'Professional residential cleaning services with quick turnaround times and competitive rates — trusted by Conway homeowners, vacation rental hosts, and real estate professionals!',

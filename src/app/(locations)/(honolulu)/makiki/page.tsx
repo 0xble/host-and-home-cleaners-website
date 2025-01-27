@@ -26,9 +26,9 @@ export default function Makiki() {
       copy={{
         customHeroHeading: (
           <>
-            Makiki&apos;s Trusted
+            Professional House Cleaners
             <br />
-            Home & Rental Cleaners
+            in Makiki, Honolulu
           </>
         ),
         customHeroDescription: 'Professional cleaning services tailored for Makiki\'s homes and vacation rentals. We deliver exceptional quality that keeps your property pristine and welcoming.',
@@ -91,7 +91,7 @@ export default function Makiki() {
             </p>
           </>
         ),
-        customFAQHeading: 'Common Questions',
+        customFAQHeading: 'Frequently Asked Questions',
         customFAQDescription: 'Find answers to frequently asked questions below. Our local team is always available to address any specific concerns.',
         customFAQs: [
           {

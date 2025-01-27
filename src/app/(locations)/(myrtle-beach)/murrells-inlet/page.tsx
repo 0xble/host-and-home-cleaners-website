@@ -26,12 +26,12 @@ export default function MurrellsInlet() {
       copy={{
         customHeroHeading: (
           <>
-            Murrells Inlet&apos;s
+            Murrells Inlet&apos;s Premier
             <br />
-            Trusted Coastal Cleaning Experts
+            Property Cleaning Service
           </>
         ),
-        customHeroDescription: 'Elevate your coastal living experience with our premium cleaning services. From waterfront properties to vacation homes, we understand the unique needs of Murrells Inlet residents and visitors.',
+        customHeroDescription: 'Elevate your coastal living experience with our premium cleaning services. From residential properties to vacation homes, we understand the unique needs of Murrells Inlet residents and visitors.',
         customTestimonialsHeading: 'Local Neighborhood Stories',
         customLocationsSectionHeading: 'Serving Our Coastal Community',
         customLocationsSectionDescription: 'Delivering exceptional cleaning services throughout Murrells Inlet and neighboring seaside communities!',
@@ -91,7 +91,7 @@ export default function MurrellsInlet() {
             </p>
           </>
         ),
-        customFAQHeading: 'Common Questions',
+        customFAQHeading: 'Frequently Asked Questions',
         customFAQDescription: 'Find answers to frequently asked questions below. Have a specific concern? Our local team is always here to help via phone, email, or chat.',
         customFAQs: [
           {

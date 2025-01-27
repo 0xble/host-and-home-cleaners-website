@@ -26,9 +26,9 @@ export default function NorthMyrtleBeach() {
       copy={{
         customHeroHeading: (
           <>
-            North Myrtle Beach&apos;s
+            North Myrtle Beach&apos;s Trusted Choice for
             <br />
-            Premier Home & Vacation Rental Cleaners
+            Pristine Vacation Rentals & Coastal Homes
           </>
         ),
         customHeroDescription: 'Discover the difference professional cleaning makes - where meticulous attention to detail meets unmatched reliability. Trusted by homeowners, vacation rental managers, and real estate professionals across North Myrtle Beach.',

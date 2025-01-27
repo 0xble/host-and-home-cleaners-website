@@ -26,9 +26,9 @@ export default function GardenCity() {
       copy={{
         customHeroHeading: (
           <>
-            Garden City&apos;s
+            Vacation Rental & Home
             <br />
-            #1 Quality & Reliable Cleaners
+            Cleaning Experts in Garden City
           </>
         ),
         customHeroDescription: 'Professional residential cleaning services with quick turnaround times and competitive rates — trusted by Garden City homeowners, vacation rental hosts, and real estate professionals!',

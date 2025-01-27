@@ -26,9 +26,9 @@ export default function Kahala() {
       copy={{
         customHeroHeading: (
           <>
-            Kahala&apos;s Trusted
+            Kahala&apos;s Top-Rated
             <br />
-            Home & Rental Cleaners
+            Airbnb & House Cleaning Service
           </>
         ),
         customHeroDescription: 'Professional cleaning services tailored for Kahala\'s homes and vacation rentals. We deliver exceptional quality that keeps your property pristine and welcoming.',
@@ -91,7 +91,7 @@ export default function Kahala() {
             </p>
           </>
         ),
-        customFAQHeading: 'Common Questions',
+        customFAQHeading: 'Frequently Asked Questions',
         customFAQDescription: 'Find answers to frequently asked questions below. Our local team is always available to address any specific concerns.',
         customFAQs: [
           {

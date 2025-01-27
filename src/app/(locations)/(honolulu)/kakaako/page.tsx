@@ -26,7 +26,9 @@ export default function Kakaako() {
       copy={{
         customHeroHeading: (
           <>
-            Kaka&apos;ako&apos;s #1 Home & Airbnb Cleaning Experts
+            Kaka&apos;ako&apos;s Local
+            <br />
+            House & Airbnb Cleaning
           </>
         ),
         customHeroDescription: 'Professional cleaning services designed for Kaka\'ako\'s residential and vacation rental properties. We deliver exceptional quality that matches this vibrant neighborhood\'s energy.',
@@ -89,7 +91,7 @@ export default function Kakaako() {
             </p>
           </>
         ),
-        customFAQHeading: 'Common Questions',
+        customFAQHeading: 'FAQs',
         customFAQDescription: 'Find answers to frequently asked questions below. Our local team is always available to address any specific concerns.',
         customFAQs: [
           {

@@ -26,13 +26,13 @@ export default function Kalihi() {
       copy={{
         customHeroHeading: (
           <>
-            Kalihi&apos;s Trusted
+            Professional House Cleaners
             <br />
-            Family Cleaning Service
+            in Kalihi Valley
           </>
         ),
         customHeroDescription: 'Professional cleaning services tailored for Kalihi\'s diverse community. From family homes to multi-generational properties, we deliver exceptional quality that makes your home shine.',
-        customTestimonialsHeading: 'Community Reviews',
+        customTestimonialsHeading: 'Reviews & Testimonials',
         customLocationsSectionHeading: 'Serving All of Kalihi',
         customLocationsSectionDescription: 'Providing premium cleaning services throughout Kalihi, from Kalihi Valley to Kalihi Kai!',
         customHowItWorksHeading: 'Your Clean Home Journey',
@@ -91,7 +91,7 @@ export default function Kalihi() {
             </p>
           </>
         ),
-        customFAQHeading: 'Common Questions',
+        customFAQHeading: 'Frequently Asked Questions',
         customFAQDescription: 'Find answers to frequently asked questions below. Our local team is always available to address any specific concerns.',
         customFAQs: [
           {

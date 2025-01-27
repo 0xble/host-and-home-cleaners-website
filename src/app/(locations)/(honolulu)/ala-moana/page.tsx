@@ -26,9 +26,9 @@ export default function AlaMoana() {
       copy={{
         customHeroHeading: (
           <>
-            Ala Moana&apos;s
+            Ala Moana&apos;s Local
             <br />
-            Trusted Cleaning Service
+            Home & Vacation Rental Cleaning Experts
           </>
         ),
         customHeroDescription: 'Professional cleaning services for Ala Moana\'s homes and vacation rentals. We deliver exceptional quality that this premier residential district deserves.',
@@ -91,7 +91,7 @@ export default function AlaMoana() {
             </p>
           </>
         ),
-        customFAQHeading: 'Common Questions',
+        customFAQHeading: 'Frequently Asked Questions',
         customFAQDescription: 'Find answers to frequently asked questions below. Our local team is always available to address any specific concerns.',
         customFAQs: [
           {

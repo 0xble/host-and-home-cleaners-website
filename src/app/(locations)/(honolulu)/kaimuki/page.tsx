@@ -26,9 +26,7 @@ export default function Kaimuki() {
       copy={{
         customHeroHeading: (
           <>
-            Kaimuki&apos;s Trusted
-            <br />
-            Local Cleaning Service
+            Kaimuki&apos;s Cleaning Professionals for Homes & Vacation Rentals
           </>
         ),
         customHeroDescription: 'Professional cleaning services tailored for Kaimuki\'s charming homes and properties. From classic bungalows to modern renovations, we deliver exceptional quality that preserves and enhances your home\'s unique character.',
@@ -91,7 +89,7 @@ export default function Kaimuki() {
             </p>
           </>
         ),
-        customFAQHeading: 'Common Questions',
+        customFAQHeading: 'Frequently Asked Questions',
         customFAQDescription: 'Find answers to frequently asked questions below. Our local team is always available to address any specific concerns.',
         customFAQs: [
           {

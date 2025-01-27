@@ -26,9 +26,7 @@ export default function AinaHaina() {
       copy={{
         customHeroHeading: (
           <>
-            Aina Haina&apos;s Trusted
-            <br />
-            Home & Rental Cleaners
+            Aina Haina, Meet Expert Home Cleaning
           </>
         ),
         customHeroDescription: 'Professional cleaning services tailored for Aina Haina\'s homes and vacation rentals. We deliver exceptional quality that keeps your property pristine and welcoming.',
@@ -91,7 +89,7 @@ export default function AinaHaina() {
             </p>
           </>
         ),
-        customFAQHeading: 'Common Questions',
+        customFAQHeading: 'FAQs',
         customFAQDescription: 'Find answers to frequently asked questions below. Our local team is always available to address any specific concerns.',
         customFAQs: [
           {

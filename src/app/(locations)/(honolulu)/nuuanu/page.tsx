@@ -26,9 +26,9 @@ export default function Nuuanu() {
       copy={{
         customHeroHeading: (
           <>
-            Nuuanu&apos;s Trusted
+            Nuuanu Valley's Premier
             <br />
-            Home & Rental Cleaners
+            Home & Airbnb Cleaning Service
           </>
         ),
         customHeroDescription: 'Professional cleaning services tailored for Nuuanu\'s homes and vacation rentals. We deliver exceptional quality that keeps your property pristine and welcoming.',
@@ -91,7 +91,7 @@ export default function Nuuanu() {
             </p>
           </>
         ),
-        customFAQHeading: 'Common Questions',
+        customFAQHeading: 'FAQs',
         customFAQDescription: 'Find answers to frequently asked questions below. Our local team is always available to address any specific concerns.',
         customFAQs: [
           {

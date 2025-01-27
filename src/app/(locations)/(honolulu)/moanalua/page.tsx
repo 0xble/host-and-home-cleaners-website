@@ -26,9 +26,9 @@ export default function Moanalua() {
       copy={{
         customHeroHeading: (
           <>
-            Moanalua&apos;s Premier
+            Moanalua Valley&apos;s Trusted
             <br />
-            Home & Vacation Rental Cleaners
+            Local Cleaning Experts
           </>
         ),
         customHeroDescription: 'Professional cleaning services tailored for Moanalua\'s diverse community. From residential homes to vacation rentals, we deliver exceptional quality that exceeds expectations.',
@@ -91,7 +91,7 @@ export default function Moanalua() {
             </p>
           </>
         ),
-        customFAQHeading: 'Common Questions',
+        customFAQHeading: 'Frequently Asked Questions',
         customFAQDescription: 'Find answers to frequently asked questions below. Our local team is always available to address any specific concerns.',
         customFAQs: [
           {

@@ -26,9 +26,9 @@ export default function MyrtleBeach() {
       copy={{
         customHeroHeading: (
           <>
-            {`${LOCATIONS.MYRTLE_BEACH.name}, ${LOCATIONS.MYRTLE_BEACH.stateAbbrev}'s`}
+            Myrtle Beach&apos;s #1 Local
             <br />
-            #1 Quality & Reliable Cleaners
+            Home & Vacation Rental Cleaning Service
           </>
         ),
         customHeroDescription: 'High-quality residential cleaning services, fast turnaround, at affordable prices — this is why home owners, Airbnb short-term vacation rentals, and realtors all go with us!',
