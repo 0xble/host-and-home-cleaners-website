@@ -2,6 +2,7 @@ import './globals.css'
 
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+import Script from 'next/script'
 
 import { Toaster } from '@/components/ui/toaster'
 import { getBaseUrl } from '@/lib/utils'
@@ -27,11 +28,10 @@ export type LayoutProps = Readonly<{
 export default function RootLayout({ children }: LayoutProps) {
   return (
     <html lang='en'>
-      {/* The `suppressHydrationWarning` attribute in <body> is used to prevent hydration errors caused by Sentry Overlay,
-      which dynamically adds a `style` attribute to the body tag. */}
       <body className={inter.className} suppressHydrationWarning>
         {children}
-        <script async src='dist/flowbite.min.js' />
+        <Script src='dist/flowbite.min.js' />
+        <Script src='https://tally.so/widgets/embed.js' strategy='lazyOnload' />
         <Toaster />
       </body>
     </html>
