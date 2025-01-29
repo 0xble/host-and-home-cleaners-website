@@ -6,18 +6,13 @@ import { cn } from '@/lib/utils'
 
 type SpinnerProps = {
   className?: string
+  text?: string
 }
 
-export const Spinner: FC<SpinnerProps> = ({ className }) => {
+export const Spinner: FC<SpinnerProps> = ({ className, text }) => {
   return (
-    <div
-      className={cn(
-        'inline-block animate-spin rounded-full border-2 border-solid border-current border-r-transparent motion-reduce:animate-[spin_1.5s_linear_infinite]',
-        className,
-      )}
-      role='status'
-    >
-      <span className='sr-only'>Loading...</span>
+    <div className={cn('size-12 animate-spin rounded-full border-4 border-gray-200 border-t-primary-600', className)} role='status'>
+      {text && <span className='sr-only'>{text}</span>}
     </div>
   )
 }

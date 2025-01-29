@@ -4,6 +4,7 @@ import Brand from '@/components/Brand'
 import { StarRating } from '@/components/StarRating'
 import { Card } from '@/components/ui/card'
 import { Container } from '@/components/ui/container'
+import { Spinner } from '@/components/ui/spinner'
 
 export default function ReviewPage() {
   return (
@@ -14,6 +15,7 @@ export default function ReviewPage() {
           <h1 className='mb-6 text-4xl'>How was your experience?</h1>
           <p className='mb-8'>We value your feedback! Please rate your experience with us.</p>
           <StarRating />
+          <Spinner />
         </div>
       </Card>
     </Container>
