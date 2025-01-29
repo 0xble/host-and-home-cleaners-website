@@ -61,6 +61,12 @@ export const ROUTES = {
     priority: 0,
     changeFrequency: 'never',
   },
+  REVIEW: {
+    name: 'Review',
+    href: '/review',
+    priority: 0,
+    changeFrequency: 'never',
+  },
   SERVICES: Object.entries(SERVICES).reduce((acc, [service, name]) => {
     return {
       ...acc,
