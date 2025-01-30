@@ -20,6 +20,10 @@ const REVIEW_URLS = {
     'honolulu': 'https://www.yelp.com/writeareview/biz/gPGARc74U7rdWSL0Lf5yzA',
     'myrtle-beach': 'https://www.yelp.com/writeareview/biz/4bG-QPQCWVzAfqG1IonXRw',
   },
+  thumbtack: {
+    'honolulu': 'https://www.thumbtack.com/reviews/services/531257745964408832/write',
+    'myrtle-beach': 'https://www.thumbtack.com/reviews/services/509673378067374094/write',
+  },
 } as const
 
 type StarRatingProps = Record<string, never>
