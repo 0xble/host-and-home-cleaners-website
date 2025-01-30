@@ -146,7 +146,7 @@ export default function About() {
       <Suspense>
         <CTASection
           heading='Schedule a cleaning in seconds!'
-          body='We are excited to help you achieve a cleaner and more organized home. Our team of professional cleaners is dedicated to providing top-notch services that meet your unique needs. Whether you need a one-time deep clean or regular maintenance, we have the expertise and resources to get the job done right. Our commitment to quality and customer satisfaction means you can trust us to handle your home with care and attention to detail. Contact us today to schedule your cleaning service and experience the difference a professional cleaning can make.'
+          body='Let our professional cleaners make your home spotless and organized. From one-time deep cleans to regular maintenance, we deliver exceptional service tailored to your needs. Schedule now to experience the difference!'
           location='CACHED'
         />
       </Suspense>
