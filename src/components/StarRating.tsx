@@ -24,6 +24,10 @@ const REVIEW_URLS = {
     'honolulu': 'https://www.thumbtack.com/reviews/services/531257745964408832/write',
     'myrtle-beach': 'https://www.thumbtack.com/reviews/services/509673378067374094/write',
   },
+  facebook: {
+    'honolulu': 'https://www.facebook.com/hostandhomecleanershonolulu/reviews',
+    'myrtle-beach': 'https://www.facebook.com/hostandhomecleanersmyrtlebeach/reviews',
+  },
 } as const
 
 type StarRatingProps = Record<string, never>
