@@ -41,9 +41,9 @@ const getTeamImageData = () => {
 export default function About() {
   return (
     <Page location='CACHED' className='mb-24 flex w-full flex-col items-center justify-center gap-12 md:mb-32 md:gap-24'>
-      <section className='flex flex-col gap-12 px-4 pb-12 md:flex-row md:gap-20 md:pt-24 lg:px-12'>
+      <section className='flex flex-col gap-12 px-4 py-12 md:flex-row md:gap-20 md:pt-24 lg:px-12'>
         <div className='flex max-w-screen-sm flex-col'>
-          <h1 className='mb-4 text-3xl md:text-4xl'>
+          <h1 className='mb-4 max-sm:text-4xl'>
             About Us
           </h1>
           <p className='mb-4 hidden text-base sm:block sm:text-lg'>
@@ -106,7 +106,7 @@ export default function About() {
       </section>
 
       <section className='flex w-full flex-col items-center justify-center px-4 pb-12 md:pb-24 lg:px-12'>
-        <h2 className='mb-12 text-3xl'>Our Team</h2>
+        <h2 className='mb-12'>Our Team</h2>
         <p className='mb-12 hidden max-w-screen-md sm:block md:mb-24'>
           Our professional, detail-oriented cleaning team is the heart of our
           service. We have experience and rigorous training. We treat your home
@@ -145,7 +145,7 @@ export default function About() {
       </section>
       <Suspense>
         <CTASection
-          heading='Schedule a Pristine Cleaning in Seconds!'
+          heading='Schedule a cleaning in seconds!'
           body='We are excited to help you achieve a cleaner and more organized home. Our team of professional cleaners is dedicated to providing top-notch services that meet your unique needs. Whether you need a one-time deep clean or regular maintenance, we have the expertise and resources to get the job done right. Our commitment to quality and customer satisfaction means you can trust us to handle your home with care and attention to detail. Contact us today to schedule your cleaning service and experience the difference a professional cleaning can make.'
           location='CACHED'
         />
