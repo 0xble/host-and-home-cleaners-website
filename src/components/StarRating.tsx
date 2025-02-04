@@ -1,5 +1,6 @@
 'use client'
 
+import { slugify } from '0xble/strings'
 import { Star } from 'lucide-react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import type { FC } from 'react'
@@ -7,6 +8,7 @@ import { useEffect, useRef, useState } from 'react'
 
 import { Button } from '@/components/ui/button'
 import { Spinner } from '@/components/ui/spinner'
+import { useToast } from '@/components/ui/use-toast'
 
 const LOCATIONS = ['honolulu', 'myrtle-beach'] as const
 type Location = typeof LOCATIONS[number]
@@ -83,8 +85,11 @@ const RedirectingMessage: FC<RedirectingMessageProps> = ({ message = 'Thank you!
 export const StarRating: FC<StarRatingProps> = () => {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const location = searchParams.get('location') as Location | null
-  const platform = searchParams.get('platform') ?? 'google'
+  const { toast } = useToast()
+  const locationKey = searchParams.get('location') != null
+    ? slugify(searchParams.get('location') as string) as Location
+    : null
+  const platformKey = slugify(searchParams.get('platform') ?? 'google')
   const [rating, setRating] = useState<number>(0)
   const [hoveredRating, setHoveredRating] = useState<number>(0)
   const [isRedirecting, setIsRedirecting] = useState(false)
@@ -92,11 +97,28 @@ export const StarRating: FC<StarRatingProps> = () => {
   const formRef = useRef<HTMLDivElement>(null)
 
   const getReviewUrl = (loc: Location) => {
-    try {
-      const platformUrls = REVIEW_URLS[platform in REVIEW_URLS ? platform as keyof typeof REVIEW_URLS : 'google']
+    const key = platformKey in REVIEW_URLS ? platformKey as keyof typeof REVIEW_URLS : 'google'
+    if (key in REVIEW_URLS) {
+      const platformUrls = REVIEW_URLS[key]
       return platformUrls[loc] || REVIEW_URLS.google[loc]
-    } catch {
+    } else {
+      console.error(`No URL found for platform "${platformKey}", defaulting to Google...`)
       return REVIEW_URLS.google[loc]
+    }
+  }
+
+  const handleLocationSelect = (locationKey: Location) => {
+    setIsRedirecting(true)
+    const reviewUrl = getReviewUrl(locationKey)
+    if (reviewUrl) {
+      router.push(reviewUrl)
+    } else {
+      setIsRedirecting(false)
+      toast({
+        variant: 'destructive',
+        description: 'Something went wrong, please reach out to us at support@hostandhomecleaners.com!',
+      })
+      throw new Error(`Failed to get review URL for "${locationKey}" on "${platformKey}"`)
     }
   }
 
@@ -107,22 +129,12 @@ export const StarRating: FC<StarRatingProps> = () => {
     setRating(selectedRating)
 
     if (selectedRating >= 4) {
-      if (!location) {
+      if (!locationKey) {
         setShowLocationSelect(true)
       } else {
-        setIsRedirecting(true)
-        setTimeout(() => {
-          router.push(getReviewUrl(location))
-        }, 500)
+        handleLocationSelect(locationKey)
       }
     }
-  }
-
-  const handleLocationSelect = (selectedLocation: Location) => {
-    setIsRedirecting(true)
-    setTimeout(() => {
-      router.push(getReviewUrl(selectedLocation))
-    }, 500)
   }
 
   const handleStarHover = (star: number) => {
@@ -160,7 +172,7 @@ export const StarRating: FC<StarRatingProps> = () => {
           <TallyForm />
         </div>
       )}
-      {rating >= 4 && !showLocationSelect && location && isRedirecting && (
+      {rating >= 4 && !showLocationSelect && locationKey && isRedirecting && (
         <RedirectingMessage />
       )}
       {showLocationSelect && (
