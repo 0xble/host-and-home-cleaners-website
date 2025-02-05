@@ -62,6 +62,7 @@
     "**/*.ts",
     "**/*.tsx",
     "**/*.mts",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "src/lib/fpixel.js"
   ]
 }
