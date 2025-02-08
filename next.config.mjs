@@ -6,17 +6,27 @@ const bundleAnalyzer = withBundleAnalyzer({
 })
 
 /** @type {import('next').NextConfig} */
-export default withSentryConfig(bundleAnalyzer(), {
-  // For all available options, see:
-  // https://github.com/getsentry/sentry-webpack-plugin#options
+const nextConfig = bundleAnalyzer({
+  // Your Next.js config options here if needed
+  sentry: {
+    hideSourceMaps: true,
+  },
+})
+
+// Sentry webpack plugin options
+const sentryWebpackPluginOptions = {
+  silent: true,
+}
+
+// For all available options, see:
+// https://github.com/getsentry/sentry-webpack-plugin#options
+// https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
+const sentryOptions = {
   org: 'great-expectations-llc',
   project: 'host-and-home-cleaners-website',
 
   // Only print logs for uploading source maps in CI
   silent: !process.env.CI,
-
-  // For all available options, see:
-  // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
 
   // Upload a larger set of source maps for prettier stack traces (increases build time)
   widenClientFileUpload: true,
@@ -26,9 +36,6 @@ export default withSentryConfig(bundleAnalyzer(), {
   // Note: Check that the configured route will not match with your Next.js middleware, otherwise reporting of client-
   // side errors will fail.
   tunnelRoute: '/monitoring',
-
-  // Hides source maps from generated client bundles
-  hideSourceMaps: true,
 
   // Automatically tree-shake Sentry logger statements to reduce bundle size
   disableLogger: true,
@@ -41,4 +48,11 @@ export default withSentryConfig(bundleAnalyzer(), {
 
   // Disable Sentry telemetry
   telemetry: false,
-})
+}
+
+// Make sure to add withSentryConfig as the last wrapper
+export default withSentryConfig(
+  nextConfig,
+  sentryWebpackPluginOptions,
+  sentryOptions,
+)

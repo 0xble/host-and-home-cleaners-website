@@ -22,7 +22,7 @@
     "@radix-ui/react-slot": "^1.1.1",
     "@radix-ui/react-toast": "^1.2.5",
     "@rushstack/eslint-patch": "^1.10.5",
-    "@sentry/nextjs": "^8.54.0",
+    "@sentry/nextjs": "^7.0.0",
     "@spotlightjs/spotlight": "^2.10.3",
     "@typescript-eslint/eslint-plugin": "^7.18.0",
     "class-variance-authority": "^0.7.1",
