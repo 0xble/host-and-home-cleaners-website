@@ -113,7 +113,15 @@ export default function Moanalua() {
             question: 'Do you handle move-out cleans?',
             answer: (
               <p>
-                Yes! We specialize in thorough move-out cleaning services that ensure your property is ready for its next occupants. Our detailed checklist covers everything needed for a pristine handover.
+                Yes! We specialize in thorough move-out cleaning services that ensure your property is ready for its next occupants. Our detailed checklist can be viewed at
+                {' '}
+                <Link
+                  href={ROUTES.CHECKLIST.href}
+                  className='link'
+                >
+                  this link
+                </Link>
+                .
               </p>
             ),
           },
@@ -160,14 +168,12 @@ export default function Moanalua() {
           {
             question: 'How do you ensure quality?',
             answer: (
-              <>
-                <p className='mb-2'>
-                  Quality is our priority at
-                  {' '}
-                  {SPECIFIC_BUSINESS_NAME}
-                  . We use detailed checklists and back every clean with our satisfaction guarantee. If anything doesn\'t meet your expectations, we\'ll return within 24 hours to make it right.
-                </p>
-              </>
+              <p className='mb-2'>
+                Quality is our priority at
+                {' '}
+                {SPECIFIC_BUSINESS_NAME}
+                . We use detailed checklists and back every clean with our satisfaction guarantee. If anything doesn\'t meet your expectations, we\'ll return within 24 hours to make it right.
+              </p>
             ),
           },
         ],
