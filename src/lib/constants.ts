@@ -26,7 +26,7 @@ export const SERVICES = {
   STANDARD: 'Standard Cleaning',
   DEEP: 'Deep Cleaning',
   MOVE_IN_OUT: 'Move In/Out Cleaning',
-  AIRBNB: 'Airbnb Cleaning',
+  VACATION_RENTAL: 'Vacation Rental Cleaning',
 } as const
 
 export const LOCATIONS = {

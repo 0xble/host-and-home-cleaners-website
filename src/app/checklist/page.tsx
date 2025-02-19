@@ -37,7 +37,7 @@ export default function Checklist() {
                 STANDARD: true,
                 DEEP: true,
                 MOVE_IN_OUT: true,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -46,7 +46,7 @@ export default function Checklist() {
                 STANDARD: true,
                 DEEP: true,
                 MOVE_IN_OUT: true,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -55,7 +55,7 @@ export default function Checklist() {
                 STANDARD: true,
                 DEEP: true,
                 MOVE_IN_OUT: true,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -64,7 +64,7 @@ export default function Checklist() {
                 STANDARD: false,
                 DEEP: true,
                 MOVE_IN_OUT: true,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -73,7 +73,7 @@ export default function Checklist() {
                 STANDARD: true,
                 DEEP: true,
                 MOVE_IN_OUT: true,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -82,7 +82,7 @@ export default function Checklist() {
                 STANDARD: true,
                 DEEP: true,
                 MOVE_IN_OUT: false,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -91,7 +91,7 @@ export default function Checklist() {
                 STANDARD: true,
                 DEEP: true,
                 MOVE_IN_OUT: false,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -100,7 +100,7 @@ export default function Checklist() {
                 STANDARD: true,
                 DEEP: true,
                 MOVE_IN_OUT: true,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -109,7 +109,7 @@ export default function Checklist() {
                 STANDARD: true,
                 DEEP: true,
                 MOVE_IN_OUT: true,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -118,7 +118,7 @@ export default function Checklist() {
                 STANDARD: true,
                 DEEP: true,
                 MOVE_IN_OUT: true,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -127,7 +127,7 @@ export default function Checklist() {
                 STANDARD: false,
                 DEEP: true,
                 MOVE_IN_OUT: true,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -136,7 +136,7 @@ export default function Checklist() {
                 STANDARD: true,
                 DEEP: true,
                 MOVE_IN_OUT: false,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -145,7 +145,7 @@ export default function Checklist() {
                 STANDARD: true,
                 DEEP: true,
                 MOVE_IN_OUT: false,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -154,7 +154,7 @@ export default function Checklist() {
                 STANDARD: true,
                 DEEP: true,
                 MOVE_IN_OUT: false,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -163,7 +163,7 @@ export default function Checklist() {
                 STANDARD: true,
                 DEEP: true,
                 MOVE_IN_OUT: true,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -172,7 +172,7 @@ export default function Checklist() {
                 STANDARD: true,
                 DEEP: true,
                 MOVE_IN_OUT: true,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -181,7 +181,7 @@ export default function Checklist() {
                 STANDARD: false,
                 DEEP: false,
                 MOVE_IN_OUT: true,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -190,7 +190,7 @@ export default function Checklist() {
                 STANDARD: true,
                 DEEP: true,
                 MOVE_IN_OUT: false,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -199,7 +199,7 @@ export default function Checklist() {
                 STANDARD: true,
                 DEEP: true,
                 MOVE_IN_OUT: false,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
           ]}
@@ -213,7 +213,7 @@ export default function Checklist() {
                 STANDARD: true,
                 DEEP: true,
                 MOVE_IN_OUT: true,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -222,7 +222,7 @@ export default function Checklist() {
                 STANDARD: true,
                 DEEP: true,
                 MOVE_IN_OUT: true,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -231,7 +231,7 @@ export default function Checklist() {
                 STANDARD: true,
                 DEEP: true,
                 MOVE_IN_OUT: true,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -240,7 +240,7 @@ export default function Checklist() {
                 STANDARD: true,
                 DEEP: true,
                 MOVE_IN_OUT: true,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -249,7 +249,7 @@ export default function Checklist() {
                 STANDARD: false,
                 DEEP: true,
                 MOVE_IN_OUT: true,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -258,7 +258,7 @@ export default function Checklist() {
                 STANDARD: true,
                 DEEP: true,
                 MOVE_IN_OUT: true,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -267,7 +267,7 @@ export default function Checklist() {
                 STANDARD: true,
                 DEEP: true,
                 MOVE_IN_OUT: false,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -276,7 +276,7 @@ export default function Checklist() {
                 STANDARD: true,
                 DEEP: true,
                 MOVE_IN_OUT: true,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -285,7 +285,7 @@ export default function Checklist() {
                 STANDARD: true,
                 DEEP: true,
                 MOVE_IN_OUT: true,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -294,7 +294,7 @@ export default function Checklist() {
                 STANDARD: true,
                 DEEP: true,
                 MOVE_IN_OUT: true,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -303,7 +303,7 @@ export default function Checklist() {
                 STANDARD: true,
                 DEEP: true,
                 MOVE_IN_OUT: true,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -312,7 +312,7 @@ export default function Checklist() {
                 STANDARD: true,
                 DEEP: true,
                 MOVE_IN_OUT: true,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -321,7 +321,7 @@ export default function Checklist() {
                 STANDARD: false,
                 DEEP: true,
                 MOVE_IN_OUT: true,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -330,7 +330,7 @@ export default function Checklist() {
                 STANDARD: true,
                 DEEP: true,
                 MOVE_IN_OUT: true,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -339,7 +339,7 @@ export default function Checklist() {
                 STANDARD: true,
                 DEEP: true,
                 MOVE_IN_OUT: true,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -348,7 +348,7 @@ export default function Checklist() {
                 STANDARD: true,
                 DEEP: true,
                 MOVE_IN_OUT: true,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -357,7 +357,7 @@ export default function Checklist() {
                 STANDARD: false,
                 DEEP: false,
                 MOVE_IN_OUT: true,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -366,7 +366,7 @@ export default function Checklist() {
                 STANDARD: true,
                 DEEP: true,
                 MOVE_IN_OUT: true,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -375,7 +375,7 @@ export default function Checklist() {
                 STANDARD: true,
                 DEEP: true,
                 MOVE_IN_OUT: false,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -384,7 +384,7 @@ export default function Checklist() {
                 STANDARD: true,
                 DEEP: true,
                 MOVE_IN_OUT: true,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
           ]}
@@ -398,7 +398,7 @@ export default function Checklist() {
                 STANDARD: true,
                 DEEP: true,
                 MOVE_IN_OUT: true,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -407,7 +407,7 @@ export default function Checklist() {
                 STANDARD: true,
                 DEEP: true,
                 MOVE_IN_OUT: true,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -416,7 +416,7 @@ export default function Checklist() {
                 STANDARD: true,
                 DEEP: true,
                 MOVE_IN_OUT: true,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -425,7 +425,7 @@ export default function Checklist() {
                 STANDARD: false,
                 DEEP: true,
                 MOVE_IN_OUT: true,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -434,7 +434,7 @@ export default function Checklist() {
                 STANDARD: false,
                 DEEP: true,
                 MOVE_IN_OUT: true,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -443,7 +443,7 @@ export default function Checklist() {
                 STANDARD: true,
                 DEEP: true,
                 MOVE_IN_OUT: true,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -452,7 +452,7 @@ export default function Checklist() {
                 STANDARD: true,
                 DEEP: true,
                 MOVE_IN_OUT: false,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -461,7 +461,7 @@ export default function Checklist() {
                 STANDARD: true,
                 DEEP: true,
                 MOVE_IN_OUT: true,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -470,7 +470,7 @@ export default function Checklist() {
                 STANDARD: true,
                 DEEP: true,
                 MOVE_IN_OUT: true,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -479,7 +479,7 @@ export default function Checklist() {
                 STANDARD: true,
                 DEEP: true,
                 MOVE_IN_OUT: true,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -488,7 +488,7 @@ export default function Checklist() {
                 STANDARD: false,
                 DEEP: false,
                 MOVE_IN_OUT: true,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -497,7 +497,7 @@ export default function Checklist() {
                 STANDARD: true,
                 DEEP: true,
                 MOVE_IN_OUT: true,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -506,7 +506,7 @@ export default function Checklist() {
                 STANDARD: false,
                 DEEP: true,
                 MOVE_IN_OUT: true,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -515,7 +515,7 @@ export default function Checklist() {
                 STANDARD: true,
                 DEEP: true,
                 MOVE_IN_OUT: true,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -524,7 +524,7 @@ export default function Checklist() {
                 STANDARD: false,
                 DEEP: false,
                 MOVE_IN_OUT: true,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -533,7 +533,7 @@ export default function Checklist() {
                 STANDARD: true,
                 DEEP: true,
                 MOVE_IN_OUT: true,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -542,7 +542,7 @@ export default function Checklist() {
                 STANDARD: true,
                 DEEP: true,
                 MOVE_IN_OUT: false,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -551,7 +551,7 @@ export default function Checklist() {
                 STANDARD: true,
                 DEEP: true,
                 MOVE_IN_OUT: true,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -560,7 +560,7 @@ export default function Checklist() {
                 STANDARD: true,
                 DEEP: true,
                 MOVE_IN_OUT: true,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -569,7 +569,7 @@ export default function Checklist() {
                 STANDARD: true,
                 DEEP: true,
                 MOVE_IN_OUT: true,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -578,7 +578,7 @@ export default function Checklist() {
                 STANDARD: true,
                 DEEP: true,
                 MOVE_IN_OUT: true,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -587,7 +587,7 @@ export default function Checklist() {
                 STANDARD: false,
                 DEEP: true,
                 MOVE_IN_OUT: true,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -596,7 +596,7 @@ export default function Checklist() {
                 STANDARD: false,
                 DEEP: true,
                 MOVE_IN_OUT: true,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -605,7 +605,7 @@ export default function Checklist() {
                 STANDARD: true,
                 DEEP: true,
                 MOVE_IN_OUT: false,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
           ]}
@@ -619,7 +619,7 @@ export default function Checklist() {
                 STANDARD: false,
                 DEEP: false,
                 MOVE_IN_OUT: true,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -628,7 +628,7 @@ export default function Checklist() {
                 STANDARD: true,
                 DEEP: true,
                 MOVE_IN_OUT: true,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -637,7 +637,7 @@ export default function Checklist() {
                 STANDARD: false,
                 DEEP: false,
                 MOVE_IN_OUT: true,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -646,7 +646,7 @@ export default function Checklist() {
                 STANDARD: true,
                 DEEP: true,
                 MOVE_IN_OUT: true,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -655,7 +655,7 @@ export default function Checklist() {
                 STANDARD: false,
                 DEEP: false,
                 MOVE_IN_OUT: true,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -664,7 +664,7 @@ export default function Checklist() {
                 STANDARD: false,
                 DEEP: false,
                 MOVE_IN_OUT: true,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
             {
@@ -673,7 +673,7 @@ export default function Checklist() {
                 STANDARD: false,
                 DEEP: false,
                 MOVE_IN_OUT: true,
-                AIRBNB: true,
+                VACATION_RENTAL: true,
               },
             },
           ]}
