@@ -105,7 +105,7 @@ export default function Home() {
         />
         <PricingSection
           heading='Pricing'
-          pricing={{ standard: 129, deep: 169, moveInOut: 189, airbnb: 129 }}
+          pricing={{ standard: 129, deep: 169, moveInOut: 189, vacationRental: 129 }}
           description={(
             <>
               <p className='mb-4 text-left'>

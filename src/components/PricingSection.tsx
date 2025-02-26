@@ -71,7 +71,7 @@ export type PricingSectionProps = {
     standard: number
     deep: number
     moveInOut: number
-    airbnb: number
+    vacationRental: number
   }
 }
 
@@ -430,9 +430,9 @@ export default function PricingSection({ heading, description, pricing }: Pricin
             )}
           />
           <PricingCard
-            name={SERVICES.AIRBNB}
+            name={SERVICES.VACATION_RENTAL}
             estimatedTime='2-3 hours (estimated)'
-            estimatedPrice={`$${pricing.airbnb.toFixed(0)}`}
+            estimatedPrice={`$${pricing.vacationRental.toFixed(0)}`}
             description='Perfect for Airbnb/VRBO hosts. Ensures your property is spotless and ready for guests.'
             includes='Includes all PLUS'
             features={(
