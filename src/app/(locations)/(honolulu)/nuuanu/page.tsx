@@ -22,7 +22,7 @@ export default function Nuuanu() {
       reviewsBadgeId='142009ae-6f8c-4599-9c7e-9d370298abc9'
       googleMapsEmbedUrl='https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d237770.1723966727!2d-157.869932!3d21.3836454!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c4ce057e4bdff0b%3A0xa78d25a714d5f0ae!2sHost%20%26%20Home%20Cleaners%20Honolulu!5e0!3m2!1sen!2sus!4v1729395012053!5m2!1sen!2sus'
       photosFolder='honolulu'
-      pricing={{ standard: 232, deep: 304, moveInOut: 340, airbnb: 232 }}
+      pricing={{ standard: 232, deep: 304, moveInOut: 340, vacationRental: 232 }}
       copy={{
         customHeroHeading: (
           <>
@@ -160,14 +160,12 @@ export default function Nuuanu() {
           {
             question: 'How do you maintain consistent quality?',
             answer: (
-              <>
-                <p className='mb-2'>
-                  At
-                  {' '}
-                  {SPECIFIC_BUSINESS_NAME}
-                  , excellence is non-negotiable. We implement comprehensive cleaning checklists tailored to each property type and stand firmly behind our work with a satisfaction guarantee. Not completely satisfied? We'll return within 24 hours to address any concerns.
-                </p>
-              </>
+              <p className='mb-2'>
+                At
+                {' '}
+                {SPECIFIC_BUSINESS_NAME}
+                , excellence is non-negotiable. We implement comprehensive cleaning checklists tailored to each property type and stand firmly behind our work with a satisfaction guarantee. Not completely satisfied? We'll return within 24 hours to address any concerns.
+              </p>
             ),
           },
         ],

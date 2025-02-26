@@ -30,7 +30,7 @@ type LocationPageProps = {
     standard: number
     deep: number
     moveInOut: number
-    airbnb: number
+    vacationRental: number
   }
   copy: {
   // Hero Section
