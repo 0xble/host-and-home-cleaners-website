@@ -1,11 +1,14 @@
 import type { Metadata } from 'next'
+import dynamic from 'next/dynamic'
 import Link from 'next/link'
-import { LocalBusinessJsonLd } from 'next-seo'
 
 import CompetitorComparisonTable from '@/components/CompetitorComparisonTable'
 import LocationPage from '@/components/LocationPage'
-import { BUSINESS_NAME, EMAIL, LOCATIONS, PHONE, TAGLINE } from '@/lib/constants'
+import { BUSINESS_NAME, EMAIL, LOCATIONS, PHONE, TAGLINE, URL } from '@/lib/constants'
 import { ROUTES } from '@/lib/routes'
+
+// Dynamically import the LocalBusinessSchemaMarkup component with ssr: false to ensure it only renders on client
+const LocalBusinessSchemaMarkup = dynamic(() => import('@/components/LocalBusinessSchemaMarkup'), { ssr: false })
 
 const SPECIFIC_BUSINESS_NAME = `${BUSINESS_NAME} ${LOCATIONS.HONOLULU.name}`
 
@@ -17,11 +20,11 @@ export const metadata: Metadata = {
 export default function Honolulu() {
   return (
     <>
-      <LocalBusinessJsonLd
+      <LocalBusinessSchemaMarkup
         type='CleaningService'
         id={`${URL}${ROUTES.LOCATIONS.HONOLULU.href}`}
         name={SPECIFIC_BUSINESS_NAME}
-        description={metadata.description!}
+        description={`${TAGLINE}. Proudly serving the Honolulu and Oahu area.`}
         url={`${URL}${ROUTES.LOCATIONS.HONOLULU.href}`}
         telephone={PHONE.HONOLULU.formatted}
         email={EMAIL.HONOLULU}
