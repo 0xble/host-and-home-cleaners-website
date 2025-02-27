@@ -4,8 +4,8 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import Script from 'next/script'
 
-import FacebookPixel from '@/components/FacebookPixel'
 import { Toaster } from '@/components/ui/toaster'
+import { PixelInitializer } from '@/lib/pixel'
 import { getBaseUrl } from '@/lib/utils'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -38,7 +38,7 @@ export default function RootLayout({ children }: LayoutProps) {
         <Script src='https://tally.so/widgets/embed.js' strategy='lazyOnload' />
 
         {/* Analytics */}
-        <FacebookPixel />
+        <PixelInitializer />
 
         {/* UI Components */}
         <Toaster />

@@ -4,7 +4,9 @@ import Link from 'next/link'
 
 import CompetitorComparisonTable from '@/components/CompetitorComparisonTable'
 import LocationPage from '@/components/LocationPage'
+import TrackedLink from '@/components/TrackedLink'
 import { BUSINESS_NAME, EMAIL, LOCATIONS, PHONE, TAGLINE, URL } from '@/lib/constants'
+import { PixelEvent } from '@/lib/pixel'
 import { ROUTES } from '@/lib/routes'
 
 // Dynamically import the LocalBusinessSchemaMarkup component with ssr: false to ensure it only renders on client
@@ -290,12 +292,15 @@ export default function MyrtleBeach() {
               {' '}
               or
               {' '}
-              <a
+              <TrackedLink
                 href={`tel:+${PHONE.MYRTLE_BEACH.plain}`}
                 className='link'
+                isExternal
+                eventName={PixelEvent.CONTACT}
+                eventParams={{ method: 'phone' }}
               >
                 give us a call today
-              </a>
+              </TrackedLink>
               . If you call and the line is busy, don&apos;t worry — try again at
               a later time or leave a voicemail and we&apos;ll get back to you as
               soon as we can!

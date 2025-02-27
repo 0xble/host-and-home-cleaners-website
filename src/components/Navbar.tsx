@@ -1,7 +1,10 @@
+'use client'
+
 import { Bars3Icon } from '@heroicons/react/24/solid'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
+import TrackedLink from '@/components/TrackedLink'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,6 +12,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { CHECKLIST_NAME } from '@/lib/constants'
+import { PixelEvent } from '@/lib/pixel'
 import { ROUTES } from '@/lib/routes'
 import type { Location, Phone } from '@/lib/types'
 import { cn, getUrl } from '@/lib/utils'
@@ -29,19 +33,22 @@ export function NavbarLink({
   ...props
 }: NavbarLinkProps) {
   const pathname = usePathname()
+  const isActive = pathname === href
 
   return (
-    <Link
+    <TrackedLink
       href={href}
       className={cn(
-        'block rounded px-3 py-2 text-gray-900 hover:bg-gray-100 lg:p-0 lg:hover:bg-transparent lg:hover:text-primary-700',
-        pathname === href ? 'text-primary-700' : '',
+        'block rounded py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 lg:p-0 lg:hover:bg-transparent lg:hover:text-primary-700',
+        isActive && 'text-white bg-primary-700 lg:bg-transparent lg:text-primary-700',
         className,
       )}
+      eventName={href === ROUTES.BOOKING.href ? PixelEvent.SCHEDULE : 'NavClick'}
+      eventParams={href === ROUTES.BOOKING.href ? {} : { path: href }}
       {...props}
     >
       {children}
-    </Link>
+    </TrackedLink>
   )
 }
 
@@ -66,12 +73,13 @@ export default function Navbar({
                 phone={phone}
               />
             )}
-            <Link
+            <TrackedLink
               href={ROUTES.BOOKING.href}
               className='rounded-lg bg-primary-700 p-3 text-center text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 lg:text-base'
+              eventName={PixelEvent.SCHEDULE}
             >
               Book Now
-            </Link>
+            </TrackedLink>
             <button
               data-collapse-toggle='navbar-sticky'
               type='button'

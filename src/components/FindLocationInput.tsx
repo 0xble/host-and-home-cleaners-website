@@ -2,6 +2,8 @@
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
+import { useEventTracking } from '@/lib/pixelClient'
+import { PixelEvent } from '@/lib/pixelEvents'
 import { ROUTES } from '@/lib/routes'
 import { isZipCode } from '@/lib/schemas'
 import { cn, getLocation } from '@/lib/utils'
@@ -22,20 +24,25 @@ export default function FindLocationInput({
   const [search, setSearch] = useState('')
   const { setLocation } = useLocationStore()
   const { toast } = useToast()
+  const trackEvent = useEventTracking()
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
+
+    // Track the FindLocation event
+    trackEvent(PixelEvent.FIND_LOCATION, { zipCode: search })
 
     if (isZipCode(search)) {
       const location = getLocation({ zipCode: search })
       if (location) {
         setLocation(location)
+
         router.push(ROUTES.LOCATIONS[location].href)
       } else {
         toast({
           title: `Location not found near ${search}!`,
           description:
-          'Sorry, looks like we don\'t have a location near you. Please try another ZIP code.',
+        'Sorry, looks like we don\'t have a location near you. Please try another ZIP code.',
         })
       }
     } else {

@@ -1,8 +1,9 @@
 'use client'
 import Image from 'next/image'
-import Link from 'next/link'
 import { Suspense } from 'react'
 
+import TrackedLink from '@/components/TrackedLink'
+import { PixelEvent } from '@/lib/pixel'
 import { ROUTES } from '@/lib/routes'
 import type { Location } from '@/lib/types'
 import { getPhone } from '@/lib/utils'
@@ -40,12 +41,13 @@ export default function CTASection(props: CTASectionProps) {
           location === null
             ? (
                 <div className='flex items-center gap-6 lg:flex-row'>
-                  <Link
+                  <TrackedLink
                     href={ROUTES.BOOKING.href}
                     className='inline-flex items-center justify-center rounded-xl bg-primary-700 p-4 text-center font-medium text-white hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 lg:mr-3 lg:px-6 lg:py-4 lg:text-xl'
+                    eventName={PixelEvent.SCHEDULE}
                   >
                     Book Now
-                  </Link>
+                  </TrackedLink>
                   <Suspense>
                     <FindLocationInput className='hidden sm:flex' />
                   </Suspense>

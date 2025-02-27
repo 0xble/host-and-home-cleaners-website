@@ -3,7 +3,9 @@ import Link from 'next/link'
 
 import CompetitorComparisonTable from '@/components/CompetitorComparisonTable'
 import LocationPage from '@/components/LocationPage'
+import TrackedLink from '@/components/TrackedLink'
 import { BUSINESS_NAME, LOCATIONS, PHONE, TAGLINE } from '@/lib/constants'
+import { PixelEvent } from '@/lib/pixel'
 import { ROUTES } from '@/lib/routes'
 
 const SPECIFIC_BUSINESS_NAME = `${BUSINESS_NAME} ${LOCATIONS.HONOLULU.name}`
@@ -181,12 +183,15 @@ export default function AinaHaina() {
             {' '}
             or
             {' '}
-            <a
+            <TrackedLink
               href={`tel:+${PHONE.HONOLULU.plain}`}
               className='link'
+              isExternal
+              eventName={PixelEvent.CONTACT}
+              eventParams={{ method: 'phone' }}
             >
               call our Aina Haina team
-            </a>
+            </TrackedLink>
             . With
             {' '}
             {(() => {

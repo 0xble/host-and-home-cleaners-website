@@ -3,7 +3,9 @@ import Link from 'next/link'
 
 import CompetitorComparisonTable from '@/components/CompetitorComparisonTable'
 import LocationPage from '@/components/LocationPage'
+import TrackedLink from '@/components/TrackedLink'
 import { BUSINESS_NAME, LOCATIONS, PHONE, TAGLINE } from '@/lib/constants'
+import { PixelEvent } from '@/lib/pixel'
 import { ROUTES } from '@/lib/routes'
 
 const SPECIFIC_BUSINESS_NAME = `${BUSINESS_NAME} ${LOCATIONS.MYRTLE_BEACH.name}`
@@ -213,12 +215,15 @@ export default function GardenCity() {
             {' '}
             or
             {' '}
-            <a
+            <TrackedLink
               href={`tel:+${PHONE.MYRTLE_BEACH.plain}`}
               className='link'
+              isExternal
+              eventName={PixelEvent.CONTACT}
+              eventParams={{ method: 'phone' }}
             >
               call us today
-            </a>
+            </TrackedLink>
             . Our availability is always in short supply, so book now to secure your preferred time slot!
           </>
         ),

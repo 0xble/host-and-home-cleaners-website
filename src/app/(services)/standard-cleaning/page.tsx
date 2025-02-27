@@ -5,6 +5,7 @@ import { Suspense } from 'react'
 import CTASection from '@/components/CTASection'
 import Page from '@/components/Page'
 import { BUSINESS_NAME, SERVICES } from '@/lib/constants'
+import { ContentViewTracker } from '@/lib/pixel'
 import homeImage from '@/public/home3.jpeg'
 
 export const metadata: Metadata = {
@@ -15,6 +16,9 @@ export const metadata: Metadata = {
 export default function StandardCleaning() {
   return (
     <Page location='CACHED' className='mx-4 pb-24'>
+      {/* Track content view */}
+      <ContentViewTracker contentType='service' contentName='Standard Cleaning' />
+
       <section className='px-4 text-center'>
         <Image
           className='mx-auto mb-24 h-[300px] w-full max-w-screen-lg md:h-[450px] lg:rounded-b'

@@ -1,6 +1,6 @@
-import Link from 'next/link'
-
+import TrackedLink from '@/components/TrackedLink'
 import { SERVICES } from '@/lib/constants'
+import { PixelEvent } from '@/lib/pixel'
 import { ROUTES } from '@/lib/routes'
 import { cn } from '@/lib/utils'
 
@@ -43,16 +43,18 @@ function PricingCard({
         {estimatedPrice}
       </span>
       <p className='text-xs'>*starting at price</p>
-      <Link
+      <TrackedLink
         href={ROUTES.BOOKING.href}
         className={cn(
           'my-4 rounded-lg bg-gray-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:ring-4 focus:ring-gray-200',
           highlighted
           && 'bg-primary-700 hover:bg-primary-800 focus:ring-primary-200',
         )}
+        eventName={PixelEvent.SCHEDULE}
+        eventParams={{ service_type: name }}
       >
         Book a cleaning
-      </Link>
+      </TrackedLink>
       <p className='mb-4 text-start text-base'>{description}</p>
       <h4 className='text-lg font-medium'>
         {includes || 'Includes'}
