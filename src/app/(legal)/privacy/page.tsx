@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 
 import { BUSINESS_NAME, EMAIL } from '@/lib/constants'
+import { ContentViewTracker } from '@/lib/pixel'
 
 export const metadata: Metadata = {
   title: 'Privacy Policy',
@@ -10,6 +11,11 @@ export const metadata: Metadata = {
 export default function PrivacyPolicy() {
   return (
     <main className='prose mx-auto my-32 max-w-2xl prose-headings:font-serif prose-strong:font-serif'>
+      <ContentViewTracker
+        contentType='legal'
+        contentName='Privacy Policy'
+        contentId='privacy-policy'
+      />
       <h1 className='text-center'>
         {BUSINESS_NAME}
         {' '}
@@ -151,14 +157,14 @@ export default function PrivacyPolicy() {
       </ul>
       <h3>What About Really Sensitive Data?</h3>
       <p>
-        We don’t collect any &quot;sensitive data&quot; about you (like racial
+        We don't collect any &quot;sensitive data&quot; about you (like racial
         or ethnic origin, political opinions, religious/philosophical beliefs,
         trade union membership, genetic data, biometric data, health data, data
         about your sexual life or orientation, and offenses or alleged
         offenses).
       </p>
 
-      <h3>What About Children’s Data?</h3>
+      <h3>What About Children's Data?</h3>
       <p>
         Bearer is a business-to-business service directed to and intended for
         use only by those who are 18 years of age or over. We do not target or
@@ -166,7 +172,7 @@ export default function PrivacyPolicy() {
         any person under 16 years of age.
       </p>
 
-      <h3>What About Children’s Data?</h3>
+      <h3>What About Children's Data?</h3>
       <p>
         Bearer is a business-to-business service directed to and intended for
         use only by those who are 18 years of age or over. We do not target
@@ -297,7 +303,7 @@ export default function PrivacyPolicy() {
       <p>
         You have the right to access information we hold about you. This
         includes the right to ask us supplementary information about the
-        categories of data we’re processing, the purposes of data processing,
+        categories of data we're processing, the purposes of data processing,
         the categories of third parties to whom the data may be disclosed, how
         long the data will be stored, and your other rights regarding our use of
         your data.
@@ -458,7 +464,7 @@ export default function PrivacyPolicy() {
       </p>
 
       <p>
-        We don’t use cookies on visitors. We use Google Analytics for website
+        We don't use cookies on visitors. We use Google Analytics for website
         measurement anonymously. When you interact with
         {' '}
         {BUSINESS_NAME}

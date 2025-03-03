@@ -4,10 +4,13 @@ import { Suspense } from 'react'
 
 import CTASection from '@/components/CTASection'
 import Page from '@/components/Page'
-import { BUSINESS_NAME } from '@/lib/constants'
+import { BUSINESS_NAME, SERVICES } from '@/lib/constants'
+import { ContentViewTracker } from '@/lib/pixel'
+
+const title = `${BUSINESS_NAME} ${SERVICES.DEEP}`
 
 export const metadata: Metadata = {
-  title: `${BUSINESS_NAME} Deep Cleaning`,
+  title,
   description:
     'Recommended as an initial cleaning to get your home to a high standard of cleanliness to maintain with recurring standard cleanings.',
 }
@@ -15,6 +18,11 @@ export const metadata: Metadata = {
 export default function DeepCleaning() {
   return (
     <Page location='CACHED' className='mx-4 pb-24'>
+      <ContentViewTracker
+        contentType='service'
+        contentName={title}
+        contentId={`service-${SERVICES.DEEP.toLowerCase().replace(/\s+/g, '-')}`}
+      />
       <section className='px-4 text-center'>
         <Image
           className='mx-auto mb-24 h-[300px] w-full max-w-screen-lg md:h-[450px] lg:rounded-b'

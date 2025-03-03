@@ -6,7 +6,7 @@ import CompetitorComparisonTable from '@/components/CompetitorComparisonTable'
 import LocationPage from '@/components/LocationPage'
 import TrackedLink from '@/components/TrackedLink'
 import { BUSINESS_NAME, EMAIL, LOCATIONS, PHONE, TAGLINE, URL } from '@/lib/constants'
-import { PixelEvent } from '@/lib/pixel'
+import { ContentViewTracker, PixelEvent } from '@/lib/pixel'
 import { ROUTES } from '@/lib/routes'
 
 // Dynamically import the LocalBusinessSchemaMarkup component with ssr: false to ensure it only renders on client
@@ -22,6 +22,11 @@ export const metadata: Metadata = {
 export default function MyrtleBeach() {
   return (
     <>
+      <ContentViewTracker
+        contentType='location'
+        contentName='Myrtle Beach'
+        contentId='myrtle-beach-location'
+      />
       <LocalBusinessSchemaMarkup
         type='CleaningService'
         id={`${URL}${ROUTES.LOCATIONS.MYRTLE_BEACH.href}`}

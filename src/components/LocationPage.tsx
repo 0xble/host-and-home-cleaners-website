@@ -13,6 +13,7 @@ import ReviewsMasonry from '@/components/ReviewsMasonry'
 import TestimonialsSection from '@/components/TestimonialSection'
 import TrustSection from '@/components/TrustSection'
 import { type Location, type LocationKey, PHONE } from '@/lib/constants'
+import { ContentViewTracker } from '@/lib/pixel'
 
 type Step = {
   title: string
@@ -87,6 +88,11 @@ export default function LocationPage({
 }: LocationPageProps) {
   return (
     <>
+      <ContentViewTracker
+        contentType='location'
+        contentName={location.name}
+        contentId={`location-${locationKey.toLowerCase()}`}
+      />
       <Suspense>
         <ReviewsFloatingBadge id={reviewsBadgeId} />
       </Suspense>

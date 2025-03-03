@@ -4,7 +4,9 @@ import Link from 'next/link'
 
 import ApplyForm from '@/components/ApplyForm'
 import BonusesTable from '@/components/BonusesTable'
+import Page from '@/components/Page'
 import { BUSINESS_NAME } from '@/lib/constants'
+import { ContentViewTracker } from '@/lib/pixel'
 import heroImage from '@/public/cleaner-work.gif'
 
 const badges = [
@@ -102,83 +104,90 @@ export const metadata: Metadata = {
 
 export default function Apply() {
   return (
-    <main className='mb-36 space-y-24'>
-      {/* Hero */}
-      <section className='bg-white pt-8 lg:pt-12'>
-        <div className='mx-auto flex max-w-screen-xl flex-col items-center justify-center gap-0 px-4 py-8 lg:grid lg:grid-cols-6 lg:py-16'>
-          <div className='mb-24 max-w-xl place-self-center lg:col-span-3 lg:mb-0 lg:mr-4'>
-            <h1 className='mb-4 text-4xl leading-none tracking-tight sm:text-5xl xl:text-6xl'>
-              Cleaners wanted!
-            </h1>
-            <h3 className='mb-4 text-gray-800'>
-              Let&apos;s get you
-              {' '}
-              <mark>more booking</mark>
-              {' '}
-              in
-              {' '}
-              <mark>less time</mark>
-              .
-            </h3>
-            <p className='mb-8 max-w-2xl lg:mb-12'>
-              {BUSINESS_NAME}
-              {' '}
-              is looking for hardworking and reliable home cleaners. We
-              will fill up your schedule, guarantee payments, and handle
-              customer service so you don&apos;t have to. If this sounds like
-              what you&apos;re looking for, we want to hear from you!
-            </p>
-            <Link
-              href='#form'
-              className='ml-12 items-center justify-center place-self-center rounded-xl bg-primary-700 p-4 text-center font-medium text-white hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 lg:mr-3 lg:px-6 lg:py-4 lg:text-xl'
-            >
-              Apply now
-            </Link>
+    <Page location='CACHED'>
+      <ContentViewTracker
+        contentType='page'
+        contentName='Apply'
+        contentId='apply-page'
+      />
+      <main className='mb-36 space-y-24'>
+        {/* Hero */}
+        <section className='bg-white pt-8 lg:pt-12'>
+          <div className='mx-auto flex max-w-screen-xl flex-col items-center justify-center gap-0 px-4 py-8 lg:grid lg:grid-cols-6 lg:py-16'>
+            <div className='mb-24 max-w-xl place-self-center lg:col-span-3 lg:mb-0 lg:mr-4'>
+              <h1 className='mb-4 text-4xl leading-none tracking-tight sm:text-5xl xl:text-6xl'>
+                Cleaners wanted!
+              </h1>
+              <h3 className='mb-4 text-gray-800'>
+                Let&apos;s get you
+                {' '}
+                <mark>more booking</mark>
+                {' '}
+                in
+                {' '}
+                <mark>less time</mark>
+                .
+              </h3>
+              <p className='mb-8 max-w-2xl lg:mb-12'>
+                {BUSINESS_NAME}
+                {' '}
+                is looking for hardworking and reliable home cleaners. We
+                will fill up your schedule, guarantee payments, and handle
+                customer service so you don&apos;t have to. If this sounds like
+                what you&apos;re looking for, we want to hear from you!
+              </p>
+              <Link
+                href='#form'
+                className='ml-12 items-center justify-center place-self-center rounded-xl bg-primary-700 p-4 text-center font-medium text-white hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 lg:mr-3 lg:px-6 lg:py-4 lg:text-xl'
+              >
+                Apply now
+              </Link>
+            </div>
+            <Image
+              className='mb-5 mr-4 w-[650px] rounded-lg lg:col-span-3 lg:my-0'
+              src={heroImage}
+              alt='Cleaner working in a home'
+              style={{ objectFit: 'contain' }}
+            />
           </div>
-          <Image
-            className='mb-5 mr-4 w-[650px] rounded-lg lg:col-span-3 lg:my-0'
-            src={heroImage}
-            alt='Cleaner working in a home'
-            style={{ objectFit: 'contain' }}
-          />
-        </div>
-      </section>
+        </section>
 
-      {/* Bonuses */}
-      <section>
-        <h2 className='mb-4 text-center tracking-tight text-gray-900'>
-          Earn more with our bonuses
-        </h2>
-        <p className='mb-20 text-center text-gray-500'>
-          We believe in recognizing and rewarding the hard work and dedication
-          of our cleaning professionals.
-        </p>
-        <BonusesTable />
-      </section>
+        {/* Bonuses */}
+        <section>
+          <h2 className='mb-4 text-center tracking-tight text-gray-900'>
+            Earn more with our bonuses
+          </h2>
+          <p className='mb-20 text-center text-gray-500'>
+            We believe in recognizing and rewarding the hard work and dedication
+            of our cleaning professionals.
+          </p>
+          <BonusesTable />
+        </section>
 
-      {/* Trust Badges */}
-      <section className='bg-white'>
-        <div className='mx-auto max-w-screen-xl p-4 lg:py-8'>
-          <div className='flex flex-col justify-between gap-12 text-gray-500 md:flex-row lg:mt-0'>
-            {badges.map(badge => (
-              <div key={badge.key} className='flex items-center justify-center'>
-                {badge}
-              </div>
-            ))}
+        {/* Trust Badges */}
+        <section className='bg-white'>
+          <div className='mx-auto max-w-screen-xl p-4 lg:py-8'>
+            <div className='flex flex-col justify-between gap-12 text-gray-500 md:flex-row lg:mt-0'>
+              {badges.map(badge => (
+                <div key={badge.key} className='flex items-center justify-center'>
+                  {badge}
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Form */}
-      <section className='text-center'>
-        <h2 className='mb-4 text-center tracking-tight text-gray-900'>
-          Tell us about yourself!
-        </h2>
-        <p>
-          Answer a few questions and let&apos;s schedule a time to talk further.
-        </p>
-        <ApplyForm />
-      </section>
-    </main>
+        {/* Form */}
+        <section className='text-center'>
+          <h2 className='mb-4 text-center tracking-tight text-gray-900'>
+            Tell us about yourself!
+          </h2>
+          <p>
+            Answer a few questions and let&apos;s schedule a time to talk further.
+          </p>
+          <ApplyForm />
+        </section>
+      </main>
+    </Page>
   )
 }

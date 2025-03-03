@@ -5,11 +5,14 @@ import { Suspense } from 'react'
 
 import CTASection from '@/components/CTASection'
 import Page from '@/components/Page'
-import { BUSINESS_NAME } from '@/lib/constants'
+import { BUSINESS_NAME, SERVICES } from '@/lib/constants'
+import { ContentViewTracker } from '@/lib/pixel'
 import { ROUTES } from '@/lib/routes'
 
+const title = `${BUSINESS_NAME} ${SERVICES.VACATION_RENTAL}`
+
 export const metadata: Metadata = {
-  title: 'Airbnb Cleaning Services',
+  title,
   description:
     'Professional Airbnb cleaning services that keep your property guest-ready. We handle scheduling, cleaning, and restocking for total peace of mind.',
 }
@@ -17,6 +20,11 @@ export const metadata: Metadata = {
 export default function AirbnbCleaning() {
   return (
     <Page location='CACHED' className='mx-4 pb-24'>
+      <ContentViewTracker
+        contentType='service'
+        contentName={title}
+        contentId={`service-${SERVICES.VACATION_RENTAL.toLowerCase().replace(/\s+/g, '-')}`}
+      />
       <section className='px-4 text-center'>
         <Image
           className='mx-auto mb-24 h-[300px] w-full max-w-screen-lg md:h-[450px] lg:rounded-b'

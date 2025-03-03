@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 
 import { BUSINESS_NAME, EMAIL, URL } from '@/lib/constants'
+import { ContentViewTracker } from '@/lib/pixel'
 
 export const metadata: Metadata = {
   title: 'Terms of Service',
@@ -10,6 +11,11 @@ export const metadata: Metadata = {
 export default function TermsOfService() {
   return (
     <main className='prose mx-auto my-32 max-w-2xl prose-headings:font-serif prose-strong:font-serif'>
+      <ContentViewTracker
+        contentType='legal'
+        contentName='Terms of Service'
+        contentId='terms-of-service'
+      />
       <h1 className='text-center'>
         {BUSINESS_NAME}
         {' '}
@@ -80,7 +86,7 @@ export default function TermsOfService() {
           Payment is due at the time service is
           scheduled. Client may provide Company with a valid credit card to keep
           on file for billing. Client is responsible for and agrees to pay
-          Company for the full cost of Client’s requested services. Without
+          Company for the full cost of Client's requested services. Without
           exception there are no refunds for the cleaning service.
         </li>
         <li>
@@ -146,8 +152,8 @@ export default function TermsOfService() {
           <strong>Acceptance of Terms:</strong>
           {' '}
           Client understands and agrees
-          that Client’s engagement or utilization of the services of a Service
-          Provider of the Company will constitute Client’s acceptance of the
+          that Client's engagement or utilization of the services of a Service
+          Provider of the Company will constitute Client's acceptance of the
           terms and conditions of this Agreement even if Client does not return
           this executed Agreement to Company.
         </li>
@@ -158,10 +164,10 @@ export default function TermsOfService() {
           terminate the Service Provider for any reason.
         </li>
         <li>
-          <strong>Attorney’s Fees:</strong>
+          <strong>Attorney's Fees:</strong>
           {' '}
           Client agrees to pay all reasonable
-          costs, including, but not limited to, attorney’s fees incurred by the
+          costs, including, but not limited to, attorney's fees incurred by the
           Company to enforce any provision in this Agreement.
         </li>
         <li>
@@ -199,14 +205,14 @@ export default function TermsOfService() {
           independent contractors, Our payment processing partners, and other
           service providing software partners. Digital photographs may be taken
           on scene for internal records or posted on social media in order to
-          attract new customers and spread the “
+          attract new customers and spread the "
           {BUSINESS_NAME}
           {' '}
-          Spirit.” order to attract
-          new customers and spread the “
+          Spirit." order to attract
+          new customers and spread the "
           {BUSINESS_NAME}
           {' '}
-          Spirit.” Furthermore, we respect
+          Spirit." Furthermore, we respect
           your privacy and will not share any of your private information
           publicly without your consent.
         </li>
@@ -222,13 +228,13 @@ export default function TermsOfService() {
           {' '}
           {EMAIL.SUPPORT}
           . When receiving incoming messages, you may opt out by replying
-          “Stop.”
+          "Stop."
         </li>
       </ol>
       <h2>WAIVER OF LIABILITY AND HOLD HARMLESS AGREEMENT</h2>
       <p>
         I, the customer who electronically signed, hereby acknowledge and agree
-        to the following: The Coronavirus (“COVID-19”) pandemic is a present
+        to the following: The Coronavirus ("COVID-19") pandemic is a present
         risk to human health. COVID-19 is highly contagious and has a mortality
         rate potentially greater than the flu. COVID-19 can spread easily and
         exponentially. While people of all ages are at risk of catching

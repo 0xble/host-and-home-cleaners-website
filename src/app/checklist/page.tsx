@@ -5,6 +5,7 @@ import CTASection from '@/components/CTASection'
 import PackageComparisonTable from '@/components/PackageComparisonTable'
 import Page from '@/components/Page'
 import { CHECKLIST_NAME } from '@/lib/constants'
+import { ContentViewTracker } from '@/lib/pixel'
 
 export const metadata: Metadata = {
   title: CHECKLIST_NAME,
@@ -13,7 +14,12 @@ export const metadata: Metadata = {
 
 export default function Checklist() {
   return (
-    <Page location='CACHED' className='py-24'>
+    <Page location='CACHED'>
+      <ContentViewTracker
+        contentType='page'
+        contentName='Checklist'
+        contentId='checklist-page'
+      />
       <div className='px-4 text-center'>
         <h1 className='mb-8 text-4xl sm:text-[45px]'>
           The

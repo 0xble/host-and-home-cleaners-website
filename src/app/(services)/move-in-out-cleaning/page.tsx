@@ -4,16 +4,24 @@ import { Suspense } from 'react'
 
 import CTASection from '@/components/CTASection'
 import Page from '@/components/Page'
-import { BUSINESS_NAME } from '@/lib/constants'
+import { BUSINESS_NAME, SERVICES } from '@/lib/constants'
+import { ContentViewTracker } from '@/lib/pixel'
+
+const title = `${BUSINESS_NAME} ${SERVICES.MOVE_IN_OUT}`
 
 export const metadata: Metadata = {
-  title: `${BUSINESS_NAME} Move In/Out Cleaning`,
+  title,
   description: 'Move in/out cleaning services provide deep cleaning, sanitization and detailed attention to every surface. Professional cleaners ensure a pristine space for your transition. Book now!',
 }
 
 export default function MoveCleaning() {
   return (
     <Page location='CACHED' className='mx-4 pb-24'>
+      <ContentViewTracker
+        contentType='service'
+        contentName={title}
+        contentId={`service-${SERVICES.MOVE_IN_OUT.toLowerCase().replace(/\s+/g, '-')}`}
+      />
       <section className='px-4 text-center'>
         <Image
           className='mx-auto mb-24 h-[300px] w-full max-w-screen-lg md:h-[450px] lg:rounded-b'

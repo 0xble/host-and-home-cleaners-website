@@ -15,6 +15,7 @@ import ReviewsMasonry from '@/components/ReviewsMasonry'
 import TestimonialsSection from '@/components/TestimonialSection'
 import TrustSection from '@/components/TrustSection'
 import { BUSINESS_NAME, TAGLINE } from '@/lib/constants'
+import { ContentViewTracker } from '@/lib/pixel'
 import { ROUTES } from '@/lib/routes'
 
 export const metadata: Metadata = {
@@ -25,6 +26,11 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <>
+      <ContentViewTracker
+        contentType='page'
+        contentName='Home'
+        contentId='home-page'
+      />
       <Suspense>
         <ReviewsFloatingBadge id='ba527c37-e33e-46d1-8a33-08aed36ffd09' />
       </Suspense>
