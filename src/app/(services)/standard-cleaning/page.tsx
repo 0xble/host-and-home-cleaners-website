@@ -8,8 +8,10 @@ import { BUSINESS_NAME, SERVICES } from '@/lib/constants'
 import { ContentViewTracker } from '@/lib/pixel'
 import homeImage from '@/public/home3.jpeg'
 
+const title = `Host & Home ${SERVICES.STANDARD}`
+
 export const metadata: Metadata = {
-  title: `Host & Home ${SERVICES.STANDARD}`,
+  title,
   description: 'Experience our professional standard cleaning service - perfect for maintaining a spotless home with regular visits. Book your recurring cleaning today!',
 }
 
@@ -17,7 +19,7 @@ export default function StandardCleaning() {
   return (
     <Page location='CACHED' className='mx-4 pb-24'>
       {/* Track content view */}
-      <ContentViewTracker contentType='service' contentName='Standard Cleaning' />
+      <ContentViewTracker contentType='service' contentName={title} contentId={title} />
 
       <section className='px-4 text-center'>
         <Image

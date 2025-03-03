@@ -102,12 +102,13 @@ export function useEventTracking() {
  *
  * @example
  * // In a service page component
- * useContentViewTracking('service', 'Standard Cleaning');
+ * useContentViewTracking('service', 'Standard Cleaning', 'service_123');
  *
  * @param contentType The type of content being viewed (e.g., 'service', 'location')
  * @param contentName The name of the content being viewed (e.g., 'Standard Cleaning', 'Myrtle Beach')
+ * @param contentId Unique identifier for the content being viewed
  */
-export function useContentViewTracking(contentType: string, contentName: string) {
+export function useContentViewTracking(contentType: string, contentName: string, contentId: string) {
   const [pixel, setPixel] = useState<any>(null)
 
   useEffect(() => {
@@ -126,9 +127,10 @@ export function useContentViewTracking(contentType: string, contentName: string)
       pixel.track(PixelEvent.VIEW_CONTENT, {
         content_type: contentType,
         content_name: contentName,
+        content_id: contentId,
       })
     }
-  }, [contentType, contentName, pixel])
+  }, [contentType, contentName, contentId, pixel])
 }
 
 /**
@@ -224,9 +226,9 @@ export function PixelInitializer() {
  *
  * @example
  * // In a server component
- * <ContentViewTracker contentType="service" contentName="Standard Cleaning" />
+ * <ContentViewTracker contentType="service" contentName="Standard Cleaning" contentId="service_123" />
  */
-export function ContentViewTracker({ contentType, contentName }: { contentType: string, contentName: string }) {
+export function ContentViewTracker({ contentType, contentName, contentId }: { contentType: string, contentName: string, contentId: string }) {
   const [isMounted, setIsMounted] = useState(false)
 
   // Only run after component is mounted on client
@@ -249,13 +251,14 @@ export function ContentViewTracker({ contentType, contentName }: { contentType: 
   }, [isMounted])
 
   useEffect(() => {
-    if (pixel && contentType && contentName && isMounted) {
+    if (pixel && contentType && contentName && contentId && isMounted) {
       pixel.track(PixelEvent.VIEW_CONTENT, {
         content_type: contentType,
         content_name: contentName,
+        content_id: contentId,
       })
     }
-  }, [contentType, contentName, pixel, isMounted])
+  }, [contentType, contentName, contentId, pixel, isMounted])
 
   return null
 }
