@@ -65,15 +65,18 @@ export default function HowItWorksSection({ heading, steps }: HowItWorksSectionP
           <h2 className='mb-4 tracking-tight text-gray-900'>{heading}</h2>
         </div>
         <div className='mt-12 grid gap-6 font-light md:grid-cols-3 lg:mt-14 lg:gap-12'>
-          {steps.map(async (step, index) => (
-            <HowItWorksCard
-              key={step.title}
-              title={step.title.includes(`${index + 1}.`) ? step.title : `${index + 1}. ${step.title}`}
-              alt={step.title}
-              description={step.description}
-              src={await import(`@/public/how-it-works/step-${index + 1}.jpg`)}
-            />
-          ))}
+          {steps.map(async (step, index) => {
+            const imageModule = await import(`@/public/how-it-works/step-${index + 1}.jpg`)
+            return (
+              <HowItWorksCard
+                key={step.title}
+                title={step.title.includes(`${index + 1}.`) ? step.title : `${index + 1}. ${step.title}`}
+                alt={step.title}
+                description={step.description}
+                src={imageModule.default}
+              />
+            )
+          })}
         </div>
       </div>
       <p className='prose mx-auto text-center text-xl text-gray-600'>

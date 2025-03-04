@@ -21,7 +21,8 @@ const getFeaturedImages = async (folder: string): Promise<{ name: string, image:
     .sort((a, b) => a.localeCompare(b, undefined, { numeric: true }))
 
   return await Promise.all(filenames.map(async (name) => {
-    return { name, image: await import(`/public/${folder}/${name}`) as StaticImport }
+    const imageModule = await import(`/public/${folder}/${name}`)
+    return { name, image: imageModule.default }
   }))
 }
 
