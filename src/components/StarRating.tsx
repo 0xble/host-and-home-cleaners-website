@@ -2,7 +2,8 @@
 
 import { slugify } from '0xble/strings'
 import { Star } from 'lucide-react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import Head from 'next/head'
+import { useSearchParams } from 'next/navigation'
 import type { FC } from 'react'
 import { useEffect, useRef, useState } from 'react'
 
@@ -83,7 +84,6 @@ const RedirectingMessage: FC<RedirectingMessageProps> = ({ message = 'Thank you!
 )
 
 export const StarRating: FC<StarRatingProps> = () => {
-  const router = useRouter()
   const searchParams = useSearchParams()
   const { toast } = useToast()
   const locationKey = searchParams.get('location') != null
@@ -111,7 +111,9 @@ export const StarRating: FC<StarRatingProps> = () => {
     setIsRedirecting(true)
     const reviewUrl = getReviewUrl(locationKey)
     if (reviewUrl) {
-      router.push(reviewUrl)
+      // Direct redirection using window.location.href for faster navigation.
+      // This eliminates the overhead of router.push for external URLs.
+      window.location.href = reviewUrl
     } else {
       setIsRedirecting(false)
       toast({
@@ -145,63 +147,72 @@ export const StarRating: FC<StarRatingProps> = () => {
   }
 
   return (
-    <div className='space-y-6'>
-      <div className='flex justify-center gap-2'>
-        {[1, 2, 3, 4, 5].map(star => (
-          <button
-            key={star}
-            onClick={() => handleStarClick(star)}
-            onMouseEnter={() => handleStarHover(star)}
-            onMouseLeave={() => handleStarHover(0)}
-            disabled={rating > 0}
-            className={`transition-transform ${rating === 0 ? 'hover:scale-110' : 'cursor-default'}`}
-          >
-            <Star
-              size={40}
-              className={`transition duration-200 ${
-                star <= (hoveredRating || rating)
-                  ? 'fill-yellow-400 text-yellow-400'
-                  : 'text-gray-300'
-              }`}
-            />
-          </button>
-        ))}
-      </div>
-      {rating > 0 && rating < 4 && (
-        <div ref={formRef} className='mt-8'>
-          <TallyForm />
+    <>
+      <Head>
+        {/* Preconnect hints for external review platforms to reduce DNS lookup latency and improve redirection speed by establishing early connections. */}
+        <link rel='preconnect' href='https://g.page' />
+        <link rel='preconnect' href='https://www.yelp.com' />
+        <link rel='preconnect' href='https://www.thumbtack.com' />
+        <link rel='preconnect' href='https://www.facebook.com' />
+      </Head>
+      <div className='space-y-6'>
+        <div className='flex justify-center gap-2'>
+          {[1, 2, 3, 4, 5].map(star => (
+            <button
+              key={star}
+              onClick={() => handleStarClick(star)}
+              onMouseEnter={() => handleStarHover(star)}
+              onMouseLeave={() => handleStarHover(0)}
+              disabled={rating > 0}
+              className={`transition-transform ${rating === 0 ? 'hover:scale-110' : 'cursor-default'}`}
+            >
+              <Star
+                size={40}
+                className={`transition duration-200 ${
+                  star <= (hoveredRating || rating)
+                    ? 'fill-yellow-400 text-yellow-400'
+                    : 'text-gray-300'
+                }`}
+              />
+            </button>
+          ))}
         </div>
-      )}
-      {rating >= 4 && !showLocationSelect && locationKey && isRedirecting && (
-        <RedirectingMessage />
-      )}
-      {showLocationSelect && (
-        <div className='mt-8 text-center'>
-          <div className='flex flex-col gap-3'>
-            {!isRedirecting
-              ? (
-                  <>
-                    <h2 className='mb-4 text-[1.3rem] sm:text-2xl'>Which location did you visit?</h2>
-                    {LOCATIONS.map(loc => (
-                      <Button
-                        key={loc}
-                        size='lg'
-                        variant='ghost'
-                        className='text-lg font-light'
-                        onClick={() => handleLocationSelect(loc)}
-                        disabled={isRedirecting}
-                      >
-                        <span className='capitalize'>{loc.replace('-', ' ')}</span>
-                      </Button>
-                    ))}
-                  </>
-                )
-              : (
-                  <RedirectingMessage />
-                )}
+        {rating > 0 && rating < 4 && (
+          <div ref={formRef} className='mt-8'>
+            <TallyForm />
           </div>
-        </div>
-      )}
-    </div>
+        )}
+        {rating >= 4 && !showLocationSelect && locationKey && isRedirecting && (
+          <RedirectingMessage />
+        )}
+        {showLocationSelect && (
+          <div className='mt-8 text-center'>
+            <div className='flex flex-col gap-3'>
+              {!isRedirecting
+                ? (
+                    <>
+                      <h2 className='mb-4 text-[1.3rem] sm:text-2xl'>Which location did you visit?</h2>
+                      {LOCATIONS.map(loc => (
+                        <Button
+                          key={loc}
+                          size='lg'
+                          variant='ghost'
+                          className='text-lg font-light'
+                          onClick={() => handleLocationSelect(loc)}
+                          disabled={isRedirecting}
+                        >
+                          <span className='capitalize'>{loc.replace('-', ' ')}</span>
+                        </Button>
+                      ))}
+                    </>
+                  )
+                : (
+                    <RedirectingMessage />
+                  )}
+            </div>
+          </div>
+        )}
+      </div>
+    </>
   )
 }
