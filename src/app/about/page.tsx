@@ -41,7 +41,7 @@ const getTeamImageData = () => {
 
 export default function About() {
   return (
-    <Page location='CACHED' className='mb-24 flex w-full flex-col items-center justify-center gap-12 md:mb-32 md:gap-24'>
+    <>
       <ContentViewTracker
         contentType='page'
         contentName='About'
@@ -158,6 +158,6 @@ export default function About() {
           />
         </Suspense>
       </Page>
-    </Page>
+    </>
   )
 }
