@@ -15,28 +15,30 @@ const nextConfig = bundleAnalyzer({
   // Add webpack configuration to fix the "name too long" caching errors
   webpack: (config, { dev }) => {
     // Only modify cache settings for production builds
-    // In development, Next.js requires memory caching
-    if (config.cache && !dev) {
-      // Make sure we don't override critical properties
-      const originalCachePredicate = config.cache.cachePredicate
-
-      // Add a filter to exclude problematic caniuse-lite paths
-      config.cache.cachePredicate = (module) => {
-        // Run original predicate first if it exists
-        if (originalCachePredicate && !originalCachePredicate(module)) {
-          return false
+    if (!dev && config.cache) {
+      // For production builds, ensure we're using filesystem cache with proper type
+      if (typeof config.cache === 'object') {
+        // Ensure cache type is properly set
+        config.cache = {
+          type: 'memory',
+          ...config.cache,
+          // Use filesystem filtering instead of modifying cache predicate
         }
-
-        // Skip caching for deeply nested caniuse-lite paths
-        if (module && module.resource
-          && module.resource.includes('node_modules')
-          && module.resource.includes('caniuse-lite')
-          && module.resource.length > 150) {
-          return false
-        }
-
-        return true
       }
+
+      // Add a rule to the module rules to ignore problematic caniuse-lite paths
+      config.module.rules.push({
+        test: (resource) => {
+          return resource
+            && resource.includes('node_modules')
+            && resource.includes('caniuse-lite')
+            && resource.length > 150
+        },
+        // Use noop loader for these files
+        use: 'null-loader',
+        // Ensure this rule has lower priority
+        sideEffects: false,
+      })
     }
 
     // Disable caching warnings in webpack
