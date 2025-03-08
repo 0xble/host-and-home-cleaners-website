@@ -3,8 +3,9 @@ import Link from 'next/link'
 
 import CompetitorComparisonTable from '@/components/CompetitorComparisonTable'
 import LocationPage from '@/components/LocationPage'
+import ServiceSchemaMarkup from '@/components/ServiceSchemaMarkup'
 import TrackedLink from '@/components/TrackedLink'
-import { BUSINESS_NAME, LOCATIONS, PHONE, TAGLINE } from '@/lib/constants'
+import { BUSINESS_NAME, LOCATIONS, PHONE, TAGLINE, URL } from '@/lib/constants'
 import { ContentViewTracker, PixelEvent } from '@/lib/pixel'
 import { ROUTES } from '@/lib/routes'
 
@@ -22,6 +23,14 @@ export default function NorthMyrtleBeach() {
         contentType='location'
         contentName='North Myrtle Beach'
         contentId='north-myrtle-beach-location'
+      />
+      <ServiceSchemaMarkup
+        neighborhoodName='North Myrtle Beach'
+        fullServiceName='Professional House Cleaning Services in North Myrtle Beach'
+        description={`${TAGLINE}. Professional house cleaning services in North Myrtle Beach, Myrtle Beach area.`}
+        url={`https://${URL}/north-myrtle-beach`}
+        parentUrl={`https://${URL}${ROUTES.LOCATIONS.MYRTLE_BEACH.href}`}
+        parentBusinessName={`${BUSINESS_NAME} ${LOCATIONS.MYRTLE_BEACH.name}`}
       />
       <LocationPage
         locationKey='MYRTLE_BEACH'

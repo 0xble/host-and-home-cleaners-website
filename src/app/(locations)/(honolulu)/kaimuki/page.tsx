@@ -3,7 +3,8 @@ import Link from 'next/link'
 
 import CompetitorComparisonTable from '@/components/CompetitorComparisonTable'
 import LocationPage from '@/components/LocationPage'
-import { BUSINESS_NAME, LOCATIONS, PHONE, TAGLINE } from '@/lib/constants'
+import ServiceSchemaMarkup from '@/components/ServiceSchemaMarkup'
+import { BUSINESS_NAME, LOCATIONS, PHONE, TAGLINE, URL } from '@/lib/constants'
 import { ContentViewTracker } from '@/lib/pixel'
 import { ROUTES } from '@/lib/routes'
 
@@ -21,6 +22,14 @@ export default function Kaimuki() {
         contentType='location'
         contentName='Kaimuki'
         contentId='kaimuki-location'
+      />
+      <ServiceSchemaMarkup
+        neighborhoodName='Kaimuki'
+        fullServiceName='Professional House Cleaning Services in Kaimuki'
+        description={`${TAGLINE}. Professional house cleaning services in Kaimuki, Honolulu area.`}
+        url={`https://${URL}/kaimuki`}
+        parentUrl={`https://${URL}${ROUTES.LOCATIONS.HONOLULU.href}`}
+        parentBusinessName={`${BUSINESS_NAME} ${LOCATIONS.HONOLULU.name}`}
       />
       <LocationPage
         locationKey='HONOLULU'

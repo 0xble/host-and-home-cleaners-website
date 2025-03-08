@@ -3,7 +3,8 @@ import Link from 'next/link'
 
 import CompetitorComparisonTable from '@/components/CompetitorComparisonTable'
 import LocationPage from '@/components/LocationPage'
-import { BUSINESS_NAME, LOCATIONS, PHONE, TAGLINE } from '@/lib/constants'
+import ServiceSchemaMarkup from '@/components/ServiceSchemaMarkup'
+import { BUSINESS_NAME, LOCATIONS, PHONE, TAGLINE, URL } from '@/lib/constants'
 import { ContentViewTracker } from '@/lib/pixelClient'
 import { ROUTES } from '@/lib/routes'
 
@@ -21,6 +22,14 @@ export default function SurfsideBeach() {
         contentType='location'
         contentName='Surfside Beach'
         contentId='surfside-beach-location'
+      />
+      <ServiceSchemaMarkup
+        neighborhoodName='Surfside Beach'
+        fullServiceName='Professional House Cleaning Services in Surfside Beach'
+        description={`${TAGLINE}. Professional house cleaning services in Surfside Beach, Myrtle Beach area.`}
+        url={`https://${URL}/surfside-beach`}
+        parentUrl={`https://${URL}${ROUTES.LOCATIONS.MYRTLE_BEACH.href}`}
+        parentBusinessName={`${BUSINESS_NAME} ${LOCATIONS.MYRTLE_BEACH.name}`}
       />
       <LocationPage
         locationKey='MYRTLE_BEACH'

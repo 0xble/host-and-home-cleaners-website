@@ -3,8 +3,9 @@ import Link from 'next/link'
 
 import CompetitorComparisonTable from '@/components/CompetitorComparisonTable'
 import LocationPage from '@/components/LocationPage'
+import ServiceSchemaMarkup from '@/components/ServiceSchemaMarkup'
 import TrackedLink from '@/components/TrackedLink'
-import { BUSINESS_NAME, LOCATIONS, PHONE, TAGLINE } from '@/lib/constants'
+import { BUSINESS_NAME, LOCATIONS, PHONE, TAGLINE, URL } from '@/lib/constants'
 import { ContentViewTracker, PixelEvent } from '@/lib/pixel'
 import { ROUTES } from '@/lib/routes'
 
@@ -22,6 +23,14 @@ export default function Conway() {
         contentType='location'
         contentName='Conway'
         contentId='conway-location'
+      />
+      <ServiceSchemaMarkup
+        neighborhoodName='Conway'
+        fullServiceName='Professional House Cleaning Services in Conway'
+        description={`${TAGLINE}. Professional house cleaning services in Conway, Myrtle Beach area.`}
+        url={`https://${URL}/conway`}
+        parentUrl={`https://${URL}${ROUTES.LOCATIONS.MYRTLE_BEACH.href}`}
+        parentBusinessName={`${BUSINESS_NAME} ${LOCATIONS.MYRTLE_BEACH.name}`}
       />
       <LocationPage
         locationKey='MYRTLE_BEACH'

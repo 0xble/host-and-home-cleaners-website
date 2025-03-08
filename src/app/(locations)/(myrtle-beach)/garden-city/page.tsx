@@ -1,10 +1,12 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import React from 'react'
 
 import CompetitorComparisonTable from '@/components/CompetitorComparisonTable'
 import LocationPage from '@/components/LocationPage'
+import ServiceSchemaMarkup from '@/components/ServiceSchemaMarkup'
 import TrackedLink from '@/components/TrackedLink'
-import { BUSINESS_NAME, LOCATIONS, PHONE, TAGLINE } from '@/lib/constants'
+import { BUSINESS_NAME, LOCATIONS, PHONE, TAGLINE, URL } from '@/lib/constants'
 import { ContentViewTracker, PixelEvent } from '@/lib/pixel'
 import { ROUTES } from '@/lib/routes'
 
@@ -22,6 +24,14 @@ export default function GardenCity() {
         contentType='location'
         contentName='Garden City'
         contentId='garden-city-location'
+      />
+      <ServiceSchemaMarkup
+        neighborhoodName='Garden City'
+        fullServiceName='Professional House Cleaning Services in Garden City'
+        description={`${TAGLINE}. Professional house cleaning services in Garden City, Myrtle Beach area.`}
+        url={`https://${URL}/garden-city`}
+        parentUrl={`https://${URL}${ROUTES.LOCATIONS.MYRTLE_BEACH.href}`}
+        parentBusinessName={`${BUSINESS_NAME} ${LOCATIONS.MYRTLE_BEACH.name}`}
       />
       <LocationPage
         locationKey='MYRTLE_BEACH'

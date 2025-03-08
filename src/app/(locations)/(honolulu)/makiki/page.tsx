@@ -3,7 +3,8 @@ import Link from 'next/link'
 
 import CompetitorComparisonTable from '@/components/CompetitorComparisonTable'
 import LocationPage from '@/components/LocationPage'
-import { BUSINESS_NAME, LOCATIONS, PHONE, TAGLINE } from '@/lib/constants'
+import ServiceSchemaMarkup from '@/components/ServiceSchemaMarkup'
+import { BUSINESS_NAME, LOCATIONS, PHONE, TAGLINE, URL } from '@/lib/constants'
 import { ContentViewTracker } from '@/lib/pixel'
 import { ROUTES } from '@/lib/routes'
 
@@ -21,6 +22,14 @@ export default function Makiki() {
         contentType='location'
         contentName='Makiki'
         contentId='makiki-location'
+      />
+      <ServiceSchemaMarkup
+        neighborhoodName='Makiki'
+        fullServiceName='Professional House Cleaning Services in Makiki'
+        description={`${TAGLINE}. Professional house cleaning services in Makiki, Honolulu area.`}
+        url={`https://${URL}/makiki`}
+        parentUrl={`https://${URL}${ROUTES.LOCATIONS.HONOLULU.href}`}
+        parentBusinessName={`${BUSINESS_NAME} ${LOCATIONS.HONOLULU.name}`}
       />
       <LocationPage
         locationKey='HONOLULU'

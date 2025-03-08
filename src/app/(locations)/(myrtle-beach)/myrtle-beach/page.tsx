@@ -1,16 +1,13 @@
 import type { Metadata } from 'next'
-import dynamic from 'next/dynamic'
 import Link from 'next/link'
 
 import CompetitorComparisonTable from '@/components/CompetitorComparisonTable'
+import LocalBusinessSchemaMarkup from '@/components/LocalBusinessSchemaMarkup'
 import LocationPage from '@/components/LocationPage'
 import TrackedLink from '@/components/TrackedLink'
 import { BUSINESS_NAME, EMAIL, LOCATIONS, PHONE, TAGLINE, URL } from '@/lib/constants'
 import { ContentViewTracker, PixelEvent } from '@/lib/pixel'
 import { ROUTES } from '@/lib/routes'
-
-// Dynamically import the LocalBusinessSchemaMarkup component with ssr: false to ensure it only renders on client
-const LocalBusinessSchemaMarkup = dynamic(() => import('@/components/LocalBusinessSchemaMarkup'), { ssr: false })
 
 const SPECIFIC_BUSINESS_NAME = `${BUSINESS_NAME} ${LOCATIONS.MYRTLE_BEACH.name}`
 
@@ -28,11 +25,9 @@ export default function MyrtleBeach() {
         contentId='myrtle-beach-location'
       />
       <LocalBusinessSchemaMarkup
-        type='CleaningService'
-        id={`${URL}${ROUTES.LOCATIONS.MYRTLE_BEACH.href}`}
-        name={SPECIFIC_BUSINESS_NAME}
+        locationName={LOCATIONS.MYRTLE_BEACH.name}
         description={`${TAGLINE}. Proudly serving the Myrtle Beach and Grand Strand area.`}
-        url={`${URL}${ROUTES.LOCATIONS.MYRTLE_BEACH.href}`}
+        url={`https://${URL}${ROUTES.LOCATIONS.MYRTLE_BEACH.href}`}
         telephone={PHONE.MYRTLE_BEACH.formatted}
         email={EMAIL.MYRTLE_BEACH}
         address={{

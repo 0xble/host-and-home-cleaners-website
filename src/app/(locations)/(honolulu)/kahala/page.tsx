@@ -3,8 +3,9 @@ import Link from 'next/link'
 
 import CompetitorComparisonTable from '@/components/CompetitorComparisonTable'
 import LocationPage from '@/components/LocationPage'
+import ServiceSchemaMarkup from '@/components/ServiceSchemaMarkup'
 import TrackedLink from '@/components/TrackedLink'
-import { BUSINESS_NAME, LOCATIONS, PHONE, TAGLINE } from '@/lib/constants'
+import { BUSINESS_NAME, LOCATIONS, PHONE, TAGLINE, URL } from '@/lib/constants'
 import { ContentViewTracker, PixelEvent } from '@/lib/pixel'
 import { ROUTES } from '@/lib/routes'
 
@@ -22,6 +23,14 @@ export default function Kahala() {
         contentType='location'
         contentName='Kahala'
         contentId='kahala-location'
+      />
+      <ServiceSchemaMarkup
+        neighborhoodName='Kahala'
+        fullServiceName='Professional House Cleaning Services in Kahala'
+        description={`${TAGLINE}. Professional house cleaning services in Kahala, Honolulu area.`}
+        url={`https://${URL}/kahala`}
+        parentUrl={`https://${URL}${ROUTES.LOCATIONS.HONOLULU.href}`}
+        parentBusinessName={`${BUSINESS_NAME} ${LOCATIONS.HONOLULU.name}`}
       />
       <LocationPage
         locationKey='HONOLULU'
