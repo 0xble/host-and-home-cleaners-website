@@ -28,6 +28,14 @@ export default function RootLayout({ children }: LayoutProps) {
   return (
     <html lang='en' className='light' suppressHydrationWarning>
       <body className={inter.className} suppressHydrationWarning>
+        {process.env.NEXT_PUBLIC_USERCENTRICS_SETTINGS_ID && (
+          <Script
+            id='usercentrics-cmp'
+            src='https://app.usercentrics.eu/browser-ui/latest/loader.js'
+            data-settings-id={process.env.NEXT_PUBLIC_USERCENTRICS_SETTINGS_ID}
+            strategy='beforeInteractive'
+          />
+        )}
         {/* Main Content */}
         {children}
 
