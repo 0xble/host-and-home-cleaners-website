@@ -45,6 +45,9 @@ export default function CookieConsent({
         functionality_storage: 'granted',
         personalization_storage: 'granted',
         security_storage: 'granted',
+        ad_storage: 'granted',
+        ad_user_data: 'granted',
+        ad_personalization: 'granted',
       })
     }
   }
@@ -62,6 +65,9 @@ export default function CookieConsent({
         functionality_storage: 'denied',
         personalization_storage: 'denied',
         security_storage: 'denied',
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
       })
     }
   }

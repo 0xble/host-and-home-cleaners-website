@@ -26,7 +26,10 @@ export default function GoogleAnalytics() {
               'analytics_storage': 'denied',
               'functionality_storage': 'denied',
               'personalization_storage': 'denied',
-              'security_storage': 'denied'
+              'security_storage': 'denied',
+              'ad_storage': 'denied',
+              'ad_user_data': 'denied',
+              'ad_personalization': 'denied'
             });
           `,
         }}
