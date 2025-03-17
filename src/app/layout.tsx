@@ -1,5 +1,6 @@
 import './globals.css'
 
+import { GoogleAnalytics } from '@next/third-parties/google'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import Script from 'next/script'
@@ -17,9 +18,6 @@ export const metadata: Metadata = {
     images: '/home/1.jpg',
     url: './',
   },
-  verification: {
-    google: 'bgJM5TTuCUrBRo7Yx7jI7n30ZSPeOLpZcISX9mZLcDI',
-  },
 }
 
 export type LayoutProps = Readonly<{
@@ -28,16 +26,17 @@ export type LayoutProps = Readonly<{
 
 export default function RootLayout({ children }: LayoutProps) {
   return (
-    <html lang='en'>
+    <html lang='en' className='light' suppressHydrationWarning>
       <body className={inter.className} suppressHydrationWarning>
         {/* Main Content */}
         {children}
 
         {/* Third-party Scripts */}
-        <Script src='dist/flowbite.min.js' />
+        <Script src='dist/flowbite.min.js' strategy='afterInteractive' />
         <Script src='https://tally.so/widgets/embed.js' strategy='lazyOnload' />
 
         {/* Analytics */}
+        {process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID && <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID} />}
         <PixelInitializer />
 
         {/* UI Components */}

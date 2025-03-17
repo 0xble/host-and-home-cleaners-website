@@ -3,17 +3,9 @@ import Link from 'next/link'
 import { Suspense } from 'react'
 
 import CompetitorComparisonTable from '@/components/CompetitorComparisonTable'
-import CTASection from '@/components/CTASection'
-import FAQSection from '@/components/FAQSection'
 import FindLocationInput from '@/components/FindLocationInput'
-import HeroSection from '@/components/HeroSection'
-import HowItWorksSection from '@/components/HowItWorksSection'
-import Page from '@/components/Page'
-import PricingSection from '@/components/PricingSection'
+import LandingPage from '@/components/LandingPage'
 import ReviewsFloatingBadge from '@/components/ReviewsFloatingBadge'
-import ReviewsMasonry from '@/components/ReviewsMasonry'
-import TestimonialsSection from '@/components/TestimonialSection'
-import TrustSection from '@/components/TrustSection'
 import { BUSINESS_NAME, TAGLINE } from '@/lib/constants'
 import { ContentViewTracker } from '@/lib/pixel'
 import { ROUTES } from '@/lib/routes'
@@ -34,19 +26,23 @@ export default function Home() {
       <Suspense>
         <ReviewsFloatingBadge id='ba527c37-e33e-46d1-8a33-08aed36ffd09' />
       </Suspense>
-      <Page location={null} className='mb-24 flex min-h-screen flex-col gap-12 lg:mb-32 lg:gap-12'>
-        <HeroSection
-          heading={(
+      <LandingPage
+        location={null}
+        reviewsMasonryId='d0cb12fc-b042-4a4a-a8cc-9ee8cc58588e'
+        reviewsBadgeId='ba527c37-e33e-46d1-8a33-08aed36ffd09'
+        photosFolder='home'
+        pricing={{ standard: 129, deep: 169, moveInOut: 189, vacationRental: 129 }}
+        copy={{
+          heroHeading: (
             <>
               #1 Professional House
               {' '}
               <br />
               Cleaning Services
             </>
-          )}
-          description='Maintaining a clean home is crucial, but household chores can be stressful amid life&apos;s demands. Our expert team provides reliable services, saving you time and energy.'
-          photos='home'
-          actions={(
+          ),
+          heroDescription: 'Maintaining a clean home is crucial, but household chores can be stressful amid life&apos;s demands. Our expert team provides reliable services, saving you time and energy.',
+          heroActions: (
             <div className='flex items-center gap-6'>
               <Link
                 href={ROUTES.BOOKING.href}
@@ -58,14 +54,10 @@ export default function Home() {
                 <FindLocationInput />
               </Suspense>
             </div>
-          )}
-        />
-        <TrustSection />
-        <TestimonialsSection heading='What Are Your Neighbors Saying?' className='mt-12' />
-        <ReviewsMasonry id='d0cb12fc-b042-4a4a-a8cc-9ee8cc58588e' />
-        <HowItWorksSection
-          heading='So, How Does It Work?'
-          steps={[
+          ),
+          testimonialsHeading: 'What Are Your Neighbors Saying?',
+          howItWorksHeading: 'So, How Does It Work?',
+          howItWorksSteps: [
             {
               title: 'Schedule and book a time.',
               description: (
@@ -107,12 +99,9 @@ export default function Home() {
                 </ul>
               ),
             },
-          ]}
-        />
-        <PricingSection
-          heading='Pricing'
-          pricing={{ standard: 129, deep: 169, moveInOut: 189, vacationRental: 129 }}
-          description={(
+          ],
+          pricingHeading: 'Pricing',
+          pricingDescription: (
             <>
               <p className='mb-4 text-left'>
                 From oven cleaning and bathroom cleaning to full kitchen cleaning
@@ -125,12 +114,10 @@ export default function Home() {
                 while our refrigerator cleaning leaves your fridge spotless.
               </p>
             </>
-          )}
-        />
-        <FAQSection
-          heading='FAQs'
-          description='We know you have questions, and we have answers. Here are some of the most common questions we get asked.'
-          faqs={[
+          ),
+          faqHeading: 'FAQs',
+          faqDescription: 'We know you have questions, and we have answers. Here are some of the most common questions we get asked.',
+          faqs: [
             {
               question: 'Why should I choose you over other competitors?',
               answer: (
@@ -180,8 +167,7 @@ export default function Home() {
               ),
             },
             {
-              question:
-    'How do you ensure the quality and consistency of your cleaning services?',
+              question: 'How do you ensure the quality and consistency of your cleaning services?',
               answer: (
                 <>
                   <p className='mb-2'>
@@ -280,16 +266,11 @@ export default function Home() {
                 </>
               ),
             },
-          ]}
-        />
-        <Suspense>
-          <CTASection
-            heading='Ready to enjoy stress-free cleaning?'
-            body={`Spend your life enjoying, not worrying about household chores. Let ${BUSINESS_NAME} take care of the cleaning while you focus on making memories with your loved ones. Whether you need a one-time residential deep clean or ongoing maintenance, our company got you covered.`}
-            location={null}
-          />
-        </Suspense>
-      </Page>
+          ],
+          ctaHeading: 'Ready to enjoy stress-free cleaning?',
+          ctaBody: `Spend your life enjoying, not worrying about household chores. Let ${BUSINESS_NAME} take care of the cleaning while you focus on making memories with your loved ones. Whether you need a one-time residential deep clean or ongoing maintenance, our company got you covered.`,
+        }}
+      />
     </>
   )
 }

@@ -3,10 +3,10 @@ import Link from 'next/link'
 
 import CompetitorComparisonTable from '@/components/CompetitorComparisonTable'
 import LocalBusinessSchemaMarkup from '@/components/LocalBusinessSchemaMarkup'
-import LocationPage from '@/components/LocationPage'
+import LocationLandingPage from '@/components/LocationLandingPage'
 import TrackedLink from '@/components/TrackedLink'
 import { BUSINESS_NAME, EMAIL, LOCATIONS, PHONE, TAGLINE, URL } from '@/lib/constants'
-import { ContentViewTracker, PixelEvent } from '@/lib/pixel'
+import { PixelEvent } from '@/lib/pixel'
 import { ROUTES } from '@/lib/routes'
 
 const SPECIFIC_BUSINESS_NAME = `${BUSINESS_NAME} ${LOCATIONS.MYRTLE_BEACH.name}`
@@ -19,11 +19,6 @@ export const metadata: Metadata = {
 export default function MyrtleBeach() {
   return (
     <>
-      <ContentViewTracker
-        contentType='location'
-        contentName='Myrtle Beach'
-        contentId='myrtle-beach-location'
-      />
       <LocalBusinessSchemaMarkup
         locationName={LOCATIONS.MYRTLE_BEACH.name}
         description={`${TAGLINE}. Proudly serving the Myrtle Beach and Grand Strand area.`}
@@ -38,7 +33,7 @@ export default function MyrtleBeach() {
           addressCountry: 'US',
         }}
       />
-      <LocationPage
+      <LocationLandingPage
         locationKey='MYRTLE_BEACH'
         location={LOCATIONS.MYRTLE_BEACH}
         reviewsMasonryId='d0cb12fc-b042-4a4a-a8cc-9ee8cc58588e'

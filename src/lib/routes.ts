@@ -1,5 +1,4 @@
-import type { SnakeCase } from '0xble/strings'
-import S from 'string'
+import { slugify, type SnakeCase } from '0xble/strings'
 
 import { BOOKINGKOALA_URL, LOCATIONS, SERVICES } from './constants'
 
@@ -73,7 +72,7 @@ export const ROUTES = {
       [service]: {
         name,
         // Replace "/" with "-" to handle "Move In/Out Cleaning"
-        href: `/${S(name).replaceAll('/', '-').slugify()}`,
+        href: `/${slugify(name.replaceAll('/', '-'))}`,
         priority: 1,
         changeFrequency: 'weekly',
       },
@@ -84,15 +83,15 @@ export const ROUTES = {
       ...acc,
       [location]: {
         name,
-        href: `/${S(name).slugify()}`,
+        href: `/${slugify(name)}`,
         priority: 1,
         changeFrequency: 'weekly',
         SERVICE_AREAS: serviceAreas.reduce((acc, area) => {
           return {
             ...acc,
-            [S(area).slugify().s.toUpperCase()]: {
+            [slugify(area).toUpperCase()]: {
               name: area,
-              href: `/${S(area).slugify()}`,
+              href: `/${slugify(area)}`,
               priority: 1,
               changeFrequency: 'weekly',
             },

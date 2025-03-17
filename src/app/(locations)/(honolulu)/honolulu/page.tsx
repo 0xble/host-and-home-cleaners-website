@@ -3,10 +3,10 @@ import Link from 'next/link'
 
 import CompetitorComparisonTable from '@/components/CompetitorComparisonTable'
 import LocalBusinessSchemaMarkup from '@/components/LocalBusinessSchemaMarkup'
-import LocationPage from '@/components/LocationPage'
+import LocationLandingPage from '@/components/LocationLandingPage'
 import TrackedLink from '@/components/TrackedLink'
 import { BUSINESS_NAME, EMAIL, LOCATIONS, PHONE, TAGLINE, URL } from '@/lib/constants'
-import { ContentViewTracker, PixelEvent } from '@/lib/pixel'
+import { PixelEvent } from '@/lib/pixel'
 import { ROUTES } from '@/lib/routes'
 
 const SPECIFIC_BUSINESS_NAME = `${BUSINESS_NAME} ${LOCATIONS.HONOLULU.name}`
@@ -19,11 +19,6 @@ export const metadata: Metadata = {
 export default function Honolulu() {
   return (
     <>
-      <ContentViewTracker
-        contentType='location'
-        contentName='Honolulu'
-        contentId='honolulu-location'
-      />
       <LocalBusinessSchemaMarkup
         locationName={LOCATIONS.HONOLULU.name}
         description={`${TAGLINE}. Proudly serving the Honolulu and Oahu area.`}
@@ -38,7 +33,7 @@ export default function Honolulu() {
           addressCountry: 'US',
         }}
       />
-      <LocationPage
+      <LocationLandingPage
         locationKey='HONOLULU'
         location={LOCATIONS.HONOLULU}
         reviewsMasonryId='8a2da83f-ca84-4420-9a31-71143d5c546e'

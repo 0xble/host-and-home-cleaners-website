@@ -184,38 +184,28 @@ export function usePageViewTracking() {
  */
 export function PixelInitializer() {
   const [isMounted, setIsMounted] = useState(false)
+  const pathname = usePathname()
 
   // Only run after component is mounted on client
   useEffect(() => {
     setIsMounted(true)
   }, [])
 
-  // Initialize Facebook Pixel on component mount
+  // Initialize Facebook Pixel and track page views only on client side
   useEffect(() => {
-    if (isMounted && isBrowser) {
-      initializePixel()
+    if (!isMounted || !isBrowser) {
+      return
     }
-  }, [isMounted])
 
-  // Track page views when pathname changes
-  const pathname = usePathname()
-  const [pixel, setPixel] = useState<any>(null)
-
-  useEffect(() => {
-    if (isMounted && isBrowser) {
-      initializePixel().then((instance) => {
-        if (instance) {
-          setPixel(instance)
-        }
-      })
+    const initPixel = async () => {
+      const instance = await initializePixel()
+      if (instance && pathname) {
+        instance.pageView()
+      }
     }
-  }, [isMounted])
 
-  useEffect(() => {
-    if (pathname && pixel) {
-      pixel.pageView()
-    }
-  }, [pathname, pixel])
+    initPixel()
+  }, [isMounted, pathname])
 
   return null
 }
