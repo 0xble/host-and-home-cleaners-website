@@ -31,6 +31,14 @@ export default function GoogleAnalytics() {
               'ad_user_data': 'denied',
               'ad_personalization': 'denied'
             });
+
+            // Enable debug mode in development
+            if (window.location.hostname === 'localhost') {
+              window.gtag = function() {
+                console.log('Google Analytics Debug:', arguments);
+                dataLayer.push(arguments);
+              }
+            }
           `,
         }}
       />

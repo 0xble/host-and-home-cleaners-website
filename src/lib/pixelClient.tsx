@@ -37,7 +37,6 @@ export async function initializePixel() {
 
   // Check for pixel ID
   if (!PIXEL_ID) {
-    console.warn('Facebook Pixel ID is not defined')
     return null
   }
 

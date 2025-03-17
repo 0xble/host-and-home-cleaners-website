@@ -92,34 +92,34 @@ export default function CookieConsent({
     ? (
         <div
           className={cn(
-            'fixed z-[200] bottom-4 right-4 w-full sm:max-w-md duration-700',
+            'fixed z-[200] bottom-0 right-0 left-0 sm:bottom-4 sm:right-4 sm:left-auto w-full sm:max-w-md duration-700',
             !isOpen
               ? 'transition-[opacity,transform] translate-y-8 opacity-0'
               : 'transition-[opacity,transform] translate-y-0 opacity-100',
             hide && 'hidden',
           )}
         >
-          <div className='border-border rounded-md border bg-white shadow-lg dark:bg-slate-950'>
+          <div className='border-border rounded-t-lg border bg-white shadow-lg dark:bg-slate-950 sm:rounded-md'>
             <div className='grid gap-2'>
-              <div className='border-border flex h-14 items-center justify-between border-b bg-slate-50 p-4 dark:bg-slate-900'>
-                <h1 className='text-lg font-medium text-slate-900 dark:text-slate-50'>We use cookies</h1>
-                <CookieIcon className='size-[1.2rem] text-primary-600 dark:text-primary-400' />
+              <div className='border-border flex h-12 items-center justify-between border-b bg-slate-50 px-3 py-2 dark:bg-slate-900 sm:h-14 sm:p-4'>
+                <h1 className='text-base font-medium text-slate-900 dark:text-slate-50 sm:text-lg'>We use cookies</h1>
+                <CookieIcon className='size-[1.1rem] text-primary-600 dark:text-primary-400 sm:size-[1.2rem]' />
               </div>
-              <div className='p-4'>
-                <p className='text-start text-sm font-normal text-slate-600 dark:text-slate-300'>
+              <div className='px-3 py-2 sm:p-4'>
+                <p className='text-start text-xs font-normal text-slate-600 dark:text-slate-300 sm:text-sm'>
                   We use cookies to ensure you get the best experience on our website.
                   For more information on how we use cookies, please see our cookie
                   policy.
                   <br />
                   <br />
-                  <span className='text-xs text-slate-500 dark:text-slate-400'>
+                  <span className='text-[10px] text-slate-500 dark:text-slate-400 sm:text-xs'>
                     By clicking "
                     <span className='font-medium text-slate-900 dark:text-slate-50'>Accept</span>
                     ", you
                     agree to our use of cookies.
                   </span>
                 </p>
-                <div className='mt-2 flex gap-2 text-xs'>
+                <div className='mt-2 flex gap-2 text-[10px] sm:text-xs'>
                   <a href='/terms' className='text-primary-600 underline hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300'>
                     Terms & Conditions
                   </a>
@@ -128,11 +128,11 @@ export default function CookieConsent({
                   </a>
                 </div>
               </div>
-              <div className='border-border flex gap-2 border-t bg-slate-50 p-4 py-5 dark:bg-slate-900'>
-                <Button onClick={accept} className='w-full bg-primary-700 text-white hover:bg-primary-800'>
+              <div className='border-border flex gap-2 border-t bg-slate-50 p-3 dark:bg-slate-900 sm:p-4'>
+                <Button onClick={accept} className='w-full bg-primary-700 text-sm text-white hover:bg-primary-800 sm:text-base'>
                   Accept
                 </Button>
-                <Button onClick={decline} className='w-full' variant='outline'>
+                <Button onClick={decline} className='w-full text-sm sm:text-base' variant='outline'>
                   Decline
                 </Button>
               </div>
@@ -143,30 +143,30 @@ export default function CookieConsent({
     : (
         <div
           className={cn(
-            'fixed z-[200] bottom-4 right-4 w-full sm:max-w-md duration-700',
+            'fixed z-[200] bottom-0 right-0 left-0 sm:bottom-4 sm:right-4 sm:left-auto w-full sm:max-w-md duration-700',
             !isOpen
               ? 'transition-[opacity,transform] translate-y-8 opacity-0'
               : 'transition-[opacity,transform] translate-y-0 opacity-100',
             hide && 'hidden',
           )}
         >
-          <div className='border-border rounded-lg border bg-white dark:bg-slate-950'>
-            <div className='flex items-center justify-between bg-slate-50 p-3 dark:bg-slate-900'>
-              <h1 className='text-lg font-medium text-slate-900 dark:text-slate-50'>We use cookies</h1>
-              <CookieIcon className='size-[1.2rem] text-primary-600 dark:text-primary-400' />
+          <div className='border-border rounded-t-lg border bg-white dark:bg-slate-950 sm:rounded-lg'>
+            <div className='flex items-center justify-between bg-slate-50 px-3 py-2 dark:bg-slate-900 sm:p-3'>
+              <h1 className='text-base font-medium text-slate-900 dark:text-slate-50 sm:text-lg'>We use cookies</h1>
+              <CookieIcon className='size-[1.1rem] text-primary-600 dark:text-primary-400 sm:size-[1.2rem]' />
             </div>
-            <div className='-mt-2 p-3'>
-              <p className='text-left text-sm text-slate-600 dark:text-slate-300'>
+            <div className='-mt-2 px-3 py-2 sm:p-3'>
+              <p className='text-left text-xs text-slate-600 dark:text-slate-300 sm:text-sm'>
                 We use cookies to ensure you get the best experience on our website.
                 For more information on how we use cookies, please see our cookie
                 policy.
               </p>
             </div>
-            <div className='mt-2 flex items-center gap-2 border-t bg-slate-50 p-3 dark:bg-slate-900'>
-              <Button onClick={accept} className='h-9 w-full rounded-full bg-primary-700 text-white hover:bg-primary-800'>
+            <div className='mt-2 flex items-center gap-2 border-t bg-slate-50 px-3 py-2 dark:bg-slate-900 sm:p-3'>
+              <Button onClick={accept} className='h-8 w-full rounded-full bg-primary-700 text-sm text-white hover:bg-primary-800 sm:h-9 sm:text-base'>
                 accept
               </Button>
-              <Button onClick={decline} className='h-9 w-full rounded-full' variant='outline'>
+              <Button onClick={decline} className='h-8 w-full rounded-full text-sm sm:h-9 sm:text-base' variant='outline'>
                 decline
               </Button>
             </div>

@@ -1,3 +1,5 @@
+'use client'
+
 import Image, { type StaticImageData } from 'next/image'
 
 import { cn } from '@/lib/utils'
@@ -24,14 +26,17 @@ export default function TrustSection({ className }: TrustSectionProps) {
     <section className={cn('bg-white ', className)}>
       <div className='mx-auto max-w-screen-xl p-4 lg:py-8'>
         <div className='mt-16 flex flex-col justify-between gap-12 text-gray-500 md:flex-row lg:mt-0'>
-          {icons.map(async ({ icon, alt }) => (
+          {icons.map(({ icon, alt }) => (
             <div key={alt} className='flex items-center justify-center'>
-              <Image
-                src={icon}
-                alt={alt}
-                className='h-auto w-40'
-                style={{ objectFit: 'contain' }}
-              />
+              <div className='relative h-10 w-40'>
+                <Image
+                  src={icon}
+                  alt={alt}
+                  fill
+                  className='object-contain'
+                  priority
+                />
+              </div>
             </div>
           ))}
         </div>
