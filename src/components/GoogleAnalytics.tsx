@@ -12,16 +12,16 @@ export default function GoogleAnalytics() {
 
   return (
     <>
-      <NextGoogleAnalytics gaId={gaId} />
+      {/* Set default consent state before anything else */}
       <Script
-        id='google-analytics-consent'
-        strategy='afterInteractive'
+        id='google-analytics-consent-default'
+        strategy='beforeInteractive'
         dangerouslySetInnerHTML={{
           __html: `
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
 
-            // Default consent state - deny all by default
+            // Set default consent state before any other scripts run
             gtag('consent', 'default', {
               'analytics_storage': 'denied',
               'functionality_storage': 'denied',
@@ -31,6 +31,7 @@ export default function GoogleAnalytics() {
           `,
         }}
       />
+      <NextGoogleAnalytics gaId={gaId} />
     </>
   )
 }
