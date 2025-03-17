@@ -40,6 +40,7 @@ export default antfu(
     rules: {
       'simple-import-sort/imports': 'error',
       'simple-import-sort/exports': 'error',
+      'no-console': 'off',
     },
   },
   {

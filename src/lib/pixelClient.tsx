@@ -37,10 +37,12 @@ export async function initializePixel() {
 
   // Check for pixel ID
   if (!PIXEL_ID) {
+    console.warn('Facebook Pixel ID not found in environment variables')
     return null
   }
 
   try {
+    console.log('Initializing Facebook Pixel')
     // Import the pixel library dynamically
     // This is safe because we've already checked for browser environment
     const ReactPixelModule = await import('react-facebook-pixel')
@@ -54,6 +56,7 @@ export async function initializePixel() {
 
     ReactPixel.init(PIXEL_ID, undefined, options)
     pixelInstance = ReactPixel
+    console.log('Facebook Pixel initialized successfully')
     return pixelInstance
   } catch (error) {
     console.error('Error initializing Facebook Pixel:', error)
@@ -88,6 +91,12 @@ export function useEventTracking() {
 
   const trackEvent = useCallback((eventName: string | PixelEventName, params = {}) => {
     if (pixel) {
+      console.log('Facebook Pixel Event:', {
+        eventName,
+        params,
+        url: window.location.href,
+        timestamp: new Date().toISOString(),
+      })
       pixel.track(eventName, params)
     }
   }, [pixel])
@@ -153,6 +162,11 @@ export function usePageViewTracking() {
 
   useEffect(() => {
     if (pathname && pixel) {
+      console.log('Facebook Pixel Page View:', {
+        pathname,
+        url: window.location.href,
+        timestamp: new Date().toISOString(),
+      })
       pixel.pageView()
     }
   }, [pathname, pixel])
@@ -196,14 +210,16 @@ export function PixelInitializer() {
       return
     }
 
-    const initPixel = async () => {
-      const instance = await initializePixel()
+    initializePixel().then((instance) => {
       if (instance && pathname) {
+        console.log('Facebook Pixel Page View:', {
+          pathname,
+          url: window.location.href,
+          timestamp: new Date().toISOString(),
+        })
         instance.pageView()
       }
-    }
-
-    initPixel()
+    })
   }, [isMounted, pathname])
 
   return null
@@ -241,6 +257,13 @@ export function ContentViewTracker({ contentType, contentName, contentId }: { co
 
   useEffect(() => {
     if (pixel && contentType && contentName && contentId && isMounted) {
+      console.log('Facebook Pixel Content View:', {
+        contentType,
+        contentName,
+        contentId,
+        url: window.location.href,
+        timestamp: new Date().toISOString(),
+      })
       pixel.track(PixelEvent.VIEW_CONTENT, {
         content_type: contentType,
         content_name: contentName,

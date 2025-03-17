@@ -40,6 +40,7 @@ export default function CookieConsent({
 
     // Update Google Analytics consent
     if (window.gtag) {
+      console.log('Updating Google Analytics consent to granted')
       window.gtag('consent', 'update', {
         analytics_storage: 'granted',
         functionality_storage: 'granted',
@@ -49,6 +50,8 @@ export default function CookieConsent({
         ad_user_data: 'granted',
         ad_personalization: 'granted',
       })
+    } else {
+      console.warn('Google Analytics gtag function not found')
     }
   }
 
