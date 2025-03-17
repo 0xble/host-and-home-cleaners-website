@@ -30,7 +30,7 @@ function FooterLink({ href, children }: FooterLinkProps) {
 
 type FooterColumnProps = {
   title: string
-  links: { name: string, href: string }[]
+  links: Array<{ name: string, href: string, onClick?: () => void }>
   columns?: number
 }
 
@@ -56,7 +56,18 @@ function FooterColumn({ title, links, columns = 1 }: FooterColumnProps) {
           >
             {linkGroup.map(link => (
               <li key={link.href} className='mb-4'>
-                <FooterLink href={link.href}>{link.name}</FooterLink>
+                {link.onClick
+                  ? (
+                      <button
+                        onClick={link.onClick}
+                        className='hover:underline'
+                      >
+                        {link.name}
+                      </button>
+                    )
+                  : (
+                      <FooterLink href={link.href}>{link.name}</FooterLink>
+                    )}
               </li>
             ))}
           </ul>
@@ -346,7 +357,20 @@ export default function Footer({ location }: FooterProps) {
                 )
             }
           })()}
-          <FooterColumn title='Legal' links={Object.values(ROUTES.LEGAL)} />
+          <FooterColumn
+            title='Legal'
+            links={[
+              ...Object.values(ROUTES.LEGAL),
+              // Required by Usercentrics to open the privacy settings modal
+              {
+                name: 'Privacy Settings',
+                href: '#',
+                onClick: () => {
+                  window.UC_UI?.showSecondLayer()
+                },
+              },
+            ]}
+          />
         </div>
         <hr className='my-6 border-gray-200 sm:mx-auto md:my-8' />
         <div className='pb-10 pt-6 text-center md:p-0'>

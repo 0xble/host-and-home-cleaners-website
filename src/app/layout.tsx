@@ -27,15 +27,19 @@ export type LayoutProps = Readonly<{
 export default function RootLayout({ children }: LayoutProps) {
   return (
     <html lang='en' className='light' suppressHydrationWarning>
-      <body className={inter.className} suppressHydrationWarning>
+      <head>
         {process.env.NEXT_PUBLIC_USERCENTRICS_SETTINGS_ID && (
           <Script
             id='usercentrics-cmp'
             src='https://web.cmp.usercentrics.eu/ui/loader.js'
-            data-settings-id={process.env.NEXT_PUBLIC_USERCENTRICS_SETTINGS_ID}
             strategy='beforeInteractive'
+            data-settings-id={process.env.NEXT_PUBLIC_USERCENTRICS_SETTINGS_ID}
+            type='text/javascript'
+            async
           />
         )}
+      </head>
+      <body className={inter.className} suppressHydrationWarning>
         {/* Main Content */}
         {children}
 

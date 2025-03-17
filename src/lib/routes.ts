@@ -101,15 +101,15 @@ export const ROUTES = {
     }
   }, {} as LocationRoute),
   LEGAL: {
-    PRIVACY_POLICY: {
-      name: 'Privacy Policy',
-      href: '/privacy',
-      priority: 0.1,
-      changeFrequency: 'monthly',
-    },
     TERMS_OF_SERVICE: {
       name: 'Terms of Service',
       href: '/terms',
+      priority: 0.1,
+      changeFrequency: 'monthly',
+    },
+    PRIVACY_POLICY: {
+      name: 'Privacy Policy',
+      href: '/privacy',
       priority: 0.1,
       changeFrequency: 'monthly',
     },
