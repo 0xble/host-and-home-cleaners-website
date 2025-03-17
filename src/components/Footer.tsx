@@ -357,20 +357,7 @@ export default function Footer({ location }: FooterProps) {
                 )
             }
           })()}
-          <FooterColumn
-            title='Legal'
-            links={[
-              ...Object.values(ROUTES.LEGAL),
-              // Required by Usercentrics to open the privacy settings modal
-              {
-                name: 'Privacy Settings',
-                href: '#',
-                onClick: () => {
-                  window.UC_UI?.showSecondLayer()
-                },
-              },
-            ]}
-          />
+          <FooterColumn title='Legal' links={Object.values(ROUTES.LEGAL)} />
         </div>
         <hr className='my-6 border-gray-200 sm:mx-auto md:my-8' />
         <div className='pb-10 pt-6 text-center md:p-0'>
