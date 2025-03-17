@@ -31,7 +31,7 @@ export default function RootLayout({ children }: LayoutProps) {
         {process.env.NEXT_PUBLIC_USERCENTRICS_SETTINGS_ID && (
           <Script
             id='usercentrics-cmp'
-            src='https://app.usercentrics.eu/browser-ui/latest/loader.js'
+            src='https://web.cmp.usercentrics.eu/ui/loader.js'
             data-settings-id={process.env.NEXT_PUBLIC_USERCENTRICS_SETTINGS_ID}
             strategy='beforeInteractive'
           />
