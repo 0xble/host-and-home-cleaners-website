@@ -20,7 +20,7 @@ export const EMAIL = {
 } as const
 
 export const CHECKLIST_NAME = 'Host & Home 72-point Checklist™'
-export const BOOKINGKOALA_URL = 'https://bookings.hostandhomecleaners.com'
+export const BOOKINGKOALA_URL = 'https://hostandhomecleaners.bookingkoala.com'
 
 export const SERVICES = {
   STANDARD: 'Standard Cleaning',
