@@ -18,6 +18,8 @@
   "dependencies": {
     "0xble": "latest",
     "@heroicons/react": "^2.2.0",
+    "@next/third-parties": "^15.2.2",
+    "@radix-ui/react-accordion": "^1.2.3",
     "@radix-ui/react-dropdown-menu": "^2.1.6",
     "@radix-ui/react-slot": "^1.1.2",
     "@radix-ui/react-toast": "^1.2.6",
@@ -33,7 +35,7 @@
     "embla-carousel-react": "^8.5.2",
     "lucide-react": "^0.344.0",
     "magic-string": "^0.30.17",
-    "next": "^14.2.24",
+    "next": "^15.2.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-facebook-pixel": "^1.0.4",
