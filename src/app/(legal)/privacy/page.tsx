@@ -463,16 +463,46 @@ export default function PrivacyPolicy() {
         insensitive personal data.
       </p>
 
+      <h3>Analytics and Tracking Tools</h3>
       <p>
-        We don't use cookies on visitors. We use Google Analytics for website
-        measurement anonymously. When you interact with
-        {' '}
-        {BUSINESS_NAME}
-        {' '}
-        as a user, we
-        (and third parties) will issue cookies unless you adjust your browser
-        settings to refuse them.
+        We use the following analytics and tracking tools to improve our website and services:
       </p>
+      <ul>
+        <li>
+          <strong>Google Analytics:</strong>
+          {' '}
+          We use Google Analytics to understand how visitors interact with our website. This tool collects information such as pages visited, time spent on pages, and user interactions. The data is used to improve our website's performance and user experience. Google Analytics uses cookies and similar technologies to collect this information.
+        </li>
+        <li>
+          <strong>Facebook Pixel:</strong>
+          {' '}
+          We use Facebook Pixel to measure the effectiveness of our advertising campaigns and to understand how visitors interact with our website. This tool helps us show relevant advertisements to you on Facebook and Instagram. Facebook Pixel uses cookies and similar technologies to collect this information.
+        </li>
+      </ul>
+
+      <p>
+        <strong>Managing Your Privacy Settings:</strong>
+        {' '}
+        You can control how these tools collect and use your data:
+      </p>
+      <ul>
+        <li>
+          For Google Analytics: You can opt-out by installing the
+          {' '}
+          <a href='https://tools.google.com/dlpage/gaoptout' target='_blank' rel='noopener noreferrer'>
+            Google Analytics Opt-out Browser Add-on
+          </a>
+          .
+        </li>
+        <li>
+          For Facebook Pixel: You can opt-out of Facebook's use of cookies and similar technologies by visiting
+          {' '}
+          <a href='https://www.facebook.com/ads/preferences' target='_blank' rel='noopener noreferrer'>
+            Facebook Ad Preferences
+          </a>
+          .
+        </li>
+      </ul>
 
       <p>
         <strong>Blocking Cookies:</strong>
@@ -480,7 +510,8 @@ export default function PrivacyPolicy() {
         You can block cookies by activating a
         setting on your browser to refuse cookies. You can also delete cookies
         through your browser settings. Please note, disabling cookies may affect
-        the functionality of our website.
+        the functionality of our website and our ability to provide you with a
+        personalized experience.
       </p>
     </main>
   )
