@@ -112,11 +112,15 @@ export default function CookieConsent({
                     ", you
                     agree to our use of cookies.
                   </span>
-                  <br />
-                  <a href='/privacy-policy' className='text-xs text-primary-600 underline hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300'>
-                    Learn more.
-                  </a>
                 </p>
+                <div className='mt-2 flex gap-2 text-xs'>
+                  <a href='/terms' className='text-primary-600 underline hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300'>
+                    Terms & Conditions
+                  </a>
+                  <a href='/privacy' className='text-primary-600 underline hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300'>
+                    Privacy Policy
+                  </a>
+                </div>
               </div>
               <div className='border-border flex gap-2 border-t bg-slate-50 p-4 py-5 dark:bg-slate-900'>
                 <Button onClick={accept} className='w-full bg-primary-700 text-white hover:bg-primary-800'>
