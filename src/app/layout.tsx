@@ -1,10 +1,11 @@
 import './globals.css'
 
-import { GoogleAnalytics } from '@next/third-parties/google'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import Script from 'next/script'
 
+import CookieConsent from '@/components/CookieConsent'
+import GoogleAnalytics from '@/components/GoogleAnalytics'
 import { Toaster } from '@/components/ui/toaster'
 import { PixelInitializer } from '@/lib/pixel'
 import { getBaseUrl } from '@/lib/utils'
@@ -36,15 +37,12 @@ export default function RootLayout({ children }: LayoutProps) {
         <Script src='https://tally.so/widgets/embed.js' strategy='lazyOnload' />
 
         {/* Analytics */}
-        {process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID && (
-          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID} />
-        )}
-        {process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID && (
-          <PixelInitializer />
-        )}
+        {process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID && <GoogleAnalytics />}
+        {process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID && <PixelInitializer />}
 
         {/* UI Components */}
         <Toaster />
+        <CookieConsent />
       </body>
     </html>
   )
