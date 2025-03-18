@@ -8,19 +8,16 @@ export default antfu(
   {
     react: true,
     typescript: true,
-
     lessOpinionated: true,
     isInEditor: false,
-
     stylistic: {
       semi: false,
     },
-
     formatters: {
       css: true,
     },
-
     ignores: ['next-env.d.ts'],
+    files: ['**/*.{js,jsx,ts,tsx}'],
   },
   ...tailwind.configs['flat/recommended'],
   jsxA11y.flatConfigs.recommended,
