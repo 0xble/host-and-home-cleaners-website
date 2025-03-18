@@ -8,13 +8,10 @@ import { cn } from '@/lib/utils'
 
 type CookieConsentProps = {
   variant?: 'default' | 'small'
-  demo?: boolean
+  forceShow?: boolean
 }
 
-export default function CookieConsent({
-  variant = 'default',
-  demo = false,
-}: CookieConsentProps) {
+export default function CookieConsent({ variant = 'default', forceShow = false }: CookieConsentProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [hide, setHide] = useState(false)
 
@@ -45,6 +42,8 @@ export default function CookieConsent({
 
   const decline = () => {
     setIsOpen(false)
+    // Set cookie consent to false
+    document.cookie = 'cookieConsent=false; expires=Fri, 31 Dec 9999 23:59:59 GMT'
     setTimeout(() => {
       setHide(true)
     }, 700)
@@ -65,19 +64,39 @@ export default function CookieConsent({
 
   useEffect(() => {
     try {
+      if (forceShow) {
+        setIsOpen(true)
+        setHide(false)
+        return
+      }
+
       setIsOpen(true)
-      if (document.cookie.includes('cookieConsent=true')) {
-        if (!demo) {
-          setIsOpen(false)
-          setTimeout(() => {
-            setHide(true)
-          }, 700)
+      const hasCookieConsent = document.cookie.includes('cookieConsent=true')
+      const hasDeniedCookies = document.cookie.includes('cookieConsent=false')
+
+      if (hasCookieConsent || hasDeniedCookies) {
+        setIsOpen(false)
+        setTimeout(() => {
+          setHide(true)
+        }, 700)
+
+        // Update Google Analytics consent based on stored preference
+        if (window.gtag) {
+          window.gtag('consent', 'update', {
+            analytics_storage: hasCookieConsent ? 'granted' : 'denied',
+            functionality_storage: hasCookieConsent ? 'granted' : 'denied',
+            personalization_storage: hasCookieConsent ? 'granted' : 'denied',
+            security_storage: hasCookieConsent ? 'granted' : 'denied',
+            ad_storage: hasCookieConsent ? 'granted' : 'denied',
+            ad_user_data: hasCookieConsent ? 'granted' : 'denied',
+            ad_personalization: hasCookieConsent ? 'granted' : 'denied',
+          })
         }
       }
     } catch (e) {
       // console.log("Error: ", e);
     }
-  }, [])
+  }, [forceShow])
 
   return variant !== 'small'
     ? (

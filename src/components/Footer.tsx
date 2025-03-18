@@ -1,7 +1,9 @@
 import Link from 'next/link'
+import { useState } from 'react'
 import { chunk } from 'remeda'
 
 import Brand from '@/components/Brand'
+import CookieConsent from '@/components/CookieConsent'
 import PhoneLink from '@/components/PhoneLink'
 import { BUSINESS_NAME, EMAIL, PHONE } from '@/lib/constants'
 import { ROUTES } from '@/lib/routes'
@@ -227,8 +229,13 @@ function SocialLinks({ location }: SocialLinksProps) {
 }
 
 export default function Footer({ location }: FooterProps) {
+  const [showCookieSettings, setShowCookieSettings] = useState(false)
+
   return (
     <footer className='bg-gray-100'>
+      {showCookieSettings && (
+        <CookieConsent forceShow />
+      )}
       <div className='mx-auto max-w-screen-xl p-4 md:p-10'>
         <div
           className='grid grid-cols-1 gap-8 py-10 md:grid-cols-2 md:py-0 lg:grid-cols-6'
@@ -357,7 +364,17 @@ export default function Footer({ location }: FooterProps) {
                 )
             }
           })()}
-          <FooterColumn title='Legal' links={Object.values(ROUTES.LEGAL)} />
+          <FooterColumn
+            title='Legal'
+            links={[
+              ...Object.values(ROUTES.LEGAL),
+              {
+                name: 'Privacy Settings',
+                href: '#',
+                onClick: () => setShowCookieSettings(true),
+              },
+            ]}
+          />
         </div>
         <hr className='my-6 border-gray-200 sm:mx-auto md:my-8' />
         <div className='pb-10 pt-6 text-center md:p-0'>
