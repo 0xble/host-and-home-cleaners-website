@@ -41,7 +41,7 @@ export default function Home() {
               Cleaning Services
             </>
           ),
-          heroDescription: 'Maintaining a clean home is crucial, but household chores can be stressful amid life&apos;s demands. Our expert team provides reliable services, saving you time and energy.',
+          heroDescription: 'Maintaining a clean home is crucial, but household chores can be stressful amid life\'s demands. Our expert team provides reliable services, saving you time and energy.',
           heroActions: (
             <div className='flex items-center gap-6'>
               <Link
