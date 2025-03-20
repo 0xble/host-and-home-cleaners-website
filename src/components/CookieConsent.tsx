@@ -1,6 +1,7 @@
 'use client'
 
 import { CookieIcon } from 'lucide-react'
+import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
 import { Button } from '@/components/ui/button'
@@ -112,28 +113,30 @@ export default function CookieConsent({ variant = 'default', forceShow = false }
           <div className='border-border rounded-t-lg border bg-white shadow-lg dark:bg-slate-950 sm:rounded-md'>
             <div className='grid gap-2'>
               <div className='border-border flex h-12 items-center justify-between border-b bg-slate-50 px-3 py-2 dark:bg-slate-900 sm:h-14 sm:p-4'>
-                <h1 className='text-base font-medium text-slate-900 dark:text-slate-50 sm:text-lg'>We use cookies</h1>
+                <div className='text-base font-medium text-slate-900 dark:text-slate-50 sm:text-lg'>Want a cookie?</div>
                 <CookieIcon className='size-[1.1rem] text-primary-600 dark:text-primary-400 sm:size-[1.2rem]' />
               </div>
               <div className='px-3 py-2 sm:p-4'>
                 <p className='text-start text-xs font-normal text-slate-600 dark:text-slate-300 sm:text-sm'>
                   We use cookies to ensure you get the best experience on our website.
-                  For more information on how we use cookies, please see our cookie
-                  policy.
+                  For more information on how we use cookies, please see our
+                  {' '}
+                  <Link href='/privacy' className='link'>cookie policy</Link>
+                  .
                   <br />
                   <br />
                   <span className='text-[10px] text-slate-500 dark:text-slate-400 sm:text-xs'>
                     By clicking "
                     <span className='font-medium text-slate-900 dark:text-slate-50'>Accept</span>
                     ", you
-                    agree to our use of cookies.
+                    agree to our use of all cookies.
                   </span>
                 </p>
-                <div className='mt-2 flex gap-2 text-[10px] sm:text-xs'>
-                  <a href='/terms' className='text-primary-600 underline hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300'>
+                <div className='un mt-2 flex gap-2 text-xs'>
+                  <a href='/terms' className='link underline'>
                     Terms & Conditions
                   </a>
-                  <a href='/privacy' className='text-primary-600 underline hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300'>
+                  <a href='/privacy' className='link underline'>
                     Privacy Policy
                   </a>
                 </div>

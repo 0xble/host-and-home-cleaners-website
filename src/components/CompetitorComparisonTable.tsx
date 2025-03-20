@@ -54,10 +54,14 @@ export default function CompetitorComparisonTable() {
           <div>Competitors</div>
         </div>
         {comparisonCriteria.map(
-          ({ criteria, isOfferedByUs, isOfferedByCompetitors }) => (
+          ({ criteria, isOfferedByUs, isOfferedByCompetitors }, index) => (
             <div
               key={criteria}
-              className='grid grid-cols-3 items-center justify-center gap-x-16 border-b border-gray-200 p-4 text-xs text-gray-900 md:text-sm'
+              className={cn(
+                'grid grid-cols-3 items-center justify-center gap-x-16 border-b border-gray-200 p-4 text-xs text-gray-900 md:text-sm',
+                // Remove border on last item
+                index === comparisonCriteria.length - 1 && 'border-b-0',
+              )}
             >
               <div className='flex items-center'>{criteria}</div>
               <div>

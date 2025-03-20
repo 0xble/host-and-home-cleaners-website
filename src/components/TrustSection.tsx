@@ -34,7 +34,6 @@ export default function TrustSection({ className }: TrustSectionProps) {
                   alt={alt}
                   fill
                   className='object-contain'
-                  priority
                 />
               </div>
             </div>
