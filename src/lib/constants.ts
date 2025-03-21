@@ -1,4 +1,4 @@
-import type { ZipCode } from './schemas'
+import type { SocialLink, SocialPlatform } from './types'
 
 export const BUSINESS_NAME = 'Host & Home Cleaners'
 export const TAGLINE = '100% satisfaction guaranteed, or we\'ll redo it for FREE'
@@ -32,104 +32,51 @@ export const SERVICES = {
 export const LOCATIONS = {
   MYRTLE_BEACH: {
     name: 'Myrtle Beach',
-    state: 'South Carolina',
-    stateAbbrev: 'SC',
-    serviceAreas: [
-      'Myrtle Beach',
-      'North Myrtle Beach',
-      'Conway',
-      'Surfside Beach',
-      'Murrells Inlet',
-      'Garden City',
-    ],
-    zipCodes: [
-      '29527',
-      '29526',
-      '29579',
-      '29588',
-      '29575',
-      '29577',
-      '29572',
-      '29568',
-      '29566',
-      '29582',
-      '28467',
-      '29576',
-      '29585',
-      '29440',
-      '29554',
-      '29569',
-    ] as ZipCode[],
+    serviceAreas: ['Myrtle Beach', 'North Myrtle Beach', 'Surfside Beach', 'Garden City', 'Murrells Inlet', 'Conway'] as const,
   },
   HONOLULU: {
     name: 'Honolulu',
-    state: 'Hawaii',
-    stateAbbrev: 'HI',
-    serviceAreas: [
-      'Honolulu',
-      'Waikiki',
-      'Ala Moana',
-      'Kaka\'ako',
-      'Manoa',
-      'Kaimuki',
-      'Kapahulu',
-      'Kalihi',
-      'Moanalua',
-      'Salt Lake',
-      'Hawaii Kai',
-      'Kahala',
-      'Nuuanu',
-      'Makiki',
-      'Palolo',
-      'Aina Haina',
-      'Waialae',
-    ],
-    zipCodes: [
-      '96801',
-      '96802',
-      '96803',
-      '96804',
-      '96805',
-      '96806',
-      '96807',
-      '96808',
-      '96809',
-      '96810',
-      '96811',
-      '96812',
-      '96813',
-      '96814',
-      '96815',
-      '96816',
-      '96817',
-      '96818',
-      '96819',
-      '96820',
-      '96821',
-      '96822',
-      '96823',
-      '96824',
-      '96825',
-      '96826',
-      '96828',
-      '96830',
-      '96835',
-      '96836',
-      '96837',
-      '96838',
-      '96839',
-      '96840',
-      '96841',
-      '96843',
-      '96844',
-      '96846',
-      '96847',
-      '96848',
-      '96849',
-      '96850',
-    ],
+    serviceAreas: ['Honolulu', 'Waikiki', 'Ala Moana', 'Kakaako', 'Makiki', 'Manoa', 'Kaimuki', 'Kahala', 'Kapahulu', 'Waialae', 'Palolo', 'Aina Haina', 'Hawaii Kai', 'Nuuanu', 'Kalihi', 'Moanalua', 'Salt Lake'] as const,
   },
 } as const
 
-export type Location = typeof LOCATIONS[keyof typeof LOCATIONS]
 export type LocationKey = keyof typeof LOCATIONS
+export type Location = typeof LOCATIONS[LocationKey]
+
+export const SOCIAL_LINKS: Record<SocialPlatform, SocialLink> = {
+  Facebook: {
+    name: 'Facebook',
+    href: {
+      MYRTLE_BEACH: 'https://www.facebook.com/hostandhomecleanersmyrtlebeach',
+      HONOLULU: 'https://www.facebook.com/hostandhomecleanershonolulu',
+    },
+  },
+  Instagram: {
+    name: 'Instagram',
+    href: {
+      MYRTLE_BEACH: 'https://www.instagram.com/hostandhomecleanersmyrtlebeach',
+      HONOLULU: 'https://www.instagram.com/hostandhomecleanershonolulu',
+    },
+  },
+  Google: {
+    name: 'Google',
+    href: {
+      MYRTLE_BEACH: 'https://g.page/r/Ce4kwohQ6LUrEAI',
+      HONOLULU: 'https://g.page/r/Ca7w1RSnJY2nEAE',
+    },
+  },
+  Yelp: {
+    name: 'Yelp',
+    href: {
+      MYRTLE_BEACH: 'https://www.yelp.com/biz/host-and-home-cleaners-myrtle-beach-3',
+      HONOLULU: 'https://www.yelp.com/biz/host-and-home-cleaners-honolulu-urban-honolulu-5',
+    },
+  },
+  Nextdoor: {
+    name: 'Nextdoor',
+    href: {
+      MYRTLE_BEACH: 'https://nextdoor.com/pages/pristine-maid-cleaning-myrtle-beach-sc',
+      HONOLULU: 'https://nextdoor.com/pages/host-home-cleaners-honolulu-honolulu-hi',
+    },
+  },
+}

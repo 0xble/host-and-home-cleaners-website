@@ -103,7 +103,7 @@ export default function CookieConsent({ variant = 'default', forceShow = false }
     ? (
         <div
           className={cn(
-            'fixed z-[200] bottom-0 right-0 left-0 sm:bottom-4 sm:right-4 sm:left-auto w-full sm:max-w-md duration-700',
+            'fixed z-50 bottom-0 right-0 left-0 sm:bottom-4 sm:right-4 sm:left-auto w-full sm:max-w-md duration-700',
             !isOpen
               ? 'transition-[opacity,transform] translate-y-8 opacity-0'
               : 'transition-[opacity,transform] translate-y-0 opacity-100',
@@ -156,7 +156,7 @@ export default function CookieConsent({ variant = 'default', forceShow = false }
     : (
         <div
           className={cn(
-            'fixed z-[200] bottom-0 right-0 left-0 sm:bottom-4 sm:right-4 sm:left-auto w-full sm:max-w-md duration-700',
+            'fixed z-50 bottom-0 right-0 left-0 sm:bottom-4 sm:right-4 sm:left-auto w-full sm:max-w-md duration-700',
             !isOpen
               ? 'transition-[opacity,transform] translate-y-8 opacity-0'
               : 'transition-[opacity,transform] translate-y-0 opacity-100',
