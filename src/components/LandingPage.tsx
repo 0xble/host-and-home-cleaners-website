@@ -229,7 +229,9 @@ export default function LandingPage({
       </Suspense>
       <Page location={location} className='mb-24 flex min-h-screen flex-col gap-12 lg:mb-32 lg:gap-12'>
         {allSections.map(section => (
-          <div key={section.id}>{section.component}</div>
+          <div key={section.id} id={section.id} className='scroll-mt-20'>
+            {section.component}
+          </div>
         ))}
       </Page>
     </>
