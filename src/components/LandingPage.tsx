@@ -40,7 +40,7 @@ type LandingPageProps = {
     heroDescription: string
     heroActions?: React.ReactElement
     // Testimonials Section
-    testimonialsHeading: string
+    reviewsHeading: string
     // How It Works Section
     howItWorksHeading: string
     howItWorksSteps: Step[]
@@ -65,7 +65,7 @@ const createDefaultSections = (
   heroHeading: React.ReactNode,
   heroDescription: string,
   heroActions: React.ReactElement | undefined,
-  testimonialsHeading: string,
+  reviewsHeading: string,
   howItWorksHeading: string,
   howItWorksSteps: Step[],
   pricingHeading: string,
@@ -110,7 +110,7 @@ const createDefaultSections = (
     id: 'reviews',
     component: (
       <ReviewSection
-        heading={testimonialsHeading}
+        heading={reviewsHeading}
         className='mt-12'
       />
     ),
@@ -169,7 +169,7 @@ export default function LandingPage({
     heroHeading,
     heroDescription,
     heroActions,
-    testimonialsHeading,
+    reviewsHeading,
     howItWorksHeading,
     howItWorksSteps,
     pricingHeading,
@@ -187,7 +187,7 @@ export default function LandingPage({
     heroHeading,
     heroDescription,
     heroActions,
-    testimonialsHeading,
+    reviewsHeading,
     howItWorksHeading,
     howItWorksSteps,
     pricingHeading,

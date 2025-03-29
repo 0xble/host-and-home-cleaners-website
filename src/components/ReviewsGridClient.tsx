@@ -1,9 +1,9 @@
 'use client'
 
 import { AnimatePresence, motion } from 'framer-motion'
-import { Star } from 'lucide-react'
+import { Star, ChevronRight, ChevronLeft } from 'lucide-react'
 import Image from 'next/image'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { round } from 'remeda'
 import { hoursToSeconds } from 'date-fns'
 import type { Platform, PlatformRating, Review, ReviewsData } from '@/lib/reviews'
@@ -160,10 +160,10 @@ function ReviewCardSkeleton() {
 function getTabStyles(isActive: boolean) {
   return {
     tab: cn(
-      'flex items-center gap-2 border-b-2 px-2 py-1.5 text-sm font-medium transition-colors rounded-t-lg sm:px-4 sm:py-2 sm:text-base',
+      'flex shrink-0 items-center gap-2 border-b-2 px-3 py-2 text-sm font-medium transition-colors whitespace-nowrap',
       isActive
-        ? 'border-primary-700 text-primary-700 hover:bg-gray-100'
-        : 'border-transparent text-gray-500 hover:bg-gray-100 hover:border-gray-300 hover:text-gray-700',
+        ? 'border-primary-700 text-primary-700 hover:bg-gray-50'
+        : 'border-transparent text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700',
     ),
     count: cn(
       isActive ? 'text-primary-700' : 'text-gray-400'
@@ -193,8 +193,8 @@ function PlatformRatingTabs({
   className,
 }: {
   ratings: PlatformRating[]
-  selectedPlatform: string | null
-  onSelectPlatform: (_platform: string | null) => void
+  selectedPlatform: Platform | null
+  onSelectPlatform: (_platform: Platform | null) => void
   className?: string
 }) {
   const totalReviews = ratings.reduce((acc, curr) => acc + curr.total_reviews, 0)
@@ -208,43 +208,105 @@ function PlatformRatingTabs({
   // Define the desired platform order
   const orderedPlatforms: Platform[] = ['Google', 'Yelp', 'Thumbtack', 'Nextdoor']
 
-  return (
-    <div className={cn('flex flex-wrap justify-center gap-4', className)}>
-      <div className='relative inline-flex flex-wrap justify-center border-b border-gray-200'>
-        <div className='flex flex-wrap justify-center gap-4'>
-          <button
-            type='button'
-            onClick={() => onSelectPlatform(null)}
-            className={getTabStyles(selectedPlatform === null).tab}
-          >
+  // Calculate the current tab index
+  const allPlatforms: (Platform | null)[] = [null, ...orderedPlatforms]
+
+  const [hasOverflow, setHasOverflow] = useState(false)
+  const [, setScrollPosition] = useState(0)
+  const scrollContainerRef = useRef<HTMLDivElement>(null)
+  const [canScrollLeft, setCanScrollLeft] = useState(false)
+  const [canScrollRight, setCanScrollRight] = useState(false)
+
+  useEffect(() => {
+    const checkScrollability = () => {
+      if (scrollContainerRef.current) {
+        const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current
+        setCanScrollLeft(scrollLeft > 0)
+        setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 1) // -1 to account for rounding
+        setHasOverflow(scrollWidth > clientWidth)
+      }
+    }
+
+    checkScrollability()
+    window.addEventListener('resize', checkScrollability)
+    return () => window.removeEventListener('resize', checkScrollability)
+  }, [])
+
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const { scrollLeft, scrollWidth, clientWidth } = e.currentTarget
+    setCanScrollLeft(scrollLeft > 0)
+    setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 1) // -1 to account for rounding
+    setScrollPosition(scrollLeft)
+  }
+
+  const renderTab = (platform: Platform | null) => {
+    const rating = platform ? ratingMap.get(platform) : null
+    const styles = getTabStyles(selectedPlatform === platform)
+
+    return (
+      <button
+        type='button'
+        key={platform ?? 'all'}
+        onClick={() => onSelectPlatform(platform)}
+        className={styles.tab}
+      >
+        {platform ? (
+          <>
+            <PlatformIcon platform={platform} />
+            <span>{platform}</span>
+            <RatingDisplay
+              rating={rating?.rating}
+              count={rating?.total_reviews ?? 0}
+              className={styles.count}
+            />
+          </>
+        ) : (
+          <>
             <span>All</span>
             <RatingDisplay
               rating={overallRating}
               count={totalReviews}
-              className={getTabStyles(selectedPlatform === null).count}
+              className={styles.count}
             />
-          </button>
+          </>
+        )}
+      </button>
+    )
+  }
 
-          {orderedPlatforms.map((platform) => {
-            const rating = ratingMap.get(platform)
-            const styles = getTabStyles(selectedPlatform === platform)
-            return (
-              <button
-                type='button'
-                key={platform}
-                onClick={() => onSelectPlatform(platform)}
-                className={styles.tab}
-              >
-                <PlatformIcon platform={platform} />
-                <span>{platform}</span>
-                <RatingDisplay
-                  rating={rating?.rating}
-                  count={rating?.total_reviews ?? 0}
-                  className={styles.count}
-                />
-              </button>
-            )
-          })}
+  return (
+    <div className={cn('relative flex flex-col', className)}>
+      <div className='relative w-full overflow-hidden border-b border-gray-200'>
+        <div className='flex items-center'>
+          <div
+            ref={scrollContainerRef}
+            onScroll={handleScroll}
+            className='no-scrollbar flex gap-3 overflow-x-auto px-6 py-3 sm:gap-2 sm:px-4 sm:py-2 [&::-webkit-scrollbar]:hidden'
+          >
+            {allPlatforms.map(platform => renderTab(platform))}
+          </div>
+          {hasOverflow && (
+            <>
+              {/* Left fade and arrow */}
+              {canScrollLeft && (
+                <>
+                  <div className='pointer-events-none absolute left-0 top-0 h-full w-16 bg-gradient-to-r from-white to-transparent' />
+                  <div className='absolute left-3 top-1/2 -translate-y-1/2 transform sm:left-2'>
+                    <ChevronLeft className='h-6 w-6 text-gray-400 sm:h-5 sm:w-5' />
+                  </div>
+                </>
+              )}
+              {/* Right fade and arrow */}
+              {canScrollRight && (
+                <>
+                  <div className='pointer-events-none absolute right-0 top-0 h-full w-16 bg-gradient-to-l from-white to-transparent' />
+                  <div className='absolute right-3 top-1/2 -translate-y-1/2 transform sm:right-2'>
+                    <ChevronRight className='h-6 w-6 text-gray-400 sm:h-5 sm:w-5' />
+                  </div>
+                </>
+              )}
+            </>
+          )}
         </div>
       </div>
     </div>
@@ -253,7 +315,7 @@ function PlatformRatingTabs({
 
 export default function ReviewsGridClient() {
   const [data, setData] = useState<ReviewsData | null>(null)
-  const [selectedPlatform, setSelectedPlatform] = useState<string | null>(null)
+  const [selectedPlatform, setSelectedPlatform] = useState<Platform | null>(null)
   const [visibleReviews, setVisibleReviews] = useState(9) // Show 3x3 grid initially
 
   useEffect(() => {
@@ -301,21 +363,21 @@ export default function ReviewsGridClient() {
   }
 
   return (
-    <div className='px-2 sm:px-4 lg:px-20'>
-      <div className='space-y-6 sm:space-y-8'>
+    <div className='px-4 sm:px-4 lg:px-20'>
+      <div className='space-y-8 sm:space-y-6'>
         <PlatformRatingTabs
           ratings={data.platform_ratings}
           selectedPlatform={selectedPlatform}
           onSelectPlatform={(platform) => {
             setSelectedPlatform(platform)
-            setVisibleReviews(9) // Reset to initial count when switching platforms
+            setVisibleReviews(9)
           }}
           className='justify-center'
         />
         <motion.div
           layout
           transition={{ duration: 0.2 }}
-          className='grid min-h-96 grid-cols-1 gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3'
+          className='grid min-h-96 grid-cols-1 gap-6 sm:gap-4 lg:grid-cols-3 md:grid-cols-2'
         >
           <AnimatePresence mode='popLayout' initial={false}>
             {filteredReviews.slice(0, visibleReviews).map(review => (

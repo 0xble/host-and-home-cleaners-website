@@ -54,7 +54,7 @@ export default function Home() {
               </Suspense>
             </div>
           ),
-          testimonialsHeading: 'What Are Your Neighbors Saying?',
+          reviewsHeading: 'What Are Your Neighbors Saying?',
           howItWorksHeading: 'So, How Does It Work?',
           howItWorksSteps: [
             {

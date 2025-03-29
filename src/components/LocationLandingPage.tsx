@@ -91,7 +91,7 @@ export default function LocationLandingPage({
           heroHeading: customHeroHeading,
           heroDescription: customHeroDescription,
           heroActions: <CTAButtons className='mt-12 lg:mt-8' phone={PHONE[locationKey]} />,
-          testimonialsHeading: customTestimonialsHeading,
+          reviewsHeading: customTestimonialsHeading,
           howItWorksHeading: customHowItWorksHeading,
           howItWorksSteps: customHowItWorksSteps,
           pricingHeading: customPricingSectionHeading,
