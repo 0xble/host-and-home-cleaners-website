@@ -7,9 +7,8 @@ import HeroSection from '@/components/HeroSection'
 import HowItWorksSection from '@/components/HowItWorksSection'
 import Page from '@/components/Page'
 import PricingSection from '@/components/PricingSection'
+import ReviewSection from '@/components/ReviewSection'
 import ReviewsFloatingBadge from '@/components/ReviewsFloatingBadge'
-import ReviewsMasonry from '@/components/ReviewsMasonry'
-import TestimonialsSection from '@/components/TestimonialSection'
 import TrustSection from '@/components/TrustSection'
 import type { LocationKey } from '@/lib/constants'
 import { ROUTES } from '@/lib/routes'
@@ -22,12 +21,11 @@ type Step = {
 type Section = {
   id: string
   component: React.ReactNode
-  position: number
+  position?: number
 }
 
 type LandingPageProps = {
   location: LocationKey | null
-  reviewsMasonryId: string
   reviewsBadgeId: string
   photosFolder: string
   pricing: {
@@ -79,7 +77,6 @@ const createDefaultSections = (
   ctaHeading: string,
   ctaBody: React.ReactNode,
   location: LocationKey | null,
-  reviewsMasonryId: string,
   photosFolder: string,
 ): Section[] => [
   {
@@ -104,27 +101,19 @@ const createDefaultSections = (
         )}
       />
     ),
-    position: 0,
   },
   {
     id: 'trust',
     component: <TrustSection />,
-    position: 1,
   },
   {
-    id: 'testimonials',
+    id: 'reviews',
     component: (
-      <TestimonialsSection
+      <ReviewSection
         heading={testimonialsHeading}
         className='mt-12'
       />
     ),
-    position: 2,
-  },
-  {
-    id: 'reviews',
-    component: <ReviewsMasonry id={reviewsMasonryId} />,
-    position: 3,
   },
   {
     id: 'how-it-works',
@@ -134,7 +123,6 @@ const createDefaultSections = (
         steps={howItWorksSteps}
       />
     ),
-    position: 4,
   },
   {
     id: 'pricing',
@@ -145,7 +133,6 @@ const createDefaultSections = (
         description={pricingDescription}
       />
     ),
-    position: 5,
   },
   {
     id: 'faq',
@@ -156,7 +143,6 @@ const createDefaultSections = (
         faqs={faqs}
       />
     ),
-    position: 6,
   },
   {
     id: 'cta',
@@ -169,7 +155,6 @@ const createDefaultSections = (
         />
       </Suspense>
     ),
-    position: 7,
   },
 ]
 
@@ -177,7 +162,6 @@ const emptySections: Section[] = []
 
 export default function LandingPage({
   location,
-  reviewsMasonryId,
   reviewsBadgeId,
   photosFolder,
   pricing,
@@ -215,12 +199,16 @@ export default function LandingPage({
     ctaHeading,
     ctaBody,
     location,
-    reviewsMasonryId,
     photosFolder,
   )
 
-  // Merge custom sections with default sections
-  const allSections = [...defaultSections, ...sections].sort((a, b) => a.position - b.position)
+  // Merge custom sections with default sections and use index as position if not defined
+  const allSections = [...defaultSections, ...sections]
+    .map((section, index) => ({
+      ...section,
+      position: section.position ?? index,
+    }))
+    .sort((a, b) => a.position - b.position)
 
   return (
     <>

@@ -14,7 +14,6 @@ type Step = {
 type LocationPageProps = {
   locationKey: LocationKey
   location: Location
-  reviewsMasonryId: string
   reviewsBadgeId: string
   googleMapsEmbedUrl: string
   photosFolder: string
@@ -55,7 +54,6 @@ type LocationPageProps = {
 export default function LocationLandingPage({
   locationKey,
   location,
-  reviewsMasonryId,
   reviewsBadgeId,
   googleMapsEmbedUrl,
   photosFolder,
@@ -86,7 +84,6 @@ export default function LocationLandingPage({
       />
       <LandingPage
         location={locationKey}
-        reviewsMasonryId={reviewsMasonryId}
         reviewsBadgeId={reviewsBadgeId}
         photosFolder={photosFolder}
         pricing={pricing}

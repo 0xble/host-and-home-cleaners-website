@@ -18,7 +18,6 @@ export default function Kaimuki() {
     <LocationLandingPage
       locationKey='HONOLULU'
       location={LOCATIONS.HONOLULU}
-      reviewsMasonryId='8a2da83f-ca84-4420-9a31-71143d5c546e'
       reviewsBadgeId='142009ae-6f8c-4599-9c7e-9d370298abc9'
       googleMapsEmbedUrl='https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d237770.1723966727!2d-157.869932!3d21.3836454!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c4ce057e4bdff0b%3A0xa78d25a714d5f0ae!2sHost%20%26%20Home%20Cleaners%20Honolulu!5e0!3m2!1sen!2sus!4v1729395012053!5m2!1sen!2sus'
       photosFolder='honolulu'

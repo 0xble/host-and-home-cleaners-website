@@ -1,7 +1,5 @@
-'use client'
+import { useEffect, useRef } from 'react'
 import Autoplay from 'embla-carousel-autoplay'
-import { useRef } from 'react'
-
 import {
   Carousel,
   CarouselContent,
@@ -14,7 +12,7 @@ import { cn } from '@/lib/utils'
 
 const TestimonialVideo = ({ src }: { src: string }) => (
   <video
-    className='h-[415px] w-[220px] rounded-lg md:h-[400px] md:w-[200px]'
+    className='h-[300px] w-[160px] rounded-lg sm:h-[415px] sm:w-[220px] md:h-[400px] md:w-[200px]'
     controls
   >
     <source src={src} type='video/mp4' />
@@ -33,25 +31,25 @@ const TestimonialFigure = ({
   name: string
   label: string
 }) => (
-  <figure className='flex flex-col items-center justify-center rounded-t-lg bg-white p-4 text-center md:rounded-t-none md:rounded-ss-lg md:p-8'>
-    <blockquote className='mx-auto mb-4 max-w-full text-gray-500 md:max-w-2xl lg:mb-8'>
-      <h3 className='text-gray-900'>{heading}</h3>
-      <p className='my-4'>{text}</p>
+  <figure className='flex flex-col items-center justify-center rounded-t-lg bg-white p-3 text-center sm:p-4 md:rounded-t-none md:rounded-ss-lg md:p-8'>
+    <blockquote className='mx-auto mb-3 max-w-full text-sm text-gray-500 sm:mb-4 sm:text-base md:max-w-2xl lg:mb-8'>
+      <h3 className='text-base text-gray-900 sm:text-lg'>{heading}</h3>
+      <p className='my-2 sm:my-4'>{text}</p>
     </blockquote>
     <figcaption className='flex items-center justify-center'>
-      <div className='text-center font-medium'>
+      <div className='text-center text-sm font-medium sm:text-base'>
         <div>{name}</div>
-        <div className='text-sm text-gray-500'>{label}</div>
+        <div className='text-xs text-gray-500 sm:text-sm'>{label}</div>
       </div>
     </figcaption>
   </figure>
 )
 
-export type TestimonialsSectionProps = {
-  heading: string
+export type TestimonialCarouselProps = {
   className?: string
 }
-export default function TestimonialsSection({ heading, className }: TestimonialsSectionProps) {
+
+export function TestimonialCarousel({ className }: TestimonialCarouselProps) {
   const plugin = useRef(
     Autoplay({
       delay: 5000,
@@ -60,9 +58,15 @@ export default function TestimonialsSection({ heading, className }: Testimonials
     }),
   )
 
+  useEffect(() => {
+    // Cleanup autoplay on unmount
+    return () => {
+      plugin.current.stop()
+    }
+  }, [])
+
   return (
-    <div className={cn('my-12 flex flex-col text-center', className)}>
-      <h2 className='mb-12 tracking-tight text-gray-900'>{heading}</h2>
+    <div className={cn('my-8 flex flex-col text-center sm:my-12', className)}>
       <Carousel
         plugins={[plugin.current]}
         opts={{ loop: true }}
@@ -82,7 +86,7 @@ export default function TestimonialsSection({ heading, className }: Testimonials
             <TestimonialVideo src='/testimony2.mp4' />
             <TestimonialFigure
               heading='Complete peace of mind'
-              text={`I haven’t gotten a single negative review since I started using ${BUSINESS_NAME}. They give me complete peace of mind!`}
+              text={`I haven't gotten a single negative review since I started using ${BUSINESS_NAME}. They give me complete peace of mind!`}
               name='Alice Green'
               label='Airbnb Host, 6 years'
             />
@@ -97,8 +101,8 @@ export default function TestimonialsSection({ heading, className }: Testimonials
             />
           </CarouselItem>
         </CarouselContent>
-        <CarouselPrevious className='max-[860px]:absolute max-[860px]:left-4' />
-        <CarouselNext className='max-[860px]:absolute max-[860px]:right-4' />
+        <CarouselPrevious className='absolute left-2 sm:left-4' />
+        <CarouselNext className='absolute right-2 sm:right-4' />
       </Carousel>
     </div>
   )

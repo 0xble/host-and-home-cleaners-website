@@ -1,4 +1,4 @@
-import { differenceInMinutes, formatDistanceToNow } from 'date-fns'
+import { differenceInMinutes, formatDistanceToNow, hoursToSeconds } from 'date-fns'
 import { LOCATIONS, REVIEWS } from '0xble/notion/types'
 import { queryDatabase } from './notion'
 
@@ -9,11 +9,6 @@ let lastFetchTime = 0
 const CACHE_DURATION_MIN = 60 // 1 hour
 
 export type Platform = 'Google' | 'Facebook' | 'Yelp' | 'Thumbtack' | 'Nextdoor'
-
-export type ReviewsMasonryProps = {
-  id?: string // Optional for backward compatibility
-  className?: string
-}
 
 export type Review = {
   id: string
@@ -52,6 +47,9 @@ export type Location = {
   thumbtackUrl: string | null
   nextdoorUrl: string | null
 }
+
+// eslint-disable-next-line react-refresh/only-export-components
+export const revalidate = hoursToSeconds(3) // Revalidate every 3 hours
 
 async function fetchReviewPagesNotion() {
   try {
