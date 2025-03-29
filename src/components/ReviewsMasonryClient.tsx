@@ -11,11 +11,11 @@ import { cn } from '@/lib/utils'
 
 // Platform Icons Configuration
 const PLATFORM_ICONS = {
-  Google: '/images/platforms/google.svg',
-  Facebook: '/images/platforms/facebook.svg',
-  Yelp: '/images/platforms/yelp.svg',
-  Thumbtack: '/images/platforms/thumbtack.svg',
-  Nextdoor: '/images/platforms/nextdoor.svg',
+  Google: '/icons/google.svg',
+  Facebook: '/icons/facebook.svg',
+  Yelp: '/icons/yelp.svg',
+  Thumbtack: '/icons/thumbtack.png',
+  Nextdoor: '/icons/nextdoor.png',
 } as const
 
 // Platform Icon Component
@@ -26,30 +26,34 @@ function PlatformIcon({ platform, className }: { platform: Platform, className?:
       alt={`${platform} icon`}
       width={20}
       height={20}
-      className={cn('h-5 w-5', className)}
+      className={cn('h-5 w-5 rounded-full', className)}
     />
   )
 }
 
 const AVATAR_COLORS = [
   'bg-red-500',
-  'bg-pink-500',
-  'bg-purple-500',
-  'bg-deep-purple-500',
-  'bg-indigo-500',
-  'bg-blue-500',
-  'bg-light-blue-500',
-  'bg-cyan-500',
-  'bg-teal-500',
-  'bg-green-500',
-  'bg-light-green-500',
-  'bg-lime-500',
-  'bg-yellow-500',
-  'bg-amber-500',
   'bg-orange-500',
-  'bg-deep-orange-500',
-  'bg-brown-500',
-  'bg-blue-grey-500',
+  'bg-amber-500',
+  'bg-yellow-500',
+  'bg-lime-500',
+  'bg-green-500',
+  'bg-emerald-500',
+  'bg-teal-500',
+  'bg-cyan-500',
+  'bg-sky-500',
+  'bg-blue-500',
+  'bg-indigo-500',
+  'bg-violet-500',
+  'bg-purple-500',
+  'bg-fuchsia-500',
+  'bg-pink-500',
+  'bg-rose-500',
+  'bg-slate-500',
+  'bg-gray-500',
+  'bg-zinc-500',
+  'bg-neutral-500',
+  'bg-stone-500',
 ] as const
 
 function getAvatarColor(name: string): string {
@@ -82,7 +86,7 @@ function ReviewCard({ review, className }: { review: Review, className?: string 
         ))}
       </div>
 
-      <p className='mb-4 text-gray-700'>
+      <p className='mb-4'>
         {review.text.length > 250 ? `${review.text.slice(0, 250)}...` : review.text}
       </p>
 
@@ -98,12 +102,15 @@ function ReviewCard({ review, className }: { review: Review, className?: string 
       )}
 
       <div className='mb-4 flex items-center gap-2'>
-        <PlatformIcon platform={review.platform} className='size-5' />
-        <span className='text-sm text-gray-600'>
-          Posted on
-          {' '}
-          {review.platform}
-        </span>
+        <PlatformIcon platform={review.platform} />
+        <div className='flex flex-col gap-1'>
+          <div className='text-xs text-gray-500'>
+            Posted on
+          </div>
+          <div className='text-sm text-primary-600'>
+            {review.platform}
+          </div>
+        </div>
       </div>
 
       <div className='flex items-center gap-3'>
@@ -127,11 +134,39 @@ function ReviewCard({ review, className }: { review: Review, className?: string 
               </div>
             )}
         <div>
-          <div className='font-medium text-gray-900'>{review.author.name}</div>
-          <div className='text-sm text-gray-500'>{review.date}</div>
+          <div className='font-medium'>{review.author.name}</div>
+          <div className='text-sm font-light text-gray-500'>{review.date}</div>
         </div>
       </div>
     </motion.div>
+  )
+}
+
+function getTabStyles(isActive: boolean) {
+  return {
+    tab: cn(
+      'flex items-center gap-2 border-b-2 px-4 py-2 text-base font-medium transition-colors rounded-t-lg',
+      isActive
+        ? 'border-primary-700 text-primary-700 hover:bg-gray-100'
+        : 'border-transparent text-gray-500 hover:bg-gray-100 hover:border-gray-300 hover:text-gray-700',
+    ),
+    count: cn(
+      isActive ? 'text-primary-700' : 'text-gray-400'
+    ),
+  }
+}
+
+function RatingDisplay({ rating, count, className }: { rating?: number, count: number, className?: string }) {
+  return (
+    <span className='flex items-center gap-1'>
+      {count > 0 && (
+        <>
+          <Star className='size-4 fill-yellow-400 text-yellow-400' />
+          {rating?.toFixed(1)}
+        </>
+      )}
+      <span className={className}>({count})</span>
+    </span>
   )
 }
 
@@ -148,10 +183,9 @@ function PlatformRatingTabs({
   className?: string
 }) {
   const totalReviews = ratings.reduce((acc, curr) => acc + curr.total_reviews, 0)
-  const overallRating = round(
-    ratings.reduce((acc, curr) => acc + curr.rating * curr.total_reviews, 0) / totalReviews,
-    1,
-  ).toFixed(1)
+  const overallRating = totalReviews > 0
+    ? round(ratings.reduce((acc, curr) => acc + curr.rating * curr.total_reviews, 0) / totalReviews, 1)
+    : 0
 
   // Create a map of existing ratings for easy lookup
   const ratingMap = new Map(ratings.map(r => [r.platform, r]))
@@ -166,48 +200,33 @@ function PlatformRatingTabs({
           <button
             type='button'
             onClick={() => onSelectPlatform(null)}
-            className={cn(
-              'flex items-center gap-2 border-b-2 px-4 py-2 text-base font-medium transition-colors rounded-t-lg',
-              selectedPlatform === null
-                ? 'border-primary-700 text-primary-700 hover:bg-gray-100'
-                : 'border-transparent text-gray-500 hover:bg-gray-100 hover:border-gray-300 hover:text-gray-700',
-            )}
+            className={getTabStyles(selectedPlatform === null).tab}
           >
-            <span>All Reviews</span>
-            <span className='flex items-center gap-1'>
-              {totalReviews > 0 && (
-                <>
-                  <Star className='size-4 fill-yellow-400 text-yellow-400' />
-                  {overallRating}
-                </>
-              )}
-            </span>
+            <span>All</span>
+            <RatingDisplay
+              rating={overallRating}
+              count={totalReviews}
+              className={getTabStyles(selectedPlatform === null).count}
+            />
           </button>
 
           {orderedPlatforms.map((platform) => {
             const rating = ratingMap.get(platform)
+            const styles = getTabStyles(selectedPlatform === platform)
             return (
               <button
                 type='button'
                 key={platform}
                 onClick={() => onSelectPlatform(platform)}
-                className={cn(
-                  'flex items-center gap-2 border-b-2 px-4 py-2 text-base font-medium transition-colors rounded-t-lg',
-                  selectedPlatform === platform
-                    ? 'border-primary-700 text-primary-700 hover:bg-gray-100'
-                    : 'border-transparent text-gray-500 hover:bg-gray-100 hover:border-gray-300 hover:text-gray-700',
-                )}
+                className={styles.tab}
               >
-                <PlatformIcon platform={platform} className='size-4' />
+                <PlatformIcon platform={platform} />
                 <span>{platform}</span>
-                {rating?.total_reviews
-                  ? (
-                      <span className='flex items-center gap-1'>
-                        <Star className='size-4 fill-yellow-400 text-yellow-400' />
-                        {round(rating.rating, 1).toFixed(1)}
-                      </span>
-                    )
-                  : null}
+                <RatingDisplay
+                  rating={rating?.rating}
+                  count={rating?.total_reviews ?? 0}
+                  className={styles.count}
+                />
               </button>
             )
           })}
