@@ -1,17 +1,8 @@
-import Script from 'next/script'
+import { getReviews, type ReviewsMasonryProps } from '@/lib/reviews'
 
-import { cn } from '@/lib/utils'
+import { ReviewsMasonryClient } from './ReviewsMasonryClient'
 
-export type ReviewsMasonryProps = {
-  id: string
-  className?: string
-}
-
-export default function ReviewsMasonry({ id, className }: ReviewsMasonryProps) {
-  return (
-    <div className='px-4 sm:px-20'>
-      <Script src='https://static.elfsight.com/platform/platform.js' strategy='lazyOnload' />
-      <div className={cn(`elfsight-app-${id}`, className)} data-elfsight-app-lazy />
-    </div>
-  )
+export default async function ReviewsMasonry({ className }: ReviewsMasonryProps) {
+  const reviewsData = await getReviews()
+  return <ReviewsMasonryClient data={reviewsData} className={className} />
 }

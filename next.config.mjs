@@ -12,6 +12,27 @@ const nextConfig = bundleAnalyzer({
     hideSourceMaps: true,
   },
 
+  // Configure allowed image domains
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'storage.tally.so',
+        pathname: '/private/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 's3-media0.fl.yelpcdn.com',
+        pathname: '/assets/**',
+      },
+    ],
+  },
+
   // Add webpack configuration to fix the "name too long" caching errors
   webpack: (config, { dev }) => {
     // Only modify cache settings for production builds
