@@ -1,5 +1,6 @@
 'use client'
 
+import { AnimatePresence, motion } from 'framer-motion'
 import { Star } from 'lucide-react'
 import Image from 'next/image'
 import { useState } from 'react'
@@ -61,7 +62,14 @@ function getAvatarColor(name: string): string {
 // Review Card Component
 function ReviewCard({ review, className }: { review: Review, className?: string }) {
   return (
-    <div className={cn('rounded-lg bg-white p-6 shadow-md', className)}>
+    <motion.div
+      layout
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 20 }}
+      transition={{ duration: 0.2 }}
+      className={cn('rounded-lg bg-white p-6 shadow-md', className)}
+    >
       <div className='mb-4 flex'>
         {Array.from({ length: 5 }).map((_, i) => (
           <Star
@@ -123,7 +131,7 @@ function ReviewCard({ review, className }: { review: Review, className?: string 
           <div className='text-sm text-gray-500'>{review.date}</div>
         </div>
       </div>
-    </div>
+    </motion.div>
   )
 }
 
@@ -240,13 +248,24 @@ export function ReviewsMasonryClient({ data, className }: ReviewsMasonryClientPr
           }}
           className='justify-center'
         />
-        <div className='grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3'>
-          {filteredReviews.slice(0, visibleReviews).map(review => (
-            <ReviewCard key={review.id} review={review} />
-          ))}
-        </div>
+        <motion.div
+          layout
+          transition={{ duration: 0.2 }}
+          className='grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3'
+        >
+          <AnimatePresence mode='popLayout' initial={false}>
+            {filteredReviews.slice(0, visibleReviews).map(review => (
+              <ReviewCard key={review.id} review={review} />
+            ))}
+          </AnimatePresence>
+        </motion.div>
         {hasMoreReviews && (
-          <div className='flex justify-center'>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.2 }}
+            className='flex justify-center'
+          >
             <button
               type='button'
               onClick={handleViewMore}
@@ -254,7 +273,7 @@ export function ReviewsMasonryClient({ data, className }: ReviewsMasonryClientPr
             >
               View More
             </button>
-          </div>
+          </motion.div>
         )}
       </div>
     </div>

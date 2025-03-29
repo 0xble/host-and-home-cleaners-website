@@ -1,10 +1,13 @@
 import { Client } from '@notionhq/client'
 import type { PageObjectResponse } from '@notionhq/client/build/src/api-endpoints'
-import { formatDistanceToNow } from 'date-fns'
-
-export const revalidate = 3600 // seconds
+import { formatDistanceToNow, minutesToMilliseconds } from 'date-fns'
 
 const notion = new Client({ auth: process.env.NOTION_API_KEY })
+
+// In-memory cache for development
+let reviewsCache: ReviewsData | null = null
+let lastFetchTime = 0
+const CACHE_DURATION = minutesToMilliseconds(60) // 1 hour in milliseconds
 
 export type Platform = 'Google' | 'Facebook' | 'Yelp' | 'Thumbtack' | 'Nextdoor'
 
@@ -62,6 +65,15 @@ async function fetchReviewPagesNotion() {
 }
 
 export async function getReviews(): Promise<ReviewsData> {
+  // Use cache in development mode
+  if (process.env.NODE_ENV === 'development') {
+    const now = Date.now()
+    if (reviewsCache && (now - lastFetchTime) < CACHE_DURATION) {
+      console.log('Using cached reviews data')
+      return reviewsCache
+    }
+  }
+
   const pages = await fetchReviewPagesNotion()
 
   const reviews = pages.map((page) => {
@@ -134,9 +146,18 @@ export async function getReviews(): Promise<ReviewsData> {
     total_reviews: count,
   }))
 
-  return {
+  const reviewsData = {
     overall_rating: reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length,
     platform_ratings,
     reviews,
   }
+
+  // Update cache in development mode
+  if (process.env.NODE_ENV === 'development') {
+    reviewsCache = reviewsData
+    lastFetchTime = Date.now()
+    console.log('Updated reviews cache')
+  }
+
+  return reviewsData
 }
