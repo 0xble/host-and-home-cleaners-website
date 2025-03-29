@@ -34,8 +34,9 @@ export type GetLocationOptions = {
 }
 export const getLocation = (options: GetLocationOptions): Location | undefined => {
   if (options.zipCode) {
-    for (const [location, { zipCodes }] of Object.entries(LOCATIONS)) {
-      if ((zipCodes as string[]).includes(options.zipCode)) {
+    for (const [location, locationData] of Object.entries(LOCATIONS)) {
+      const zipCodes = locationData.zipCodes as readonly string[]
+      if (zipCodes.includes(options.zipCode)) {
         return location as Location
       }
     }
