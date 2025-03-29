@@ -27,13 +27,17 @@ export type LayoutProps = Readonly<{
 
 export default function RootLayout({ children }: LayoutProps) {
   return (
-    <html lang='en' className='light' suppressHydrationWarning>
+    <html lang='en' suppressHydrationWarning>
       <body className={inter.className} suppressHydrationWarning>
         {/* Main Content */}
         {children}
 
         {/* Third-party Scripts */}
-        <Script src='dist/flowbite.min.js' strategy='afterInteractive' />
+        <Script
+          src='dist/flowbite.min.js'
+          strategy='lazyOnload'
+          crossOrigin='anonymous'
+        />
         <Script src='https://tally.so/widgets/embed.js' strategy='lazyOnload' />
 
         {/* Analytics */}

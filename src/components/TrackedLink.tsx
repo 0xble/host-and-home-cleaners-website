@@ -3,8 +3,7 @@
 import Link from 'next/link'
 import type { ReactNode } from 'react'
 
-import type { PixelEvent } from '@/lib/pixel'
-import { useEventTracking } from '@/lib/pixel'
+import { type PixelEvent, useEventTracking } from '@/lib/pixel'
 
 type TrackedLinkProps = {
   href: string

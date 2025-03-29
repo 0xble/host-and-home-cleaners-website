@@ -2,8 +2,7 @@
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
-import { useEventTracking } from '@/lib/pixelClient'
-import { PixelEvent } from '@/lib/pixelEvents'
+import { PixelEvent, useEventTracking } from '@/lib/pixel'
 import { ROUTES } from '@/lib/routes'
 import { isZipCode } from '@/lib/schemas'
 import { cn, getLocation } from '@/lib/utils'

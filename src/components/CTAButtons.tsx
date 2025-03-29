@@ -3,7 +3,7 @@
 import { PhoneIcon } from '@heroicons/react/24/solid'
 
 import TrackedLink from '@/components/TrackedLink'
-import { PixelEvent } from '@/lib/pixelEvents'
+import { PixelEvent } from '@/lib/pixel'
 import { ROUTES } from '@/lib/routes'
 import type { Phone } from '@/lib/types'
 import { cn } from '@/lib/utils'
