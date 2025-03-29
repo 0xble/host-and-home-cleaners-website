@@ -131,7 +131,7 @@ function ReviewCard({ review, className }: { review: Review, className?: string 
               </div>
             )}
         <div>
-          <div className='text-sm font-medium sm:text-base'>{review.author.name}</div>
+          <div className='text-sm sm:text-base'>{review.author.name}</div>
           <div className='text-xs font-light text-gray-500 sm:text-sm'>{review.date}</div>
         </div>
       </div>
@@ -277,13 +277,15 @@ function PlatformRatingTabs({
   return (
     <div className={cn('relative flex flex-col', className)}>
       <div className='relative w-full overflow-hidden border-b border-gray-200'>
-        <div className='flex items-center'>
+        <div className='flex items-center justify-center'>
           <div
             ref={scrollContainerRef}
             onScroll={handleScroll}
-            className='no-scrollbar flex gap-3 overflow-x-auto px-6 py-3 sm:gap-2 sm:px-4 sm:py-2 [&::-webkit-scrollbar]:hidden'
+            className='no-scrollbar flex max-w-full gap-3 overflow-x-auto px-6 py-3 sm:gap-2 sm:px-4 sm:py-2 [&::-webkit-scrollbar]:hidden'
           >
-            {allPlatforms.map(platform => renderTab(platform))}
+            <div className='flex gap-3 sm:gap-2'>
+              {allPlatforms.map(platform => renderTab(platform))}
+            </div>
           </div>
           {hasOverflow && (
             <>
@@ -316,7 +318,30 @@ function PlatformRatingTabs({
 export default function ReviewsGridClient() {
   const [data, setData] = useState<ReviewsData | null>(null)
   const [selectedPlatform, setSelectedPlatform] = useState<Platform | null>(null)
-  const [visibleReviews, setVisibleReviews] = useState(9) // Show 3x3 grid initially
+  const [visibleReviews, setVisibleReviews] = useState(6)
+  const gridRef = useRef<HTMLDivElement>(null)
+
+  const getColumnCount = () => {
+    if (!gridRef.current) return 1
+    const computedStyle = window.getComputedStyle(gridRef.current)
+    return computedStyle.gridTemplateColumns.split(' ').length
+  }
+
+  const getReviewsToShow = (baseRowCount = 4) => {
+    const columns = getColumnCount()
+    // Always show 4 rows, regardless of column count
+    return columns * baseRowCount
+  }
+
+  useEffect(() => {
+    const updateVisibleReviews = () => {
+      setVisibleReviews(getReviewsToShow())
+    }
+
+    updateVisibleReviews()
+    window.addEventListener('resize', updateVisibleReviews)
+    return () => window.removeEventListener('resize', updateVisibleReviews)
+  }, [])
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -336,16 +361,20 @@ export default function ReviewsGridClient() {
   }, [])
 
   if (!data) {
+    const skeletonCount = getReviewsToShow()
     return (
-      <div className='px-4 sm:px-20'>
-        <div className='space-y-8'>
+      <div className='px-4 sm:px-4 lg:px-20'>
+        <div className='space-y-8 sm:space-y-6'>
           <div className='flex justify-center'>
             <Skeleton className='h-12 w-[600px] rounded-lg' />
           </div>
-          <div className='grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3'>
-            {Array.from({ length: 9 }).map((_, i) => (
+          <div ref={gridRef} className='grid min-h-80 grid-cols-1 gap-6 sm:gap-4 md:grid-cols-2 lg:grid-cols-3'>
+            {Array.from({ length: skeletonCount }).map((_, i) => (
               <ReviewCardSkeleton key={i} />
             ))}
+          </div>
+          <div className='flex justify-center'>
+            <Skeleton className='h-10 w-32 rounded-lg' />
           </div>
         </div>
       </div>
@@ -359,7 +388,8 @@ export default function ReviewsGridClient() {
   const hasMoreReviews = filteredReviews.length > visibleReviews
 
   const handleViewMore = () => {
-    setVisibleReviews(prev => prev + 9) // Load 9 more reviews
+    const increment = getReviewsToShow(2) // Load 2 more rows worth of reviews
+    setVisibleReviews(prev => prev + increment)
   }
 
   return (
@@ -370,14 +400,15 @@ export default function ReviewsGridClient() {
           selectedPlatform={selectedPlatform}
           onSelectPlatform={(platform) => {
             setSelectedPlatform(platform)
-            setVisibleReviews(9)
+            setVisibleReviews(getReviewsToShow())
           }}
           className='justify-center'
         />
         <motion.div
+          ref={gridRef}
           layout
           transition={{ duration: 0.2 }}
-          className='grid min-h-96 grid-cols-1 gap-6 sm:gap-4 lg:grid-cols-3 md:grid-cols-2'
+          className='grid min-h-80 grid-cols-1 gap-6 sm:gap-4 md:grid-cols-2 lg:grid-cols-3'
         >
           <AnimatePresence mode='popLayout' initial={false}>
             {filteredReviews.slice(0, visibleReviews).map(review => (
