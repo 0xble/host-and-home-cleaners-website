@@ -83,7 +83,7 @@ export default function PricingSection({ heading, description, pricing }: Pricin
       <div className='mx-auto px-4 py-8 sm:py-16 lg:max-w-screen-lg lg:px-6 xl:max-w-screen-2xl'>
         <div className='mx-auto mb-8 max-w-screen-md text-center lg:mb-12'>
           <h2 className='mb-4 tracking-tight text-gray-900'>{heading}</h2>
-          {typeof description === 'string' ? <p className='text-left'>{description}</p> : description}
+          {typeof description === 'string' ? <p className='text-left text-base sm:text-lg'>{description}</p> : description}
         </div>
         <div className='grid gap-8 sm:grid-cols-2 sm:gap-10 xl:grid-cols-4 xl:gap-4'>
           <PricingCard

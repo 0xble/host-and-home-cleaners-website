@@ -86,7 +86,7 @@ function ReviewCard({ review, className }: { review: Review, className?: string 
         ))}
       </div>
 
-      <p className='mb-3 text-sm sm:mb-4 sm:text-base'>
+      <p className='mb-3 sm:mb-4 text-base'>
         "{review.text.length > 250 ? `${review.text.slice(0, 250)}...` : review.text}"
       </p>
 
