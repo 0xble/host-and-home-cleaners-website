@@ -5,7 +5,7 @@ import { Suspense } from 'react'
 import CompetitorComparisonTable from '@/components/CompetitorComparisonTable'
 import FindLocationInput from '@/components/FindLocationInput'
 import LandingPage from '@/components/LandingPage'
-import ReviewsFloatingBadge from '@/components/ReviewsFloatingBadge'
+// import ReviewsFloatingBadge from '@/components/ReviewsFloatingBadge'
 import { BUSINESS_NAME, TAGLINE } from '@/lib/constants'
 import { ContentViewTracker } from '@/lib/pixel'
 import { ROUTES } from '@/lib/routes'
@@ -23,9 +23,9 @@ export default function Home() {
         contentName='Home'
         contentId='home-page'
       />
-      <Suspense>
+      {/* <Suspense>
         <ReviewsFloatingBadge id='ba527c37-e33e-46d1-8a33-08aed36ffd09' />
-      </Suspense>
+      </Suspense> */}
       <LandingPage
         location={null}
         reviewsBadgeId='ba527c37-e33e-46d1-8a33-08aed36ffd09'
