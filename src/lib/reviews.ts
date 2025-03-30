@@ -1,4 +1,4 @@
-import { differenceInMinutes, formatDistanceToNow, hoursToSeconds } from 'date-fns'
+import { compareDesc, differenceInMinutes, hoursToSeconds } from 'date-fns'
 import { LOCATIONS, REVIEWS } from '0xble/notion/types'
 import { queryDatabase } from './notion'
 
@@ -12,14 +12,14 @@ export type Platform = 'Google' | 'Facebook' | 'Yelp' | 'Thumbtack' | 'Nextdoor'
 
 export type Review = {
   id: string
-  rating: number
-  text: string
+  date: Date | null
+  rating: number | null
+  text: string | null
   author: {
-    name: string
+    name: string | null
     image: string | null
   }
-  platform: Platform
-  date: string
+  platform: Platform | null
   url: string | null
 }
 
@@ -112,31 +112,26 @@ export async function getReviews(): Promise<ReviewsData> {
 
       // Get platform from "Platform" property
       const platform = props.Platform && 'select' in props.Platform
-        ? props.Platform.select?.name as Platform || 'Google'
-        : 'Google'
+        ? props.Platform.select?.name as Platform
+        : null
 
       // Get date from "Date" property and format it
-      const rawDate = props.Date && 'date' in props.Date && props.Date.date?.start
+      const date = props.Date && 'date' in props.Date && props.Date.date?.start
         ? new Date(props.Date.date.start)
         : new Date()
-
-      const formattedDate = formatDistanceToNow(rawDate, { addSuffix: true })
 
       // Get rating from "Rating" property
       const rating = props.Rating && 'number' in props.Rating
         ? Number(props.Rating.number) || 5
         : 5
 
+      // Find the matching location first
+      const locationId = props['Location'] && 'relation' in props['Location'] && props['Location'].relation[0]?.id
+      const location = locationId ? locations.find((location) => location.id === locationId) : null
+
       // Get URL from "URL" property
-      const url = props.URL && 'url' in props.URL && props.URL.url
+      const url = props.URL && 'url' in props.URL && props.URL.url !== null
         ? props.URL.url
-        : null
-
-      const location = locations.find((l) => l.id === page.id)
-
-      // Get reviewer profile URL
-      const profileUrl = props['Reviewer Profile URL'] && 'url' in props['Reviewer Profile URL'] && props['Reviewer Profile URL'].url
-        ? props['Reviewer Profile URL'].url
         : (() => {
           switch (platform) {
             case 'Google':
@@ -152,6 +147,11 @@ export async function getReviews(): Promise<ReviewsData> {
           }
         })();
 
+      // Get reviewer profile URL
+      const profileUrl = props['Reviewer Profile URL'] && 'url' in props['Reviewer Profile URL'] && props['Reviewer Profile URL'].url !== null
+        ? props['Reviewer Profile URL'].url
+        : null
+
       return {
         id: page.id,
         rating,
@@ -161,29 +161,34 @@ export async function getReviews(): Promise<ReviewsData> {
           image: profileUrl,
         },
         platform,
-        date: formattedDate,
+        date,
         url,
       }
-    })
+    }).sort((a, b) => compareDesc(a.date, b.date))
 
     // Calculate platform ratings
-    const platformCounts = {} as Record<Platform, { total: number, count: number }>
+    const platformCounts = {} as Record<Platform, { total: number, count: number, totalCount: number }>
     reviews.forEach((review) => {
-      if (!platformCounts[review.platform]) {
-        platformCounts[review.platform] = { total: 0, count: 0 }
+      if (review.platform) {
+        if (!platformCounts[review.platform]) {
+          platformCounts[review.platform] = { total: 0, count: 0, totalCount: 0 }
+        }
+        platformCounts[review.platform].totalCount++
+        if (review.rating !== null) {
+          platformCounts[review.platform].total += review.rating
+          platformCounts[review.platform].count++
+        }
       }
-      platformCounts[review.platform].total += review.rating
-      platformCounts[review.platform].count++
     })
 
-    const platform_ratings = Object.entries(platformCounts).map(([platform, { total, count }]) => ({
+    const platform_ratings = Object.entries(platformCounts).map(([platform, { total, count, totalCount }]) => ({
       platform: platform as Platform,
-      rating: total / count,
-      total_reviews: count,
+      rating: count > 0 ? total / count : 0,
+      total_reviews: totalCount,
     }))
 
     const reviewsData = {
-      overall_rating: reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length,
+      overall_rating: reviews.reduce((acc, r) => acc + r.rating!, 0) / reviews.length,
       platform_ratings,
       reviews,
     }

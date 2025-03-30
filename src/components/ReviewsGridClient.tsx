@@ -5,10 +5,21 @@ import { Star, ChevronRight, ChevronLeft } from 'lucide-react'
 import Image from 'next/image'
 import { useEffect, useState, useRef } from 'react'
 import { round } from 'remeda'
-import { hoursToSeconds } from 'date-fns'
+import { compareDesc, formatDistanceToNow, hoursToSeconds } from 'date-fns'
+import { tz } from '@date-fns/tz'
 import type { Platform, PlatformRating, Review, ReviewsData } from '@/lib/reviews'
 import { cn } from '@/lib/utils'
 import { Skeleton } from '@/components/ui/skeleton'
+
+type ValidReview = Omit<Review, 'rating' | 'text' | 'date' | 'author'> & {
+  rating: number
+  text: string
+  date: Date
+  author: {
+    name: string
+    image: string | null
+  }
+}
 
 const PLATFORM_ICONS = {
   Google: '/icons/google.svg',
@@ -64,7 +75,7 @@ function getAvatarColor(name: string): string {
 }
 
 // Review Card Component
-function ReviewCard({ review, className }: { review: Review, className?: string }) {
+function ReviewCard({ review, className }: { review: ValidReview, className?: string }) {
   return (
     <motion.div
       layout
@@ -103,14 +114,25 @@ function ReviewCard({ review, className }: { review: Review, className?: string 
         </a>
       )}
 
+      {review.platform && (
       <div className='mb-3 flex items-center gap-2 sm:mb-4'>
         <PlatformIcon platform={review.platform} />
-        <span className='text-xs text-gray-600 sm:text-sm'>
-          Posted on
-          {' '}
-          {review.platform}
-        </span>
-      </div>
+        {review.url ? (
+          <a
+            href={review.url}
+            target='_blank'
+            rel='noopener noreferrer'
+            className='text-xs text-gray-600 hover:underline sm:text-sm'
+          >
+            Posted on {review.platform}
+          </a>
+        ) : (
+          <span className='text-xs text-gray-600 sm:text-sm'>
+            Posted on {review.platform}
+          </span>
+        )}
+        </div>
+      )}
 
       <div className='flex items-center gap-3'>
         {review.author.image
@@ -126,15 +148,17 @@ function ReviewCard({ review, className }: { review: Review, className?: string 
           : (
               <div className={cn(
                 'flex size-8 items-center justify-center rounded-full text-base text-white sm:size-10 sm:text-lg',
-                getAvatarColor(review.author.name || 'Anonymous'),
+                getAvatarColor(review.author.name),
               )}
               >
-                {review.author.name?.charAt(0) || 'A'}
+                {review.author.name.charAt(0)}
               </div>
             )}
         <div>
           <div className='text-sm sm:text-base'>{review.author.name}</div>
-          <div className='text-xs font-light text-gray-500 sm:text-sm'>{review.date}</div>
+          <div className='text-xs font-light text-gray-500 sm:text-sm'>
+            {formatDistanceToNow(review.date, { addSuffix: true, in: tz('America/Los_Angeles') })}
+          </div>
         </div>
       </div>
     </motion.div>
@@ -391,23 +415,24 @@ export default function ReviewsGridClient() {
     )
   }
 
-  const filteredReviews = data.reviews.filter(review => {
+  const reviews = data.reviews.filter((review): review is ValidReview => {
     const ratingThreshold = columnCount === 1 ? 5 : 4
 
     // Check for required properties
-    const hasRequiredProperties =
+    const hasRequiredProperties = Boolean(
       review.author?.name &&
       review.date &&
       review.text &&
       review.rating &&
       review.platform
+    )
 
     return hasRequiredProperties &&
       (!selectedPlatform || review.platform === selectedPlatform) &&
-      review.rating >= ratingThreshold
-  })
+      (review.rating ?? 0) >= ratingThreshold
+  }).sort((a, b) => compareDesc(a.date, b.date))
 
-  const hasMoreReviews = filteredReviews.length > visibleReviews
+  const hasMoreReviews = reviews.length > visibleReviews
 
   const handleViewMore = () => {
     const increment = getReviewsToShow(2) // Load 2 more rows worth of reviews
@@ -433,7 +458,7 @@ export default function ReviewsGridClient() {
           className='grid min-h-80 grid-cols-1 gap-6 sm:gap-4 md:grid-cols-2 lg:grid-cols-3'
         >
           <AnimatePresence mode='popLayout' initial={false}>
-            {filteredReviews.slice(0, visibleReviews).map(review => (
+            {reviews.slice(0, visibleReviews).map(review => (
               <ReviewCard key={review.id} review={review} />
             ))}
           </AnimatePresence>
