@@ -1,9 +1,11 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
+import Link from 'next/link'
 import { Suspense } from 'react'
 
 import CTASection from '@/components/CTASection'
 import Page from '@/components/Page'
+import WhoAreWeSection from '@/components/WhoAreWeSection'
 import { BUSINESS_NAME, SERVICES } from '@/lib/constants'
 import { ContentViewTracker } from '@/lib/pixel'
 import homeImage from '@/public/home3.jpeg'
@@ -36,7 +38,7 @@ export default function StandardCleaning() {
         </h1>
         <p className='mb-20'>
           Recommended as a recurring service for maintaining the cleanliness of
-          a home after a deep clean.
+          a home after a <Link href='/deep-cleaning' className='link'>deep clean</Link>.
         </p>
       </section>
 
@@ -45,105 +47,80 @@ export default function StandardCleaning() {
           At
           {' '}
           {BUSINESS_NAME}
-          , we redefine excellence in the cleaning industry, offering
-          unparalleled quality, cost efficiency, and professionalism. Our
-          comprehensive range of tailored services, cutting-edge equipment, and
-          eco-friendly products ensure that your space receives the highest
-          standard of care.
+          , we offer professional standard cleaning services that maintain your home's cleanliness
+          on a regular basis. Our team of skilled professionals uses eco-friendly products and
+          industry best practices to ensure consistent, high-quality results.
         </p>
 
         <h2>
-          Why Opt for
+          Why Choose
+          {' '}
           {SERVICES.STANDARD}
           ?
         </h2>
 
         <p>
-          When it comes to top-tier cleaning services,
-          {' '}
-          {BUSINESS_NAME}
-          {' '}
-          is your premier
-          choice. We prioritize cost efficiency, providing affordable solutions
-          without compromising on quality. Our competitive pricing packages
-          cater to your needs and budget, delivering exceptional value for
-          money. Time is precious, which is why we focus on time-saving
-          solutions. With our team of skilled professionals and efficient
-          cleaning methods, you can enjoy prompt and thorough cleaning services
-          without sacrificing quality. We understand the importance of your time
-          and ensure that your space is impeccably cleaned in a timely manner.
+          Our standard cleaning service is designed for regular maintenance, offering a perfect balance
+          of thoroughness and efficiency. We focus on essential cleaning tasks that keep your home
+          looking its best between <Link href='/deep-cleaning' className='link'>deep cleanings</Link>.
+          Our team arrives on time, brings their own supplies, and works efficiently to minimize
+          disruption to your daily routine.
         </p>
 
-        <h2>Comprehensive Services Tailored to Your Needs</h2>
+        <h2>What's Included in Standard Cleaning?</h2>
         <p>
-          At
-          {' '}
-          {BUSINESS_NAME}
-          , we provide an extensive array of professional cleaning
-          solutions customized to suit your specific needs. Our team of skilled
-          professionals is adept in various cleaning techniques, encompassing
-          dusting, vacuuming, sanitizing, and polishing. We utilize industry
-          best practices and cutting-edge equipment to deliver consistent,
-          high-quality results.
-        </p>
-        <p>
-          We are committed to sustainability and prioritize eco-friendly
-          practices. Our green cleaning products are gentle on surfaces and safe
-          for both your health and the environment, ensuring a clean and healthy
-          space for you to enjoy.
+          Our standard cleaning service includes comprehensive cleaning of all living spaces, including dusting, vacuuming, mopping, bathroom cleaning, kitchen cleaning, and more. We focus on maintaining a clean and healthy environment with attention to detail in all areas. For a complete list of inclusions, please refer to our{' '}
+          <Link href='/checklist' className='link'>comprehensive cleaning checklist</Link>.
         </p>
 
-        <h2>Benefits of Hiring Professional Cleaners</h2>
+        <h2>Perfect for Regular Maintenance</h2>
         <p>
-          Professional cleaners offer numerous advantages that contribute to
-          maintaining a pristine and organized environment. By outsourcing
-          cleaning tasks to experts, you save time and can focus on your core
-          activities. Professional cleaners use specialized equipment and
-          products to ensure a deep clean and thoroughly clean, leading to
-          significant health benefits by reducing the spread of germs and
-          allergens.
-        </p>
-        <p>
-          Hiring professional cleaners can be cost-effective in the long run
-          despite the initial cost. They bring their supplies, eliminating the
-          need for you to purchase cleaning products regularly. With their
-          expertise, professional cleaners guarantee that the cleaning is done
-          to a high standard, leaving your space spotless and well-maintained.
+          Standard cleaning is ideal for maintaining a clean home after a{' '}
+          <Link href='/deep-cleaning' className='link'>deep clean</Link>. We recommend scheduling
+          standard cleanings on a regular basis (weekly, bi-weekly, or monthly) to maintain optimal
+          cleanliness and prevent buildup.
         </p>
 
-        <h2>Tips for Maintaining a Clean Space</h2>
+        <h2>Eco-Friendly Cleaning</h2>
         <p>
-          Maintaining a clean and hygienic space is essential for your
-          well-being. Organizing clutter and regularly decluttering can prevent
-          buildup and make cleaning more efficient. Moreover, integrating
-          eco-friendly cleaning products into your regimen minimizes exposure to
-          harmful chemicals and fosters a healthier indoor environment.
+          We prioritize sustainability by using eco-friendly cleaning products that are gentle on
+          surfaces and safe for both your health and the environment. Our cleaning methods are
+          designed to be effective while minimizing environmental impact.
         </p>
 
-        <h2>Customer Testimonials and Reviews</h2>
+        <h2>Professional and Reliable Service</h2>
         <p>
-          Customer testimonials and reviews are a testament to the quality and
-          reliability of our services. Positive reviews highlight our attention
-          to detail, promptness, and courteousness, showcasing our commitment to
-          customer satisfaction. Consistent cleaning results and glowing
-          testimonials demonstrate our dedication to excellence and reliability,
-          earning the trust and loyalty of our clients.
+          Our team of professional cleaners is trained to deliver consistent, high-quality results
+          every time. We understand the importance of reliability and punctuality, ensuring your
+          cleaning schedule runs smoothly.
         </p>
+
+        <h2>Additional Services Available</h2>
         <p>
-          Experience the
-          {' '}
-          {BUSINESS_NAME}
-          {' '}
-          difference today and elevate your cleaning
-          standards.
+          Need more thorough cleaning? We also offer{' '}
+          <Link href='/deep-cleaning' className='text-primary hover:underline'>
+            deep cleaning
+          </Link>
+          ,{' '}
+          <Link href='/move-in-out-cleaning' className='text-primary hover:underline'>
+            move-in/out cleaning
+          </Link>
+          , and{' '}
+          <Link href='/vacation-rental-cleaning' className='text-primary hover:underline'>
+            vacation rental cleaning
+          </Link>
+          .
         </p>
       </section>
 
+      <WhoAreWeSection className='mb-16' />
+
       <Suspense>
         <CTASection
-          heading='Let Us Transform Your Home!'
-          body='Book your standard cleaning service with us today and take the first step towards a cleaner, healthier home. Experience the difference of a truly spotless environment. Make a commitment to a cleaner, healthier living space and see the remarkable results of our expert standard cleaning services.'
+          heading='Looking For A Standard Cleaning?'
+          body={`Book your standard cleaning service with ${BUSINESS_NAME} today and experience the difference of professional cleaning. Our team is ready to transform your home into a spotless sanctuary.`}
           location='CACHED'
+          showImage={false}
         />
       </Suspense>
     </Page>

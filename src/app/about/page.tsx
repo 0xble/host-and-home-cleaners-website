@@ -135,7 +135,7 @@ export default function About() {
                   width={300}
                   height={300}
                 />
-                <h3 className='pt-6 text-center text-lg font-extralight md:pt-12 md:text-xl'>
+                <h3 className='pt-6 text-center text-lg md:pt-12 md:text-xl'>
                   {name}
                 </h3>
                 <p className='text-center text-sm font-extralight md:text-base'>

@@ -12,7 +12,7 @@ const SPECIFIC_BUSINESS_NAME = `${BUSINESS_NAME} ${LOCATIONS.HONOLULU.name}`
 
 export const metadata: Metadata = {
   title: `Professional House & Vacation Rental Cleaners in Aina Haina | ${BUSINESS_NAME}`,
-  description: `${TAGLINE}. Serving Aina Haina\'s residential and vacation rental properties. 5-star rated cleaners with outstanding testimonials. Book today!`,
+  description: `${TAGLINE}. Serving Aina Haina\'s residential and vacation rental properties. 5-star rated cleaners with outstanding reviews. Book today!`,
 }
 
 export default function AinaHaina() {

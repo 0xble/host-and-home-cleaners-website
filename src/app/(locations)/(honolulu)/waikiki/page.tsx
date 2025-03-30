@@ -168,7 +168,7 @@ export default function Waikiki() {
             ),
           },
         ],
-        customCTAHeading: 'Ready to Experience the Difference?',
+        customCTAHeading: 'Ready For A Quote?',
         customCTABody: (
           <>
             Transform your Waikiki property with just a few clicks! Get your

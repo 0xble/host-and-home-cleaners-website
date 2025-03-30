@@ -1,4 +1,7 @@
-import { SERVICES } from '@/lib/constants'
+import Link from 'next/link'
+
+import { SERVICES, type ServiceKey } from '@/lib/constants'
+import { ROUTES } from '@/lib/routes'
 import { cn } from '@/lib/utils'
 
 type PackageComparisonTableProps = {
@@ -18,26 +21,32 @@ export default function PackageComparisonTable({
   return (
     <div id='detailed-pricing' className={cn('w-full overflow-x-auto')}>
       <div className='overflow-hidden'>
-        <div className='grid grid-cols-6 items-center justify-center gap-x-6 border-b border-gray-200 p-4 font-medium text-gray-900 sm:grid-cols-7 sm:gap-x-16'>
+        <div className='grid grid-cols-6 gap-x-6 border-b border-gray-200 p-4 font-medium text-gray-900 sm:grid-cols-7 sm:gap-x-16'>
           <div className='col-span-2 text-sm sm:col-span-3 sm:text-xl'>
             {title}
           </div>
-          {Object.values(SERVICES).map(service => (
-            <div key={service} className='text-xs sm:text-base'>
-              {service}
+          {Object.entries(SERVICES).map(([key, service]) => (
+            <div key={service} className='flex flex-col items-start'>
+              <div className='text-xs sm:text-base'>{service}</div>
+              <Link
+                href={ROUTES.SERVICES[key as ServiceKey].href}
+                className='mt-1 text-[10px] text-primary hover:underline sm:text-xs font-light'
+              >
+                Learn more
+              </Link>
             </div>
           ))}
         </div>
         {inclusions.map(({ name, services }) => (
           <div
             key={name}
-            className='grid grid-cols-6 items-center justify-center gap-x-6 border-b border-gray-200 p-4 text-xs text-gray-900 sm:grid-cols-7 sm:gap-x-16'
+            className='grid grid-cols-6 gap-x-6 border-b border-gray-200 p-4 text-xs text-gray-900 sm:grid-cols-7 sm:gap-x-16'
           >
             <div className='col-span-2 flex items-center text-sm sm:col-span-3'>
               {name}
             </div>
             {Object.entries(services).map(([service, isIncluded]) => (
-              <div key={`${name}: ${service}`}>
+              <div key={`${name}: ${service}`} className='flex items-center justify-center'>
                 {isIncluded && (
                   <svg
                     className='size-4 text-green-500'

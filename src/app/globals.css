@@ -12,9 +12,8 @@
   }
 
   h3 {
-    @apply text-2xl font-light;
+    @apply text-xl font-light;
   }
-
   p,
   ol,
   ul {
@@ -31,6 +30,18 @@
 
   mark {
     @apply bg-primary-400;
+  }
+
+  .prose h2 {
+    @apply text-gray-800;
+  }
+
+  .prose h3 {
+    @apply text-xl font-light text-gray-800;
+  }
+
+  .prose strong {
+    @apply font-normal text-gray-900;
   }
 }
 

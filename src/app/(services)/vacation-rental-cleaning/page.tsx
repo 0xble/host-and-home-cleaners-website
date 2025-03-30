@@ -5,9 +5,9 @@ import { Suspense } from 'react'
 
 import CTASection from '@/components/CTASection'
 import Page from '@/components/Page'
+import WhoAreWeSection from '@/components/WhoAreWeSection'
 import { BUSINESS_NAME, SERVICES } from '@/lib/constants'
 import { ContentViewTracker } from '@/lib/pixel'
-import { ROUTES } from '@/lib/routes'
 
 const title = `${BUSINESS_NAME} ${SERVICES.VACATION_RENTAL}`
 
@@ -35,10 +35,10 @@ export default function AirbnbCleaning() {
           height={483}
         />
         <h1 className='mb-8 text-4xl sm:text-[45px]'>
-          Airbnb Cleaning Services
+          Vacation Rental Cleaning Services
         </h1>
         <p className='mx-auto mb-20'>
-          Expert Airbnb cleaning services: We ensure your property is
+          Expert Airbnb/VRBO cleaning services: We ensure your property is
           guest-ready. Giving you peace of mind in everything we do.
         </p>
       </section>
@@ -48,14 +48,19 @@ export default function AirbnbCleaning() {
           At
           {' '}
           {BUSINESS_NAME}
-          , we understand the unique demands of maintaining an Airbnb
-          property. Our specialized Airbnb cleaning services are designed to
+          , we understand the unique demands of maintaining a vacation rental. Our specialized vacation rental cleaning services are designed to
           synchronize with your guest check-in/out calendar, ensuring your
           property is always spotless and ready for the next guest without you
           having to lift a finger.
         </p>
 
-        <h2>Why Choose Our Airbnb Cleaning Services?</h2>
+        <h2>What's Included in Our Vacation Rental Cleaning Service?</h2>
+        <p>
+          Our vacation rental cleaning service includes comprehensive cleaning of all areas, including thorough bathroom cleaning, kitchen cleaning, linen changes, and more. We ensure your property is guest-ready with attention to detail in every room. For a complete list of inclusions, please refer to our{' '}
+          <Link href='/checklist' className='link'>comprehensive cleaning checklist</Link>.
+        </p>
+
+        <h2>Why Choose Our Vacation Rental Cleaning Services?</h2>
         <p>
           Our team goes the extra mile to provide exceptional service. From
           replacing Ring doorbell batteries to notifying you when inventory is
@@ -64,70 +69,66 @@ export default function AirbnbCleaning() {
           toiletries and blankets.
         </p>
 
-        <h2>Automatic Scheduling, No Need to Call</h2>
-        <p>
-          We synchronize with your guest check-in/out calendar to manage
-          cleanings seamlessly. Avoid having to call to arrange cleanings; we
-          will automatically schedule a cleaning after a guest checks out.
-        </p>
+        <ul>
+          <li>
+            <strong>Automatic Scheduling:</strong>
+            {' '}
+            We synchronize with your guest check-in/out calendar to manage
+            cleanings seamlessly. Avoid having to call to arrange cleanings; we
+            will automatically schedule a cleaning after a guest checks out.
+          </li>
+          <li>
+            <strong>Customized Cleaning Checklist:</strong>
+            {' '}
+            We work with you to create a customized cleaning checklist tailored to
+            your specific needs. This ensures that every cleaning covers
+            everything you want, and nothing is missed.
+          </li>
+          <li>
+            <strong>Post-Cleaning Photos:</strong>
+            {' '}
+            After every cleaning, we provide photos of your property, giving you
+            peace of mind that everything is in perfect order.
+          </li>
+          <li>
+            <strong>Flexible Hours and Emergency Service:</strong>
+            {' '}
+            Our standard hours are 8AM-8PM, but we also offer availability for
+            emergency cleanings outside these hours. With 8 dedicated cleaners, we
+            ensure there&apos;s always someone ready for a turnover.
+          </li>
+        </ul>
 
-        <h2>Customized Cleaning Checklist</h2>
+        <h2>Additional Services Available</h2>
         <p>
-          We work with you to create a customized cleaning checklist tailored to
-          your specific needs. This ensures that every cleaning covers
-          everything you want, and nothing is missed.
+          While Airbnb cleaning is perfect for vacation rentals, we also offer
+          specialized services for other needs:
         </p>
-
-        <h2>Post-Cleaning Photos</h2>
         <p>
-          After every cleaning, we provide photos of your property, giving you
-          peace of mind that everything is in perfect order.
-        </p>
-
-        <h2>Flexible Hours and Emergency Cleanings</h2>
-        <p>
-          Our standard hours are 8AM-8PM, but we also offer availability for
-          emergency cleanings outside these hours. With 8 dedicated cleaners, we
-          ensure there&apos;s always someone ready for a turnover.
-        </p>
-
-        <h2>Peace of Mind</h2>
-        <p>
-          We strive to give our clients peace of mind in everything we do. From
-          seamless scheduling to thorough cleanings, our goal is to make
-          managing your Airbnb property as stress-free as possible.
-        </p>
-
-        <h2>
-          Experience the
-          {BUSINESS_NAME}
-          {' '}
-          Difference
-        </h2>
-        <p>
-          Experience the difference today and elevate your Airbnb property with
-          our professional cleaning services. Let us handle the cleaning, so you
-          can focus on providing an exceptional experience for your guests.
+          Need regular maintenance? We also offer{' '}
+          <Link href='/standard-cleaning' className='text-primary hover:underline'>
+            standard cleaning
+          </Link>
+          ,{' '}
+          <Link href='/deep-cleaning' className='text-primary hover:underline'>
+            deep cleaning
+          </Link>
+          , and{' '}
+          <Link href='/move-in-out-cleaning' className='text-primary hover:underline'>
+            move-in/out cleaning
+          </Link>
+          .
         </p>
       </section>
 
+      <WhoAreWeSection className='mb-16' />
+
       <Suspense>
         <CTASection
-          heading='Get a Quote and Book in <1 Minute!'
-          body={(
-            <>
-              Receive an
-              {' '}
-              <Link
-                href={ROUTES.BOOKING.href}
-                className='link'
-              >
-                instant, no-obligation quote online
-              </Link>
-              . If the line is busy, we will return your call as soon as possible!
-            </>
-          )}
+          heading='Have a Vacation Rental?'
+          body='Partner with us to ensure your property is always ready for the next guest. We handle scheduling, cleaning, and restocking for total peace of mind. Contact us!'
           location='MYRTLE_BEACH'
+          showImage={false}
         />
       </Suspense>
     </Page>

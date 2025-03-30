@@ -29,6 +29,671 @@ export const SERVICES = {
   VACATION_RENTAL: 'Vacation Rental Cleaning',
 } as const
 
+export type ServiceKey = keyof typeof SERVICES
+
+export type ServiceInclusion = {
+  name: string
+  services: Record<ServiceKey, boolean>
+}
+
+export type ServiceInclusions = {
+  title: string
+  inclusions: ServiceInclusion[]
+}
+
+export const SERVICE_CHECKLIST: Record<string, ServiceInclusions> = {
+  LIVING_ROOMS: {
+    title: 'Living Rooms / Bedrooms / Hallways',
+    inclusions: [
+      {
+        name: 'Removing cobwebs from ceiling',
+        services: {
+          STANDARD: true,
+          DEEP: true,
+          MOVE_IN_OUT: true,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Dust ceiling fans & lighting fixtures',
+        services: {
+          STANDARD: true,
+          DEEP: true,
+          MOVE_IN_OUT: true,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Dusting & wiping of windowsills & blinds',
+        services: {
+          STANDARD: true,
+          DEEP: true,
+          MOVE_IN_OUT: true,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Clean windowpanes inside',
+        services: {
+          STANDARD: false,
+          DEEP: true,
+          MOVE_IN_OUT: true,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Dusting & cleaning off of shelves, ledges, desk, & other surfaces',
+        services: {
+          STANDARD: true,
+          DEEP: true,
+          MOVE_IN_OUT: true,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Feather dust wall art, furniture, & objects',
+        services: {
+          STANDARD: true,
+          DEEP: true,
+          MOVE_IN_OUT: false,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Dusting of TV, monitors, & other electronics',
+        services: {
+          STANDARD: true,
+          DEEP: true,
+          MOVE_IN_OUT: false,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Dusting & wiping of light switches',
+        services: {
+          STANDARD: true,
+          DEEP: true,
+          MOVE_IN_OUT: true,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Dusting of door frames',
+        services: {
+          STANDARD: true,
+          DEEP: true,
+          MOVE_IN_OUT: true,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Clean / wipe mirrors & glass items',
+        services: {
+          STANDARD: true,
+          DEEP: true,
+          MOVE_IN_OUT: true,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Hand detailing & cleaning of exposed baseboards',
+        services: {
+          STANDARD: false,
+          DEEP: true,
+          MOVE_IN_OUT: true,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Checking / bagging garbage or trash under beds',
+        services: {
+          STANDARD: true,
+          DEEP: true,
+          MOVE_IN_OUT: false,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Change linens / make beds (linens must be provided)',
+        services: {
+          STANDARD: true,
+          DEEP: true,
+          MOVE_IN_OUT: false,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Remove trash & replace trash can liners (liners must be provided)',
+        services: {
+          STANDARD: true,
+          DEEP: true,
+          MOVE_IN_OUT: false,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Sweep & mop all flooring (hard wood, tile flooring, etc.)',
+        services: {
+          STANDARD: true,
+          DEEP: true,
+          MOVE_IN_OUT: true,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Vacuuming of carpet flooring & around furniture',
+        services: {
+          STANDARD: true,
+          DEEP: true,
+          MOVE_IN_OUT: true,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Vacuuming out of closets',
+        services: {
+          STANDARD: false,
+          DEEP: false,
+          MOVE_IN_OUT: true,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Vacuum / clean inside furniture',
+        services: {
+          STANDARD: true,
+          DEEP: true,
+          MOVE_IN_OUT: false,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Set / stage living room items',
+        services: {
+          STANDARD: true,
+          DEEP: true,
+          MOVE_IN_OUT: false,
+          VACATION_RENTAL: true,
+        },
+      },
+    ],
+  },
+  BATHROOMS: {
+    title: 'Bathrooms',
+    inclusions: [
+      {
+        name: 'Removing cobwebs from ceiling',
+        services: {
+          STANDARD: true,
+          DEEP: true,
+          MOVE_IN_OUT: true,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Dust reachable vents',
+        services: {
+          STANDARD: true,
+          DEEP: true,
+          MOVE_IN_OUT: true,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Dust ceiling fans & light fixtures',
+        services: {
+          STANDARD: true,
+          DEEP: true,
+          MOVE_IN_OUT: true,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Dusting & wiping of windowsills & blinds',
+        services: {
+          STANDARD: true,
+          DEEP: true,
+          MOVE_IN_OUT: true,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Clean windowpanes inside',
+        services: {
+          STANDARD: false,
+          DEEP: true,
+          MOVE_IN_OUT: true,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Dusting & cleaning off of shelves, ledges, desk, & other surfaces',
+        services: {
+          STANDARD: true,
+          DEEP: true,
+          MOVE_IN_OUT: true,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Feather dust wall art & dust around objects',
+        services: {
+          STANDARD: true,
+          DEEP: true,
+          MOVE_IN_OUT: false,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Dusting & wiping of light switches',
+        services: {
+          STANDARD: true,
+          DEEP: true,
+          MOVE_IN_OUT: true,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Dusting of door frames',
+        services: {
+          STANDARD: true,
+          DEEP: true,
+          MOVE_IN_OUT: true,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Cleaning of shower & or tub',
+        services: {
+          STANDARD: true,
+          DEEP: true,
+          MOVE_IN_OUT: true,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Wipe, clean & dry sink / faucets',
+        services: {
+          STANDARD: true,
+          DEEP: true,
+          MOVE_IN_OUT: true,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Cleaning of inside, outside, and around toilet',
+        services: {
+          STANDARD: true,
+          DEEP: true,
+          MOVE_IN_OUT: true,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Hand detailing & cleaning of baseboards',
+        services: {
+          STANDARD: false,
+          DEEP: true,
+          MOVE_IN_OUT: true,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Spot check walls',
+        services: {
+          STANDARD: true,
+          DEEP: true,
+          MOVE_IN_OUT: true,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Wipe mirrors & glass items',
+        services: {
+          STANDARD: true,
+          DEEP: true,
+          MOVE_IN_OUT: true,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Clean & sanitizing of counter tops & ledges',
+        services: {
+          STANDARD: true,
+          DEEP: true,
+          MOVE_IN_OUT: true,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Clean inside of cabinets & drawers',
+        services: {
+          STANDARD: false,
+          DEEP: false,
+          MOVE_IN_OUT: true,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Clean exterior of cabinets & drawers',
+        services: {
+          STANDARD: true,
+          DEEP: true,
+          MOVE_IN_OUT: true,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Remove trash & replace trash can liners',
+        services: {
+          STANDARD: true,
+          DEEP: true,
+          MOVE_IN_OUT: false,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Sweep & mop all flooring (hardwood, tile flooring, etc.)',
+        services: {
+          STANDARD: true,
+          DEEP: true,
+          MOVE_IN_OUT: true,
+          VACATION_RENTAL: true,
+        },
+      },
+    ],
+  },
+  KITCHEN: {
+    title: 'Kitchen',
+    inclusions: [
+      {
+        name: 'Removing cobwebs from ceiling',
+        services: {
+          STANDARD: true,
+          DEEP: true,
+          MOVE_IN_OUT: true,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Dust reachable vents',
+        services: {
+          STANDARD: true,
+          DEEP: true,
+          MOVE_IN_OUT: true,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Dust ceiling fans & light fixtures',
+        services: {
+          STANDARD: true,
+          DEEP: true,
+          MOVE_IN_OUT: true,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Dusting & wiping of windowsills & blinds',
+        services: {
+          STANDARD: false,
+          DEEP: true,
+          MOVE_IN_OUT: true,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Cleaning of windowpanes insdes',
+        services: {
+          STANDARD: false,
+          DEEP: true,
+          MOVE_IN_OUT: true,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Dusting & cleaning off of shelves, ledges, desk & other surfaces',
+        services: {
+          STANDARD: true,
+          DEEP: true,
+          MOVE_IN_OUT: true,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Feather dust wall art & dust around objects',
+        services: {
+          STANDARD: true,
+          DEEP: true,
+          MOVE_IN_OUT: false,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Dusting & wiping of light switches',
+        services: {
+          STANDARD: true,
+          DEEP: true,
+          MOVE_IN_OUT: true,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Dusting of door frames',
+        services: {
+          STANDARD: true,
+          DEEP: true,
+          MOVE_IN_OUT: true,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Cleaning of the inside of microwaves',
+        services: {
+          STANDARD: true,
+          DEEP: true,
+          MOVE_IN_OUT: true,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Clean inside of fridge, freezer, & stove',
+        services: {
+          STANDARD: false,
+          DEEP: false,
+          MOVE_IN_OUT: true,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Cleaning of stove tops',
+        services: {
+          STANDARD: true,
+          DEEP: true,
+          MOVE_IN_OUT: true,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Clean hood vents',
+        services: {
+          STANDARD: false,
+          DEEP: true,
+          MOVE_IN_OUT: true,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Clean exterior surfaces of fridge, stove, microwave, dishwasher',
+        services: {
+          STANDARD: true,
+          DEEP: true,
+          MOVE_IN_OUT: true,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Clean inside of cabinet & drawers',
+        services: {
+          STANDARD: false,
+          DEEP: false,
+          MOVE_IN_OUT: true,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Clean exterior of cabinet fronts & drawer fronts',
+        services: {
+          STANDARD: true,
+          DEEP: true,
+          MOVE_IN_OUT: true,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Removing of items from counter tops & cleaning all counter tops',
+        services: {
+          STANDARD: true,
+          DEEP: true,
+          MOVE_IN_OUT: false,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Clean & sanitizing of counter tops & ledges',
+        services: {
+          STANDARD: true,
+          DEEP: true,
+          MOVE_IN_OUT: true,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Wipe, clean & dry sink / faucets',
+        services: {
+          STANDARD: true,
+          DEEP: true,
+          MOVE_IN_OUT: true,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Wipe mirrors and glass items',
+        services: {
+          STANDARD: true,
+          DEEP: true,
+          MOVE_IN_OUT: true,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Sweep & mop all flooring (hardwood / tile flooring etc.)',
+        services: {
+          STANDARD: true,
+          DEEP: true,
+          MOVE_IN_OUT: true,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Hand detailing & cleaning of exposed baseboards',
+        services: {
+          STANDARD: false,
+          DEEP: true,
+          MOVE_IN_OUT: true,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Spot check walls',
+        services: {
+          STANDARD: false,
+          DEEP: true,
+          MOVE_IN_OUT: true,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Remove trash & replace trash can liners',
+        services: {
+          STANDARD: true,
+          DEEP: true,
+          MOVE_IN_OUT: false,
+          VACATION_RENTAL: true,
+        },
+      },
+    ],
+  },
+  EXTRA_ROOMS: {
+    title: 'Extra Rooms (Laundry, Office, etc.)',
+    inclusions: [
+      {
+        name: 'Removing of cobwebs throughout',
+        services: {
+          STANDARD: false,
+          DEEP: false,
+          MOVE_IN_OUT: true,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Dust & wipe down outside of washer & dryer',
+        services: {
+          STANDARD: true,
+          DEEP: true,
+          MOVE_IN_OUT: true,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Cleaning of inside glass doorways & windows',
+        services: {
+          STANDARD: false,
+          DEEP: false,
+          MOVE_IN_OUT: true,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Picking up & bagging of trash',
+        services: {
+          STANDARD: true,
+          DEEP: true,
+          MOVE_IN_OUT: true,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Sweeping of complete flooring',
+        services: {
+          STANDARD: false,
+          DEEP: false,
+          MOVE_IN_OUT: true,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Mopping of tile flooring',
+        services: {
+          STANDARD: false,
+          DEEP: false,
+          MOVE_IN_OUT: true,
+          VACATION_RENTAL: true,
+        },
+      },
+      {
+        name: 'Vacuuming of carpet flooring',
+        services: {
+          STANDARD: false,
+          DEEP: false,
+          MOVE_IN_OUT: true,
+          VACATION_RENTAL: true,
+        },
+      },
+    ],
+  },
+}
+
 export const LOCATIONS = {
   MYRTLE_BEACH: {
     name: 'Myrtle Beach',
