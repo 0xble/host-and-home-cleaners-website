@@ -8,7 +8,7 @@ import HowItWorksSection from '@/components/HowItWorksSection'
 import Page from '@/components/Page'
 import PricingSection from '@/components/PricingSection'
 import ReviewSection from '@/components/ReviewSection'
-import ReviewsFloatingBadge from '@/components/ReviewsFloatingBadge'
+// import ReviewsFloatingBadge from '@/components/ReviewsFloatingBadge'
 import TrustSection from '@/components/TrustSection'
 import type { LocationKey } from '@/lib/constants'
 import { ROUTES } from '@/lib/routes'
@@ -212,9 +212,9 @@ export default function LandingPage({
 
   return (
     <>
-      <Suspense>
+      {/* <Suspense>
         <ReviewsFloatingBadge id={reviewsBadgeId} />
-      </Suspense>
+      </Suspense> */}
       <Page location={location} className='mb-24 flex min-h-screen flex-col gap-12 lg:mb-32 lg:gap-12'>
         {allSections.map(section => (
           <div key={section.id} id={section.id} className='scroll-mt-20'>
