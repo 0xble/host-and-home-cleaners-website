@@ -10,15 +10,29 @@ import {
 import { BUSINESS_NAME } from '@/lib/constants'
 import { cn } from '@/lib/utils'
 
-const TestimonialVideo = ({ src }: { src: string }) => (
-  <video
-    className='h-[300px] w-[160px] rounded-lg sm:h-[415px] sm:w-[220px] md:h-[400px] md:w-[200px]'
-    controls
-  >
-    <source src={src} type='video/mp4' />
-    <track src={src} kind='captions' />
-  </video>
-)
+const TestimonialVideo = ({ src }: { src: string }) => {
+  const videoRef = useRef<HTMLVideoElement>(null)
+
+  useEffect(() => {
+    if (videoRef.current) {
+      // Preload video metadata and set to first frame
+      videoRef.current.load()
+      videoRef.current.currentTime = 0
+    }
+  }, [src])
+
+  return (
+    <video
+      ref={videoRef}
+      className='h-[300px] w-[160px] rounded-lg sm:h-[415px] sm:w-[220px] md:h-[400px] md:w-[200px]'
+      controls
+      preload="metadata"
+    >
+      <source src={src} type='video/mp4' />
+      <track src={src} kind='captions' />
+    </video>
+  )
+}
 
 const TestimonialFigure = ({
   heading,

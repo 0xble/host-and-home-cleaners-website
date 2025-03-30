@@ -374,9 +374,7 @@ export default function ReviewsGridClient() {
     }
 
     updateVisibleReviews()
-    window.addEventListener('resize', updateVisibleReviews)
-    return () => window.removeEventListener('resize', updateVisibleReviews)
-  }, [])
+  }, [columnCount]) // Only depend on columnCount changes
 
   useEffect(() => {
     const fetchReviews = async () => {
