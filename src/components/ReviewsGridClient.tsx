@@ -393,7 +393,18 @@ export default function ReviewsGridClient() {
 
   const filteredReviews = data.reviews.filter(review => {
     const ratingThreshold = columnCount === 1 ? 5 : 4
-    return (!selectedPlatform || review.platform === selectedPlatform) && review.rating >= ratingThreshold
+
+    // Check for required properties
+    const hasRequiredProperties =
+      review.author?.name &&
+      review.date &&
+      review.text &&
+      review.rating &&
+      review.platform
+
+    return hasRequiredProperties &&
+      (!selectedPlatform || review.platform === selectedPlatform) &&
+      review.rating >= ratingThreshold
   })
 
   const hasMoreReviews = filteredReviews.length > visibleReviews

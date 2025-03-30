@@ -56,15 +56,6 @@ async function fetchReviewPagesNotion() {
     console.log('Fetching reviews from Notion...')
     const result = await queryDatabase({
       database_id: REVIEWS.id,
-      filter: {
-        and: [
-          { property: 'Reviewer Name', rich_text: { is_not_empty: true } },
-          { property: 'Date', date: { is_not_empty: true } },
-          { property: 'Content', rich_text: { is_not_empty: true } },
-          { property: 'Rating', number: { is_not_empty: true } },
-          { property: 'Platform', select: { is_not_empty: true } },
-        ],
-      },
       sorts: [{ property: 'Date', direction: 'descending' }],
       page_size: process.env.NODE_ENV === 'development' ? 50 : undefined,
     })
