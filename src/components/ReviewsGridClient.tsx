@@ -10,6 +10,8 @@ import { tz } from '@date-fns/tz'
 import type { Platform, PlatformRating, Review, ReviewsData } from '@/lib/reviews'
 import { cn } from '@/lib/utils'
 import { Skeleton } from '@/components/ui/skeleton'
+import type { LocationKey } from '@/lib/constants'
+import { constantCase } from '0xble/strings'
 
 type ValidReview = Omit<Review, 'rating' | 'text' | 'date' | 'author'> & {
   rating: number
@@ -19,6 +21,10 @@ type ValidReview = Omit<Review, 'rating' | 'text' | 'date' | 'author'> & {
     name: string
     image: string | null
   }
+}
+
+interface ReviewsGridClientProps {
+  location?: LocationKey | null
 }
 
 const PLATFORM_ICONS = {
@@ -247,19 +253,47 @@ function PlatformRatingTabs({
   selectedPlatform,
   onSelectPlatform,
   className,
+  location,
+  reviews,
 }: {
   ratings: PlatformRating[]
   selectedPlatform: Platform | null
   onSelectPlatform: (_platform: Platform | null) => void
   className?: string
+  location?: LocationKey | null
+  reviews: Review[]
 }) {
-  const totalReviews = ratings.reduce((acc, curr) => acc + curr.total_reviews, 0)
+  // Filter ratings if location is provided
+  const filteredRatings = location
+    ? ratings.map(rating => ({
+        ...rating,
+        total_reviews: reviews.filter(
+          (review: Review) => review.platform === rating.platform &&
+          review.location &&
+          constantCase(review.location) === location
+        ).length,
+        rating: reviews
+          .filter(
+            (review: Review) => review.platform === rating.platform &&
+            review.location &&
+            constantCase(review.location) === location
+          )
+          .reduce((acc: number, review: Review) => acc + (review.rating ?? 0), 0) /
+          (reviews.filter(
+            (review: Review) => review.platform === rating.platform &&
+            review.location &&
+            constantCase(review.location) === location
+          ).length || 1)
+      }))
+    : ratings
+
+  const totalReviews = filteredRatings.reduce((acc, curr) => acc + curr.total_reviews, 0)
   const overallRating = totalReviews > 0
-    ? round(ratings.reduce((acc, curr) => acc + curr.rating * curr.total_reviews, 0) / totalReviews, 1)
+    ? round(filteredRatings.reduce((acc, curr) => acc + curr.rating * curr.total_reviews, 0) / totalReviews, 1)
     : 0
 
   // Create a map of existing ratings for easy lookup
-  const ratingMap = new Map(ratings.map(r => [r.platform, r]))
+  const ratingMap = new Map(filteredRatings.map(r => [r.platform, r]))
 
   // Define the desired platform order
   const orderedPlatforms: Platform[] = ['Google', 'Yelp', 'Thumbtack', 'Nextdoor']
@@ -371,7 +405,7 @@ function PlatformRatingTabs({
   )
 }
 
-export default function ReviewsGridClient() {
+export default function ReviewsGridClient({ location }: ReviewsGridClientProps) {
   const [data, setData] = useState<ReviewsData | null>(null)
   const [selectedPlatform, setSelectedPlatform] = useState<Platform | null>(null)
   const [visibleReviews, setVisibleReviews] = useState(6)
@@ -457,6 +491,7 @@ export default function ReviewsGridClient() {
 
     return hasRequiredProperties &&
       (!selectedPlatform || review.platform === selectedPlatform) &&
+      (!location || !review.location || constantCase(review.location) === location) &&
       (review.rating ?? 0) >= ratingThreshold
   }).sort((a, b) => compareDesc(a.date, b.date))
 
@@ -471,19 +506,21 @@ export default function ReviewsGridClient() {
     <div className='px-4 sm:px-4 lg:px-20'>
       <div className='space-y-8 sm:space-y-6'>
         <PlatformRatingTabs
+          className='justify-center'
           ratings={data.platform_ratings}
           selectedPlatform={selectedPlatform}
           onSelectPlatform={(platform) => {
             setSelectedPlatform(platform)
             setVisibleReviews(getReviewsToShow())
           }}
-          className='justify-center'
+          location={location}
+          reviews={data.reviews}
         />
         <motion.div
+          className='grid min-h-80 grid-cols-1 gap-6 sm:gap-4 md:grid-cols-2 lg:grid-cols-3'
           ref={gridRef}
           layout
           transition={{ duration: 0.2 }}
-          className='grid min-h-80 grid-cols-1 gap-6 sm:gap-4 md:grid-cols-2 lg:grid-cols-3'
         >
           <AnimatePresence mode='popLayout' initial={false}>
             {reviews.slice(0, visibleReviews).map(review => (
@@ -493,15 +530,15 @@ export default function ReviewsGridClient() {
         </motion.div>
         {hasMoreReviews && (
           <motion.div
+            className='flex justify-center'
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.2 }}
-            className='flex justify-center'
           >
             <button
+              className='my-4 rounded-lg bg-primary-700 px-4 py-2 text-center text-sm font-medium text-white hover:bg-primary-800 focus:ring-4 focus:ring-primary-200 sm:px-5 sm:py-2.5'
               type='button'
               onClick={handleViewMore}
-              className='my-4 rounded-lg bg-primary-700 px-4 py-2 text-center text-sm font-medium text-white hover:bg-primary-800 focus:ring-4 focus:ring-primary-200 sm:px-5 sm:py-2.5'
             >
               View More
             </button>

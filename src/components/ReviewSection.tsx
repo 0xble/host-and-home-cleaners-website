@@ -3,13 +3,15 @@
 import { TestimonialCarousel } from '@/components/TestimonialCarousel'
 import ReviewsGridClient from '@/components/ReviewsGridClient'
 import { cn } from '@/lib/utils'
+import type { LocationKey } from '@/lib/constants'
 
 export type ReviewSectionProps = {
   heading: string
+  location?: LocationKey | null
   className?: string
 }
 
-export default function ReviewSection({ heading, className }: ReviewSectionProps) {
+export default function ReviewSection({ heading, className, location }: ReviewSectionProps) {
   return (
     <div className={cn('my-12 flex flex-col', className)}>
       <div className='mx-auto mb-8 max-w-screen-md lg:mb-12'>
@@ -20,7 +22,7 @@ export default function ReviewSection({ heading, className }: ReviewSectionProps
           <p>After each job, we call to check in about how it went and ask for a review. Nearly all are amazing, and a couple are bad, but they are all real.</p>
         </div>
       </div>
-      <ReviewsGridClient />
+      <ReviewsGridClient location={location} />
       <TestimonialCarousel className='mt-16' />
     </div>
   )

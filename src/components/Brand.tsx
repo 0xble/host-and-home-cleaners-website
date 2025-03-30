@@ -314,7 +314,7 @@ export default function Brand({ className, location }: BrandProps) {
       <div className='flex flex-col items-center justify-center'>
         <div className=''>{BUSINESS_NAME}</div>
         {location && (
-          <div className='font-sans text-xs font-extralight text-gray-700 sm:text-base'>
+          <div className='font-sans text-base font-extralight text-gray-700 sm:text-xl'>
             {ROUTES.LOCATIONS[location].name}
           </div>
         )}

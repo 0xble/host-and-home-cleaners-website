@@ -111,6 +111,7 @@ const createDefaultSections = (
     component: (
       <ReviewSection
         heading={reviewsHeading}
+        location={location}
         className='mt-12'
       />
     ),

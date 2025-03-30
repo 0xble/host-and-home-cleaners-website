@@ -21,6 +21,7 @@ export type Review = {
   }
   platform: Platform | null
   url: string | null
+  location: string | null
 }
 
 export type PlatformRating = {
@@ -163,6 +164,7 @@ export async function getReviews(): Promise<ReviewsData> {
         platform,
         date,
         url,
+        location: location ? location.name : null,
       }
     }).sort((a, b) => compareDesc(a.date, b.date))
 

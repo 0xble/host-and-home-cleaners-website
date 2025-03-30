@@ -1,5 +1,10 @@
 import ReviewsGridClient from './ReviewsGridClient'
+import type { LocationKey } from '@/lib/constants'
 
-export default function ReviewsGrid() {
-  return <ReviewsGridClient />
+interface ReviewsGridProps {
+  location?: LocationKey
+}
+
+export default function ReviewsGrid({ location }: ReviewsGridProps) {
+  return <ReviewsGridClient location={location} />
 }
