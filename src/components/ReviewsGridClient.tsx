@@ -42,6 +42,62 @@ function PlatformIcon({ platform, className }: { platform: Platform, className?:
   )
 }
 
+// Author Section Component
+function AuthorSection({ review, url, className }: { review: ValidReview, url?: string, className?: string }) {
+  const content = (
+    <div className={cn('flex items-center gap-3', className)}>
+      {review.author.image
+        ? (
+            <Image
+              src={review.author.image}
+              alt={review.author.name}
+              width={32}
+              height={32}
+              className='rounded-full sm:size-10'
+            />
+          )
+        : (
+            <div className={cn(
+              'flex size-8 items-center justify-center rounded-full text-base text-white sm:size-10 sm:text-lg',
+              getAvatarColor(review.author.name),
+            )}
+            >
+              {review.author.name.charAt(0)}
+            </div>
+          )}
+      <div>
+        <div className='flex items-center gap-1 text-sm sm:text-base group-hover:underline'>
+          {review.author.name}
+          <Image
+            src="/icons/verified.svg"
+            alt="Verified"
+            width={16}
+            height={16}
+            className="size-4"
+          />
+        </div>
+        <div className='text-xs font-light text-gray-500 sm:text-sm'>
+          {formatDistanceToNow(review.date, { addSuffix: true, in: tz('America/Los_Angeles') })}
+        </div>
+      </div>
+    </div>
+  )
+
+  if (!url) return content
+
+  return (
+    <a
+      href={url}
+      target='_blank'
+      rel='noopener noreferrer'
+      className='group inline-flex'
+    >
+      {content}
+    </a>
+  )
+}
+
+
 const AVATAR_COLORS = [
   'bg-red-500',
   'bg-orange-500',
@@ -108,59 +164,33 @@ function ReviewCard({ review, className }: { review: ValidReview, className?: st
           href={review.url}
           target='_blank'
           rel='noopener noreferrer'
-          className='mt-2 mb-3 block text-xs text-primary-600 hover:underline sm:mb-4 sm:text-sm'
+          className='mt-2 mb-3 inline-block text-xs text-primary-600 hover:underline sm:mb-4 sm:text-sm'
         >
           Read more
         </a>
       )}
 
       {review.platform && (
-      <div className='mb-3 flex items-center gap-2 sm:mb-4'>
-        <PlatformIcon platform={review.platform} />
-        {review.url ? (
-          <a
-            href={review.url}
-            target='_blank'
-            rel='noopener noreferrer'
-            className='text-xs text-gray-600 hover:underline sm:text-sm'
-          >
-            Posted on {review.platform}
-          </a>
-        ) : (
-          <span className='text-xs text-gray-600 sm:text-sm'>
-            Posted on {review.platform}
-          </span>
-        )}
+        <div className='mb-3 flex items-center gap-2 sm:mb-4'>
+          <PlatformIcon platform={review.platform} />
+          {review.url ? (
+            <a
+              href={review.url}
+              target='_blank'
+              rel='noopener noreferrer'
+              className='text-xs text-gray-600 hover:underline sm:text-sm'
+            >
+              Posted on {review.platform}
+            </a>
+          ) : (
+            <span className='text-xs text-gray-600 sm:text-sm'>
+              Posted on {review.platform}
+            </span>
+          )}
         </div>
       )}
 
-      <div className='flex items-center gap-3'>
-        {review.author.image
-          ? (
-              <Image
-                src={review.author.image}
-                alt={review.author.name}
-                width={32}
-                height={32}
-                className='rounded-full sm:size-10'
-              />
-            )
-          : (
-              <div className={cn(
-                'flex size-8 items-center justify-center rounded-full text-base text-white sm:size-10 sm:text-lg',
-                getAvatarColor(review.author.name),
-              )}
-              >
-                {review.author.name.charAt(0)}
-              </div>
-            )}
-        <div>
-          <div className='text-sm sm:text-base'>{review.author.name}</div>
-          <div className='text-xs font-light text-gray-500 sm:text-sm'>
-            {formatDistanceToNow(review.date, { addSuffix: true, in: tz('America/Los_Angeles') })}
-          </div>
-        </div>
-      </div>
+      <AuthorSection review={review} url={review.url ?? undefined} />
     </motion.div>
   )
 }
