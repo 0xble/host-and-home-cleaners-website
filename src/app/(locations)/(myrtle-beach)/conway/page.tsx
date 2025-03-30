@@ -33,7 +33,7 @@ export default function Conway() {
           </>
         ),
         customHeroDescription: 'Professional residential cleaning services with quick turnaround times and competitive rates — trusted by Conway homeowners, vacation rental hosts, and real estate professionals!',
-        customTestimonialsHeading: 'What Are Others Saying?',
+        customReviewsHeading: 'What Are Others Saying?',
         customLocationsSectionHeading: 'We\'re Close By!',
         customLocationsSectionDescription: 'Proudly serving all areas of Conway and the surrounding communities!',
         customHowItWorksHeading: 'What Should I Expect?',

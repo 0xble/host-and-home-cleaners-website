@@ -10,7 +10,7 @@ const SPECIFIC_BUSINESS_NAME = `${BUSINESS_NAME} ${LOCATIONS.HONOLULU.name}`
 
 export const metadata: Metadata = {
   title: `Professional House & Vacation Rental Cleaners in Moanalua | ${BUSINESS_NAME}`,
-  description: `${TAGLINE}. Serving Moanalua\'s residential and vacation rental properties. 5-star rated cleaners with outstanding testimonials. Book today!`,
+  description: `${TAGLINE}. Serving Moanalua\'s residential and vacation rental properties. 5-star rated cleaners with outstanding reviews. Book today!`,
 }
 
 export default function Moanalua() {
@@ -31,7 +31,7 @@ export default function Moanalua() {
           </>
         ),
         customHeroDescription: 'Professional cleaning services tailored for Moanalua\'s diverse community. From residential homes to vacation rentals, we deliver exceptional quality that exceeds expectations.',
-        customTestimonialsHeading: 'Resident Reviews',
+        customReviewsHeading: 'Resident Reviews',
         customLocationsSectionHeading: 'Serving All of Moanalua',
         customLocationsSectionDescription: 'Providing premium cleaning services throughout Moanalua, from residential neighborhoods to Moanalua Gardens!',
         customHowItWorksHeading: 'Simple Steps to Clean',

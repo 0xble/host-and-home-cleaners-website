@@ -27,7 +27,7 @@ export default function Kapahulu() {
           <>Kapahulu's Trusted Local Residential & Airbnb Cleaners</>
         ),
         customHeroDescription: 'Professional cleaning services tailored for Kapahulu\'s diverse properties. From cozy homes to vacation rentals near Waikiki, we deliver exceptional quality that keeps your space pristine.',
-        customTestimonialsHeading: 'Local Reviews',
+        customReviewsHeading: 'Local Reviews',
         customLocationsSectionHeading: 'Serving All of Kapahulu',
         customLocationsSectionDescription: 'Providing premium cleaning services throughout Kapahulu, from Date Street to the edge of Waikiki!',
         customHowItWorksHeading: 'Simple & Professional Service',

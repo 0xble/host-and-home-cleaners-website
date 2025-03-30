@@ -31,7 +31,7 @@ export default function NorthMyrtleBeach() {
           </>
         ),
         customHeroDescription: 'Discover the difference professional cleaning makes - where meticulous attention to detail meets unmatched reliability. Trusted by homeowners, vacation rental managers, and real estate professionals across North Myrtle Beach.',
-        customTestimonialsHeading: 'Hear From Your Neighbors!',
+        customReviewsHeading: 'Hear From Your Neighbors!',
         customLocationsSectionHeading: 'Areas We Service',
         customLocationsSectionDescription: 'Bringing exceptional cleaning services to North Myrtle Beach and all surrounding coastal communities!',
         customHowItWorksHeading: 'Getting Started is Easy',

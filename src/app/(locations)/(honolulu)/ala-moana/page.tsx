@@ -33,7 +33,7 @@ export default function AlaMoana() {
           </>
         ),
         customHeroDescription: 'Professional cleaning services for Ala Moana\'s homes and vacation rentals. We deliver exceptional quality that this premier residential district deserves.',
-        customTestimonialsHeading: 'What Our Clients Say',
+        customReviewsHeading: 'What Our Clients Say',
         customLocationsSectionHeading: 'Serving All of Ala Moana',
         customLocationsSectionDescription: 'Providing premium cleaning services throughout the Ala Moana district, from Piikoi Street to Ward Avenue!',
         customHowItWorksHeading: 'Your Path to Clean',

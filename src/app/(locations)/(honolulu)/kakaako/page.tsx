@@ -31,7 +31,7 @@ export default function Kakaako() {
           </>
         ),
         customHeroDescription: 'Professional cleaning services designed for Kaka\'ako\'s residential and vacation rental properties. We deliver exceptional quality that matches this vibrant neighborhood\'s energy.',
-        customTestimonialsHeading: 'Community Reviews',
+        customReviewsHeading: 'Community Reviews',
         customLocationsSectionHeading: 'Serving All of Kaka\'ako',
         customLocationsSectionDescription: 'Providing premium cleaning services throughout Kaka\'ako, from Ward Village to SALT at Our Kaka\'ako!',
         customHowItWorksHeading: 'Cleaning & Maintenance Made Simple',

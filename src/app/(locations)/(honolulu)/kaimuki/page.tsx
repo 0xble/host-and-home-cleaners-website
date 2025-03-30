@@ -31,7 +31,7 @@ export default function Kaimuki() {
           </>
         ),
         customHeroDescription: 'Professional cleaning services tailored for Kaimuki\'s charming homes and properties. From classic bungalows to modern renovations, we deliver exceptional quality that preserves and enhances your home\'s unique character.',
-        customTestimonialsHeading: 'What Your Neighbors Say',
+        customReviewsHeading: 'What Your Neighbors Say',
         customLocationsSectionHeading: 'Serving All of Kaimuki',
         customLocationsSectionDescription: 'Providing premium cleaning services throughout Kaimuki, from Waialae Avenue to the slopes of Wilhelmina Rise!',
         customHowItWorksHeading: 'Your Home, Our Care',

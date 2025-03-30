@@ -31,7 +31,7 @@ export default function Waialae() {
           </>
         ),
         customHeroDescription: 'Professional cleaning services tailored for Waialae\'s homes and vacation rentals. We deliver exceptional quality that keeps your property pristine and welcoming.',
-        customTestimonialsHeading: 'Client Experiences',
+        customReviewsHeading: 'Client Experiences',
         customLocationsSectionHeading: 'Serving All of Waialae',
         customLocationsSectionDescription: 'Providing premium cleaning services throughout Waialae, from Waialae Avenue to Kahala Avenue!',
         customHowItWorksHeading: 'Quality Clean Experience',

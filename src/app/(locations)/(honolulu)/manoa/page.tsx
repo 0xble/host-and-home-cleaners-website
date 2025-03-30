@@ -31,7 +31,7 @@ export default function Manoa() {
           </>
         ),
         customHeroDescription: 'Professional cleaning services tailored for Manoa\'s unique homes and climate. From historic properties to family residences, we deliver exceptional quality that respects your home\'s character.',
-        customTestimonialsHeading: 'Neighbor Reviews',
+        customReviewsHeading: 'Neighbor Reviews',
         customLocationsSectionHeading: 'Serving All of Manoa',
         customLocationsSectionDescription: 'Providing premium cleaning services throughout Manoa Valley, from the University area to Upper Manoa!',
         customHowItWorksHeading: 'Your Clean Home Journey',

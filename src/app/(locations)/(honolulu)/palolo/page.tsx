@@ -27,7 +27,7 @@ export default function Palolo() {
           <>Professional House Cleaners in Palolo Valley</>
         ),
         customHeroDescription: 'Professional cleaning services tailored for Palolo\'s homes and vacation rentals. We deliver exceptional quality that keeps your property pristine and welcoming.',
-        customTestimonialsHeading: 'Client Experiences',
+        customReviewsHeading: 'Client Experiences',
         customLocationsSectionHeading: 'Serving All of Palolo',
         customLocationsSectionDescription: 'Providing premium cleaning services throughout Palolo Valley, from 10th Avenue to Palolo Avenue!',
         customHowItWorksHeading: 'Quality Clean Experience',

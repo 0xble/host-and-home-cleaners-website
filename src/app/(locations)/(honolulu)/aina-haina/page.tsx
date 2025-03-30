@@ -31,7 +31,7 @@ export default function AinaHaina() {
           </>
         ),
         customHeroDescription: 'Professional cleaning services tailored for Aina Haina\'s homes and vacation rentals. We deliver exceptional quality that keeps your property pristine and welcoming.',
-        customTestimonialsHeading: 'Client Experiences',
+        customReviewsHeading: 'Client Experiences',
         customLocationsSectionHeading: 'Serving All of Aina Haina',
         customLocationsSectionDescription: 'Providing premium cleaning services throughout Aina Haina, from East Hind Drive to Wailupe Valley!',
         customHowItWorksHeading: 'Quality Clean Experience',

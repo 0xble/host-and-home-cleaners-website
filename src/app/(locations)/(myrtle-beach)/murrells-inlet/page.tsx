@@ -31,7 +31,7 @@ export default function MurrellsInlet() {
           </>
         ),
         customHeroDescription: 'Elevate your coastal living experience with our premium cleaning services. From residential properties to vacation homes, we understand the unique needs of Murrells Inlet residents and visitors.',
-        customTestimonialsHeading: 'Local Neighborhood Stories',
+        customReviewsHeading: 'Local Neighborhood Stories',
         customLocationsSectionHeading: 'Serving Our Coastal Community',
         customLocationsSectionDescription: 'Delivering exceptional cleaning services throughout Murrells Inlet and neighboring seaside communities!',
         customHowItWorksHeading: 'Your Path to a Pristine Space',

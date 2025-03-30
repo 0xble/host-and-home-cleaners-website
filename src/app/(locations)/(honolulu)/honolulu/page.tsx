@@ -51,7 +51,7 @@ export default function Honolulu() {
             </>
           ),
           customHeroDescription: 'Experience top-rated residential cleaning services in Honolulu, HI. Fast, reliable, and affordable — the preferred choice for Airbnb/VRBO hosts, homeowners, property managers, and realtors!',
-          customTestimonialsHeading: 'Hear What Your Neighbors Have to Say!',
+          customReviewsHeading: 'Hear What Your Neighbors Have to Say!',
           customLocationsSectionHeading: 'We\'re Here to Serve You!',
           customLocationsSectionDescription: 'Proudly serving all areas of beautiful Oahu and Honolulu!',
           customHowItWorksHeading: 'So, What Will Happen?',

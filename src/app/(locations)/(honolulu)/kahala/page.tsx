@@ -33,7 +33,7 @@ export default function Kahala() {
           </>
         ),
         customHeroDescription: 'Professional cleaning services tailored for Kahala\'s homes and vacation rentals. We deliver exceptional quality that keeps your property pristine and welcoming.',
-        customTestimonialsHeading: 'Client Experiences',
+        customReviewsHeading: 'Client Experiences',
         customLocationsSectionHeading: 'Serving All of Kahala',
         customLocationsSectionDescription: 'Providing premium cleaning services throughout Kahala, from Kahala Avenue to Kealaolu Avenue!',
         customHowItWorksHeading: 'Quality Clean Experience',

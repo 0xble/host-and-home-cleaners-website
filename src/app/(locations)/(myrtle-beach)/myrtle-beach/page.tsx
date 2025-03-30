@@ -49,7 +49,7 @@ export default function MyrtleBeach() {
             </>
           ),
           customHeroDescription: 'High-quality residential cleaning services, fast turnaround, at affordable prices — this is why home owners, Airbnb short-term vacation rentals, and realtors all go with us!',
-          customTestimonialsHeading: 'Hear From Your Neighbors!',
+          customReviewsHeading: 'Hear From Your Neighbors!',
           customLocationsSectionHeading: 'We\'re In Your Neighborhood!',
           customLocationsSectionDescription: 'Proudly serving all areas of Myrtle Beach and the Grand Strand!',
           customHowItWorksHeading: 'So, What Does It Look Like?',

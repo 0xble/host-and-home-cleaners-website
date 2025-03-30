@@ -31,7 +31,7 @@ export default function SaltLake() {
           </>
         ),
         customHeroDescription: 'Professional cleaning services tailored for Salt Lake\'s modern lifestyle. From high-rise condos to family homes, to Airbnb rentals, we deliver exceptional quality that elevates your living space.',
-        customTestimonialsHeading: 'Resident Reviews',
+        customReviewsHeading: 'Resident Reviews',
         customLocationsSectionHeading: 'Serving All of Salt Lake',
         customLocationsSectionDescription: 'Providing premium cleaning services throughout Salt Lake, from Ala Nioi Place to Salt Lake Boulevard!',
         customHowItWorksHeading: 'Effortless Clean Living',

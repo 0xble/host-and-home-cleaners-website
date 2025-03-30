@@ -31,7 +31,7 @@ export default function Makiki() {
           </>
         ),
         customHeroDescription: 'Professional cleaning services tailored for Makiki\'s homes and vacation rentals. We deliver exceptional quality that keeps your property pristine and welcoming.',
-        customTestimonialsHeading: 'Client Experiences',
+        customReviewsHeading: 'Client Experiences',
         customLocationsSectionHeading: 'Serving All of Makiki',
         customLocationsSectionDescription: 'Providing premium cleaning services throughout Makiki, from Wilder Avenue to Nehoa Street!',
         customHowItWorksHeading: 'Quality Clean Experience',

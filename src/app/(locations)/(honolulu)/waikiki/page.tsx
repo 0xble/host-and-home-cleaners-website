@@ -31,7 +31,7 @@ export default function Waikiki() {
           </>
         ),
         customHeroDescription: 'Experience world-class cleaning services for your Waikiki property. From luxury condos to vacation rentals, we deliver the exceptional quality that this world-famous destination demands.',
-        customTestimonialsHeading: 'Client Experiences',
+        customReviewsHeading: 'Client Experiences',
         customLocationsSectionHeading: 'Serving All of Waikiki',
         customLocationsSectionDescription: 'Providing top-tier cleaning services throughout Waikiki, from Kalakaua Avenue to Kapahulu!',
         customHowItWorksHeading: 'Simple Steps to Pristine',

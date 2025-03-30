@@ -39,7 +39,7 @@ type LandingPageProps = {
     heroHeading: React.ReactNode
     heroDescription: string
     heroActions?: React.ReactElement
-    // Testimonials Section
+    // Reviews Section
     reviewsHeading: string
     // How It Works Section
     howItWorksHeading: string
@@ -162,7 +162,7 @@ const emptySections: Section[] = []
 
 export default function LandingPage({
   location,
-  reviewsBadgeId,
+  // reviewsBadgeId,
   photosFolder,
   pricing,
   copy: {

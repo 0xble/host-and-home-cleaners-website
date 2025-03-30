@@ -31,7 +31,7 @@ export default function Nuuanu() {
           </>
         ),
         customHeroDescription: 'Professional cleaning services tailored for Nuuanu\'s homes and vacation rentals. We deliver exceptional quality that keeps your property pristine and welcoming.',
-        customTestimonialsHeading: 'Client Experiences',
+        customReviewsHeading: 'Client Experiences',
         customLocationsSectionHeading: 'Serving All of Nuuanu',
         customLocationsSectionDescription: 'Providing premium cleaning services throughout Nuuanu, from Nuuanu Avenue to Pali Highway!',
         customHowItWorksHeading: 'Quality Clean Experience',

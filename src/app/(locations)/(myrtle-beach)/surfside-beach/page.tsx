@@ -31,7 +31,7 @@ export default function SurfsideBeach() {
           </>
         ),
         customHeroDescription: 'Keep your beach home pristine with our professional cleaning services. Whether you\'re a local family, vacation homeowner, or rental property manager in "The Family Beach," we deliver the quality clean you expect.',
-        customTestimonialsHeading: 'What Your Neighbors Say',
+        customReviewsHeading: 'What Your Neighbors Say',
         customLocationsSectionHeading: 'Proudly Serving Surfside Beach',
         customLocationsSectionDescription: 'Bringing top-quality cleaning services to Surfside Beach and the surrounding South Strand communities!',
         customHowItWorksHeading: 'Easy as a Beach Day',

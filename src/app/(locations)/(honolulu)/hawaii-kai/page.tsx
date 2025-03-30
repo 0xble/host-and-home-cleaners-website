@@ -12,7 +12,7 @@ const SPECIFIC_BUSINESS_NAME = `${BUSINESS_NAME} ${LOCATIONS.HONOLULU.name}`
 
 export const metadata: Metadata = {
   title: `Professional Home & Vacation Rental Cleaners in Hawaii Kai | ${BUSINESS_NAME}`,
-  description: `${TAGLINE}. Serving Hawaii Kai\'s residential and vacation rental properties. 5-star rated cleaners with outstanding testimonials. Book today!`,
+  description: `${TAGLINE}. Serving Hawaii Kai\'s residential and vacation rental properties. 5-star rated cleaners with outstanding reviews. Book today!`,
 }
 
 export default function HawaiiKai() {
@@ -33,7 +33,7 @@ export default function HawaiiKai() {
           </>
         ),
         customHeroDescription: 'Professional cleaning services tailored for Hawaii Kai\'s residential community. From family homes to vacation rentals, we deliver exceptional quality that preserves and enhances your property\'s appeal.',
-        customTestimonialsHeading: 'Client Experiences',
+        customReviewsHeading: 'Client Experiences',
         customLocationsSectionHeading: 'Serving All of Hawaii Kai',
         customLocationsSectionDescription: 'Providing premium cleaning services throughout Hawaii Kai, from Portlock to Kalama Valley!',
         customHowItWorksHeading: 'Premium Clean Experience',

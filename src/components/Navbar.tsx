@@ -152,7 +152,7 @@ export default function Navbar({
                             <DropdownMenuItem
                               className='block cursor-pointer px-4 py-2 text-base font-light hover:bg-gray-100'
                               onClick={() => {
-                                scrollToSection('testimonials')
+                                scrollToSection('reviews')
                                 setIsOpen(false)
                               }}
                             >
