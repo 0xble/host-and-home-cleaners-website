@@ -1,5 +1,6 @@
 import Script from 'next/script'
 import type { LocalBusiness, WithContext } from 'schema-dts'
+import { getReviews } from '@/lib/reviews'
 
 import { BUSINESS_NAME } from '@/lib/constants'
 import { slugify } from '0xble/strings'
@@ -14,6 +15,7 @@ type Address = {
 
 type LocalBusinessSchemaMarkupProps = {
   locationName: string
+  serviceAreaName?: string
   description: string
   url: string
   telephone: string
@@ -21,8 +23,9 @@ type LocalBusinessSchemaMarkupProps = {
   address: Address
 }
 
-export default function LocalBusinessSchemaMarkup({
+export default async function LocalBusinessSchemaMarkup({
   locationName,
+  serviceAreaName,
   description,
   url,
   telephone,
@@ -31,6 +34,15 @@ export default function LocalBusinessSchemaMarkup({
 }: LocalBusinessSchemaMarkupProps) {
   // Format the business name to include the location
   const fullBusinessName = `${BUSINESS_NAME} ${locationName}`
+
+  // Fetch reviews data on the server with location filter
+  const reviewsData = await getReviews(locationName)
+
+  // Calculate overall rating and review count from platform ratings
+  const ratingValue = Number((reviewsData.platform_ratings.reduce((acc, curr) => acc + curr.rating * curr.total_reviews, 0) /
+    reviewsData.platform_ratings.reduce((acc, curr) => acc + curr.total_reviews, 0)).toFixed(1))
+
+  const reviewCount = reviewsData.platform_ratings.reduce((acc, curr) => acc + curr.total_reviews, 0)
 
   const schema: WithContext<LocalBusiness> = {
     '@context': 'https://schema.org',
@@ -49,9 +61,65 @@ export default function LocalBusinessSchemaMarkup({
       'postalCode': address.postalCode,
       'addressCountry': address.addressCountry,
     },
+    // Add aggregate rating if there are reviews
+    ...(reviewCount > 0 ? {
+      'aggregateRating': {
+        '@type': 'AggregateRating',
+        'ratingValue': ratingValue.toString(),
+        'reviewCount': reviewCount,
+        'ratingCount': reviewCount,
+        'bestRating': '5',
+        'worstRating': '1',
+        'reviewAspect': 'House Cleaning Service',
+      }
+    } : {}),
     // Additional properties for a cleaning business
     'priceRange': '$$',
     'paymentAccepted': 'Cash, Credit Card',
+    'openingHoursSpecification': [
+      {
+        '@type': 'OpeningHoursSpecification',
+        'dayOfWeek': 'Monday',
+        'opens': '08:00',
+        'closes': '20:00',
+      },
+      {
+        '@type': 'OpeningHoursSpecification',
+        'dayOfWeek': 'Tuesday',
+        'opens': '08:00',
+        'closes': '20:00',
+      },
+      {
+        '@type': 'OpeningHoursSpecification',
+        'dayOfWeek': 'Wednesday',
+        'opens': '08:00',
+        'closes': '20:00',
+      },
+      {
+        '@type': 'OpeningHoursSpecification',
+        'dayOfWeek': 'Thursday',
+        'opens': '08:00',
+        'closes': '20:00',
+      },
+      {
+        '@type': 'OpeningHoursSpecification',
+        'dayOfWeek': 'Friday',
+        'opens': '08:00',
+        'closes': '20:00',
+      },
+      {
+        '@type': 'OpeningHoursSpecification',
+        'dayOfWeek': 'Saturday',
+        'opens': '08:00',
+        'closes': '20:00',
+      },
+      {
+        '@type': 'OpeningHoursSpecification',
+        'dayOfWeek': 'Sunday',
+        'opens': '08:00',
+        'closes': '20:00',
+      },
+    ],
     'makesOffer': [
       {
         '@type': 'Offer',
@@ -110,57 +178,12 @@ export default function LocalBusinessSchemaMarkup({
         }
       },
     ],
-    // Detailed opening hours for each day
-    'openingHoursSpecification': [
-      {
-        '@type': 'OpeningHoursSpecification',
-        'dayOfWeek': 'Monday',
-        'opens': '08:00',
-        'closes': '20:00',
-      },
-      {
-        '@type': 'OpeningHoursSpecification',
-        'dayOfWeek': 'Tuesday',
-        'opens': '08:00',
-        'closes': '20:00',
-      },
-      {
-        '@type': 'OpeningHoursSpecification',
-        'dayOfWeek': 'Wednesday',
-        'opens': '08:00',
-        'closes': '20:00',
-      },
-      {
-        '@type': 'OpeningHoursSpecification',
-        'dayOfWeek': 'Thursday',
-        'opens': '08:00',
-        'closes': '20:00',
-      },
-      {
-        '@type': 'OpeningHoursSpecification',
-        'dayOfWeek': 'Friday',
-        'opens': '08:00',
-        'closes': '20:00',
-      },
-      {
-        '@type': 'OpeningHoursSpecification',
-        'dayOfWeek': 'Saturday',
-        'opens': '08:00',
-        'closes': '20:00',
-      },
-      {
-        '@type': 'OpeningHoursSpecification',
-        'dayOfWeek': 'Sunday',
-        'opens': '08:00',
-        'closes': '20:00',
-      },
-    ],
     'areaServed': address.addressLocality,
   }
 
   return (
     <Script
-      id={`local-business-schema-${slugify(address.addressLocality)}`}
+      id={`local-business-schema-${slugify(serviceAreaName || locationName)}`}
       type='application/ld+json'
       dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
     />

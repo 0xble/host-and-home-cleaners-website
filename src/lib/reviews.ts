@@ -1,6 +1,8 @@
 import { compareDesc, differenceInMinutes, hoursToSeconds } from 'date-fns'
 import { LOCATIONS, REVIEWS } from '0xble/notion/types'
 import { queryDatabase } from './notion'
+import type { QueryDatabaseParameters } from '@notionhq/client/build/src/api-endpoints'
+import { cache } from 'react'
 
 // In-memory cache for development
 let reviewsCache: ReviewsData | null = null
@@ -52,13 +54,13 @@ export type Location = {
 // eslint-disable-next-line react-refresh/only-export-components
 export const revalidate = hoursToSeconds(3) // Revalidate every 3 hours
 
-async function fetchReviewPagesNotion() {
+async function fetchReviewPagesNotion(filter?: QueryDatabaseParameters['filter']) {
   try {
     console.log('Fetching reviews from Notion...')
     const result = await queryDatabase({
       database_id: REVIEWS.id,
+      filter,
       sorts: [{ property: 'Date', direction: 'descending' }],
-      page_size: process.env.NODE_ENV === 'development' ? 50 : undefined,
     })
     console.log(`Successfully fetched ${result.length} reviews`)
     return result
@@ -80,7 +82,55 @@ async function fetchLocationsPagesNotion() {
   }
 }
 
-export async function getReviews(): Promise<ReviewsData> {
+// Cache the getLocations function
+export const getLocations = cache(async (): Promise<LocationData> => {
+  // Use cache in development mode
+  if (process.env.NODE_ENV === 'development') {
+    const now = Date.now()
+    if (locationsCache && differenceInMinutes(now, lastFetchTime) < CACHE_DURATION_MIN) {
+      console.log('Using cached locations data')
+      return locationsCache
+    }
+  }
+
+  const locationPages = await fetchLocationsPagesNotion()
+
+  const locations: Location[] = locationPages.map((page) => {
+    const props = page.properties
+    return {
+      id: page.id,
+      name: props['Name'] && 'title' in props['Name']
+        ? props['Name'].title[0]?.plain_text!
+        : 'Unknown',
+      googleUrl: props['Google URL'] && 'url' in props['Google URL']
+        ? props['Google URL'].url
+        : null,
+      yelpUrl: props['Yelp URL'] && 'url' in props['Yelp URL']
+        ? props['Yelp URL'].url
+        : null,
+      thumbtackUrl: props['Thumbtack URL'] && 'url' in props['Thumbtack URL']
+        ? props['Thumbtack URL'].url
+        : null,
+      nextdoorUrl: props['Nextdoor URL'] && 'url' in props['Nextdoor URL']
+        ? props['Nextdoor URL'].url
+        : null,
+    }
+  })
+
+  const locationsData = { locations }
+
+  // Update cache in development mode
+  if (process.env.NODE_ENV === 'development') {
+    locationsCache = locationsData
+    lastFetchTime = Date.now()
+    console.log('Updated locations cache')
+  }
+
+  return locationsData
+})
+
+// Cache the getReviews function
+export const getReviews = cache(async (location?: string): Promise<ReviewsData> => {
   try {
     // Use cache in development mode
     if (process.env.NODE_ENV === 'development') {
@@ -92,11 +142,19 @@ export async function getReviews(): Promise<ReviewsData> {
     }
 
     console.log('Starting to fetch reviews and locations...')
-    // Fetch reviews and locations in parallel
-    const [reviewPages, { locations }] = await Promise.all([
-      fetchReviewPagesNotion(),
-      getLocations()
-    ])
+    // Fetch locations first to get location ID for filtering
+    const { locations } = await getLocations()
+
+    // Create filter for location if provided
+    const filter: QueryDatabaseParameters['filter'] = location ? {
+      property: 'Location',
+      relation: {
+        contains: locations.find(loc => loc.name.toLowerCase() === location.toLowerCase())?.id || ''
+      }
+    } : undefined
+
+    // Fetch reviews with location filter if provided
+    const reviewPages = await fetchReviewPagesNotion(filter)
 
     const reviews: Review[] = reviewPages.map((page) => {
       const props = page.properties
@@ -208,50 +266,4 @@ export async function getReviews(): Promise<ReviewsData> {
     console.error('Error fetching reviews:', error)
     throw error
   }
-}
-
-export async function getLocations(): Promise<LocationData> {
-  // Use cache in development mode
-  if (process.env.NODE_ENV === 'development') {
-    const now = Date.now()
-    if (locationsCache && differenceInMinutes(now, lastFetchTime) < CACHE_DURATION_MIN) {
-      console.log('Using cached locations data')
-      return locationsCache
-    }
-  }
-
-  const locationPages = await fetchLocationsPagesNotion()
-
-  const locations: Location[] = locationPages.map((page) => {
-    const props = page.properties
-    return {
-      id: page.id,
-      name: props['Name'] && 'title' in props['Name']
-        ? props['Name'].title[0]?.plain_text!
-        : 'Unknown',
-      googleUrl: props['Google URL'] && 'url' in props['Google URL']
-        ? props['Google URL'].url
-        : null,
-      yelpUrl: props['Yelp URL'] && 'url' in props['Yelp URL']
-        ? props['Yelp URL'].url
-        : null,
-      thumbtackUrl: props['Thumbtack URL'] && 'url' in props['Thumbtack URL']
-        ? props['Thumbtack URL'].url
-        : null,
-      nextdoorUrl: props['Nextdoor URL'] && 'url' in props['Nextdoor URL']
-        ? props['Nextdoor URL'].url
-        : null,
-    }
-  })
-
-  const locationsData = { locations }
-
-  // Update cache in development mode
-  if (process.env.NODE_ENV === 'development') {
-    locationsCache = locationsData
-    lastFetchTime = Date.now()
-    console.log('Updated locations cache')
-  }
-
-  return locationsData
-}
+})

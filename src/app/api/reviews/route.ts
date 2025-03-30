@@ -1,12 +1,13 @@
 import { NextResponse } from 'next/server'
 import { getReviews } from '@/lib/reviews'
 
-// Revalidate every 3 hours (10800 seconds)
-export const revalidate = 10800
+// Revalidate every 30 minutes (1800 seconds)
+export const revalidate = 1800
 
 export async function GET() {
   try {
     const reviews = await getReviews()
+
     return NextResponse.json(reviews, {
       headers: {
         'Cache-Control': `public, s-maxage=${revalidate}, stale-while-revalidate=${revalidate * 2}`,

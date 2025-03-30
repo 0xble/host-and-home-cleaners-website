@@ -696,6 +696,7 @@ export const SERVICE_CHECKLIST: Record<string, ServiceInclusions> = {
 
 export const LOCATIONS = {
   MYRTLE_BEACH: {
+    id: 'c202ac2d56404655ba4620ec3e1dcf62',
     name: 'Myrtle Beach',
     state: 'South Carolina',
     stateAbbrev: 'SC',
@@ -727,6 +728,7 @@ export const LOCATIONS = {
     ] as const,
   },
   HONOLULU: {
+    id: '5ae41ba1a59649679c18d2a77062fea8',
     name: 'Honolulu',
     state: 'Hawaii',
     stateAbbrev: 'HI',

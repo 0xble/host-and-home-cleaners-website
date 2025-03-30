@@ -10,6 +10,7 @@ import { PixelEvent } from '@/lib/pixel'
 import { ROUTES } from '@/lib/routes'
 
 const SPECIFIC_BUSINESS_NAME = `${BUSINESS_NAME} ${LOCATIONS.MYRTLE_BEACH.name}`
+const SPECIFIC_URL = `https://${URL}${ROUTES.LOCATIONS.MYRTLE_BEACH.href}`
 
 export const metadata: Metadata = {
   title: `Professional House & Airbnb Cleaners in Myrtle Beach | ${BUSINESS_NAME}`,
@@ -22,7 +23,7 @@ export default function MyrtleBeach() {
       <LocalBusinessSchemaMarkup
         locationName={LOCATIONS.MYRTLE_BEACH.name}
         description={`${TAGLINE}. Proudly serving the Myrtle Beach and Grand Strand area.`}
-        url={`https://${URL}${ROUTES.LOCATIONS.MYRTLE_BEACH.href}`}
+        url={SPECIFIC_URL}
         telephone={PHONE.MYRTLE_BEACH.formatted}
         email={EMAIL.MYRTLE_BEACH}
         address={{
