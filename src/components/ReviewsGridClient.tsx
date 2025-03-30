@@ -87,7 +87,9 @@ function ReviewCard({ review, className }: { review: Review, className?: string 
       </div>
 
       <p className='mb-3 sm:mb-4 text-base'>
-        "{review.text.length > 250 ? `${review.text.slice(0, 250)}...` : review.text}"
+        "{review.text.length > 250
+          ? `${review.text.slice(0, 250).split(' ').slice(0, -1).join(' ')}...`
+          : review.text}"
       </p>
 
       {review.url && (
@@ -276,14 +278,14 @@ function PlatformRatingTabs({
 
   return (
     <div className={cn('relative flex flex-col', className)}>
-      <div className='relative w-full overflow-hidden border-b border-gray-200'>
+      <div className='relative w-full overflow-hidden'>
         <div className='flex items-center justify-center'>
           <div
             ref={scrollContainerRef}
             onScroll={handleScroll}
-            className='no-scrollbar flex max-w-full gap-3 overflow-x-auto px-6 py-3 sm:gap-2 sm:px-4 sm:py-2 [&::-webkit-scrollbar]:hidden'
+            className='no-scrollbar flex max-w-full overflow-x-auto px-6 py-3 sm:px-4 sm:py-2 [&::-webkit-scrollbar]:hidden'
           >
-            <div className='flex gap-3 sm:gap-2'>
+            <div className='flex gap-3 border-b border-gray-200 sm:gap-2'>
               {allPlatforms.map(platform => renderTab(platform))}
             </div>
           </div>
@@ -319,6 +321,7 @@ export default function ReviewsGridClient() {
   const [data, setData] = useState<ReviewsData | null>(null)
   const [selectedPlatform, setSelectedPlatform] = useState<Platform | null>(null)
   const [visibleReviews, setVisibleReviews] = useState(6)
+  const [columnCount, setColumnCount] = useState(1)
   const gridRef = useRef<HTMLDivElement>(null)
 
   const getColumnCount = () => {
@@ -327,10 +330,18 @@ export default function ReviewsGridClient() {
     return computedStyle.gridTemplateColumns.split(' ').length
   }
 
+  useEffect(() => {
+    const updateColumnCount = () => {
+      setColumnCount(getColumnCount())
+    }
+
+    updateColumnCount() // Initial count
+    window.addEventListener('resize', updateColumnCount)
+    return () => window.removeEventListener('resize', updateColumnCount)
+  }, [])
+
   const getReviewsToShow = (baseRowCount = 4) => {
-    const columns = getColumnCount()
-    // Always show 4 rows, regardless of column count
-    return columns * baseRowCount
+    return columnCount === 1 ? 6 : columnCount * baseRowCount
   }
 
   useEffect(() => {
@@ -361,7 +372,6 @@ export default function ReviewsGridClient() {
   }, [])
 
   if (!data) {
-    const skeletonCount = getReviewsToShow()
     return (
       <div className='px-4 sm:px-4 lg:px-20'>
         <div className='space-y-8 sm:space-y-6'>
@@ -369,7 +379,7 @@ export default function ReviewsGridClient() {
             <Skeleton className='h-12 w-[600px] rounded-lg' />
           </div>
           <div ref={gridRef} className='grid min-h-80 grid-cols-1 gap-6 sm:gap-4 md:grid-cols-2 lg:grid-cols-3'>
-            {Array.from({ length: skeletonCount }).map((_, i) => (
+            {Array.from({ length: 6 }).map((_, i) => (
               <ReviewCardSkeleton key={i} />
             ))}
           </div>
@@ -381,9 +391,10 @@ export default function ReviewsGridClient() {
     )
   }
 
-  const filteredReviews = selectedPlatform
-    ? data.reviews.filter(review => review.platform === selectedPlatform && review.rating >= 4)
-    : data.reviews.filter(review => review.rating >= 4)
+  const filteredReviews = data.reviews.filter(review => {
+    const ratingThreshold = columnCount === 1 ? 5 : 4
+    return (!selectedPlatform || review.platform === selectedPlatform) && review.rating >= ratingThreshold
+  })
 
   const hasMoreReviews = filteredReviews.length > visibleReviews
 
