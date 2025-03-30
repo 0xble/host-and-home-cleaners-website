@@ -331,7 +331,7 @@ export default function Checklist() {
               },
             },
             {
-              name: 'Clean / spot check walls',
+              name: 'Spot check walls',
               services: {
                 STANDARD: true,
                 DEEP: true,
@@ -597,7 +597,7 @@ export default function Checklist() {
               },
             },
             {
-              name: 'Clean / spot check walls',
+              name: 'Spot check walls',
               services: {
                 STANDARD: false,
                 DEEP: true,
