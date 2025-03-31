@@ -3,7 +3,7 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { Star, ChevronRight, ChevronLeft } from 'lucide-react'
 import Image from 'next/image'
-import { useEffect, useState, useRef, useMemo } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { round } from 'remeda'
 import { compareDesc, formatDistanceToNow, hoursToSeconds } from 'date-fns'
 import { tz } from '@date-fns/tz'
@@ -416,19 +416,6 @@ export default function ReviewsGridClient({ location }: ReviewsGridClientProps) 
   const [columnCount, setColumnCount] = useState(1)
   const gridRef = useRef<HTMLDivElement>(null)
 
-  // Cache platform review counts
-  const platformReviewCounts = useMemo(() => {
-    if (!data) return new Map<Platform, number>()
-
-    const counts = new Map<Platform, number>()
-    data.reviews.forEach(review => {
-      if (review.platform && review.author?.name && review.date && review.rating && review.text) {
-        counts.set(review.platform, (counts.get(review.platform) ?? 0) + 1)
-      }
-    })
-    return counts
-  }, [data])
-
   const getColumnCount = () => {
     if (!gridRef.current) return 1
     const computedStyle = window.getComputedStyle(gridRef.current)
@@ -505,14 +492,10 @@ export default function ReviewsGridClient({ location }: ReviewsGridClientProps) 
       review.platform
     )
 
-    // Include reviews without text only if there are fewer than 12 reviews for the platform
-    const shouldIncludeWithoutText = review.platform ? (platformReviewCounts.get(review.platform) ?? 0) < 12 : false
-
     return hasRequiredProperties &&
       (!selectedPlatform || review.platform === selectedPlatform) &&
       (!location || !review.location || constantCase(review.location) === location) &&
-      (review.rating ?? 0) >= ratingThreshold &&
-      (shouldIncludeWithoutText || Boolean(review.text))
+      (review.rating ?? 0) >= ratingThreshold
   }).sort((a, b) => compareDesc(a.date, b.date))
 
   const hasMoreReviews = reviews.length > visibleReviews
