@@ -28,7 +28,7 @@ const nextConfig = bundleAnalyzer({
       {
         protocol: 'https',
         hostname: 's3-media0.fl.yelpcdn.com',
-        pathname: '/assets/**',
+        pathname: '/**',
       },
     ],
   },

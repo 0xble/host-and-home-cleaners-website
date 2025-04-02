@@ -41,8 +41,8 @@ function PlatformIcon({ platform, className }: { platform: Platform, className?:
     <Image
       src={PLATFORM_ICONS[platform]}
       alt={`${platform} icon`}
-      width={20}
-      height={20}
+      width={480}
+      height={480}
       className={cn('h-5 w-5 rounded-full', className)}
     />
   )
@@ -57,9 +57,9 @@ function AuthorSection({ review, url, className }: { review: ValidReview, url?: 
             <Image
               src={review.author.image}
               alt={review.author.name}
-              width={32}
-              height={32}
-              className='rounded-full sm:size-10'
+              width={120}
+              height={120}
+              className='rounded-full size-10 object-cover object-center'
             />
           )
         : (
@@ -138,6 +138,8 @@ function getAvatarColor(name: string): string {
 
 // Review Card Component
 function ReviewCard({ review, className }: { review: ValidReview, className?: string }) {
+  const maxTextLength = 220
+
   return (
     <motion.div
       layout
@@ -162,8 +164,8 @@ function ReviewCard({ review, className }: { review: ValidReview, className?: st
       {review.text && (
         <>
           <p className='mb-3 sm:mb-4 text-base'>
-            "{review.text.length > 250
-              ? `${review.text.slice(0, 250).split(' ').slice(0, -1).join(' ')}...`
+            "{review.text.length > maxTextLength
+              ? `${review.text.slice(0, maxTextLength).split(' ').slice(0, -1).join(' ')}...`
               : review.text}"
           </p>
 
