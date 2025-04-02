@@ -41,38 +41,6 @@ function splitIntoColumns<T>(items: T[], numColumns: number): T[][] {
   return columns
 }
 
-type NavbarLinkProps = {
-  href: string
-  children: React.ReactNode
-  className?: string
-}
-
-export function NavbarLink({
-  href,
-  children,
-  className,
-  ...props
-}: NavbarLinkProps) {
-  const pathname = usePathname()
-  const isActive = pathname === href
-
-  return (
-    <TrackedLink
-      href={href}
-      className={cn(
-        'block rounded py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 lg:p-0 lg:hover:bg-transparent lg:hover:text-primary-700',
-        isActive && 'text-white bg-primary-700 lg:bg-transparent lg:text-primary-700',
-        className,
-      )}
-      eventName={href === ROUTES.BOOKING.href ? PixelEvent.SCHEDULE : 'NavClick'}
-      eventParams={href === ROUTES.BOOKING.href ? {} : { path: href }}
-      {...props}
-    >
-      {children}
-    </TrackedLink>
-  )
-}
-
 type NavbarProps = {
   location: Location | null
   phone: Phone | null
@@ -84,6 +52,39 @@ export default function Navbar({
 }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false)
 
+  type NavbarLinkProps = {
+    href: string
+    children: React.ReactNode
+    className?: string
+  }
+
+  function NavbarLink({
+    href,
+    children,
+    className,
+    ...props
+  }: NavbarLinkProps) {
+    const pathname = usePathname()
+    const isActive = pathname === href
+
+    return (
+      <TrackedLink
+        href={href}
+        className={cn(
+          'block rounded py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100',
+          isActive && 'text-white bg-primary-700 lg:bg-transparent lg:text-primary-700',
+          className,
+        )}
+        eventName={href === ROUTES.BOOKING.href ? PixelEvent.SCHEDULE : 'NavClick'}
+        eventParams={href === ROUTES.BOOKING.href ? {} : { path: href }}
+        onClick={() => setIsOpen(false)}
+        {...props}
+      >
+        {children}
+      </TrackedLink>
+    )
+  }
+
   return (
     <>
       <nav className='fixed start-0 top-0 z-50 w-full border-b bg-white shadow-sm'>
@@ -92,7 +93,7 @@ export default function Navbar({
           <div className='flex items-center space-x-3 lg:order-2 lg:space-x-0 rtl:space-x-reverse'>
             {phone && (
               <PhoneLink
-                className='absolute hidden whitespace-nowrap sm:flex sm:-translate-x-40 lg:-translate-x-48'
+                className='mr-4 hidden whitespace-nowrap sm:flex'
                 phone={phone}
               />
             )}
@@ -230,7 +231,7 @@ export default function Navbar({
                                   className='block px-4 py-2 text-base font-light hover:bg-gray-100'
                                   asChild
                                 >
-                                  <Link href={service.href}>{service.name}</Link>
+                                  <NavbarLink href={service.href}>{service.name}</NavbarLink>
                                 </DropdownMenuItem>
                               ))}
                           </DropdownMenuContent>
@@ -299,7 +300,7 @@ export default function Navbar({
                                               className='block px-4 py-2 text-base font-light hover:bg-gray-100'
                                               asChild
                                             >
-                                              <Link href={area.href}>{area.name}</Link>
+                                              <NavbarLink href={area.href}>{area.name}</NavbarLink>
                                             </DropdownMenuItem>
                                           ))}
                                         </div>
@@ -326,7 +327,7 @@ export default function Navbar({
                                                 className='block px-4 py-2 text-base font-light hover:bg-gray-100'
                                                 asChild
                                               >
-                                                <Link href={area.href}>{area.name}</Link>
+                                                <NavbarLink href={area.href}>{area.name}</NavbarLink>
                                               </DropdownMenuItem>
                                             ))}
                                           </div>
@@ -370,13 +371,13 @@ export default function Navbar({
                               className='block px-4 py-2 text-base font-light hover:bg-gray-100'
                               asChild
                             >
-                              <Link href={ROUTES.ABOUT.href}>{ROUTES.ABOUT.name}</Link>
+                              <NavbarLink href={ROUTES.ABOUT.href}>{ROUTES.ABOUT.name}</NavbarLink>
                             </DropdownMenuItem>
                             <DropdownMenuItem
                               className='block px-4 py-2 text-base font-light hover:bg-gray-100'
                               asChild
                             >
-                              <Link href={ROUTES.CHECKLIST.href}>{CHECKLIST_NAME}</Link>
+                              <NavbarLink href={ROUTES.CHECKLIST.href}>{CHECKLIST_NAME}</NavbarLink>
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
@@ -448,7 +449,7 @@ export default function Navbar({
             </div>
           )}
           <div
-            className='hidden w-full items-center justify-between lg:order-1 lg:flex lg:w-auto lg:-translate-x-20'
+            className='hidden w-full items-center justify-between lg:order-1 lg:flex lg:w-auto'
             id='navbar-sticky'
           >
             <ul className='mt-4 flex flex-col rounded-lg border bg-white p-4 font-light lg:mt-0 lg:flex-row lg:space-x-8 lg:border-0 lg:p-0 rtl:space-x-reverse'>
@@ -482,7 +483,7 @@ export default function Navbar({
                       className='block px-4 py-2 text-base font-light hover:bg-gray-100'
                       asChild
                     >
-                      <Link href={getUrl(location)}>Home</Link>
+                      <NavbarLink href={getUrl(location)}>Home</NavbarLink>
                     </DropdownMenuItem>
                     <DropdownMenuItem
                       className='block cursor-pointer px-4 py-2 text-base font-light hover:bg-gray-100'
@@ -555,7 +556,7 @@ export default function Navbar({
                           className='block px-4 py-2 text-base font-light hover:bg-gray-100'
                           asChild
                         >
-                          <Link href={service.href}>{service.name}</Link>
+                          <NavbarLink href={service.href}>{service.name}</NavbarLink>
                         </DropdownMenuItem>
                       ))}
                   </DropdownMenuContent>
@@ -624,7 +625,7 @@ export default function Navbar({
                                       className='block px-4 py-2 text-base font-light hover:bg-gray-100'
                                       asChild
                                     >
-                                      <Link href={area.href}>{area.name}</Link>
+                                      <NavbarLink href={area.href}>{area.name}</NavbarLink>
                                     </DropdownMenuItem>
                                   ))}
                                 </div>
@@ -651,7 +652,7 @@ export default function Navbar({
                                         className='block px-4 py-2 text-base font-light hover:bg-gray-100'
                                         asChild
                                       >
-                                        <Link href={area.href}>{area.name}</Link>
+                                        <NavbarLink href={area.href}>{area.name}</NavbarLink>
                                       </DropdownMenuItem>
                                     ))}
                                   </div>
@@ -695,7 +696,7 @@ export default function Navbar({
                       className='block px-4 py-2 text-base font-light hover:bg-gray-100'
                       asChild
                     >
-                      <Link href={ROUTES.ABOUT.href}>{ROUTES.ABOUT.name}</Link>
+                      <NavbarLink href={ROUTES.ABOUT.href}>{ROUTES.ABOUT.name}</NavbarLink>
                     </DropdownMenuItem>
                     <DropdownMenuItem
                       className='block px-4 py-2 text-base font-light hover:bg-gray-100'
@@ -707,7 +708,7 @@ export default function Navbar({
                 </DropdownMenu>
               </li>
               <li>
-                <NavbarLink href={ROUTES.LOGIN.href}>{ROUTES.LOGIN.name}</NavbarLink>
+                <NavbarLink className='lg:p-0 lg:hover:bg-transparent lg:hover:text-primary-700' href={ROUTES.LOGIN.href}>{ROUTES.LOGIN.name}</NavbarLink>
               </li>
             </ul>
           </div>
