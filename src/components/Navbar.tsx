@@ -87,14 +87,14 @@ export default function Navbar({
   }
 
   // Used to set the fixed height of the navbar and spacer div.
-  const FIXED_HEIGHT = pathname === ROUTES.HOME.href ? 'h-[76px] sm:h-[86px]' : 'h-[112px] sm:h-[86px]'
+  const FIXED_HEIGHT = pathname === ROUTES.HOME.href ? 'h-[64px] xs:h-[76px] sm:h-[86px]' : 'h-[96px] xs:h-[112px] sm:h-[86px]'
 
   return (
     <>
       <nav className={cn('fixed start-0 top-0 z-50 w-full border-b bg-white shadow-sm', FIXED_HEIGHT)}>
-        <div className='mx-auto flex max-w-screen-xl flex-wrap items-center justify-between p-4'>
+        <div className='mx-auto flex max-w-screen-xl flex-wrap items-center justify-between p-2 xs:p-4'>
           <Brand className='text-xs sm:text-xl' location={location} />
-          <div className='flex items-center space-x-3 lg:order-2 lg:space-x-0 rtl:space-x-reverse'>
+          <div className='flex items-center sm:space-x-3 lg:order-2 lg:space-x-0 rtl:space-x-reverse'>
             {phone && (
               <PhoneLink
                 className='absolute hidden whitespace-nowrap sm:flex sm:-translate-x-40 lg:-translate-x-48'
@@ -103,7 +103,7 @@ export default function Navbar({
             )}
             <TrackedLink
               href={ROUTES.BOOKING.href}
-              className='rounded-lg bg-primary-700 p-3 text-center text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 lg:text-base'
+              className='xs:text-sm rounded-lg bg-primary-700 px-2 py-3 xs:p-3 text-center text-xs font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 lg:text-base'
               eventName={PixelEvent.SCHEDULE}
             >
               Book Now

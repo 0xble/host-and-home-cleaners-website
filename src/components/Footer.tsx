@@ -142,7 +142,7 @@ export default function Footer({ location }: FooterProps) {
                         </li>
                         <li className='mb-4'>
                           <a
-                            className='text-lg font-extralight hover:text-primary-700'
+                            className='text-lg font-extralight hover:text-primary-700 max-xs:text-sm'
                             href={`mailto:${EMAIL.MYRTLE_BEACH}`}
                           >
                             {EMAIL.MYRTLE_BEACH}
@@ -163,7 +163,7 @@ export default function Footer({ location }: FooterProps) {
                         </li>
                         <li className='mb-4'>
                           <a
-                            className='text-lg font-extralight hover:text-primary-700'
+                            className='text-lg font-extralight hover:text-primary-700 max-xs:text-sm'
                             href={`mailto:${EMAIL.HONOLULU}`}
                           >
                             {EMAIL.HONOLULU}
@@ -181,7 +181,7 @@ export default function Footer({ location }: FooterProps) {
                       <ul className='mb-8 text-gray-700'>
                         <li className='mb-4'>
                           <a
-                            className='text-lg font-extralight hover:text-primary-700'
+                            className='text-lg font-extralight hover:text-primary-700 max-xs:text-sm'
                             href={`mailto:${EMAIL.SUPPORT}`}
                           >
                             {EMAIL.SUPPORT}
