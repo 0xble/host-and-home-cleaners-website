@@ -1,7 +1,6 @@
 'use client'
 
 import { Bars3Icon } from '@heroicons/react/24/solid'
-import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 
@@ -23,7 +22,7 @@ import { PixelEvent } from '@/lib/pixel'
 import { ROUTES } from '@/lib/routes'
 import { scrollToSection } from '@/lib/scroll'
 import type { Location, Phone } from '@/lib/types'
-import { cn, getUrl } from '@/lib/utils'
+import { cn } from '@/lib/utils'
 
 import Brand from './Brand'
 import PhoneLink from './PhoneLink'
@@ -119,13 +118,16 @@ export default function Navbar({
                   <div className='flex-1 overflow-y-auto'>
                     <ul className='mt-6 flex flex-col space-y-4'>
                       <li>
+                        <NavbarLink href={ROUTES.HOME.href}>{ROUTES.HOME.name}</NavbarLink>
+                      </li>
+                      <li>
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
                             <button
                               type='button'
                               className='flex w-full items-center justify-between rounded px-3 py-2 text-gray-900 hover:bg-gray-100 md:border-0 md:hover:bg-transparent md:hover:text-primary-700'
                             >
-                              {ROUTES.HOME.name}
+                              {ROUTES.ABOUT.name}
                               <svg
                                 className='ms-2.5 size-2.5'
                                 aria-hidden='true'
@@ -148,7 +150,7 @@ export default function Navbar({
                               className='block px-4 py-2 text-base font-light hover:bg-gray-100'
                               asChild
                             >
-                              <Link href={getUrl(location)}>Home</Link>
+                              <NavbarLink href={ROUTES.ABOUT.href}>About Us</NavbarLink>
                             </DropdownMenuItem>
                             <DropdownMenuItem
                               className='block cursor-pointer px-4 py-2 text-base font-light hover:bg-gray-100'
@@ -167,6 +169,12 @@ export default function Navbar({
                               }}
                             >
                               How It Works
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              className='block cursor-pointer px-4 py-2 text-base font-light hover:bg-gray-100'
+                              asChild
+                            >
+                              <NavbarLink href={ROUTES.CHECKLIST.href}>{CHECKLIST_NAME}</NavbarLink>
                             </DropdownMenuItem>
                             <DropdownMenuItem
                               className='block cursor-pointer px-4 py-2 text-base font-light hover:bg-gray-100'
@@ -342,47 +350,6 @@ export default function Navbar({
                         </DropdownMenu>
                       </li>
                       <li>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <button
-                              type='button'
-                              className='flex w-full items-center justify-between rounded px-3 py-2 text-gray-900 hover:bg-gray-100 md:border-0 md:hover:bg-transparent md:hover:text-primary-700'
-                            >
-                              {ROUTES.ABOUT.name}
-                              <svg
-                                className='ms-2.5 size-2.5'
-                                aria-hidden='true'
-                                xmlns='http://www.w3.org/2000/svg'
-                                fill='none'
-                                viewBox='0 0 10 6'
-                              >
-                                <path
-                                  stroke='currentColor'
-                                  strokeLinecap='round'
-                                  strokeLinejoin='round'
-                                  strokeWidth='2'
-                                  d='m1 1 4 4 4-4'
-                                />
-                              </svg>
-                            </button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent className='shadow-lg'>
-                            <DropdownMenuItem
-                              className='block px-4 py-2 text-base font-light hover:bg-gray-100'
-                              asChild
-                            >
-                              <NavbarLink href={ROUTES.ABOUT.href}>{ROUTES.ABOUT.name}</NavbarLink>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem
-                              className='block px-4 py-2 text-base font-light hover:bg-gray-100'
-                              asChild
-                            >
-                              <NavbarLink href={ROUTES.CHECKLIST.href}>{CHECKLIST_NAME}</NavbarLink>
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </li>
-                      <li>
                         <NavbarLink href={ROUTES.LOGIN.href}>{ROUTES.LOGIN.name}</NavbarLink>
                       </li>
                     </ul>
@@ -454,13 +421,16 @@ export default function Navbar({
           >
             <ul className='mt-4 flex flex-col rounded-lg border bg-white p-4 font-light lg:mt-0 lg:flex-row lg:space-x-8 lg:border-0 lg:p-0 rtl:space-x-reverse'>
               <li>
+                <NavbarLink className='lg:p-0 lg:hover:bg-transparent lg:hover:text-primary-700' href={ROUTES.HOME.href}>{ROUTES.HOME.name}</NavbarLink>
+              </li>
+              <li>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <button
                       type='button'
                       className='flex items-center justify-between rounded px-3 py-2 text-gray-900 hover:bg-gray-100 md:border-0 md:hover:bg-transparent md:hover:text-primary-700 lg:p-0'
                     >
-                      {ROUTES.HOME.name}
+                      {ROUTES.ABOUT.name}
                       <svg
                         className='ms-2.5 size-2.5'
                         aria-hidden='true'
@@ -483,29 +453,47 @@ export default function Navbar({
                       className='block px-4 py-2 text-base font-light hover:bg-gray-100'
                       asChild
                     >
-                      <NavbarLink href={getUrl(location)}>Home</NavbarLink>
+                      <NavbarLink href={ROUTES.ABOUT.href}>About Us</NavbarLink>
                     </DropdownMenuItem>
                     <DropdownMenuItem
-                      className='block cursor-pointer px-4 py-2 text-base font-light hover:bg-gray-100'
-                      onClick={() => scrollToSection('testimonials')}
+                      className='block px-4 py-2 text-base font-light hover:bg-gray-100'
+                      onClick={() => {
+                        scrollToSection('reviews')
+                        setIsOpen(false)
+                      }}
                     >
                       Reviews
                     </DropdownMenuItem>
                     <DropdownMenuItem
-                      className='block cursor-pointer px-4 py-2 text-base font-light hover:bg-gray-100'
-                      onClick={() => scrollToSection('how-it-works')}
+                      className='block px-4 py-2 text-base font-light hover:bg-gray-100'
+                      onClick={() => {
+                        scrollToSection('how-it-works')
+                        setIsOpen(false)
+                      }}
                     >
                       How It Works
                     </DropdownMenuItem>
                     <DropdownMenuItem
-                      className='block cursor-pointer px-4 py-2 text-base font-light hover:bg-gray-100'
-                      onClick={() => scrollToSection('pricing')}
+                      className='block px-4 py-2 text-base font-light hover:bg-gray-100'
+                      asChild
+                    >
+                      <NavbarLink href={ROUTES.CHECKLIST.href}>{CHECKLIST_NAME}</NavbarLink>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      className='block px-4 py-2 text-base font-light hover:bg-gray-100'
+                      onClick={() => {
+                        scrollToSection('pricing')
+                        setIsOpen(false)
+                      }}
                     >
                       Pricing
                     </DropdownMenuItem>
                     <DropdownMenuItem
-                      className='block cursor-pointer px-4 py-2 text-base font-light hover:bg-gray-100'
-                      onClick={() => scrollToSection('faq')}
+                      className='block px-4 py-2 text-base font-light hover:bg-gray-100'
+                      onClick={() => {
+                        scrollToSection('faq')
+                        setIsOpen(false)
+                      }}
                     >
                       FAQ
                     </DropdownMenuItem>
@@ -663,47 +651,6 @@ export default function Navbar({
                         </DropdownMenuContent>
                       </DropdownMenu>
                     ))}
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </li>
-              <li>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <button
-                      type='button'
-                      className='flex items-center justify-between rounded px-3 py-2 text-gray-900 hover:bg-gray-100 md:border-0 md:hover:bg-transparent md:hover:text-primary-700 lg:p-0'
-                    >
-                      {ROUTES.ABOUT.name}
-                      <svg
-                        className='ms-2.5 size-2.5'
-                        aria-hidden='true'
-                        xmlns='http://www.w3.org/2000/svg'
-                        fill='none'
-                        viewBox='0 0 10 6'
-                      >
-                        <path
-                          stroke='currentColor'
-                          strokeLinecap='round'
-                          strokeLinejoin='round'
-                          strokeWidth='2'
-                          d='m1 1 4 4 4-4'
-                        />
-                      </svg>
-                    </button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent className='shadow-lg max-lg:translate-x-10'>
-                    <DropdownMenuItem
-                      className='block px-4 py-2 text-base font-light hover:bg-gray-100'
-                      asChild
-                    >
-                      <NavbarLink href={ROUTES.ABOUT.href}>{ROUTES.ABOUT.name}</NavbarLink>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                      className='block px-4 py-2 text-base font-light hover:bg-gray-100'
-                      asChild
-                    >
-                      <Link href={ROUTES.CHECKLIST.href}>{CHECKLIST_NAME}</Link>
-                    </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
               </li>
