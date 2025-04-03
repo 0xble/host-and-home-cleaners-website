@@ -49,6 +49,7 @@ export default function Navbar({
   location,
   phone,
 }: NavbarProps) {
+  const pathname = usePathname()
   const [isOpen, setIsOpen] = useState(false)
 
   type NavbarLinkProps = {
@@ -63,15 +64,16 @@ export default function Navbar({
     className,
     ...props
   }: NavbarLinkProps) {
-    const pathname = usePathname()
     const isActive = pathname === href
 
     return (
       <TrackedLink
         href={href}
         className={cn(
-          'block rounded py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100',
-          isActive && 'text-white bg-primary-700 lg:bg-transparent lg:text-primary-700',
+          'block rounded py-2 pl-3 pr-4',
+          isActive
+            ? 'text-white bg-primary-700 lg:bg-transparent lg:text-primary-700'
+            : 'text-gray-900 hover:bg-gray-100',
           className,
         )}
         eventName={href === ROUTES.BOOKING.href ? PixelEvent.SCHEDULE : 'NavClick'}
@@ -84,15 +86,18 @@ export default function Navbar({
     )
   }
 
+  // Used to set the fixed height of the navbar and spacer div.
+  const FIXED_HEIGHT = pathname === ROUTES.HOME.href ? 'h-[76px] sm:h-[86px]' : 'h-[112px] sm:h-[86px]'
+
   return (
     <>
-      <nav className='fixed start-0 top-0 z-50 w-full border-b bg-white shadow-sm'>
+      <nav className={cn('fixed start-0 top-0 z-50 w-full border-b bg-white shadow-sm', FIXED_HEIGHT)}>
         <div className='mx-auto flex max-w-screen-xl flex-wrap items-center justify-between p-4'>
           <Brand className='text-xs sm:text-xl' location={location} />
           <div className='flex items-center space-x-3 lg:order-2 lg:space-x-0 rtl:space-x-reverse'>
             {phone && (
               <PhoneLink
-                className='mr-4 hidden whitespace-nowrap sm:flex'
+                className='absolute hidden whitespace-nowrap sm:flex sm:-translate-x-40 lg:-translate-x-48'
                 phone={phone}
               />
             )}
@@ -113,7 +118,7 @@ export default function Navbar({
                   <Bars3Icon className='size-6' />
                 </button>
               </SheetTrigger>
-              <SheetContent side='right' className='w-[300px] bg-white/95 backdrop-blur-sm sm:w-[400px]'>
+              <SheetContent side='right' className='w-[300px] bg-white backdrop-blur-sm sm:w-[400px]'>
                 <div className='flex h-full flex-col'>
                   <div className='flex-1 overflow-y-auto'>
                     <ul className='mt-6 flex flex-col space-y-4'>
@@ -416,7 +421,7 @@ export default function Navbar({
             </div>
           )}
           <div
-            className='hidden w-full items-center justify-between lg:order-1 lg:flex lg:w-auto'
+            className='hidden w-full items-center justify-between lg:order-1 lg:flex lg:w-auto lg:-translate-x-20'
             id='navbar-sticky'
           >
             <ul className='mt-4 flex flex-col rounded-lg border bg-white p-4 font-light lg:mt-0 lg:flex-row lg:space-x-8 lg:border-0 lg:p-0 rtl:space-x-reverse'>
@@ -663,7 +668,7 @@ export default function Navbar({
       </nav>
       {/* @hack */}
       {/* Add space so children are not covered by navbar. */}
-      <div className='h-[116px] sm:h-[80px]' />
+      <div className={FIXED_HEIGHT} />
     </>
   )
 }
