@@ -262,7 +262,7 @@ export default function Footer({ location }: FooterProps) {
         <hr className='my-6 border-gray-200 sm:mx-auto md:my-8' />
         <div className='pb-10 pt-6 text-center md:p-0'>
           <Brand location={location} />
-          <span className='mt-5 block text-center text-sm text-gray-500'>
+          <span className='mt-2 block text-center text-sm text-gray-500'>
             Copyright ©
             {' '}
             {new Date().getFullYear()}

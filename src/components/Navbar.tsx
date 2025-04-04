@@ -87,12 +87,12 @@ export default function Navbar({
   }
 
   // Used to set the fixed height of the navbar and spacer div.
-  const FIXED_HEIGHT = pathname === ROUTES.HOME.href ? 'h-[64px] xs:h-[76px] sm:h-[86px]' : 'h-[96px] xs:h-[112px] sm:h-[86px]'
+  const FIXED_HEIGHT = pathname === ROUTES.HOME.href ? 'h-[64px] xs:h-[76px] sm:h-[86px]' : 'h-[96px] sm:h-[86px]'
 
   return (
     <>
       <nav className={cn('fixed start-0 top-0 z-50 w-full border-b bg-white shadow-sm', FIXED_HEIGHT)}>
-        <div className='mx-auto flex max-w-screen-xl flex-wrap items-center justify-between p-2 xs:p-4'>
+        <div className='mx-auto flex max-w-screen-xl h-full flex-wrap items-center justify-between px-2 xs:px-4'>
           <Brand className='text-xs sm:text-xl' location={location} />
           <div className='flex items-center sm:space-x-3 lg:order-2 lg:space-x-0 rtl:space-x-reverse'>
             {phone && (
@@ -416,12 +416,12 @@ export default function Navbar({
             </Sheet>
           </div>
           {phone && (
-            <div className='w-full pt-2 text-end sm:hidden'>
+            <div className='w-full text-end sm:hidden'>
               <PhoneLink phone={phone} />
             </div>
           )}
           <div
-            className='hidden w-full items-center justify-between lg:order-1 lg:flex lg:w-auto lg:-translate-x-20'
+            className='hidden w-full items-center justify-between lg:order-1 lg:flex lg:w-auto lg:absolute lg:left-0 lg:right-0 lg:justify-center'
             id='navbar-sticky'
           >
             <ul className='mt-4 flex flex-col rounded-lg border bg-white p-4 font-light lg:mt-0 lg:flex-row lg:space-x-8 lg:border-0 lg:p-0 rtl:space-x-reverse'>

@@ -25,10 +25,10 @@ export default function Brand({ className, location }: BrandProps) {
         alt={`${BUSINESS_NAME} logo`}
         width={40}
         height={40}
-        className='size-12 sm:size-14'
+        className='size-12 sm:size-16 xl:size-20'
       />
       <div className='flex flex-col items-center justify-center'>
-        <div className='text-center text-xs xs:text-sm sm:text-base'>{BUSINESS_NAME}</div>
+        <div className='text-center text-xs xs:text-sm sm:text-base xl:text-lg'>{BUSINESS_NAME}</div>
         {location && (
           <div className='text-center text-sm font-sans xs:text-base font-extralight text-gray-700 sm:text-xl'>
             {ROUTES.LOCATIONS[location].name}
