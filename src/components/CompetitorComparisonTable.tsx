@@ -37,11 +37,6 @@ const comparisonCriteria = [
     isOfferedByUs: true,
     isOfferedByCompetitors: false,
   },
-  {
-    criteria: 'Cleaner Background Check',
-    isOfferedByUs: true,
-    isOfferedByCompetitors: false,
-  },
 ]
 
 export default function CompetitorComparisonTable() {

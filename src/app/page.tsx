@@ -204,23 +204,6 @@ export default function Home() {
               ),
             },
             {
-              question: 'How do you screen and hold your cleaning staff accountable?',
-              answer: (
-                <>
-                  <p className='mb-2'>
-                    We take great care in selecting our team, requiring thorough background checks and
-                    detailed interviews to assess skills and reliability.
-                  </p>
-                  <p>
-                    Each clean goes through a comprehensive checklist to ensure quality and rely any
-                    accommodations and details from our clients. We use a blend of customer feedback
-                    and on-site inspections to monitor cleaner performance. This allows us to address
-                    any issues proactively and recognize excellence.
-                  </p>
-                </>
-              ),
-            },
-            {
               question: 'Can you accommodate special requests or add-on services?',
               answer: (
                 <p>

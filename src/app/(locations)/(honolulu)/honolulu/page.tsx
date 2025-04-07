@@ -198,24 +198,6 @@ export default function Honolulu() {
               ),
             },
             {
-              question: 'What steps are taken to guarantee the quality of your cleaning team?',
-              answer: (
-                <>
-                  <p className='mb-2'>
-                    Our hiring process is thorough, including complete
-                    background checks and skill evaluations. We uphold high
-                    standards with regular performance assessments and
-                    detailed cleaning checklists, ensuring top-tier service
-                    and accountability.
-                  </p>
-                  <p>
-                    We also continuously collect and act on customer
-                    feedback to enhance our services.
-                  </p>
-                </>
-              ),
-            },
-            {
               question: 'Can I ask for extra services or specific tasks?',
               answer: (
                 <p>

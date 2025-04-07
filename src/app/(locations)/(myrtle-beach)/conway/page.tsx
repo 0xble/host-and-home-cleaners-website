@@ -160,19 +160,6 @@ export default function Conway() {
             ),
           },
           {
-            question: 'What measures are in place to ensure the quality of your cleaning staff?',
-            answer: (
-              <>
-                <p className='mb-2'>
-                  Our hiring process is rigorous, involving comprehensive background checks and skill assessments. We maintain high standards through regular performance reviews and detailed cleaning checklists, ensuring consistent quality and accountability.
-                </p>
-                <p>
-                  We also actively gather and act on client feedback to continually improve our services.
-                </p>
-              </>
-            ),
-          },
-          {
             question: 'Can I request additional services or specific cleaning tasks?',
             answer: (
               <p>

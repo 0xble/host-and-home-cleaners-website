@@ -341,7 +341,7 @@ export const SERVICE_CHECKLIST: Record<string, ServiceInclusions> = {
       {
         name: 'Spot check walls',
         services: {
-          STANDARD: true,
+          STANDARD: false,
           DEEP: true,
           MOVE_IN_OUT: true,
           VACATION_RENTAL: true,
@@ -349,15 +349,6 @@ export const SERVICE_CHECKLIST: Record<string, ServiceInclusions> = {
       },
       {
         name: 'Wipe mirrors & glass items',
-        services: {
-          STANDARD: true,
-          DEEP: true,
-          MOVE_IN_OUT: true,
-          VACATION_RENTAL: true,
-        },
-      },
-      {
-        name: 'Clean & sanitizing of counter tops & ledges',
         services: {
           STANDARD: true,
           DEEP: true,
@@ -556,15 +547,6 @@ export const SERVICE_CHECKLIST: Record<string, ServiceInclusions> = {
           STANDARD: true,
           DEEP: true,
           MOVE_IN_OUT: false,
-          VACATION_RENTAL: true,
-        },
-      },
-      {
-        name: 'Clean & sanitizing of counter tops & ledges',
-        services: {
-          STANDARD: true,
-          DEEP: true,
-          MOVE_IN_OUT: true,
           VACATION_RENTAL: true,
         },
       },
