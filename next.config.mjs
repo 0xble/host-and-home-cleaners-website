@@ -33,6 +33,27 @@ const nextConfig = bundleAnalyzer({
     ],
   },
 
+  // PostHog rewrites
+  async rewrites() {
+    return [
+      {
+        source: "/ingest/static/:path*",
+        destination: "https://us-assets.i.posthog.com/static/:path*",
+      },
+      {
+        source: "/ingest/:path*",
+        destination: "https://us.i.posthog.com/:path*",
+      },
+      {
+        source: "/ingest/decide",
+        destination: "https://us.i.posthog.com/decide",
+      },
+    ];
+  },
+
+  // This is required to support PostHog trailing slash API requests
+  skipTrailingSlashRedirect: true,
+
   // Add webpack configuration to fix the "name too long" caching errors
   webpack: (config, { dev }) => {
     // Only modify cache settings for production builds

@@ -1,8 +1,11 @@
+// src/app/layout.tsx
 import './globals.css'
 
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import Script from 'next/script'
+
+import { PostHogProvider } from '@/components/PostHogProvider'
 
 import CookieConsent from '@/components/CookieConsent'
 import GoogleAnalytics from '@/components/GoogleAnalytics'
@@ -59,25 +62,53 @@ export default function RootLayout({ children }: LayoutProps) {
   return (
     <html lang='en' suppressHydrationWarning>
       <body className={inter.className} suppressHydrationWarning>
-        {/* Main Content */}
-        {children}
+        <PostHogProvider>
+          {/* Main Content */}
+          {children}
 
-        {/* Third-party Scripts */}
-        <Script
-          src='dist/flowbite.min.js'
-          strategy='lazyOnload'
-          crossOrigin='anonymous'
-        />
-        <Script src='https://tally.so/widgets/embed.js' strategy='lazyOnload' />
+          {/* Third-party Scripts */}
+          <Script
+            src='dist/flowbite.min.js'
+            strategy='lazyOnload'
+            crossOrigin='anonymous'
+          />
+          <Script src='https://tally.so/widgets/embed.js' strategy='lazyOnload' />
 
-        {/* Analytics */}
-        {process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID && <GoogleAnalytics />}
-        {process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID && <PixelInitializer />}
+          {/* Analytics */}
+          {process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID && <GoogleAnalytics />}
+          {process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID && <PixelInitializer />}
 
-        {/* UI Components */}
-        <Toaster />
-        <CookieConsent />
+          {/* UI Components */}
+          <Toaster />
+          <CookieConsent />
+        </PostHogProvider>
       </body>
     </html>
   )
 }
+
+
+// next.config.mjs
+const nextConfig = {
+  // Other Next.js config options can go here
+  async rewrites() {
+    return [
+      {
+        source: '/ingest/static/:path*',
+        destination: 'https://us-assets.i.posthog.com/static/:path*'
+      },
+      {
+        source: '/ingest/:path*',
+        destination: 'https://us.i.posthog.com/:path*'
+      },
+      {
+        source: '/ingest/decide',
+        destination: 'https://us.i.posthog.com/decide'
+      }
+    ];
+  },
+  // This is required to support PostHog trailing slash API requests
+  skipTrailingSlashRedirect: true
+}
+
+export default nextConfig;
