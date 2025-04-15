@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
 import { Suspense } from 'react'
 
 import CompetitorComparisonTable from '@/components/CompetitorComparisonTable'
@@ -8,7 +7,7 @@ import LandingPage from '@/components/LandingPage'
 // import ReviewsFloatingBadge from '@/components/ReviewsFloatingBadge'
 import { BUSINESS_NAME, TAGLINE } from '@/lib/constants'
 import { ContentViewTracker } from '@/lib/pixel'
-import { ROUTES } from '@/lib/routes'
+import BookNowButton from '@/components/BookNowButton'
 
 export const metadata: Metadata = {
   title: `${BUSINESS_NAME} | Professional House & Airbnb Cleaning`,
@@ -43,12 +42,10 @@ export default function Home() {
           heroDescription: 'Maintaining a clean home is crucial, but household chores can be stressful amid life\'s demands. Our expert team provides reliable services, saving you time and energy.',
           heroActions: (
             <div className='flex items-center gap-6'>
-              <Link
-                href={ROUTES.BOOKING.href}
-                className='hidden items-center justify-center rounded-xl bg-primary-700 p-4 text-center font-medium text-white hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 sm:inline-flex lg:mr-3 lg:px-6 lg:py-4 lg:text-xl'
-              >
-                Book Now
-              </Link>
+              <BookNowButton
+                className='hidden sm:inline-flex lg:mr-3'
+                size='lg'
+              />
               <Suspense>
                 <FindLocationInput />
               </Suspense>

@@ -2,9 +2,6 @@
 import Image from 'next/image'
 import { Suspense } from 'react'
 
-import TrackedLink from '@/components/TrackedLink'
-import { PixelEvent } from '@/lib/pixel'
-import { ROUTES } from '@/lib/routes'
 import type { Location } from '@/lib/types'
 import { cn, getPhone } from '@/lib/utils'
 import flamingoRingImage from '@/public/flamingo-ring.jpeg'
@@ -12,6 +9,7 @@ import { useLocationStore } from '@/store/useLocationStore'
 
 import CTAButtons from './CTAButtons'
 import FindLocationInput from './FindLocationInput'
+import BookNowButton from '@/components/BookNowButton'
 
 export type CTASectionProps = {
   heading: string | JSX.Element
@@ -44,13 +42,10 @@ export default function CTASection(props: CTASectionProps) {
           location === null
             ? (
                 <div className={cn('flex items-center gap-6', !showImage ? 'justify-center' : '', 'lg:flex-row')}>
-                  <TrackedLink
-                    href={ROUTES.BOOKING.href}
-                    className='inline-flex items-center justify-center rounded-xl bg-primary-700 p-4 text-center font-medium text-white hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 lg:mr-3 lg:px-6 lg:py-4 lg:text-xl'
-                    eventName={PixelEvent.SCHEDULE}
-                  >
-                    Book Now
-                  </TrackedLink>
+                  <BookNowButton
+                    className='lg:mr-3'
+                    size='lg'
+                  />
                   <Suspense>
                     <FindLocationInput className={cn('hidden sm:flex', !showImage ? 'w-auto' : '')} />
                   </Suspense>

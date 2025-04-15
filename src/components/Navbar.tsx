@@ -26,6 +26,7 @@ import { cn } from '@/lib/utils'
 
 import Brand from './Brand'
 import PhoneLink from './PhoneLink'
+import BookNowButton from '@/components/BookNowButton'
 
 function splitIntoColumns<T>(items: T[], numColumns: number): T[][] {
   const itemsPerColumn = Math.ceil(items.length / numColumns)
@@ -101,13 +102,10 @@ export default function Navbar({
                 phone={phone}
               />
             )}
-            <TrackedLink
-              href={ROUTES.BOOKING.href}
-              className='xs:text-sm rounded-lg bg-primary-700 px-2 py-3 xs:p-3 text-center text-xs font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 lg:text-base'
-              eventName={PixelEvent.SCHEDULE}
-            >
-              Book Now
-            </TrackedLink>
+            <BookNowButton
+              className='xs:text-sm rounded-lg px-2 py-3 xs:p-3 text-xs lg:text-base z-50'
+              size='sm'
+            />
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
               <SheetTrigger asChild>
                 <button
@@ -360,13 +358,10 @@ export default function Navbar({
                     </ul>
                     {/* CTA Button */}
                     <div className='mt-6 flex justify-center'>
-                      <TrackedLink
-                        href={ROUTES.BOOKING.href}
-                        className='rounded-lg border-b border-gray-200 bg-primary-700 px-5 py-3 text-center text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300'
-                        eventName={PixelEvent.SCHEDULE}
-                      >
-                        Book Now
-                      </TrackedLink>
+                      <BookNowButton
+                        className='rounded-lg border-b border-gray-200 px-5 py-3 text-sm z-50'
+                        size='sm'
+                      />
                     </div>
                   </div>
                   <div className='mt-4'>

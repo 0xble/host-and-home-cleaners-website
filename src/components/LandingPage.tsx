@@ -11,7 +11,7 @@ import ReviewSection from '@/components/ReviewSection'
 // import ReviewsFloatingBadge from '@/components/ReviewsFloatingBadge'
 import TrustSection from '@/components/TrustSection'
 import type { LocationKey } from '@/lib/constants'
-import { ROUTES } from '@/lib/routes'
+import BookNowButton from '@/components/BookNowButton'
 
 type Step = {
   title: string
@@ -88,12 +88,10 @@ const createDefaultSections = (
         photos={photosFolder}
         actions={heroActions || (
           <div className='flex items-center gap-6'>
-            <a
-              href={ROUTES.BOOKING.href}
-              className='hidden items-center justify-center rounded-xl bg-primary-700 p-4 text-center font-medium text-white hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 sm:inline-flex lg:mr-3 lg:px-6 lg:py-4 lg:text-xl'
-            >
-              Book Now
-            </a>
+            <BookNowButton
+              className='hidden sm:inline-flex lg:mr-3'
+              size='lg'
+            />
             <Suspense>
               <FindLocationInput />
             </Suspense>

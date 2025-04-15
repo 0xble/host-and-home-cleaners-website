@@ -1,0 +1,7 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+- When creating new components, put them in components/ folder directly NOT components/ui/. Only components from shadcn/ui.
+- Naming convention for component files is pascal case.

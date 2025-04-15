@@ -3,8 +3,8 @@
 import { PhoneIcon } from '@heroicons/react/24/solid'
 
 import TrackedLink from '@/components/TrackedLink'
+import BookNowButton from '@/components/BookNowButton'
 import { PixelEvent } from '@/lib/pixel'
-import { ROUTES } from '@/lib/routes'
 import type { Phone } from '@/lib/types'
 import { cn } from '@/lib/utils'
 
@@ -17,14 +17,10 @@ type CTAButtonsProps = {
 export default function CTAButtons({ className, phone, preventNavigation = false }: CTAButtonsProps) {
   return (
     <div className={cn('lg:flex-row flex items-center gap-6', className)}>
-      <TrackedLink
-        href={ROUTES.BOOKING.href}
-        className='inline-flex items-center justify-center rounded-xl bg-primary-700 px-2 py-3 xs:p-4 text-center font-medium text-white hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 lg:mr-3 lg:px-6 lg:py-4 lg:text-xl xs:text-base text-sm'
-        eventName={PixelEvent.SCHEDULE}
+      <BookNowButton
+        className='xs:p-4 lg:mr-3 xs:text-base text-sm'
         preventNavigation={preventNavigation}
-      >
-        Book Now
-      </TrackedLink>
+      />
 
       {phone && (
         <TrackedLink
