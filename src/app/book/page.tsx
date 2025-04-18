@@ -132,7 +132,7 @@ export default function BookingPage() {
         state: '',
         zipCode: '',
       },
-      location: location,
+      location,
       price: {
         firstCleaning: calculatePrice(location, 'Default', 1), // Use existing function
         recurring: calculateRecurringPrice(location, 'Default', 1, 'biweekly'),
@@ -426,38 +426,40 @@ export default function BookingPage() {
                         selected={selectedDate || undefined}
                         onSelect={(date) => date && field.onChange(date)}
                         disabled={isDateDisabled}
-                        className="rounded-md border"
+                        className="rounded-md border mx-auto"
                       />
                       <FormMessage />
                     </FormItem>
                   )}
                 />
 
-                <FormField
-                  control={form.control}
-                  name="arrivalWindow"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Arrival Window</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger className="pointer-events-auto z-20">
-                            <SelectValue placeholder="Select an arrival window" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="8:00AM - 9:00AM">8:00AM - 9:00AM</SelectItem>
-                          <SelectItem value="12:00PM - 1:00PM">12:00PM - 1:00PM</SelectItem>
-                          <SelectItem value="3:00PM - 4:00PM">3:00PM - 4:00PM</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                {selectedDate && (
+                  <FormField
+                    control={form.control}
+                    name="arrivalWindow"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Arrival Window</FormLabel>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger className="pointer-events-auto z-20">
+                              <SelectValue placeholder="Select an arrival window" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            <SelectItem value="8:00AM - 9:00AM">8:00AM - 9:00AM</SelectItem>
+                            <SelectItem value="12:00PM - 1:00PM">12:00PM - 1:00PM</SelectItem>
+                            <SelectItem value="3:00PM - 4:00PM">3:00PM - 4:00PM</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                )}
 
                 {(serviceCategory !== 'Move In/Out') && (
                   <FormField
