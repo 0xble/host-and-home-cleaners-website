@@ -22,3 +22,45 @@ export type SocialLink = {
   name: SocialPlatform
   href: Record<Location, string>
 }
+
+export type Frequency = 'one-time' | 'weekly' | 'biweekly' | 'monthly'
+
+export type ServiceCategory = 'Default' | 'Move In/Out' | 'Custom Areas Only' | 'Mansion'
+
+export type FlatPricingData = {
+  type: 'flat'
+  bedrooms: Record<number, number>
+  frequencies?: Record<Frequency, number>
+}
+
+export type HourlyPricingData = {
+  type: 'hourly'
+  hourlyRate: number
+  frequencies: Record<Frequency, number>
+}
+
+export type BookingFormData = {
+  serviceCategory: ServiceCategory
+  bedrooms: number
+  hours?: number
+  frequency: Frequency
+  date: Date
+  arrivalWindow: string
+  customer: {
+    firstName: string
+    lastName: string
+    email: string
+    phone: string
+    address: string
+    city: string
+    state: string
+    zipCode: string
+  }
+  location: Location
+  price: {
+    firstCleaning: number
+    recurring?: number
+  }
+}
+
+export type ArrivalWindow = '8:00AM - 9:00AM' | '12:00PM - 1:00PM' | '3:00PM - 4:00PM'

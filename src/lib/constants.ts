@@ -820,3 +820,104 @@ export const SOCIAL_LINKS: Record<SocialPlatform, SocialLink> = {
     },
   },
 }
+
+export type ServiceCategory = 'Default' | 'Move In/Out' | 'Custom Areas Only' | 'Mansion'
+
+export const PRICING_PARAMETERS = {
+  MYRTLE_BEACH: {
+    serviceCategories: {
+      Default: {
+        type: 'flat' as const,
+        bedrooms: {
+          1: 149,
+          2: 179,
+          3: 209,
+          4: 239
+        },
+        frequencies: {
+          'one-time': 0,
+          'weekly': 0.6,
+          'biweekly': 0.5,
+          'monthly': 0.3
+        }
+      },
+      'Move In/Out': {
+        type: 'flat' as const,
+        bedrooms: {
+          1: 229,
+          2: 269,
+          3: 309,
+          4: 349
+        }
+      },
+      'Custom Areas Only': {
+        type: 'hourly' as const,
+        hourlyRate: 65,
+        frequencies: {
+          'one-time': 0,
+          'weekly': 0.2,
+          'biweekly': 0.15,
+          'monthly': 0.1
+        }
+      },
+      'Mansion': {
+        type: 'hourly' as const,
+        hourlyRate: 75,
+        frequencies: {
+          'one-time': 0,
+          'weekly': 0.2,
+          'biweekly': 0.15,
+          'monthly': 0.1
+        }
+      }
+    }
+  },
+  HONOLULU: {
+    serviceCategories: {
+      Default: {
+        type: 'flat' as const,
+        bedrooms: {
+          1: 169,
+          2: 199,
+          3: 239,
+          4: 279
+        },
+        frequencies: {
+          'one-time': 0,
+          'weekly': 0.6,
+          'biweekly': 0.5,
+          'monthly': 0.3
+        }
+      },
+      'Move In/Out': {
+        type: 'flat' as const,
+        bedrooms: {
+          1: 259,
+          2: 299,
+          3: 339,
+          4: 379
+        }
+      },
+      'Custom Areas Only': {
+        type: 'hourly' as const,
+        hourlyRate: 75,
+        frequencies: {
+          'one-time': 0,
+          'weekly': 0.2,
+          'biweekly': 0.15,
+          'monthly': 0.1
+        }
+      },
+      'Mansion': {
+        type: 'hourly' as const,
+        hourlyRate: 85,
+        frequencies: {
+          'one-time': 0,
+          'weekly': 0.2,
+          'biweekly': 0.15,
+          'monthly': 0.1
+        }
+      }
+    }
+  }
+} as const
