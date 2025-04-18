@@ -34,8 +34,7 @@ import { Location, ServiceCategory, type Frequency } from '@/lib/types'
 import { PRICING_PARAMETERS } from '@/lib/constants'
 import { Progress } from "@/components/ui/progress"
 
-// Create form validation schema
-const formSchema = z.object({
+const BookingFormSchema = z.object({
   serviceCategory: z.enum(['Default', 'Move In/Out', 'Custom Areas Only', 'Mansion']),
   bedrooms: z.number().min(1).max(4),
   hours: z.number().min(3).max(12).optional(),
@@ -54,13 +53,13 @@ const formSchema = z.object({
   }),
   location: z.enum(['MYRTLE_BEACH', 'HONOLULU']),
   price: z.object({
-    firstCleaning: z.number(),
-    recurring: z.number().optional(),
+    firstCleaning: z.number().nullable(),
+    recurring: z.number().nullable().optional(),
   }),
 })
 
 // Extract type from the schema
-type FormData = z.infer<typeof formSchema>
+type FormData = z.infer<typeof BookingFormSchema>
 
 export default function BookingPage() {
   // Default to Myrtle Beach, could be based on user location or a parameter
@@ -68,48 +67,11 @@ export default function BookingPage() {
   const [step, setStep] = useState(1)
   const [specializedService, setSpecializedService] = useState<string | null>(null)
 
-  // Initialize form with default values
-  const form = useForm<FormData>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      serviceCategory: 'Default',
-      bedrooms: 1,
-      hours: undefined, // Start with undefined hours
-      frequency: 'biweekly',
-      date: null,
-      arrivalWindow: '12:00PM - 1:00PM',
-      customer: {
-        firstName: '',
-        lastName: '',
-        email: '',
-        phone: '',
-        address: '',
-        city: '',
-        state: '',
-        zipCode: '',
-      },
-      location: location,
-      price: {
-        firstCleaning: 0,
-        recurring: undefined,
-      },
-    },
-  })
-
-  const { watch, setValue } = form
-
-  // Watch form values for price calculation
-  const serviceCategory = watch('serviceCategory')
-  const bedrooms = watch('bedrooms')
-  const hours = watch('hours')
-  const frequency = watch('frequency')
-
   // Calculate price based on form values
   function calculatePrice(
     location: Location,
     serviceCategory: ServiceCategory,
     bedrooms: number,
-    // frequency: Frequency,
     hours?: number
   ): number {
     const pricingData = PRICING_PARAMETERS[location].serviceCategories[serviceCategory]
@@ -150,6 +112,42 @@ export default function BookingPage() {
     return basePrice * (1 - discount)
   }
 
+  // Initialize form with default values
+  const form = useForm<FormData>({
+    resolver: zodResolver(BookingFormSchema),
+    defaultValues: {
+      serviceCategory: 'Default',
+      bedrooms: 1,
+      hours: undefined, // Start with undefined hours
+      frequency: 'biweekly',
+      date: null,
+      arrivalWindow: '12:00PM - 1:00PM',
+      customer: {
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        address: '',
+        city: '',
+        state: '',
+        zipCode: '',
+      },
+      location: location,
+      price: {
+        firstCleaning: calculatePrice(location, 'Default', 1), // Use existing function
+        recurring: calculateRecurringPrice(location, 'Default', 1, 'biweekly'),
+      },
+    },
+  })
+
+  const { watch, setValue } = form
+
+  // Watch form values for price calculation
+  const serviceCategory = watch('serviceCategory')
+  const bedrooms = watch('bedrooms')
+  const hours = watch('hours')
+  const frequency = watch('frequency')
+
   // Update price when form values change
   const updatePrice = () => {
     const firstCleaning = calculatePrice(location, serviceCategory, bedrooms, hours)
@@ -165,6 +163,9 @@ export default function BookingPage() {
   useEffect(() => {
     updatePrice()
   }, [serviceCategory, bedrooms, hours, frequency])
+
+  // Fix the Calendar type error
+  const selectedDate = form.watch('date');
 
   // Handle bedroom selection
   const handleBedroomSelect = (value: string) => {
@@ -261,8 +262,8 @@ export default function BookingPage() {
   }
 
   // Format price for display
-  const formatPrice = (price: number | undefined) => {
-    if (price === undefined || !canShowPrice()) return ''
+  const formatPrice = (price: number | null | undefined) => {
+    if (price == null || !canShowPrice()) return ''
     return `$${price.toFixed(0)}`
   }
 
@@ -422,7 +423,7 @@ export default function BookingPage() {
                       </FormDescription>
                       <Calendar
                         mode="single"
-                        selected={field.value}
+                        selected={selectedDate || undefined}
                         onSelect={(date) => date && field.onChange(date)}
                         disabled={isDateDisabled}
                         className="rounded-md border"
