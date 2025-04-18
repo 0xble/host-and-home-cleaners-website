@@ -1,9 +1,9 @@
 import type { Metadata } from 'next'
 import WhoAreWeSection from '@/app/(services)/components/WhoAreWeSection'
 import { ContentViewTracker } from '@/components/analytics/facebook/Pixel'
-import CTASection from '@/components/templates/sections/CTASection'
-
 import Page from '@/components/templates/Page'
+
+import CTASection from '@/components/templates/sections/CTASection'
 import { BUSINESS_NAME, SERVICES } from '@/lib/constants'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -73,6 +73,7 @@ export default function DeepCleaning() {
         <ul>
           <li>
             Before starting regular
+            {' '}
             <Link href="/standard-cleaning" className="link">standard cleaning</Link>
             {' '}
             service
@@ -119,17 +120,17 @@ export default function DeepCleaning() {
         <p>
           Need regular maintenance? We also offer
           {' '}
-          <Link href="/standard-cleaning" className="text-primary hover:underline">
+          <Link href="/standard-cleaning" className="link">
             standard cleaning
           </Link>
           ,
           {' '}
-          <Link href="/move-in-out-cleaning" className="text-primary hover:underline">
+          <Link href="/move-in-out-cleaning" className="link">
             move-in/out cleaning
           </Link>
           , and
           {' '}
-          <Link href="/vacation-rental-cleaning" className="text-primary hover:underline">
+          <Link href="/vacation-rental-cleaning" className="link">
             vacation rental cleaning
           </Link>
           .

@@ -34,38 +34,94 @@ const config = {
     },
     extend: {
       colors: {
+        border: 'hsl(var(--border))',
+        input: 'hsl(var(--input))',
+        ring: 'hsl(var(--ring))',
+        background: 'hsl(var(--background))',
+        foreground: 'hsl(var(--foreground))',
+        shade: {
+          light: '#FFFFFF',
+          DEFAULT: '#222222',
+          5: '#2222220D',
+          30: '#2222224D',
+        },
+        neutral: {
+          50: '#F7F7F7',
+          100: '#EBEBEB',
+          200: '#DDDDDD',
+          300: '#D3D3D3',
+          400: '#C2C2C2',
+          500: '#B0B0B0',
+          600: '#717171',
+          700: '#5E5E5E',
+        },
         primary: {
           DEFAULT: '#FF385C',
+          50: '#FFF0F1',
           100: '#FFF0F1',
-          200: '#FFF0F1', // Same as 100
-          300: '#FFE2E5',
-          400: '#FFCAD2',
-          500: '#FF9FAC',
-          600: '#FF6980',
-          700: '#FF385C',
+          200: '#FFE2E5',
+          300: '#FFCAD2',
+          400: '#FF9FAC',
+          500: '#FF6980',
+          600: '#FF385C',
+          700: '#F6475F',
           800: '#ED1143',
           900: '#C80839',
+          foreground: 'hsl(var(--primary-foreground))',
         },
+        error: {
+          50: '#FEF8F6',
+          600: '#C13515',
+        },
+        accent: {
+          DEFAULT: '#D03660',
+          50: '#F6D7DF',
+          600: '#D03660',
+          foreground: 'hsl(var(--accent-foreground))',
+        },
+        secondary: {
+          DEFAULT: 'hsl(var(--secondary))',
+          foreground: 'hsl(var(--secondary-foreground))',
+        },
+        destructive: {
+          DEFAULT: '#C13515',
+          foreground: 'hsl(var(--destructive-foreground))',
+        },
+        muted: {
+          DEFAULT: '#F7F7F7',
+          foreground: '#717171',
+        },
+        popover: {
+          DEFAULT: 'hsl(var(--popover))',
+          foreground: 'hsl(var(--popover-foreground))',
+        },
+        card: {
+          DEFAULT: 'hsl(var(--card))',
+          foreground: 'hsl(var(--card-foreground))',
+        },
+        success: '#008A05',
+      },
+      borderRadius: {
+        lg: 'var(--radius)',
+        md: 'calc(var(--radius) - 2px)',
+        sm: 'calc(var(--radius) - 4px)',
       },
       typography: {
         DEFAULT: {
           css: {
             h1: {
               fontWeight: '200',
-              color: '#000000',
+              color: '#222222',
             },
             h2: {
               fontWeight: '200',
-              color: '#000000',
+              color: '#222222',
             },
             a: {
-              'color': '#FF6980',
+              'color': '#FF385C',
               'fontWeight': 'inherit',
               '&:hover': {
                 textDecoration: 'underline',
-              },
-              '@media (prefers-color-scheme: dark)': {
-                color: '#FF385C',
               },
             },
           },

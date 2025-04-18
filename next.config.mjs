@@ -56,6 +56,12 @@ const nextConfig = bundleAnalyzer({
 
   // Add webpack configuration to fix the "name too long" caching errors
   webpack: (config, { dev }) => {
+    // Add rule for video files
+    config.module.rules.push({
+      test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
+      type: 'asset/resource',
+    })
+
     // Only modify cache settings for production builds
     if (!dev && config.cache) {
       // For production builds, ensure we're using filesystem cache with proper type

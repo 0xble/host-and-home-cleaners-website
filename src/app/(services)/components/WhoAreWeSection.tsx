@@ -27,7 +27,7 @@ export default function WhoAreWeSection({ className, showImage = true }: WhoAreW
           <p className="text-lg">
             And as local cleaning experts, we understand our community's unique needs.
             {' '}
-            <Link href="/about" className="text-primary hover:underline">Learn more about our team and our commitment to excellence</Link>
+            <Link href="/about" className="link">Learn more about our team and our commitment to excellence</Link>
             .
           </p>
         </div>

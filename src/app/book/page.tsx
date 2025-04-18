@@ -1,6 +1,7 @@
 'use client'
 
 import type { Frequency, Location, ServiceCategory } from '@/lib/types'
+import { BookingFormOption } from '@/components/SelectionCard'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import {
@@ -19,8 +20,8 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
 
+import { Input } from '@/components/ui/input'
 import {
   Select,
   SelectContent,
@@ -522,23 +523,13 @@ export default function BookingPage() {
 
                   <div className="grid grid-cols-2 gap-4 pt-2 sm:grid-cols-4">
                     {[1, 2, 3, 4].map(num => (
-                      <div
+                      <BookingFormOption
                         key={num}
-                        className={`flex flex-col items-center justify-between rounded-md border
-                          ${specializedService
-                        ? 'border-muted bg-popover cursor-pointer opacity-70 hover:border-gray-400 hover:opacity-100'
-                        : bedrooms === num
-                          ? 'border-primary'
-                          : 'border-muted bg-popover hover:bg-accent hover:text-accent-foreground'
-                      } p-4 transition-all`}
+                        title={`${num} ${num === 1 ? 'Bedroom' : 'Bedrooms'}`}
+                        isSelected={bedrooms === num}
+                        isDisabled={!!specializedService}
                         onClick={() => handleBedroomSelect(num.toString())}
-                      >
-                        <span className="text-center font-medium">
-                          {num}
-                          {' '}
-                          {num === 1 ? 'Bedroom' : 'Bedrooms'}
-                        </span>
-                      </div>
+                      />
                     ))}
                   </div>
                 </div>
@@ -555,32 +546,26 @@ export default function BookingPage() {
                   <p className="text-muted-foreground text-sm">Select one of our specialized cleaning options</p>
 
                   <div className="grid grid-cols-1 gap-4 pt-2 sm:grid-cols-3">
-                    <div
-                      className={`flex flex-col items-center justify-between rounded-md border
-                        ${specializedService === 'Move In/Out' ? 'border-primary' : 'border-muted bg-popover hover:bg-accent hover:text-accent-foreground'} cursor-pointer p-4 transition-all`}
+                    <BookingFormOption
+                      title="Move In/Out"
+                      description="For moving in or out of a property"
+                      isSelected={specializedService === 'Move In/Out'}
                       onClick={() => handleSpecializedService('Move In/Out')}
-                    >
-                      <span className="text-center font-medium">Move In/Out</span>
-                      <span className="text-muted-foreground mt-2 text-center text-xs">For moving in or out of a property</span>
-                    </div>
+                    />
 
-                    <div
-                      className={`flex flex-col items-center justify-between rounded-md border
-                        ${specializedService === 'Custom Areas Only' ? 'border-primary' : 'border-muted bg-popover hover:bg-accent hover:text-accent-foreground'} cursor-pointer p-4 transition-all`}
+                    <BookingFormOption
+                      title="Custom Areas Only"
+                      description="For specific areas that need attention"
+                      isSelected={specializedService === 'Custom Areas Only'}
                       onClick={() => handleSpecializedService('Custom Areas Only')}
-                    >
-                      <span className="text-center font-medium">Custom Areas Only</span>
-                      <span className="text-muted-foreground mt-2 text-center text-xs">For specific areas that need attention</span>
-                    </div>
+                    />
 
-                    <div
-                      className={`flex flex-col items-center justify-between rounded-md border
-                        ${specializedService === 'Mansion' ? 'border-primary' : 'border-muted bg-popover hover:bg-accent hover:text-accent-foreground'} cursor-pointer p-4 transition-all`}
+                    <BookingFormOption
+                      title="Mansion"
+                      description="For large properties with 5+ bedrooms"
+                      isSelected={specializedService === 'Mansion'}
                       onClick={() => handleSpecializedService('Mansion')}
-                    >
-                      <span className="text-center font-medium">Mansion</span>
-                      <span className="mt-2 text-center text-xs">For large properties with 5+ bedrooms</span>
-                    </div>
+                    />
                   </div>
                 </div>
               </CardContent>
@@ -610,24 +595,15 @@ export default function BookingPage() {
                       <FormControl>
                         <div className="grid grid-cols-2 gap-4 pt-2 sm:grid-cols-4">
                           {[3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(hour => (
-                            <div
+                            <BookingFormOption
                               key={hour}
-                              className={`flex flex-col items-center justify-between rounded-md border
-                                ${field.value === hour
-                              ? 'border-primary'
-                              : 'border-muted bg-popover hover:bg-accent hover:text-accent-foreground'
-                            } cursor-pointer p-4 transition-all`}
+                              title={`${hour} Hours`}
+                              isSelected={field.value === hour}
                               onClick={() => {
                                 field.onChange(hour)
                                 updatePrice({ serviceCategory, bedrooms, hours: hour })
                               }}
-                            >
-                              <span className="text-center font-medium">
-                                {hour}
-                                {' '}
-                                Hours
-                              </span>
-                            </div>
+                            />
                           ))}
                         </div>
                       </FormControl>

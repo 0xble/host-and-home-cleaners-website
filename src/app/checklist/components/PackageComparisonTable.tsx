@@ -31,7 +31,7 @@ export default function PackageComparisonTable({
               <div className="text-xs sm:text-base">{service}</div>
               <Link
                 href={ROUTES.SERVICES[key as ServiceKey].href}
-                className="mt-1 text-[10px] font-light text-primary hover:underline sm:text-xs"
+                className="mt-1 text-[10px] font-light link sm:text-xs"
               >
                 Learn more
               </Link>
