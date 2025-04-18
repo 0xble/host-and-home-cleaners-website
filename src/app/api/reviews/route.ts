@@ -14,7 +14,8 @@ export async function GET() {
         'Cache-Control': `public, s-maxage=${revalidate}, stale-while-revalidate=${revalidate * 2}`,
       },
     })
-  } catch (error: unknown) {
+  }
+  catch (error: unknown) {
     // Enhanced error logging
     const errorDetails = error instanceof Error
       ? {

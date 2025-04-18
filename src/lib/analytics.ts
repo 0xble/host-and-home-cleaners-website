@@ -1,4 +1,4 @@
-type ContentParams = {
+interface ContentParams {
   content_type: string
   content_name: string
   content_id: string

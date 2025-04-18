@@ -1,6 +1,6 @@
 'use client'
 
-import type {PixelEventName} from './pixelEvents';
+import type { PixelEventName } from './pixelEvents'
 import { usePathname } from 'next/navigation'
 
 import { useCallback, useEffect, useState } from 'react'

@@ -31,12 +31,12 @@ export const SERVICES = {
 
 export type ServiceKey = keyof typeof SERVICES
 
-export type ServiceInclusion = {
+export interface ServiceInclusion {
   name: string
   services: Record<ServiceKey, boolean>
 }
 
-export type ServiceInclusions = {
+export interface ServiceInclusions {
   title: string
   inclusions: ServiceInclusion[]
 }

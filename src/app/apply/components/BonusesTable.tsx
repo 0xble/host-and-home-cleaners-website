@@ -24,14 +24,14 @@ const bonuses = [
     bonus: '$100 every month',
     icon: (
       <svg
-        className='mr-2 size-5 fill-current text-primary-700'
-        xmlns='http://www.w3.org/2000/svg'
-        enableBackground='new 0 0 24 24'
-        viewBox='0 0 24 24'
-        id='clock'
+        className="mr-2 size-5 fill-current text-primary-700"
+        xmlns="http://www.w3.org/2000/svg"
+        enableBackground="new 0 0 24 24"
+        viewBox="0 0 24 24"
+        id="clock"
       >
         <path
-          d='M12,2C6.5,2,2,6.5,2,12s4.5,10,10,10s10-4.5,10-10S17.5,2,12,2z M13,12c0,0.4-0.2,0.7-0.5,0.9l-2.6,1.5 c-0.5,0.3-1.1,0.1-1.4-0.4s-0.1-1.1,0.4-1.4l2.1-1.2V7c0-0.6,0.4-1,1-1s1,0.4,1,1V12z'
+          d="M12,2C6.5,2,2,6.5,2,12s4.5,10,10,10s10-4.5,10-10S17.5,2,12,2z M13,12c0,0.4-0.2,0.7-0.5,0.9l-2.6,1.5 c-0.5,0.3-1.1,0.1-1.4-0.4s-0.1-1.1,0.4-1.4l2.1-1.2V7c0-0.6,0.4-1,1-1s1,0.4,1,1V12z"
         >
         </path>
       </svg>
@@ -42,14 +42,14 @@ const bonuses = [
     bonus: '$20 per job',
     icon: (
       <svg
-        className='mr-2 size-5 fill-current text-primary-700'
-        xmlns='http://www.w3.org/2000/svg'
-        enableBackground='new 0 0 24 24'
-        viewBox='0 0 24 24'
-        id='calendar'
+        className="mr-2 size-5 fill-current text-primary-700"
+        xmlns="http://www.w3.org/2000/svg"
+        enableBackground="new 0 0 24 24"
+        viewBox="0 0 24 24"
+        id="calendar"
       >
         <path
-          d='M19,4h-1V3c0-0.6-0.4-1-1-1s-1,0.4-1,1v1H8V3c0-0.6-0.4-1-1-1S6,2.4,6,3v1H5C3.3,4,2,5.3,2,7v1h20V7C22,5.3,20.7,4,19,4z M2,19c0,1.7,1.3,3,3,3h14c1.7,0,3-1.3,3-3v-9H2V19z M17,12c0.6,0,1,0.4,1,1s-0.4,1-1,1s-1-0.4-1-1S16.4,12,17,12z M17,16 c0.6,0,1,0.4,1,1s-0.4,1-1,1s-1-0.4-1-1S16.4,16,17,16z M12,12c0.6,0,1,0.4,1,1s-0.4,1-1,1s-1-0.4-1-1S11.4,12,12,12z M12,16 c0.6,0,1,0.4,1,1s-0.4,1-1,1s-1-0.4-1-1S11.4,16,12,16z M7,12c0.6,0,1,0.4,1,1s-0.4,1-1,1s-1-0.4-1-1S6.4,12,7,12z M7,16 c0.6,0,1,0.4,1,1s-0.4,1-1,1s-1-0.4-1-1S6.4,16,7,16z'
+          d="M19,4h-1V3c0-0.6-0.4-1-1-1s-1,0.4-1,1v1H8V3c0-0.6-0.4-1-1-1S6,2.4,6,3v1H5C3.3,4,2,5.3,2,7v1h20V7C22,5.3,20.7,4,19,4z M2,19c0,1.7,1.3,3,3,3h14c1.7,0,3-1.3,3-3v-9H2V19z M17,12c0.6,0,1,0.4,1,1s-0.4,1-1,1s-1-0.4-1-1S16.4,12,17,12z M17,16 c0.6,0,1,0.4,1,1s-0.4,1-1,1s-1-0.4-1-1S16.4,16,17,16z M12,12c0.6,0,1,0.4,1,1s-0.4,1-1,1s-1-0.4-1-1S11.4,12,12,12z M12,16 c0.6,0,1,0.4,1,1s-0.4,1-1,1s-1-0.4-1-1S11.4,16,12,16z M7,12c0.6,0,1,0.4,1,1s-0.4,1-1,1s-1-0.4-1-1S6.4,12,7,12z M7,16 c0.6,0,1,0.4,1,1s-0.4,1-1,1s-1-0.4-1-1S6.4,16,7,16z"
         >
         </path>
       </svg>
@@ -60,13 +60,13 @@ const bonuses = [
     bonus: '$50 per referral',
     icon: (
       <svg
-        className='mr-2 size-5 fill-current text-primary-700'
-        xmlns='http://www.w3.org/2000/svg'
-        viewBox='0 0 66 66'
-        id='handshake'
+        className="mr-2 size-5 fill-current text-primary-700"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 66 66"
+        id="handshake"
       >
-        <path d='M49.9 44c.7.8.9 2 .4 3-.2.3-.3.5-.6.6-.9.5-3-.2-3.8-1.3l-2.6-3.8c-.3-.4-.9-.6-1.4-.3-.5.3-.6.9-.3 1.4l2.3 3.3c.6.8.8 1.8.4 2.8-.2.4-.4.7-.7.8-1 .4-2.9-.8-3.6-1.4h-.1l-3-4.4c-.3-.5-.9-.6-1.4-.3-.4.3-.6.9-.3 1.4l2.5 3.6c.5.7.5 1.7 0 2.3-.8 1.1-3.4-.1-4.1-1l-2.8-4.1c-.3-.5-.9-.6-1.4-.3-.5.3-.6.9-.3 1.4l3 4.3c0 .6-.1 1.3-.6 1.6-.6.3-1.7 0-2.2-.3h-.1c-1.8-.7-9.1-6.3-13.6-9.9-1.2-1.3-3.2-2-4.4-2.3V21.7l1.5.5c-.4.6-.6 1.2-.6 1.7-.1 2.4 2.6 4.5 2.9 4.8 7.5 4.6 15.9-3.4 16.4-3.8.6-.6 1.1-.6 1.4-.6L49.9 44zM63.5 17.8v28.6c0 .7-.5 1.2-1.2 1.2h-5.7V16.5h5.7c.7 0 1.2.6 1.2 1.3zM3.7 16.5h5.7v31.1H3.7c-.7 0-1.2-.5-1.2-1.2V17.8c0-.7.5-1.3 1.2-1.3z'></path>
-        <path d='M40.5 14.8c2.6 2.1 11.3 4.4 14.1 5v20.9c-1.1-.1-2.6-.1-3.6.6-.1.1-.3.2-.4.4L34.4 22.8c-.1-.1-.2-.2-.4-.3-.7-.3-2.5-.6-3.9 1-.1.1-7.7 7.3-13.8 3.5-.5-.4-2.1-1.9-2.1-3.1 0-.2 0-.7 1-1.3l.1-.1h.1l11.4-9.3c3.5-2.5 11 .2 13.7 1.6z'></path>
+        <path d="M49.9 44c.7.8.9 2 .4 3-.2.3-.3.5-.6.6-.9.5-3-.2-3.8-1.3l-2.6-3.8c-.3-.4-.9-.6-1.4-.3-.5.3-.6.9-.3 1.4l2.3 3.3c.6.8.8 1.8.4 2.8-.2.4-.4.7-.7.8-1 .4-2.9-.8-3.6-1.4h-.1l-3-4.4c-.3-.5-.9-.6-1.4-.3-.4.3-.6.9-.3 1.4l2.5 3.6c.5.7.5 1.7 0 2.3-.8 1.1-3.4-.1-4.1-1l-2.8-4.1c-.3-.5-.9-.6-1.4-.3-.5.3-.6.9-.3 1.4l3 4.3c0 .6-.1 1.3-.6 1.6-.6.3-1.7 0-2.2-.3h-.1c-1.8-.7-9.1-6.3-13.6-9.9-1.2-1.3-3.2-2-4.4-2.3V21.7l1.5.5c-.4.6-.6 1.2-.6 1.7-.1 2.4 2.6 4.5 2.9 4.8 7.5 4.6 15.9-3.4 16.4-3.8.6-.6 1.1-.6 1.4-.6L49.9 44zM63.5 17.8v28.6c0 .7-.5 1.2-1.2 1.2h-5.7V16.5h5.7c.7 0 1.2.6 1.2 1.3zM3.7 16.5h5.7v31.1H3.7c-.7 0-1.2-.5-1.2-1.2V17.8c0-.7.5-1.3 1.2-1.3z"></path>
+        <path d="M40.5 14.8c2.6 2.1 11.3 4.4 14.1 5v20.9c-1.1-.1-2.6-.1-3.6.6-.1.1-.3.2-.4.4L34.4 22.8c-.1-.1-.2-.2-.4-.3-.7-.3-2.5-.6-3.9 1-.1.1-7.7 7.3-13.8 3.5-.5-.4-2.1-1.9-2.1-3.1 0-.2 0-.7 1-1.3l.1-.1h.1l11.4-9.3c3.5-2.5 11 .2 13.7 1.6z"></path>
       </svg>
     ),
   },
@@ -109,24 +109,24 @@ const bonuses = [
 export default function BonusesTable() {
   return (
     <div
-      id='detailed-pricing'
+      id="detailed-pricing"
       className={cn('mx-auto max-w-screen-md overflow-x-auto')}
     >
-      <div className='overflow-hidden'>
-        <div className='grid grid-cols-3 gap-4 border-b border-gray-200 p-4 text-xs font-medium text-gray-900 md:grid-cols-3 md:text-sm'>
-          <div className='col-span-2'>Criteria</div>
+      <div className="overflow-hidden">
+        <div className="grid grid-cols-3 gap-4 border-b border-gray-200 p-4 text-xs font-medium text-gray-900 md:grid-cols-3 md:text-sm">
+          <div className="col-span-2">Criteria</div>
           <div>Bonus</div>
         </div>
         {bonuses.map(({ criteria, bonus, icon }) => (
           <div
             key={criteria}
-            className='grid grid-cols-3 gap-4 border-b border-gray-200 p-4 text-xs md:grid-cols-3 md:text-sm'
+            className="grid grid-cols-3 gap-4 border-b border-gray-200 p-4 text-xs md:grid-cols-3 md:text-sm"
           >
-            <div className='col-span-2 flex text-gray-900'>
+            <div className="col-span-2 flex text-gray-900">
               {icon}
               {criteria}
             </div>
-            <div className='text-gray-500'>{bonus}</div>
+            <div className="text-gray-500">{bonus}</div>
           </div>
         ))}
       </div>

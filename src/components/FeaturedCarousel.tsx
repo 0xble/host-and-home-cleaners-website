@@ -1,17 +1,17 @@
-import fs from 'node:fs'
-import path from 'node:path'
-
 import type { StaticImport } from 'next/dist/shared/lib/get-img-props'
-import Image from 'next/image'
+import fs from 'node:fs'
 
+import path from 'node:path'
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
 } from '@/components/ui/carousel'
-import { cn } from '@/lib/utils'
 
-const getFeaturedImages = async (folder: string): Promise<{ name: string, image: StaticImport }[]> => {
+import { cn } from '@/lib/utils'
+import Image from 'next/image'
+
+async function getFeaturedImages(folder: string): Promise<{ name: string, image: StaticImport }[]> {
   const dir = path.join(process.cwd(), 'public', folder)
   const filenames = fs
     .readdirSync(dir)
@@ -26,7 +26,7 @@ const getFeaturedImages = async (folder: string): Promise<{ name: string, image:
   }))
 }
 
-type FeaturedCarouselProps = {
+interface FeaturedCarouselProps {
   folder: string
   className?: string
 }
@@ -45,10 +45,10 @@ export default async function FeaturedCarousel({
           <CarouselItem key={name}>
             <Image
               key={name}
-              className='h-[450px] rounded-lg object-cover'
+              className="h-[450px] rounded-lg object-cover"
               src={image}
               alt={`${folder} cleaning service image`}
-              placeholder='blur'
+              placeholder="blur"
             />
           </CarouselItem>
         )))}

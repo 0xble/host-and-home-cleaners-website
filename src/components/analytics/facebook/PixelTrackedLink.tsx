@@ -1,11 +1,12 @@
 'use client'
 
-import Link from 'next/link'
+import type { PixelEvent } from '@/lib/pixel'
 import type { ReactNode } from 'react'
+import { useEventTracking } from '@/lib/pixel'
 
-import { type PixelEvent, useEventTracking } from '@/lib/pixel'
+import Link from 'next/link'
 
-type TrackedLinkProps = {
+interface TrackedLinkProps {
   href: string
   children: ReactNode
   className?: string

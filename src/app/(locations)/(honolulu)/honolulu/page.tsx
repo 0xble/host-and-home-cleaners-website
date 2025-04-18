@@ -34,11 +34,11 @@ export default function Honolulu() {
         }}
       />
       <LocationLandingPage
-        locationKey='HONOLULU'
+        locationKey="HONOLULU"
         location={LOCATIONS.HONOLULU}
-        reviewsBadgeId='142009ae-6f8c-4599-9c7e-9d370298abc9'
-        googleMapsEmbedUrl='https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d237770.1723966727!2d-157.869932!3d21.3836454!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c4ce057e4bdff0b%3A0xa78d25a714d5f0ae!2sHost%20%26%20Home%20Cleaners%20Honolulu!5e0!3m2!1sen!2sus!4v1729395012053!5m2!1sen!2sus'
-        photosFolder='honolulu'
+        reviewsBadgeId="142009ae-6f8c-4599-9c7e-9d370298abc9"
+        googleMapsEmbedUrl="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d237770.1723966727!2d-157.869932!3d21.3836454!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c4ce057e4bdff0b%3A0xa78d25a714d5f0ae!2sHost%20%26%20Home%20Cleaners%20Honolulu!5e0!3m2!1sen!2sus!4v1729395012053!5m2!1sen!2sus"
+        photosFolder="honolulu"
         pricing={{ standard: 232, deep: 304, moveInOut: 340, vacationRental: 232 }}
         copy={{
           customHeroHeading: (
@@ -103,10 +103,10 @@ export default function Honolulu() {
           customPricingSectionHeading: 'Our Services',
           customPricingSectionDescription: (
             <>
-              <p className='mb-4 text-left'>
+              <p className="mb-4 text-left">
                 Discover our comprehensive cleaning services! From detailed oven cleaning to thorough bathroom sanitation and complete kitchen deep cleans, our skilled team provides exceptional residential cleaning solutions. We specialize in end-of-tenancy cleanings, short-term rental turnovers, and meticulous spring cleanings to meet all your cleaning needs.
               </p>
-              <p className='text-left'>
+              <p className="text-left">
                 Our customized move-in and move-out cleaning packages ensure a seamless transition, while our intensive fridge cleaning services leave your appliance spotless.
               </p>
             </>
@@ -118,7 +118,7 @@ export default function Honolulu() {
               question: 'What makes you different from the competition?',
               answer: (
                 <>
-                  <p className='mb-6'>
+                  <p className="mb-6">
                     When it comes to choosing a cleaning service in
                     Honolulu,
                     {' '}
@@ -145,7 +145,7 @@ export default function Honolulu() {
               question: 'Are you insured and bonded to safeguard clients?',
               answer: (
                 <>
-                  <p className='mb-2'>
+                  <p className="mb-2">
                     Absolutely!
                     {' '}
                     {SPECIFIC_BUSINESS_NAME}
@@ -189,7 +189,7 @@ export default function Honolulu() {
             {
               question: 'Do you offer services on weekends or holidays?',
               answer: (
-                <p className='mb-2'>
+                <p className="mb-2">
                   Yes, to fit your busy life, we offer cleaning services on
                   weekends and select holidays. These times may come with an
                   additional fee, so we recommend booking early to ensure
@@ -222,7 +222,7 @@ export default function Honolulu() {
             {
               question: 'How do you ensure I\'m happy with the cleaning?',
               answer: (
-                <p className='mb-2'>
+                <p className="mb-2">
                   Your happiness is our priority at
                   {' '}
                   {SPECIFIC_BUSINESS_NAME}
@@ -241,7 +241,7 @@ export default function Honolulu() {
               {' '}
               <Link
                 href={ROUTES.BOOKING.href}
-                className='link'
+                className="link"
               >
                 instant quote online
               </Link>
@@ -250,7 +250,7 @@ export default function Honolulu() {
               {' '}
               <TrackedLink
                 href={`tel:+${PHONE.HONOLULU.plain}`}
-                className='link'
+                className="link"
                 isExternal
                 eventName={PixelEvent.CONTACT}
                 eventParams={{ method: 'phone' }}

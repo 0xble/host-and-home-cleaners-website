@@ -11,7 +11,7 @@ import { Suspense } from 'react'
 import CTAButtons from './CTAButtons'
 import FindLocationInput from './FindLocationInput'
 
-export type CTASectionProps = {
+export interface CTASectionProps {
   heading: string | JSX.Element
   body: React.ReactNode
   location: Location | 'CACHED' | null
@@ -28,23 +28,23 @@ export default function CTASection(props: CTASectionProps) {
     <section className={`mx-auto max-w-screen-xl items-center gap-8 px-4 py-8 sm:py-16 md:grid lg:px-6 xl:gap-16 ${showImage ? 'md:grid-cols-2' : 'md:grid-cols-1'}`}>
       {showImage && (
         <Image
-          className='h-96 rounded-lg lg:h-[600px]'
-          alt='professional house cleaning'
+          className="h-96 rounded-lg lg:h-[600px]"
+          alt="professional house cleaning"
           src={flamingoRingImage}
           style={{ objectFit: 'cover' }}
-          placeholder='blur'
+          placeholder="blur"
         />
       )}
       <div className={cn('mt-4 flex flex-col gap-6 md:mt-0', !showImage ? 'md:max-w-2xl md:mx-auto md:text-center' : '')}>
-        <h2 className='tracking-tight text-gray-900 sm:text-5xl'>{heading}</h2>
-        <p className='text-left'>{body}</p>
+        <h2 className="tracking-tight text-gray-900 sm:text-5xl">{heading}</h2>
+        <p className="text-left">{body}</p>
         {
           location === null
             ? (
                 <div className={cn('flex items-center gap-6', !showImage ? 'justify-center' : '', 'lg:flex-row')}>
                   <BookNowButton
-                    className='lg:mr-3'
-                    size='lg'
+                    className="lg:mr-3"
+                    size="lg"
                   />
                   <Suspense>
                     <FindLocationInput className={cn('hidden sm:flex', !showImage ? 'w-auto' : '')} />

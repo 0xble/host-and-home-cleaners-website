@@ -1,7 +1,7 @@
 import { BUSINESS_NAME } from '@/lib/constants'
 import { cn } from '@/lib/utils'
 
-type ApplyFormProps = {
+interface ApplyFormProps {
   className?: string
 }
 
@@ -9,20 +9,20 @@ export default function ApplyForm({ className }: ApplyFormProps) {
   return (
     <div className={cn('w-full', className)}>
       <iframe
-        sandbox='allow-scripts allow-forms allow-top-navigation'
-        className='h-[539px] min-w-full max-w-full border-none'
-        id='JotFormIFrame-240823519303148'
+        sandbox="allow-scripts allow-forms allow-top-navigation"
+        className="h-[539px] min-w-full max-w-full border-none"
+        id="JotFormIFrame-240823519303148"
         title={`${BUSINESS_NAME} Professional House Cleaner Application`}
-        allow='geolocation; microphone; camera; fullscreen'
-        src='https://form.jotform.com/240823519303148'
-        frameBorder='0'
-        scrolling='no'
+        allow="geolocation; microphone; camera; fullscreen"
+        src="https://form.jotform.com/240823519303148"
+        frameBorder="0"
+        scrolling="no"
       >
       </iframe>
 
       { }
       <script
-        type='text/javascript'
+        type="text/javascript"
         dangerouslySetInnerHTML={{
           __html: `
       var ifr = document.getElementById("JotFormIFrame-240823519303148");

@@ -23,7 +23,8 @@ export async function initializePixel() {
     ReactPixel.init(PIXEL_ID, undefined, options)
     pixelInstance = ReactPixel
     return pixelInstance
-  } catch (error) {
+  }
+  catch (error) {
     return null
   }
 }

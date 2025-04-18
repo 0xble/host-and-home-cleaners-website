@@ -19,11 +19,11 @@ export const metadata: Metadata = {
 export default function GardenCity() {
   return (
     <LocationLandingPage
-      locationKey='MYRTLE_BEACH'
+      locationKey="MYRTLE_BEACH"
       location={LOCATIONS.MYRTLE_BEACH}
-      reviewsBadgeId='ba527c37-e33e-46d1-8a33-08aed36ffd09'
-      googleMapsEmbedUrl='https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d106194.64630830522!2d-78.8788075!3d33.7197455!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x432592cd81e1d561%3A0x2bb5e85088c224ee!2sPristine%20Maid%20Cleaning!5e0!3m2!1sen!2sus!4v1709048737136!5m2!1sen!2sus'
-      photosFolder='myrtle-beach'
+      reviewsBadgeId="ba527c37-e33e-46d1-8a33-08aed36ffd09"
+      googleMapsEmbedUrl="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d106194.64630830522!2d-78.8788075!3d33.7197455!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x432592cd81e1d561%3A0x2bb5e85088c224ee!2sPristine%20Maid%20Cleaning!5e0!3m2!1sen!2sus!4v1709048737136!5m2!1sen!2sus"
+      photosFolder="myrtle-beach"
       pricing={{ standard: 129, deep: 169, moveInOut: 189, vacationRental: 129 }}
       copy={{
         customHeroHeading: (
@@ -85,10 +85,10 @@ export default function GardenCity() {
         customPricingSectionHeading: 'Bookings',
         customPricingSectionDescription: (
           <>
-            <p className='mb-4 text-left'>
+            <p className="mb-4 text-left">
               We have it all! From meticulous oven scrubbing, comprehensive bathroom sanitation to full-scale kitchen deep cleans — our expert team delivers top-tier residential cleaning services. Specializing in end-of-lease cleanings, short-term accommodation refreshes, and detailed spring cleanings, we cater to all your cleaning needs in Garden City.
             </p>
-            <p className='text-left'>
+            <p className="text-left">
               Our tailored move-in and move-out cleaning solutions guarantee a flawless handover, while our intensive refrigerator cleaning services render your appliance spotlessly clean.
             </p>
           </>
@@ -100,7 +100,7 @@ export default function GardenCity() {
             question: 'What sets you apart from the others?',
             answer: (
               <>
-                <p className='mb-6'>
+                <p className="mb-6">
                   When it comes to selecting a cleaning company in Garden City, our team at
                   {' '}
                   {SPECIFIC_BUSINESS_NAME}
@@ -123,7 +123,7 @@ export default function GardenCity() {
             question: 'Do you carry insurance and bonding to protect customers?',
             answer: (
               <>
-                <p className='mb-2'>
+                <p className="mb-2">
                   Absolutely!
                   {' '}
                   {SPECIFIC_BUSINESS_NAME}
@@ -155,7 +155,7 @@ export default function GardenCity() {
           {
             question: 'Are cleaning services available on weekends or holidays?',
             answer: (
-              <p className='mb-2'>
+              <p className="mb-2">
                 Yes, to accommodate your schedule, we provide cleaning services on weekends and selected holidays. Please note that these slots carry an additional surcharge and we advise early booking to ensure availability.
               </p>
             ),
@@ -179,7 +179,7 @@ export default function GardenCity() {
           {
             question: 'How will you make sure I\'m satisfied with the cleaning?',
             answer: (
-              <p className='mb-2'>
+              <p className="mb-2">
                 Your satisfaction is paramount at
                 {' '}
                 {SPECIFIC_BUSINESS_NAME}
@@ -195,7 +195,7 @@ export default function GardenCity() {
             {' '}
             <Link
               href={ROUTES.BOOKING.href}
-              className='link'
+              className="link"
             >
               instant, no-obligation quote online
             </Link>
@@ -204,7 +204,7 @@ export default function GardenCity() {
             {' '}
             <TrackedLink
               href={`tel:+${PHONE.MYRTLE_BEACH.plain}`}
-              className='link'
+              className="link"
               isExternal
               eventName={PixelEvent.CONTACT}
               eventParams={{ method: 'phone' }}

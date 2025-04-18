@@ -13,18 +13,18 @@ import PricingSection from '@/components/templates/sections/PricingSection'
 import TrustSection from '@/components/templates/sections/TrustSection'
 import { Suspense } from 'react'
 
-type Step = {
+interface Step {
   title: string
   description: React.ReactNode
 }
 
-type Section = {
+interface Section {
   id: string
   component: React.ReactNode
   position?: number
 }
 
-type LandingPageProps = {
+interface LandingPageProps {
   location: LocationKey | null
   reviewsBadgeId: string
   photosFolder: string
@@ -61,101 +61,86 @@ type LandingPageProps = {
   sections?: Section[]
 }
 
-const createDefaultSections = (
-  heroHeading: React.ReactNode,
-  heroDescription: string,
-  heroActions: React.ReactElement | undefined,
-  reviewsHeading: string,
-  howItWorksHeading: string,
-  howItWorksSteps: Step[],
-  pricingHeading: string,
-  pricing: LandingPageProps['pricing'],
-  pricingDescription: React.ReactNode,
-  faqHeading: string,
-  faqDescription: string,
-  faqs: LandingPageProps['copy']['faqs'],
-  ctaHeading: string,
-  ctaBody: React.ReactNode,
-  location: LocationKey | null,
-  photosFolder: string,
-): Section[] => [
-  {
-    id: 'hero',
-    component: (
-      <HeroSection
-        heading={heroHeading}
-        description={heroDescription}
-        photos={photosFolder}
-        actions={heroActions || (
-          <div className='flex items-center gap-6'>
-            <BookNowButton
-              className='hidden sm:inline-flex lg:mr-3'
-              size='lg'
-            />
-            <Suspense>
-              <FindLocationInput />
-            </Suspense>
-          </div>
-        )}
-      />
-    ),
-  },
-  {
-    id: 'trust',
-    component: <TrustSection />,
-  },
-  {
-    id: 'reviews',
-    component: (
-      <ReviewsSection
-        heading={reviewsHeading}
-        location={location}
-        className='mt-12'
-      />
-    ),
-  },
-  {
-    id: 'how-it-works',
-    component: (
-      <HowItWorksSection
-        heading={howItWorksHeading}
-        steps={howItWorksSteps}
-      />
-    ),
-  },
-  {
-    id: 'pricing',
-    component: (
-      <PricingSection
-        heading={pricingHeading}
-        pricing={pricing}
-        description={pricingDescription}
-      />
-    ),
-  },
-  {
-    id: 'faq',
-    component: (
-      <FAQSection
-        heading={faqHeading}
-        description={faqDescription}
-        faqs={faqs}
-      />
-    ),
-  },
-  {
-    id: 'cta',
-    component: (
-      <Suspense>
-        <CTASection
-          heading={ctaHeading}
-          body={ctaBody}
-          location={location}
+function createDefaultSections(heroHeading: React.ReactNode, heroDescription: string, heroActions: React.ReactElement | undefined, reviewsHeading: string, howItWorksHeading: string, howItWorksSteps: Step[], pricingHeading: string, pricing: LandingPageProps['pricing'], pricingDescription: React.ReactNode, faqHeading: string, faqDescription: string, faqs: LandingPageProps['copy']['faqs'], ctaHeading: string, ctaBody: React.ReactNode, location: LocationKey | null, photosFolder: string): Section[] {
+  return [
+    {
+      id: 'hero',
+      component: (
+        <HeroSection
+          heading={heroHeading}
+          description={heroDescription}
+          photos={photosFolder}
+          actions={heroActions || (
+            <div className="flex items-center gap-6">
+              <BookNowButton
+                className="hidden sm:inline-flex lg:mr-3"
+                size="lg"
+              />
+              <Suspense>
+                <FindLocationInput />
+              </Suspense>
+            </div>
+          )}
         />
-      </Suspense>
-    ),
-  },
-]
+      ),
+    },
+    {
+      id: 'trust',
+      component: <TrustSection />,
+    },
+    {
+      id: 'reviews',
+      component: (
+        <ReviewsSection
+          heading={reviewsHeading}
+          location={location}
+          className="mt-12"
+        />
+      ),
+    },
+    {
+      id: 'how-it-works',
+      component: (
+        <HowItWorksSection
+          heading={howItWorksHeading}
+          steps={howItWorksSteps}
+        />
+      ),
+    },
+    {
+      id: 'pricing',
+      component: (
+        <PricingSection
+          heading={pricingHeading}
+          pricing={pricing}
+          description={pricingDescription}
+        />
+      ),
+    },
+    {
+      id: 'faq',
+      component: (
+        <FAQSection
+          heading={faqHeading}
+          description={faqDescription}
+          faqs={faqs}
+        />
+      ),
+    },
+    {
+      id: 'cta',
+      component: (
+        <Suspense>
+          <CTASection
+            heading={ctaHeading}
+            body={ctaBody}
+            location={location}
+          />
+        </Suspense>
+      ),
+    },
+  ]
+}
 
 const emptySections: Section[] = []
 
@@ -214,9 +199,9 @@ export default function LandingPage({
       {/* <Suspense>
         <ReviewsFloatingBadge id={reviewsBadgeId} />
       </Suspense> */}
-      <Page location={location} className='mb-24 flex min-h-screen flex-col gap-12 lg:mb-32 lg:gap-12'>
+      <Page location={location} className="mb-24 flex min-h-screen flex-col gap-12 lg:mb-32 lg:gap-12">
         {allSections.map(section => (
-          <div key={section.id} id={section.id} className='scroll-mt-20'>
+          <div key={section.id} id={section.id} className="scroll-mt-20">
             {section.component}
           </div>
         ))}

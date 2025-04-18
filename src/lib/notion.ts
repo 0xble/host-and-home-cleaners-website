@@ -1,6 +1,5 @@
-import { Client } from '@notionhq/client'
-import { APIResponseError } from '@notionhq/client'
 import type { PageObjectResponse, QueryDatabaseParameters } from '@notionhq/client/build/src/api-endpoints'
+import { APIResponseError, Client } from '@notionhq/client'
 import { RateLimit } from 'async-sema'
 
 const notion = new Client({
@@ -19,7 +18,8 @@ async function fetchWithRetries<T>(
     try {
       await rateLimiter()
       return await apiCall()
-    } catch (error) {
+    }
+    catch (error) {
       if (error instanceof APIResponseError) {
         // Handle rate limiting and server errors
         if ([429, 500, 502, 503, 504].includes(error.status)) {
@@ -59,7 +59,8 @@ export async function queryDatabase(params: QueryDatabaseParameters) {
       // Only continue fetching if page_size is not specified
       hasMore = !params.page_size && response.has_more
       startCursor = response.next_cursor ?? undefined
-    } catch (error) {
+    }
+    catch (error) {
       console.error('Error querying Notion database:', error)
       throw error
     }

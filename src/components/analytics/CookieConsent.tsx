@@ -1,13 +1,13 @@
 'use client'
 
+import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 import { CookieIcon } from 'lucide-react'
+
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
-import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
-
-type CookieConsentProps = {
+interface CookieConsentProps {
   variant?: 'default' | 'small'
   forceShow?: boolean
 }
@@ -36,7 +36,8 @@ export default function CookieConsent({ variant = 'default', forceShow = false }
         ad_user_data: 'granted',
         ad_personalization: 'granted',
       })
-    } else {
+    }
+    else {
       console.warn('Google Analytics gtag function not found')
     }
   }
@@ -94,7 +95,8 @@ export default function CookieConsent({ variant = 'default', forceShow = false }
           })
         }
       }
-    } catch (e) {
+    }
+    catch (e) {
       // console.log("Error: ", e);
     }
   }, [forceShow])
@@ -110,42 +112,42 @@ export default function CookieConsent({ variant = 'default', forceShow = false }
             hide && 'hidden',
           )}
         >
-          <div className='border-border rounded-t-lg border bg-white shadow-lg dark:bg-slate-950 sm:rounded-md'>
-            <div className='grid gap-2'>
-              <div className='border-border flex h-12 items-center justify-between border-b bg-slate-50 px-3 py-2 dark:bg-slate-900 sm:h-14 sm:p-4'>
-                <div className='text-base font-medium text-slate-900 dark:text-slate-50 sm:text-lg'>Want a cookie?</div>
-                <CookieIcon className='size-[1.1rem] text-primary-600 dark:text-primary-400 sm:size-[1.2rem]' />
+          <div className="border-border rounded-t-lg border bg-white shadow-lg dark:bg-slate-950 sm:rounded-md">
+            <div className="grid gap-2">
+              <div className="border-border flex h-12 items-center justify-between border-b bg-slate-50 px-3 py-2 dark:bg-slate-900 sm:h-14 sm:p-4">
+                <div className="text-base font-medium text-slate-900 dark:text-slate-50 sm:text-lg">Want a cookie?</div>
+                <CookieIcon className="size-[1.1rem] text-primary-600 dark:text-primary-400 sm:size-[1.2rem]" />
               </div>
-              <div className='px-3 py-2 sm:p-4'>
-                <p className='text-start text-xs font-normal text-slate-600 dark:text-slate-300 sm:text-sm'>
+              <div className="px-3 py-2 sm:p-4">
+                <p className="text-start text-xs font-normal text-slate-600 dark:text-slate-300 sm:text-sm">
                   We use cookies to ensure you get the best experience on our website.
                   For more information on how we use cookies, please see our
                   {' '}
-                  <Link href='/privacy' className='link'>cookie policy</Link>
+                  <Link href="/privacy" className="link">cookie policy</Link>
                   .
                   <br />
                   <br />
-                  <span className='text-[10px] text-slate-500 dark:text-slate-400 sm:text-xs'>
+                  <span className="text-[10px] text-slate-500 dark:text-slate-400 sm:text-xs">
                     By clicking "
-                    <span className='font-medium text-slate-900 dark:text-slate-50'>Accept</span>
+                    <span className="font-medium text-slate-900 dark:text-slate-50">Accept</span>
                     ", you
                     agree to our use of all cookies.
                   </span>
                 </p>
-                <div className='un mt-2 flex gap-2 text-xs'>
-                  <a href='/terms' className='link underline'>
+                <div className="un mt-2 flex gap-2 text-xs">
+                  <a href="/terms" className="link underline">
                     Terms & Conditions
                   </a>
-                  <a href='/privacy' className='link underline'>
+                  <a href="/privacy" className="link underline">
                     Privacy Policy
                   </a>
                 </div>
               </div>
-              <div className='border-border flex gap-2 border-t bg-slate-50 p-3 dark:bg-slate-900 sm:p-4'>
-                <Button onClick={accept} className='w-full bg-primary-700 text-sm text-white hover:bg-primary-800 sm:text-base'>
+              <div className="border-border flex gap-2 border-t bg-slate-50 p-3 dark:bg-slate-900 sm:p-4">
+                <Button onClick={accept} className="w-full bg-primary-700 text-sm text-white hover:bg-primary-800 sm:text-base">
                   Accept
                 </Button>
-                <Button onClick={decline} className='w-full text-sm sm:text-base' variant='outline'>
+                <Button onClick={decline} className="w-full text-sm sm:text-base" variant="outline">
                   Decline
                 </Button>
               </div>
@@ -163,23 +165,23 @@ export default function CookieConsent({ variant = 'default', forceShow = false }
             hide && 'hidden',
           )}
         >
-          <div className='border-border rounded-t-lg border bg-white dark:bg-slate-950 sm:rounded-lg'>
-            <div className='flex items-center justify-between bg-slate-50 px-3 py-2 dark:bg-slate-900 sm:p-3'>
-              <h1 className='text-base font-medium text-slate-900 dark:text-slate-50 sm:text-lg'>We use cookies</h1>
-              <CookieIcon className='size-[1.1rem] text-primary-600 dark:text-primary-400 sm:size-[1.2rem]' />
+          <div className="border-border rounded-t-lg border bg-white dark:bg-slate-950 sm:rounded-lg">
+            <div className="flex items-center justify-between bg-slate-50 px-3 py-2 dark:bg-slate-900 sm:p-3">
+              <h1 className="text-base font-medium text-slate-900 dark:text-slate-50 sm:text-lg">We use cookies</h1>
+              <CookieIcon className="size-[1.1rem] text-primary-600 dark:text-primary-400 sm:size-[1.2rem]" />
             </div>
-            <div className='-mt-2 px-3 py-2 sm:p-3'>
-              <p className='text-left text-xs text-slate-600 dark:text-slate-300 sm:text-sm'>
+            <div className="-mt-2 px-3 py-2 sm:p-3">
+              <p className="text-left text-xs text-slate-600 dark:text-slate-300 sm:text-sm">
                 We use cookies to ensure you get the best experience on our website.
                 For more information on how we use cookies, please see our cookie
                 policy.
               </p>
             </div>
-            <div className='mt-2 flex items-center gap-2 border-t bg-slate-50 px-3 py-2 dark:bg-slate-900 sm:p-3'>
-              <Button onClick={accept} className='h-8 w-full rounded-full bg-primary-700 text-sm text-white hover:bg-primary-800 sm:h-9 sm:text-base'>
+            <div className="mt-2 flex items-center gap-2 border-t bg-slate-50 px-3 py-2 dark:bg-slate-900 sm:p-3">
+              <Button onClick={accept} className="h-8 w-full rounded-full bg-primary-700 text-sm text-white hover:bg-primary-800 sm:h-9 sm:text-base">
                 accept
               </Button>
-              <Button onClick={decline} className='h-8 w-full rounded-full text-sm sm:h-9 sm:text-base' variant='outline'>
+              <Button onClick={decline} className="h-8 w-full rounded-full text-sm sm:h-9 sm:text-base" variant="outline">
                 decline
               </Button>
             </div>

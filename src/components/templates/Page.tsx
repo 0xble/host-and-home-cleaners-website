@@ -1,15 +1,15 @@
 'use client'
-import { useEffect } from 'react'
+import type { Location } from '@/lib/types'
 
 import { PHONE } from '@/lib/constants'
-import type { Location } from '@/lib/types'
 import { cn } from '@/lib/utils'
 import { useLocationStore } from '@/store/useLocationStore'
+import { useEffect } from 'react'
 
 import Footer from '../layout/Footer'
 import Navbar from '../layout/Navbar'
 
-type PageProps = {
+interface PageProps {
   children: React.ReactNode
   location: Location | 'CACHED' | null
   className?: string

@@ -9,9 +9,9 @@ import { tz } from '@date-fns/tz'
 import { compareDesc, formatDistanceToNow, hoursToSeconds } from 'date-fns'
 import { AnimatePresence, motion } from 'framer-motion'
 
-import { ChevronLeft,ChevronRight, Star } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Star } from 'lucide-react'
 import Image from 'next/image'
-import { useEffect, useRef,useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { round } from 'remeda'
 
 type ValidReview = Omit<Review, 'rating' | 'text' | 'date' | 'author'> & {
@@ -24,7 +24,7 @@ type ValidReview = Omit<Review, 'rating' | 'text' | 'date' | 'author'> & {
   }
 }
 
-type ReviewsGridClientProps = {
+interface ReviewsGridClientProps {
   location?: LocationKey | null
 }
 
@@ -60,7 +60,7 @@ function AuthorSection({ review, url, className }: { review: ValidReview, url?: 
               alt={review.author.name}
               width={120}
               height={120}
-              className='size-10 rounded-full object-cover object-center'
+              className="size-10 rounded-full object-cover object-center"
             />
           )
         : (
@@ -73,17 +73,17 @@ function AuthorSection({ review, url, className }: { review: ValidReview, url?: 
             </div>
           )}
       <div>
-        <div className='flex items-center gap-1 text-sm group-hover:underline sm:text-base'>
+        <div className="flex items-center gap-1 text-sm group-hover:underline sm:text-base">
           {review.author.name}
           <Image
-            src='/icons/verified.svg'
-            alt='Verified'
+            src="/icons/verified.svg"
+            alt="Verified"
             width={16}
             height={16}
-            className='size-4'
+            className="size-4"
           />
         </div>
-        <div className='text-xs font-light text-gray-500 sm:text-sm'>
+        <div className="text-xs font-light text-gray-500 sm:text-sm">
           {formatDistanceToNow(review.date, { addSuffix: true, in: tz('America/Los_Angeles') })}
         </div>
       </div>
@@ -97,9 +97,9 @@ function AuthorSection({ review, url, className }: { review: ValidReview, url?: 
   return (
     <a
       href={url}
-      target='_blank'
-      rel='noopener noreferrer'
-      className='group inline-flex'
+      target="_blank"
+      rel="noopener noreferrer"
+      className="group inline-flex"
     >
       {content}
     </a>
@@ -151,7 +151,7 @@ function ReviewCard({ review, className }: { review: ValidReview, className?: st
       transition={{ duration: 0.2 }}
       className={cn('rounded-lg bg-white p-4 shadow-md sm:p-6', className)}
     >
-      <div className='mb-3 flex sm:mb-4'>
+      <div className="mb-3 flex sm:mb-4">
         {Array.from({ length: 5 }).map((_, i) => (
           <Star
             key={`${review.id}-star-${i + 1}`}
@@ -165,7 +165,7 @@ function ReviewCard({ review, className }: { review: ValidReview, className?: st
 
       {review.text && (
         <>
-          <p className='mb-3 text-base sm:mb-4'>
+          <p className="mb-3 text-base sm:mb-4">
             "
             {review.text.length > maxTextLength
               ? `${review.text.slice(0, maxTextLength).split(' ').slice(0, -1).join(' ')}...`
@@ -176,9 +176,9 @@ function ReviewCard({ review, className }: { review: ValidReview, className?: st
           {review.url && (
             <a
               href={review.url}
-              target='_blank'
-              rel='noopener noreferrer'
-              className='mb-3 mt-2 inline-block text-xs text-primary-600 hover:underline sm:mb-4 sm:text-sm'
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mb-3 mt-2 inline-block text-xs text-primary-600 hover:underline sm:mb-4 sm:text-sm"
             >
               Read more
             </a>
@@ -187,15 +187,15 @@ function ReviewCard({ review, className }: { review: ValidReview, className?: st
       )}
 
       {review.platform && (
-        <div className='mb-3 flex items-center gap-2 sm:mb-4'>
+        <div className="mb-3 flex items-center gap-2 sm:mb-4">
           <PlatformIcon platform={review.platform} />
           {review.url
             ? (
                 <a
                   href={review.url}
-                  target='_blank'
-                  rel='noopener noreferrer'
-                  className='text-xs text-gray-600 hover:underline sm:text-sm'
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs text-gray-600 hover:underline sm:text-sm"
                 >
                   Posted on
                   {' '}
@@ -203,7 +203,7 @@ function ReviewCard({ review, className }: { review: ValidReview, className?: st
                 </a>
               )
             : (
-                <span className='text-xs text-gray-600 sm:text-sm'>
+                <span className="text-xs text-gray-600 sm:text-sm">
                   Posted on
                   {' '}
                   {review.platform}
@@ -220,15 +220,15 @@ function ReviewCard({ review, className }: { review: ValidReview, className?: st
 // Review Card Skeleton Component
 function ReviewCardSkeleton() {
   return (
-    <div className='rounded-lg bg-white p-6 shadow-md'>
-      <Skeleton className='mb-4 h-5 w-32' />
-      <Skeleton className='mb-4 h-24 w-full' />
-      <Skeleton className='mb-4 h-5 w-24' />
-      <div className='flex items-center gap-3'>
-        <Skeleton className='size-10 rounded-full' />
-        <div className='space-y-2'>
-          <Skeleton className='h-4 w-32' />
-          <Skeleton className='h-3 w-24' />
+    <div className="rounded-lg bg-white p-6 shadow-md">
+      <Skeleton className="mb-4 h-5 w-32" />
+      <Skeleton className="mb-4 h-24 w-full" />
+      <Skeleton className="mb-4 h-5 w-24" />
+      <div className="flex items-center gap-3">
+        <Skeleton className="size-10 rounded-full" />
+        <div className="space-y-2">
+          <Skeleton className="h-4 w-32" />
+          <Skeleton className="h-3 w-24" />
         </div>
       </div>
     </div>
@@ -251,10 +251,10 @@ function getTabStyles(isActive: boolean) {
 
 function RatingDisplay({ rating, count, className }: { rating?: number, count: number, className?: string }) {
   return (
-    <span className='flex items-center gap-1'>
+    <span className="flex items-center gap-1">
       {count > 0 && (
         <>
-          <Star className='size-4 fill-yellow-400 text-yellow-400' />
+          <Star className="size-4 fill-yellow-400 text-yellow-400" />
           {rating?.toFixed(1)}
         </>
       )}
@@ -355,7 +355,7 @@ function PlatformRatingTabs({
 
     return (
       <button
-        type='button'
+        type="button"
         key={platform ?? 'all'}
         onClick={() => onSelectPlatform(platform)}
         className={styles.tab}
@@ -388,14 +388,14 @@ function PlatformRatingTabs({
 
   return (
     <div className={cn('relative flex flex-col', className)}>
-      <div className='relative w-full overflow-hidden'>
-        <div className='flex items-center justify-center'>
+      <div className="relative w-full overflow-hidden">
+        <div className="flex items-center justify-center">
           <div
             ref={scrollContainerRef}
             onScroll={handleScroll}
-            className='no-scrollbar flex max-w-full overflow-x-auto px-6 py-3 sm:px-4 sm:py-2 [&::-webkit-scrollbar]:hidden'
+            className="no-scrollbar flex max-w-full overflow-x-auto px-6 py-3 sm:px-4 sm:py-2 [&::-webkit-scrollbar]:hidden"
           >
-            <div className='flex gap-3 border-b border-gray-200 sm:gap-2'>
+            <div className="flex gap-3 border-b border-gray-200 sm:gap-2">
               {allPlatforms.map(platform => renderTab(platform))}
             </div>
           </div>
@@ -404,18 +404,18 @@ function PlatformRatingTabs({
               {/* Left fade and arrow */}
               {canScrollLeft && (
                 <>
-                  <div className='pointer-events-none absolute left-0 top-0 h-full w-16 bg-gradient-to-r from-white to-transparent' />
-                  <div className='absolute left-3 top-1/2 -translate-y-1/2 sm:left-2'>
-                    <ChevronLeft className='size-6 text-gray-400 sm:size-5' />
+                  <div className="pointer-events-none absolute left-0 top-0 h-full w-16 bg-gradient-to-r from-white to-transparent" />
+                  <div className="absolute left-3 top-1/2 -translate-y-1/2 sm:left-2">
+                    <ChevronLeft className="size-6 text-gray-400 sm:size-5" />
                   </div>
                 </>
               )}
               {/* Right fade and arrow */}
               {canScrollRight && (
                 <>
-                  <div className='pointer-events-none absolute right-0 top-0 h-full w-16 bg-gradient-to-l from-white to-transparent' />
-                  <div className='absolute right-3 top-1/2 -translate-y-1/2 sm:right-2'>
-                    <ChevronRight className='size-6 text-gray-400 sm:size-5' />
+                  <div className="pointer-events-none absolute right-0 top-0 h-full w-16 bg-gradient-to-l from-white to-transparent" />
+                  <div className="absolute right-3 top-1/2 -translate-y-1/2 sm:right-2">
+                    <ChevronRight className="size-6 text-gray-400 sm:size-5" />
                   </div>
                 </>
               )}
@@ -473,7 +473,8 @@ export default function ReviewsGridClient({ location }: ReviewsGridClientProps) 
         }
         const reviewsData = await response.json()
         setData(reviewsData)
-      } catch (error) {
+      }
+      catch (error) {
         console.error('Error fetching reviews:', error)
       }
     }
@@ -483,18 +484,18 @@ export default function ReviewsGridClient({ location }: ReviewsGridClientProps) 
 
   if (!data) {
     return (
-      <div className='px-4 sm:px-4 lg:px-20'>
-        <div className='space-y-8 sm:space-y-6'>
-          <div className='flex justify-center'>
-            <Skeleton className='h-12 w-[600px] rounded-lg' />
+      <div className="px-4 sm:px-4 lg:px-20">
+        <div className="space-y-8 sm:space-y-6">
+          <div className="flex justify-center">
+            <Skeleton className="h-12 w-[600px] rounded-lg" />
           </div>
-          <div ref={gridRef} className='grid min-h-80 grid-cols-1 gap-6 sm:gap-4 md:grid-cols-2 lg:grid-cols-3'>
+          <div ref={gridRef} className="grid min-h-80 grid-cols-1 gap-6 sm:gap-4 md:grid-cols-2 lg:grid-cols-3">
             {Array.from({ length: 6 }).map((_, i) => (
               <ReviewCardSkeleton key={i} />
             ))}
           </div>
-          <div className='flex justify-center'>
-            <Skeleton className='h-10 w-32 rounded-lg' />
+          <div className="flex justify-center">
+            <Skeleton className="h-10 w-32 rounded-lg" />
           </div>
         </div>
       </div>
@@ -526,10 +527,10 @@ export default function ReviewsGridClient({ location }: ReviewsGridClientProps) 
   }
 
   return (
-    <div className='px-4 sm:px-4 lg:px-20'>
-      <div className='space-y-8 sm:space-y-6'>
+    <div className="px-4 sm:px-4 lg:px-20">
+      <div className="space-y-8 sm:space-y-6">
         <PlatformRatingTabs
-          className='justify-center'
+          className="justify-center"
           ratings={data.platform_ratings}
           selectedPlatform={selectedPlatform}
           onSelectPlatform={(platform) => {
@@ -540,12 +541,12 @@ export default function ReviewsGridClient({ location }: ReviewsGridClientProps) 
           reviews={data.reviews}
         />
         <motion.div
-          className='grid min-h-80 grid-cols-1 gap-6 sm:gap-4 md:grid-cols-2 lg:grid-cols-3'
+          className="grid min-h-80 grid-cols-1 gap-6 sm:gap-4 md:grid-cols-2 lg:grid-cols-3"
           ref={gridRef}
           layout
           transition={{ duration: 0.2 }}
         >
-          <AnimatePresence mode='popLayout' initial={false}>
+          <AnimatePresence mode="popLayout" initial={false}>
             {reviews.slice(0, visibleReviews).map(review => (
               <ReviewCard key={review.id} review={review} />
             ))}
@@ -553,14 +554,14 @@ export default function ReviewsGridClient({ location }: ReviewsGridClientProps) 
         </motion.div>
         {hasMoreReviews && (
           <motion.div
-            className='flex justify-center'
+            className="flex justify-center"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.2 }}
           >
             <button
-              className='my-4 rounded-lg bg-primary-700 px-4 py-2 text-center text-sm font-medium text-white hover:bg-primary-800 focus:ring-4 focus:ring-primary-200 sm:px-5 sm:py-2.5'
-              type='button'
+              className="my-4 rounded-lg bg-primary-700 px-4 py-2 text-center text-sm font-medium text-white hover:bg-primary-800 focus:ring-4 focus:ring-primary-200 sm:px-5 sm:py-2.5"
+              type="button"
               onClick={handleViewMore}
             >
               View More

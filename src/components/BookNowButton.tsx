@@ -7,7 +7,7 @@ import { ROUTES } from '@/lib/routes'
 import { cn } from '@/lib/utils'
 import { useSearchParams } from 'next/navigation'
 
-type BookNowButtonProps = {
+interface BookNowButtonProps {
   className?: string
   preventNavigation?: boolean
   size?: 'sm' | 'md' | 'lg'

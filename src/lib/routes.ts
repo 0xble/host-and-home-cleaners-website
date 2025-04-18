@@ -3,7 +3,7 @@ import { slugify } from '0xble/strings'
 
 import { BOOKINGKOALA_URL, LOCATIONS, SERVICES } from './constants'
 
-export type Route = {
+export interface Route {
   name: string
   href: string
   priority: 0 | 0.1 | 0.2 | 0.3 | 0.4 | 0.5 | 0.6 | 0.7 | 0.8 | 0.9 | 1

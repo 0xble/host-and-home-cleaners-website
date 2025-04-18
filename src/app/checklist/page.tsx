@@ -16,26 +16,26 @@ export const metadata: Metadata = {
 
 export default function Checklist() {
   return (
-    <Page location='CACHED'>
+    <Page location="CACHED">
       <ContentViewTracker
-        contentType='page'
-        contentName='Checklist'
-        contentId='checklist-page'
+        contentType="page"
+        contentName="Checklist"
+        contentId="checklist-page"
       />
-      <div className='mt-24 px-4 text-center'>
-        <h1 className='mb-8 text-4xl sm:text-[45px]'>
+      <div className="mt-24 px-4 text-center">
+        <h1 className="mb-8 text-4xl sm:text-[45px]">
           The
           {' '}
           {CHECKLIST_NAME}
         </h1>
-        <p className='mb-20'>
+        <p className="mb-20">
           Designed to leave your home spotless and pristine,
           {' '}
-          <span className='text-primary'>every time</span>
+          <span className="text-primary">every time</span>
           .
         </p>
       </div>
-      <div className='mx-auto mb-20 flex max-w-[1000px] flex-col items-center justify-center gap-20'>
+      <div className="mx-auto mb-20 flex max-w-[1000px] flex-col items-center justify-center gap-20">
         {Object.entries(SERVICE_CHECKLIST).map(([key, section]) => (
           <PackageComparisonTable
             key={key}
@@ -45,13 +45,13 @@ export default function Checklist() {
         ))}
       </div>
 
-      <WhoAreWeSection className='mb-16' />
+      <WhoAreWeSection className="mb-16" />
 
       <Suspense>
         <CTASection
-          heading='Want To See For Yourself?'
+          heading="Want To See For Yourself?"
           body={`Contact ${BUSINESS_NAME} today to schedule your cleaning service and experience the transformative difference of a professional clean.`}
-          location='CACHED'
+          location="CACHED"
           showImage={false}
         />
       </Suspense>

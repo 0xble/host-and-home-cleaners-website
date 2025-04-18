@@ -1,14 +1,14 @@
 'use client'
 
-import { slugify } from '0xble/strings'
-import { Star } from 'lucide-react'
-import { useSearchParams } from 'next/navigation'
 import type { FC } from 'react'
-import { useEffect, useRef, useState } from 'react'
-
+import { slugify } from '0xble/strings'
 import { Button } from '@/components/ui/button'
 import { Spinner } from '@/components/ui/spinner'
 import { useToast } from '@/components/ui/use-toast'
+
+import { Star } from 'lucide-react'
+import { useSearchParams } from 'next/navigation'
+import { useEffect, useRef, useState } from 'react'
 
 const LOCATIONS = ['honolulu', 'myrtle-beach'] as const
 type Location = typeof LOCATIONS[number]
@@ -35,7 +35,7 @@ const REVIEW_URLS = {
 type StarRatingProps = Record<string, never>
 
 declare global {
-  type TallyWindow = {
+  interface TallyWindow {
     Tally?: {
       loadEmbeds: () => void
     }
@@ -55,30 +55,30 @@ const TallyForm: FC = () => {
   }, [])
 
   return (
-    <div className='relative'>
+    <div className="relative">
       {isLoading && (
-        <div className='bg-background absolute inset-0 flex items-center justify-center text-primary'>
-          <Spinner className='size-8 border-4' />
+        <div className="bg-background absolute inset-0 flex items-center justify-center text-primary">
+          <Spinner className="size-8 border-4" />
         </div>
       )}
       <iframe
-        title='Client Feedback Form'
-        data-tally-src='https://tally.so/embed/wd89eV?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1'
-        width='100%'
-        height='403'
+        title="Client Feedback Form"
+        data-tally-src="https://tally.so/embed/wd89eV?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1"
+        width="100%"
+        height="403"
         style={{ border: 'none' }}
       />
     </div>
   )
 }
 
-type RedirectingMessageProps = {
+interface RedirectingMessageProps {
   message?: string
 }
 const RedirectingMessage: FC<RedirectingMessageProps> = ({ message = 'Thank you! Redirecting...' }) => (
-  <div className='mt-8 flex items-center justify-center gap-3'>
+  <div className="mt-8 flex items-center justify-center gap-3">
     <p>{message}</p>
-    <Spinner className='size-4 border-2 text-primary' />
+    <Spinner className="size-4 border-2 text-primary" />
   </div>
 )
 
@@ -100,7 +100,8 @@ export const StarRating: FC<StarRatingProps> = () => {
     if (key in REVIEW_URLS) {
       const platformUrls = REVIEW_URLS[key]
       return platformUrls[loc] || REVIEW_URLS.google[loc]
-    } else {
+    }
+    else {
       console.error(`No URL found for platform "${platformKey}", defaulting to Google...`)
       return REVIEW_URLS.google[loc]
     }
@@ -113,7 +114,8 @@ export const StarRating: FC<StarRatingProps> = () => {
       // Direct redirection using window.location.href for faster navigation.
       // This eliminates the overhead of router.push for external URLs.
       window.location.href = reviewUrl
-    } else {
+    }
+    else {
       setIsRedirecting(false)
       toast({
         variant: 'destructive',
@@ -132,7 +134,8 @@ export const StarRating: FC<StarRatingProps> = () => {
     if (selectedRating >= 4) {
       if (!locationKey) {
         setShowLocationSelect(true)
-      } else {
+      }
+      else {
         handleLocationSelect(locationKey)
       }
     }
@@ -146,8 +149,8 @@ export const StarRating: FC<StarRatingProps> = () => {
   }
 
   return (
-    <div className='space-y-6'>
-      <div className='flex justify-center gap-2'>
+    <div className="space-y-6">
+      <div className="flex justify-center gap-2">
         {[1, 2, 3, 4, 5].map(star => (
           <button
             key={star}
@@ -169,7 +172,7 @@ export const StarRating: FC<StarRatingProps> = () => {
         ))}
       </div>
       {rating > 0 && rating < 4 && (
-        <div ref={formRef} className='mt-8'>
+        <div ref={formRef} className="mt-8">
           <TallyForm />
         </div>
       )}
@@ -177,22 +180,22 @@ export const StarRating: FC<StarRatingProps> = () => {
         <RedirectingMessage />
       )}
       {showLocationSelect && (
-        <div className='mt-8 text-center'>
-          <div className='flex flex-col gap-3'>
+        <div className="mt-8 text-center">
+          <div className="flex flex-col gap-3">
             {!isRedirecting
               ? (
                   <>
-                    <h2 className='mb-4 text-[1.3rem] sm:text-2xl'>Which location did you visit?</h2>
+                    <h2 className="mb-4 text-[1.3rem] sm:text-2xl">Which location did you visit?</h2>
                     {LOCATIONS.map(loc => (
                       <Button
                         key={loc}
-                        size='lg'
-                        variant='ghost'
-                        className='text-lg font-light'
+                        size="lg"
+                        variant="ghost"
+                        className="text-lg font-light"
                         onClick={() => handleLocationSelect(loc)}
                         disabled={isRedirecting}
                       >
-                        <span className='capitalize'>{loc.replace('-', ' ')}</span>
+                        <span className="capitalize">{loc.replace('-', ' ')}</span>
                       </Button>
                     ))}
                   </>

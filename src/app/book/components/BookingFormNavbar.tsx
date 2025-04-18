@@ -1,8 +1,8 @@
+import type { Frequency, ServiceCategory } from '@/lib/types'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
-import type { Frequency, ServiceCategory } from '@/lib/types'
 
-type BookingFormNavbarProps = {
+interface BookingFormNavbarProps {
   step: number
   serviceCategory: ServiceCategory
   canShowPrice: () => boolean
@@ -32,9 +32,9 @@ export default function BookingFormNavbar({
   return (
     <>
       {/* Progress bar */}
-      <div className='fixed inset-x-0 bottom-20 z-10 bg-white'>
+      <div className="fixed inset-x-0 bottom-20 z-10 bg-white">
         <Progress
-          className='h-2 w-full rounded-none'
+          className="h-2 w-full rounded-none"
           value={((step - 1) / totalSteps) * 100}
           steps={totalSteps}
           showDividers
@@ -42,16 +42,16 @@ export default function BookingFormNavbar({
       </div>
 
       {/* Navigation and pricing */}
-      <div className='fixed inset-x-0 bottom-0 z-10 h-20 bg-white shadow-md'>
-        <div className='flex size-full items-center justify-between px-6 py-4'>
-          <div className='flex items-center gap-4'>
+      <div className="fixed inset-x-0 bottom-0 z-10 h-20 bg-white shadow-md">
+        <div className="flex size-full items-center justify-between px-6 py-4">
+          <div className="flex items-center gap-4">
             {canShowPrice() && (
-              <div className='flex flex-col justify-center'>
-                <p className='text-lg font-bold'>
+              <div className="flex flex-col justify-center">
+                <p className="text-lg font-bold">
                   {formatPrice(watchFirstCleaning)}
                 </p>
                 {watchRecurring && (
-                  <p className='text-muted-foreground text-sm'>
+                  <p className="text-muted-foreground text-sm">
                     {frequency !== 'one-time'
                       ? `${formatPrice(watchRecurring)} for recurring cleanings`
                       : ''}
@@ -61,11 +61,11 @@ export default function BookingFormNavbar({
             )}
           </div>
 
-          <div className='flex items-center gap-2'>
+          <div className="flex items-center gap-2">
             {step > 1 && (
               <Button
-                type='button'
-                variant='outline'
+                type="button"
+                variant="outline"
                 onClick={prevStep}
               >
                 Back
@@ -73,12 +73,12 @@ export default function BookingFormNavbar({
             )}
             {step < 4
               ? (
-                  <Button type='button' onClick={nextStep}>
+                  <Button type="button" onClick={nextStep}>
                     Next
                   </Button>
                 )
               : (
-                  <Button type='button' onClick={onSubmit}>
+                  <Button type="button" onClick={onSubmit}>
                     Book
                   </Button>
                 )}

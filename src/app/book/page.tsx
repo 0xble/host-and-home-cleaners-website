@@ -1,17 +1,13 @@
 'use client'
 
-import { zodResolver } from '@hookform/resolvers/zod'
-import { addDays, isBefore } from 'date-fns'
-import { useEffect,useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
-
+import type { Frequency, Location, ServiceCategory } from '@/lib/types'
 import { Calendar } from '@/components/ui/calendar'
 import {
   Card,
   CardContent,
-  CardDescription, CardHeader,
-  CardTitle
+  CardDescription,
+  CardHeader,
+  CardTitle,
 } from '@/components/ui/card'
 import {
   Form,
@@ -23,6 +19,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+
 import {
   Select,
   SelectContent,
@@ -31,7 +28,11 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { PRICING_PARAMETERS } from '@/lib/constants'
-import type { Frequency, Location, ServiceCategory } from '@/lib/types'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { addDays, isBefore } from 'date-fns'
+import { useEffect, useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
 
 import BookingFormNavbar from './components/BookingFormNavbar'
 
@@ -79,7 +80,8 @@ export default function BookingPage() {
 
     if (pricingData.type === 'flat') {
       return pricingData.bedrooms[bedrooms as keyof typeof pricingData.bedrooms] || 0
-    } else if (pricingData.type === 'hourly' && hours) {
+    }
+    else if (pricingData.type === 'hourly' && hours) {
       return pricingData.hourlyRate * hours
     }
 
@@ -105,7 +107,8 @@ export default function BookingPage() {
     if (pricingData.type === 'flat' && pricingData.frequencies) {
       basePrice = pricingData.bedrooms[bedrooms as keyof typeof pricingData.bedrooms] || 0
       discount = pricingData.frequencies[frequency]
-    } else if (pricingData.type === 'hourly' && hours) {
+    }
+    else if (pricingData.type === 'hourly' && hours) {
       basePrice = pricingData.hourlyRate * hours
       discount = pricingData.frequencies[frequency]
     }
@@ -201,15 +204,19 @@ export default function BookingPage() {
     if (serviceCategory === 'Custom Areas Only' || serviceCategory === 'Mansion') {
       if (step === 1) {
         setStep(2)
-      } else if (step === 2) {
+      }
+      else if (step === 2) {
         setStep(3)
-      } else if (step === 3) {
+      }
+      else if (step === 3) {
         setStep(4)
       }
-    } else {
+    }
+    else {
       if (step === 1) {
         setStep(3)
-      } else if (step === 3) {
+      }
+      else if (step === 3) {
         setStep(4)
       }
     }
@@ -220,15 +227,19 @@ export default function BookingPage() {
     if (serviceCategory === 'Custom Areas Only' || serviceCategory === 'Mansion') {
       if (step === 2) {
         setStep(1)
-      } else if (step === 3) {
+      }
+      else if (step === 3) {
         setStep(2)
-      } else if (step === 4) {
+      }
+      else if (step === 4) {
         setStep(3)
       }
-    } else {
+    }
+    else {
       if (step === 3) {
         setStep(1)
-      } else if (step === 4) {
+      }
+      else if (step === 4) {
         setStep(3)
       }
     }
@@ -284,25 +295,25 @@ export default function BookingPage() {
   }
 
   return (
-    <div className='relative min-h-screen pb-24'>
+    <div className="relative min-h-screen pb-24">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           {/* Step 1: Service Selection */}
           {step === 1 && (
-            <Card className='rounded-none border-0 shadow-none'>
-              <CardHeader className='px-6 pt-6'>
+            <Card className="rounded-none border-0 shadow-none">
+              <CardHeader className="px-6 pt-6">
                 <CardTitle>Select Your Cleaning Service</CardTitle>
                 <CardDescription>
                   Choose your property type or specialized cleaning service
                 </CardDescription>
               </CardHeader>
-              <CardContent className='space-y-8 px-6'>
+              <CardContent className="space-y-8 px-6">
                 {/* Bedroom Selection */}
-                <div className='space-y-4'>
-                  <h3 className='text-lg font-medium'>Number of Bedrooms</h3>
-                  <p className='text-sm'>Select the number of bedrooms in your property</p>
+                <div className="space-y-4">
+                  <h3 className="text-lg font-medium">Number of Bedrooms</h3>
+                  <p className="text-sm">Select the number of bedrooms in your property</p>
 
-                  <div className='grid grid-cols-2 gap-4 pt-2 sm:grid-cols-4'>
+                  <div className="grid grid-cols-2 gap-4 pt-2 sm:grid-cols-4">
                     {[1, 2, 3, 4].map(num => (
                       <div
                         key={num}
@@ -315,7 +326,7 @@ export default function BookingPage() {
                       } p-4 transition-all`}
                         onClick={() => handleBedroomSelect(num.toString())}
                       >
-                        <span className='text-center font-medium'>
+                        <span className="text-center font-medium">
                           {num}
                           {' '}
                           {num === 1 ? 'Bedroom' : 'Bedrooms'}
@@ -325,25 +336,25 @@ export default function BookingPage() {
                   </div>
                 </div>
 
-                <div className='relative flex items-center py-2'>
-                  <div className='grow border-t border-gray-300'></div>
-                  <span className='mx-4 shrink text-gray-600'>OR</span>
-                  <div className='grow border-t border-gray-300'></div>
+                <div className="relative flex items-center py-2">
+                  <div className="grow border-t border-gray-300"></div>
+                  <span className="mx-4 shrink text-gray-600">OR</span>
+                  <div className="grow border-t border-gray-300"></div>
                 </div>
 
                 {/* Specialized Services */}
-                <div className='space-y-4'>
-                  <h3 className='text-lg font-medium'>Specialized Cleaning</h3>
-                  <p className='text-muted-foreground text-sm'>Select one of our specialized cleaning options</p>
+                <div className="space-y-4">
+                  <h3 className="text-lg font-medium">Specialized Cleaning</h3>
+                  <p className="text-muted-foreground text-sm">Select one of our specialized cleaning options</p>
 
-                  <div className='grid grid-cols-1 gap-4 pt-2 sm:grid-cols-3'>
+                  <div className="grid grid-cols-1 gap-4 pt-2 sm:grid-cols-3">
                     <div
                       className={`flex flex-col items-center justify-between rounded-md border
                         ${specializedService === 'Move In/Out' ? 'border-primary' : 'border-muted bg-popover hover:bg-accent hover:text-accent-foreground'} cursor-pointer p-4 transition-all`}
                       onClick={() => handleSpecializedService('Move In/Out')}
                     >
-                      <span className='text-center font-medium'>Move In/Out</span>
-                      <span className='text-muted-foreground mt-2 text-center text-xs'>For moving in or out of a property</span>
+                      <span className="text-center font-medium">Move In/Out</span>
+                      <span className="text-muted-foreground mt-2 text-center text-xs">For moving in or out of a property</span>
                     </div>
 
                     <div
@@ -351,8 +362,8 @@ export default function BookingPage() {
                         ${specializedService === 'Custom Areas Only' ? 'border-primary' : 'border-muted bg-popover hover:bg-accent hover:text-accent-foreground'} cursor-pointer p-4 transition-all`}
                       onClick={() => handleSpecializedService('Custom Areas Only')}
                     >
-                      <span className='text-center font-medium'>Custom Areas Only</span>
-                      <span className='text-muted-foreground mt-2 text-center text-xs'>For specific areas that need attention</span>
+                      <span className="text-center font-medium">Custom Areas Only</span>
+                      <span className="text-muted-foreground mt-2 text-center text-xs">For specific areas that need attention</span>
                     </div>
 
                     <div
@@ -360,8 +371,8 @@ export default function BookingPage() {
                         ${specializedService === 'Mansion' ? 'border-primary' : 'border-muted bg-popover hover:bg-accent hover:text-accent-foreground'} cursor-pointer p-4 transition-all`}
                       onClick={() => handleSpecializedService('Mansion')}
                     >
-                      <span className='text-center font-medium'>Mansion</span>
-                      <span className='mt-2 text-center text-xs'>For large properties with 5+ bedrooms</span>
+                      <span className="text-center font-medium">Mansion</span>
+                      <span className="mt-2 text-center text-xs">For large properties with 5+ bedrooms</span>
                     </div>
                   </div>
                 </div>
@@ -371,8 +382,8 @@ export default function BookingPage() {
 
           {/* Step 2: Hours Selection (For hourly services only) */}
           {step === 2 && (serviceCategory === 'Custom Areas Only' || serviceCategory === 'Mansion') && (
-            <Card className='rounded-none border-0 shadow-none'>
-              <CardHeader className='px-6 pt-6'>
+            <Card className="rounded-none border-0 shadow-none">
+              <CardHeader className="px-6 pt-6">
                 <CardTitle>Select Service Duration</CardTitle>
                 <CardDescription>
                   Choose how many hours you need for your
@@ -382,15 +393,15 @@ export default function BookingPage() {
                   service
                 </CardDescription>
               </CardHeader>
-              <CardContent className='px-6'>
+              <CardContent className="px-6">
                 <FormField
                   control={form.control}
-                  name='hours'
+                  name="hours"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Number of Hours</FormLabel>
                       <FormControl>
-                        <div className='grid grid-cols-2 gap-4 pt-2 sm:grid-cols-4'>
+                        <div className="grid grid-cols-2 gap-4 pt-2 sm:grid-cols-4">
                           {[3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(hour => (
                             <div
                               key={hour}
@@ -404,7 +415,7 @@ export default function BookingPage() {
                                 updatePrice({ serviceCategory, bedrooms, hours: hour })
                               }}
                             >
-                              <span className='text-center font-medium'>
+                              <span className="text-center font-medium">
                                 {hour}
                                 {' '}
                                 Hours
@@ -423,29 +434,29 @@ export default function BookingPage() {
 
           {/* Step 3: Schedule */}
           {step === 3 && (
-            <Card className='rounded-none border-0 shadow-none'>
-              <CardHeader className='px-6 pt-6'>
+            <Card className="rounded-none border-0 shadow-none">
+              <CardHeader className="px-6 pt-6">
                 <CardTitle>Schedule Your Cleaning</CardTitle>
                 <CardDescription>
                   Select a date, time, and frequency for your service
                 </CardDescription>
               </CardHeader>
-              <CardContent className='space-y-6 px-6'>
+              <CardContent className="space-y-6 px-6">
                 <FormField
                   control={form.control}
-                  name='date'
+                  name="date"
                   render={({ field }) => (
-                    <FormItem className='flex flex-col'>
+                    <FormItem className="flex flex-col">
                       <FormLabel>Choose a Date</FormLabel>
                       <FormDescription>
                         Select an available date.
                       </FormDescription>
                       <Calendar
-                        mode='single'
+                        mode="single"
                         selected={selectedDate || undefined}
                         onSelect={date => date && field.onChange(date)}
                         disabled={isDateDisabled}
-                        className='mx-auto rounded-md border'
+                        className="mx-auto rounded-md border"
                       />
                       <FormMessage />
                     </FormItem>
@@ -455,7 +466,7 @@ export default function BookingPage() {
                 {selectedDate && (
                   <FormField
                     control={form.control}
-                    name='arrivalWindow'
+                    name="arrivalWindow"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Arrival Window</FormLabel>
@@ -464,14 +475,14 @@ export default function BookingPage() {
                           defaultValue={field.value}
                         >
                           <FormControl>
-                            <SelectTrigger className='pointer-events-auto z-20'>
-                              <SelectValue placeholder='Select an arrival window' />
+                            <SelectTrigger className="pointer-events-auto z-20">
+                              <SelectValue placeholder="Select an arrival window" />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            <SelectItem value='8:00AM - 9:00AM'>8:00AM - 9:00AM</SelectItem>
-                            <SelectItem value='12:00PM - 1:00PM'>12:00PM - 1:00PM</SelectItem>
-                            <SelectItem value='3:00PM - 4:00PM'>3:00PM - 4:00PM</SelectItem>
+                            <SelectItem value="8:00AM - 9:00AM">8:00AM - 9:00AM</SelectItem>
+                            <SelectItem value="12:00PM - 1:00PM">12:00PM - 1:00PM</SelectItem>
+                            <SelectItem value="3:00PM - 4:00PM">3:00PM - 4:00PM</SelectItem>
                           </SelectContent>
                         </Select>
                         <FormMessage />
@@ -483,7 +494,7 @@ export default function BookingPage() {
                 {(serviceCategory !== 'Move In/Out') && (
                   <FormField
                     control={form.control}
-                    name='frequency'
+                    name="frequency"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Frequency</FormLabel>
@@ -500,15 +511,15 @@ export default function BookingPage() {
                           defaultValue={field.value}
                         >
                           <FormControl>
-                            <SelectTrigger className='pointer-events-auto z-20'>
-                              <SelectValue placeholder='Select frequency' />
+                            <SelectTrigger className="pointer-events-auto z-20">
+                              <SelectValue placeholder="Select frequency" />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            <SelectItem value='weekly'>Weekly</SelectItem>
-                            <SelectItem value='biweekly'>Biweekly</SelectItem>
-                            <SelectItem value='monthly'>Monthly</SelectItem>
-                            <SelectItem value='one-time'>One-Time</SelectItem>
+                            <SelectItem value="weekly">Weekly</SelectItem>
+                            <SelectItem value="biweekly">Biweekly</SelectItem>
+                            <SelectItem value="monthly">Monthly</SelectItem>
+                            <SelectItem value="one-time">One-Time</SelectItem>
                           </SelectContent>
                         </Select>
                         <FormMessage />
@@ -522,23 +533,23 @@ export default function BookingPage() {
 
           {/* Step 4: Customer Details */}
           {step === 4 && (
-            <Card className='rounded-none border-0 shadow-none'>
-              <CardHeader className='px-6 pt-6'>
+            <Card className="rounded-none border-0 shadow-none">
+              <CardHeader className="px-6 pt-6">
                 <CardTitle>Your Information</CardTitle>
                 <CardDescription>
                   Enter your contact and address details
                 </CardDescription>
               </CardHeader>
-              <CardContent className='space-y-6 px-6'>
-                <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
+              <CardContent className="space-y-6 px-6">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <FormField
                     control={form.control}
-                    name='customer.firstName'
+                    name="customer.firstName"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>First Name</FormLabel>
                         <FormControl>
-                          <Input placeholder='John' {...field} />
+                          <Input placeholder="John" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -546,12 +557,12 @@ export default function BookingPage() {
                   />
                   <FormField
                     control={form.control}
-                    name='customer.lastName'
+                    name="customer.lastName"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Last Name</FormLabel>
                         <FormControl>
-                          <Input placeholder='Doe' {...field} />
+                          <Input placeholder="Doe" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -559,15 +570,15 @@ export default function BookingPage() {
                   />
                 </div>
 
-                <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <FormField
                     control={form.control}
-                    name='customer.email'
+                    name="customer.email"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Email</FormLabel>
                         <FormControl>
-                          <Input placeholder='john.doe@example.com' type='email' {...field} />
+                          <Input placeholder="john.doe@example.com" type="email" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -575,12 +586,12 @@ export default function BookingPage() {
                   />
                   <FormField
                     control={form.control}
-                    name='customer.phone'
+                    name="customer.phone"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Phone Number</FormLabel>
                         <FormControl>
-                          <Input placeholder='(123) 456-7890' {...field} />
+                          <Input placeholder="(123) 456-7890" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -590,27 +601,27 @@ export default function BookingPage() {
 
                 <FormField
                   control={form.control}
-                  name='customer.address'
+                  name="customer.address"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Address</FormLabel>
                       <FormControl>
-                        <Input placeholder='123 Main St' {...field} />
+                        <Input placeholder="123 Main St" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
 
-                <div className='grid grid-cols-1 gap-4 sm:grid-cols-3'>
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                   <FormField
                     control={form.control}
-                    name='customer.city'
+                    name="customer.city"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>City</FormLabel>
                         <FormControl>
-                          <Input placeholder='Anytown' {...field} />
+                          <Input placeholder="Anytown" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -618,12 +629,12 @@ export default function BookingPage() {
                   />
                   <FormField
                     control={form.control}
-                    name='customer.state'
+                    name="customer.state"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>State</FormLabel>
                         <FormControl>
-                          <Input placeholder='CA' {...field} />
+                          <Input placeholder="CA" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -631,12 +642,12 @@ export default function BookingPage() {
                   />
                   <FormField
                     control={form.control}
-                    name='customer.zipCode'
+                    name="customer.zipCode"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>ZIP Code</FormLabel>
                         <FormControl>
-                          <Input placeholder='12345' {...field} />
+                          <Input placeholder="12345" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>

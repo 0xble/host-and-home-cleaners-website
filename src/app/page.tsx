@@ -18,17 +18,17 @@ export default function Home() {
   return (
     <>
       <ContentViewTracker
-        contentType='page'
-        contentName='Home'
-        contentId='home-page'
+        contentType="page"
+        contentName="Home"
+        contentId="home-page"
       />
       {/* <Suspense>
         <ReviewsFloatingBadge id='ba527c37-e33e-46d1-8a33-08aed36ffd09' />
       </Suspense> */}
       <LandingPage
         location={null}
-        reviewsBadgeId='ba527c37-e33e-46d1-8a33-08aed36ffd09'
-        photosFolder='home'
+        reviewsBadgeId="ba527c37-e33e-46d1-8a33-08aed36ffd09"
+        photosFolder="home"
         pricing={{ standard: 129, deep: 169, moveInOut: 189, vacationRental: 129 }}
         copy={{
           heroHeading: (
@@ -41,10 +41,10 @@ export default function Home() {
           ),
           heroDescription: 'Maintaining a clean home is crucial, but household chores can be stressful amid life\'s demands. Our expert team provides reliable services, saving you time and energy.',
           heroActions: (
-            <div className='flex items-center gap-6'>
+            <div className="flex items-center gap-6">
               <BookNowButton
-                className='hidden sm:inline-flex lg:mr-3'
-                size='lg'
+                className="hidden sm:inline-flex lg:mr-3"
+                size="lg"
               />
               <Suspense>
                 <FindLocationInput />
@@ -99,13 +99,13 @@ export default function Home() {
           pricingHeading: 'Pricing',
           pricingDescription: (
             <>
-              <p className='mb-4 text-left'>
+              <p className="mb-4 text-left">
                 From oven cleaning and bathroom cleaning to full kitchen cleaning
                 — we offers comprehensive home cleaning services. We also
                 specialize in end of tenancy cleaning, short-term rental and
                 vacation rental cleaning, and thorough spring cleaning.
               </p>
-              <p className='text-left'>
+              <p className="text-left">
                 Our move-in and move-out services ensure a smooth transition,
                 while our refrigerator cleaning leaves your fridge spotless.
               </p>
@@ -118,7 +118,7 @@ export default function Home() {
               question: 'Why should I choose you over other competitors?',
               answer: (
                 <>
-                  <p className='mb-6'>
+                  <p className="mb-6">
                     Beyond our recognized quality and reliability, here&apos;s just a few of the other
                     reasons why your neighbors chose us over the competition:
                   </p>
@@ -130,7 +130,7 @@ export default function Home() {
               question: 'What cleaning services do you offer?',
               answer: (
                 <>
-                  <p className='mb-2'>
+                  <p className="mb-2">
                     We specialize in offering cleaning services for home and rental cleaning. Our
                     services include standard cleanings, thorough deep cleanings, and specialized
                     move-in/out cleanings, and expert home organization.
@@ -146,7 +146,7 @@ export default function Home() {
               question: 'Are you bonded and insured?',
               answer: (
                 <>
-                  <p className='mb-2'>
+                  <p className="mb-2">
                     Yes,
                     {' '}
                     {BUSINESS_NAME}
@@ -166,7 +166,7 @@ export default function Home() {
               question: 'How do you ensure the quality and consistency of your cleaning services?',
               answer: (
                 <>
-                  <p className='mb-2'>
+                  <p className="mb-2">
                     Our team conducts periodic quality checks to guarantee consistency across all
                     services and are constantly improving our processes to ensure the highest quality.
                   </p>
@@ -192,7 +192,7 @@ export default function Home() {
             {
               question: 'Do you offer weekend or holiday cleaning services?',
               answer: (
-                <p className='mb-2'>
+                <p className="mb-2">
                   Yes, we recognize the importance of flexibility in our services. We can offer
                   cleaning appointments on weekends and during select holidays at a surcharge to
                   ensure we can fit into your busy schedule. Advance booking for these high-demand
@@ -229,7 +229,7 @@ export default function Home() {
               question: 'What should I do if I\'m not satisfied with the cleaning service?  ',
               answer: (
                 <>
-                  <p className='mb-2'>
+                  <p className="mb-2">
                     We take your satisfaction very seriously at
                     {' '}
                     {BUSINESS_NAME}

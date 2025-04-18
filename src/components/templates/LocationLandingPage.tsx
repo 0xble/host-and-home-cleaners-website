@@ -1,4 +1,4 @@
-import type {Location, LocationKey} from '@/lib/constants';
+import type { Location, LocationKey } from '@/lib/constants'
 
 import { slugify } from '0xble/strings'
 import { ContentViewTracker } from '@/components/analytics/facebook/Pixel'
@@ -7,12 +7,12 @@ import LandingPage from '@/components/templates/LandingPage'
 import LocationsSection from '@/components/templates/sections/LocationsSection'
 import { PHONE } from '@/lib/constants'
 
-type Step = {
+interface Step {
   title: string
   description: React.ReactNode
 }
 
-type LocationPageProps = {
+interface LocationPageProps {
   locationKey: LocationKey
   location: Location
   reviewsBadgeId: string
@@ -79,7 +79,7 @@ export default function LocationLandingPage({
   return (
     <>
       <ContentViewTracker
-        contentType='location'
+        contentType="location"
         contentName={location.name}
         contentId={`location-${slugify(location.name)}`}
       />
@@ -91,7 +91,7 @@ export default function LocationLandingPage({
         copy={{
           heroHeading: customHeroHeading,
           heroDescription: customHeroDescription,
-          heroActions: <CTAButtons className='mt-12 lg:mt-8' phone={PHONE[locationKey]} />,
+          heroActions: <CTAButtons className="mt-12 lg:mt-8" phone={PHONE[locationKey]} />,
           reviewsHeading: customReviewsHeading,
           howItWorksHeading: customHowItWorksHeading,
           howItWorksSteps: customHowItWorksSteps,

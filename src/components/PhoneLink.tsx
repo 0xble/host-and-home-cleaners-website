@@ -1,11 +1,11 @@
 'use client'
 
+import type { Phone } from '@/lib/types'
 import TrackedLink from '@/components/analytics/facebook/PixelTrackedLink'
 import { PixelEvent } from '@/lib/pixel'
-import type { Phone } from '@/lib/types'
 import { cn } from '@/lib/utils'
 
-type PhoneLinkProps = {
+interface PhoneLinkProps {
   className?: string
   phone: Phone
   children?: React.ReactNode

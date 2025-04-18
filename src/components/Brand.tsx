@@ -6,7 +6,7 @@ import { cn, getUrl } from '@/lib/utils'
 import Image from 'next/image'
 import Link from 'next/link'
 
-type BrandProps = {
+interface BrandProps {
   className?: string
   location: Location | null
 }
@@ -21,16 +21,16 @@ export default function Brand({ className, location }: BrandProps) {
       )}
     >
       <Image
-        src='/logo.svg'
+        src="/logo.svg"
         alt={`${BUSINESS_NAME} logo`}
         width={40}
         height={40}
-        className='size-12 sm:size-16 xl:size-20'
+        className="size-12 sm:size-16 xl:size-20"
       />
-      <div className='flex flex-col items-center justify-center'>
-        <div className='text-center text-xs xs:text-sm sm:text-base xl:text-lg'>{BUSINESS_NAME}</div>
+      <div className="flex flex-col items-center justify-center">
+        <div className="text-center text-xs xs:text-sm sm:text-base xl:text-lg">{BUSINESS_NAME}</div>
         {location && (
-          <div className='text-center font-sans text-sm font-extralight text-gray-700 xs:text-base sm:text-xl'>
+          <div className="text-center font-sans text-sm font-extralight text-gray-700 xs:text-base sm:text-xl">
             {ROUTES.LOCATIONS[location].name}
           </div>
         )}

@@ -1,6 +1,6 @@
 import { ROUTES } from './routes'
 
-export const scrollToSection = (sectionId: string) => {
+export function scrollToSection(sectionId: string) {
   const pathname = window.location.pathname
   const isHomePage = pathname === '/' || pathname === ROUTES.HOME.href
 

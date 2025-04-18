@@ -10,13 +10,13 @@ export const metadata: Metadata = {
 
 export default function PrivacyPolicy() {
   return (
-    <main className='prose mx-auto my-32 max-w-2xl prose-headings:font-serif prose-strong:font-serif'>
+    <main className="prose mx-auto my-32 max-w-2xl prose-headings:font-serif prose-strong:font-serif">
       <ContentViewTracker
-        contentType='legal'
-        contentName='Privacy Policy'
-        contentId='privacy-policy'
+        contentType="legal"
+        contentName="Privacy Policy"
+        contentId="privacy-policy"
       />
-      <h1 className='text-center'>
+      <h1 className="text-center">
         {BUSINESS_NAME}
         {' '}
         <br />
@@ -489,7 +489,7 @@ export default function PrivacyPolicy() {
         <li>
           For Google Analytics: You can opt-out by installing the
           {' '}
-          <a href='https://tools.google.com/dlpage/gaoptout' target='_blank' rel='noopener noreferrer'>
+          <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener noreferrer">
             Google Analytics Opt-out Browser Add-on
           </a>
           .
@@ -497,7 +497,7 @@ export default function PrivacyPolicy() {
         <li>
           For Facebook Pixel: You can opt-out of Facebook's use of cookies and similar technologies by visiting
           {' '}
-          <a href='https://www.facebook.com/ads/preferences' target='_blank' rel='noopener noreferrer'>
+          <a href="https://www.facebook.com/ads/preferences" target="_blank" rel="noopener noreferrer">
             Facebook Ad Preferences
           </a>
           .

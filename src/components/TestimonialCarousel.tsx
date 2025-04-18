@@ -11,7 +11,7 @@ import { cn } from '@/lib/utils'
 import Autoplay from 'embla-carousel-autoplay'
 import { useEffect, useRef } from 'react'
 
-const TestimonialVideo = ({ src }: { src: string }) => {
+function TestimonialVideo({ src }: { src: string }) {
   const videoRef = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
@@ -25,17 +25,17 @@ const TestimonialVideo = ({ src }: { src: string }) => {
   return (
     <video
       ref={videoRef}
-      className='h-[300px] w-[160px] rounded-lg sm:h-[415px] sm:w-[220px] md:h-[400px] md:w-[200px]'
+      className="h-[300px] w-[160px] rounded-lg sm:h-[415px] sm:w-[220px] md:h-[400px] md:w-[200px]"
       controls
-      preload='metadata'
+      preload="metadata"
     >
-      <source src={src} type='video/mp4' />
-      <track src={src} kind='captions' />
+      <source src={src} type="video/mp4" />
+      <track src={src} kind="captions" />
     </video>
   )
 }
 
-const TestimonialFigure = ({
+function TestimonialFigure({
   heading,
   text,
   name,
@@ -45,22 +45,24 @@ const TestimonialFigure = ({
   text: string
   name: string
   label: string
-}) => (
-  <figure className='flex flex-col items-center justify-center rounded-t-lg bg-white p-3 text-center sm:p-4 md:rounded-t-none md:rounded-ss-lg md:p-8'>
-    <blockquote className='mx-auto mb-3 max-w-full text-sm text-gray-500 sm:mb-4 sm:text-base md:max-w-2xl lg:mb-8'>
-      <h3 className='text-base text-gray-900 sm:text-lg'>{heading}</h3>
-      <p className='my-2 sm:my-4'>{text}</p>
-    </blockquote>
-    <figcaption className='flex items-center justify-center'>
-      <div className='text-center text-sm font-medium sm:text-base'>
-        <div>{name}</div>
-        <div className='text-xs text-gray-500 sm:text-sm'>{label}</div>
-      </div>
-    </figcaption>
-  </figure>
-)
+}) {
+  return (
+    <figure className="flex flex-col items-center justify-center rounded-t-lg bg-white p-3 text-center sm:p-4 md:rounded-t-none md:rounded-ss-lg md:p-8">
+      <blockquote className="mx-auto mb-3 max-w-full text-sm text-gray-500 sm:mb-4 sm:text-base md:max-w-2xl lg:mb-8">
+        <h3 className="text-base text-gray-900 sm:text-lg">{heading}</h3>
+        <p className="my-2 sm:my-4">{text}</p>
+      </blockquote>
+      <figcaption className="flex items-center justify-center">
+        <div className="text-center text-sm font-medium sm:text-base">
+          <div>{name}</div>
+          <div className="text-xs text-gray-500 sm:text-sm">{label}</div>
+        </div>
+      </figcaption>
+    </figure>
+  )
+}
 
-export type TestimonialCarouselProps = {
+export interface TestimonialCarouselProps {
   className?: string
 }
 
@@ -85,39 +87,39 @@ export function TestimonialCarousel({ className }: TestimonialCarouselProps) {
       <Carousel
         plugins={[plugin.current]}
         opts={{ loop: true }}
-        className='mx-auto w-full max-w-screen-md'
+        className="mx-auto w-full max-w-screen-md"
       >
         <CarouselContent>
-          <CarouselItem className='flex flex-col items-center md:flex-row md:items-start'>
-            <TestimonialVideo src='/testimony1.mp4' />
+          <CarouselItem className="flex flex-col items-center md:flex-row md:items-start">
+            <TestimonialVideo src="/testimony1.mp4" />
             <TestimonialFigure
-              heading='Reduce stress, save time'
+              heading="Reduce stress, save time"
               text={`As a busy mom of two, ${BUSINESS_NAME} has been a total lifesaver for me... I love not having to worry about the cleaning so I can focus more on other things.`}
-              name='Ellie Hinton'
-              label='Busy Mom'
+              name="Ellie Hinton"
+              label="Busy Mom"
             />
           </CarouselItem>
-          <CarouselItem className='flex flex-col items-center md:flex-row md:items-start'>
-            <TestimonialVideo src='/testimony2.mp4' />
+          <CarouselItem className="flex flex-col items-center md:flex-row md:items-start">
+            <TestimonialVideo src="/testimony2.mp4" />
             <TestimonialFigure
-              heading='Complete peace of mind'
+              heading="Complete peace of mind"
               text={`I haven't gotten a single negative review since I started using ${BUSINESS_NAME}. They give me complete peace of mind!`}
-              name='Alice Green'
-              label='Airbnb Host, 6 years'
+              name="Alice Green"
+              label="Airbnb Host, 6 years"
             />
           </CarouselItem>
-          <CarouselItem className='flex flex-col items-center md:flex-row md:items-start'>
-            <TestimonialVideo src='/testimony3.mp4' />
+          <CarouselItem className="flex flex-col items-center md:flex-row md:items-start">
+            <TestimonialVideo src="/testimony3.mp4" />
             <TestimonialFigure
-              heading='Sparkling clean after every visit'
+              heading="Sparkling clean after every visit"
               text='"Their team is incredibly thorough and punctual, we love working with them. My place is always left sparkling clean after every visit, and their attention to detail is just incredible."'
-              name='Pamela Hobbs'
-              label='Grandmother'
+              name="Pamela Hobbs"
+              label="Grandmother"
             />
           </CarouselItem>
         </CarouselContent>
-        <CarouselPrevious className='absolute left-2 sm:left-4' />
-        <CarouselNext className='absolute right-2 sm:right-4' />
+        <CarouselPrevious className="absolute left-2 sm:left-4" />
+        <CarouselNext className="absolute right-2 sm:right-4" />
       </Carousel>
     </div>
   )

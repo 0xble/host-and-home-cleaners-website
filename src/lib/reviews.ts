@@ -13,7 +13,7 @@ const CACHE_DURATION_MIN = 60 // 1 hour
 
 export type Platform = 'Google' | 'Facebook' | 'Yelp' | 'Thumbtack' | 'Nextdoor'
 
-export type Review = {
+export interface Review {
   id: string
   date: Date | null
   rating: number | null
@@ -27,23 +27,23 @@ export type Review = {
   location: string | null
 }
 
-export type PlatformRating = {
+export interface PlatformRating {
   platform: Platform
   rating: number
   total_reviews: number
 }
 
-export type ReviewsData = {
+export interface ReviewsData {
   overall_rating: number
   platform_ratings: PlatformRating[]
   reviews: Review[]
 }
 
-export type LocationData = {
+export interface LocationData {
   locations: Location[]
 }
 
-export type Location = {
+export interface Location {
   id: string
   name: string
   googleUrl: string | null
@@ -64,7 +64,8 @@ async function fetchReviewPagesNotion(filter?: QueryDatabaseParameters['filter']
     })
     console.log(`Successfully fetched ${result.length} reviews`)
     return result
-  } catch (error) {
+  }
+  catch (error) {
     console.error('Error fetching reviews:', error)
     throw error
   }
@@ -76,7 +77,8 @@ async function fetchLocationsPagesNotion() {
     const result = await queryDatabase({ database_id: LOCATIONS.id })
     console.log(`Successfully fetched ${result.length} locations`)
     return result
-  } catch (error) {
+  }
+  catch (error) {
     console.error('Error fetching locations:', error)
     throw error
   }
@@ -100,7 +102,7 @@ export const getLocations = cache(async (): Promise<LocationData> => {
     return {
       id: page.id,
       name: props.Name && 'title' in props.Name
-        ? props.Name.title[0]?.plain_text!
+        ? props.Name.title[0]!.plain_text
         : 'Unknown',
       googleUrl: props['Google URL'] && 'url' in props['Google URL']
         ? props['Google URL'].url
@@ -264,7 +266,8 @@ export const getReviews = cache(async (location?: string): Promise<ReviewsData> 
     }
 
     return reviewsData
-  } catch (error) {
+  }
+  catch (error) {
     console.error('Error fetching reviews:', error)
     throw error
   }

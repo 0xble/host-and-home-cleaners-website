@@ -1,16 +1,15 @@
-// src/app/layout.tsx
-import './globals.css'
-
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-import Script from 'next/script'
 
 import CookieConsent from '@/components/analytics/CookieConsent'
 import { PixelInitializer } from '@/components/analytics/facebook/Pixel'
 import GoogleAnalytics from '@/components/analytics/google/GoogleAnalytics'
+
 import { PostHogProvider } from '@/components/analytics/posthog/PostHogProvider'
 import { Toaster } from '@/components/ui/toaster'
 import { getBaseUrl } from '@/lib/utils'
+import { Inter } from 'next/font/google'
+import Script from 'next/script'
+import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -59,7 +58,7 @@ export type LayoutProps = Readonly<{
 
 export default function RootLayout({ children }: LayoutProps) {
   return (
-    <html lang='en' suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <body className={inter.className} suppressHydrationWarning>
         <PostHogProvider>
           {/* Main Content */}
@@ -67,11 +66,11 @@ export default function RootLayout({ children }: LayoutProps) {
 
           {/* Third-party Scripts */}
           <Script
-            src='dist/flowbite.min.js'
-            strategy='lazyOnload'
-            crossOrigin='anonymous'
+            src="dist/flowbite.min.js"
+            strategy="lazyOnload"
+            crossOrigin="anonymous"
           />
-          <Script src='https://tally.so/widgets/embed.js' strategy='lazyOnload' />
+          <Script src="https://tally.so/widgets/embed.js" strategy="lazyOnload" />
 
           {/* Analytics */}
           {process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID && <GoogleAnalytics />}

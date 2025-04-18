@@ -1,10 +1,10 @@
 'use client'
 
+import { trackPageView } from '@/lib/analytics'
 import { GoogleAnalytics as NextGoogleAnalytics } from '@next/third-parties/google'
 import Script from 'next/script'
-import { useEffect } from 'react'
 
-import { trackPageView } from '@/lib/analytics'
+import { useEffect } from 'react'
 
 export default function GoogleAnalytics() {
   const gaId = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID
@@ -26,8 +26,8 @@ export default function GoogleAnalytics() {
     <>
       {/* Set default consent state before anything else */}
       <Script
-        id='google-analytics-consent-default'
-        strategy='beforeInteractive'
+        id="google-analytics-consent-default"
+        strategy="beforeInteractive"
         dangerouslySetInnerHTML={{
           __html: `
             window.dataLayer = window.dataLayer || [];

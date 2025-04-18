@@ -1,14 +1,14 @@
-import type {LocationRoute, Route} from '@/lib/routes';
+import type { LocationRoute, Route } from '@/lib/routes'
 
 import type { MetadataRoute } from 'next'
 import { ROUTES } from '@/lib/routes'
 import { getBaseUrl } from '@/lib/utils'
 
-const isRoute = (value: unknown): value is Route => {
+function isRoute(value: unknown): value is Route {
   return typeof value === 'object' && value !== null && 'href' in value
 }
 
-const isLocationRoute = (value: unknown): value is LocationRoute[keyof LocationRoute] => {
+function isLocationRoute(value: unknown): value is LocationRoute[keyof LocationRoute] {
   return typeof value === 'object' && value !== null && 'SERVICE_AREAS' in value
 }
 
@@ -16,7 +16,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const routes = Object.entries(ROUTES).flatMap(([key, route]): Route[] => {
     if (isRoute(route)) {
       return [route]
-    } else if (typeof route === 'object' && route !== null) {
+    }
+    else if (typeof route === 'object' && route !== null) {
       if (key === 'LOCATIONS') {
         return Object.values(route).flatMap((location) => {
           if (isLocationRoute(location)) {

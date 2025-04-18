@@ -5,7 +5,7 @@ import { BUSINESS_NAME } from '@/lib/constants'
 import { getReviews } from '@/lib/reviews'
 import Script from 'next/script'
 
-type Address = {
+interface Address {
   streetAddress: string
   addressLocality: string
   addressRegion: string
@@ -13,7 +13,7 @@ type Address = {
   addressCountry: string
 }
 
-type LocalBusinessSchemaMarkupProps = {
+interface LocalBusinessSchemaMarkupProps {
   locationName: string
   serviceAreaName?: string
   description: string
@@ -186,7 +186,7 @@ export default async function LocalBusinessSchemaMarkup({
   return (
     <Script
       id={`local-business-schema-${slugify(serviceAreaName || locationName)}`}
-      type='application/ld+json'
+      type="application/ld+json"
       dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
     />
   )

@@ -1,6 +1,6 @@
 import { LOCATIONS } from './constants'
 
-export type Phone = {
+export interface Phone {
   formatted: string
   plain: string
 }
@@ -15,10 +15,11 @@ export type ServiceArea = ServiceAreas[number]
 export const isServiceArea = (value: unknown): value is ServiceArea => isServiceAreas(value)
 
 export type SocialPlatform = 'Facebook' | 'Instagram' | 'Google' | 'Yelp' | 'Nextdoor'
-export const isSocialPlatform = (value: string): value is SocialPlatform =>
-  ['Facebook', 'Instagram', 'Google', 'Yelp', 'Nextdoor'].includes(value)
+export function isSocialPlatform(value: string): value is SocialPlatform {
+  return ['Facebook', 'Instagram', 'Google', 'Yelp', 'Nextdoor'].includes(value)
+}
 
-export type SocialLink = {
+export interface SocialLink {
   name: SocialPlatform
   href: Record<Location, string>
 }
@@ -27,19 +28,19 @@ export type Frequency = 'one-time' | 'weekly' | 'biweekly' | 'monthly'
 
 export type ServiceCategory = 'Default' | 'Move In/Out' | 'Custom Areas Only' | 'Mansion'
 
-export type FlatPricingData = {
+export interface FlatPricingData {
   type: 'flat'
   bedrooms: Record<number, number>
   frequencies?: Record<Frequency, number>
 }
 
-export type HourlyPricingData = {
+export interface HourlyPricingData {
   type: 'hourly'
   hourlyRate: number
   frequencies: Record<Frequency, number>
 }
 
-export type BookingFormData = {
+export interface BookingFormData {
   serviceCategory: ServiceCategory
   bedrooms: number
   hours?: number
