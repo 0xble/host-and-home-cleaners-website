@@ -158,7 +158,7 @@ export default function BookingPage() {
   const getNextStepNumber = () => {
     if (step === 0)
       return 1
-    if (step === 4)
+    if (step === 5)
       return null
 
     if (serviceCategory === 'Custom Areas Only' || serviceCategory === 'Mansion') {
@@ -168,12 +168,16 @@ export default function BookingPage() {
         return 3
       if (step === 3)
         return 4
+      if (step === 4)
+        return 5
     }
     else {
       if (step === 1)
-        return 3
-      if (step === 3)
+        return 2
+      if (step === 2)
         return 4
+      if (step === 4)
+        return 5
     }
 
     return null
@@ -223,13 +227,19 @@ export default function BookingPage() {
       else if (step === 4) {
         setStep(3)
       }
+      else if (step === 5) {
+        setStep(4)
+      }
     }
     else {
-      if (step === 3) {
+      if (step === 2) {
         setStep(1)
       }
       else if (step === 4) {
-        setStep(3)
+        setStep(2)
+      }
+      else if (step === 5) {
+        setStep(4)
       }
     }
   }
@@ -467,8 +477,36 @@ export default function BookingPage() {
             </Card>
           )}
 
-          {/* Step 1: Service Selection */}
+          {/* Step 1: Property Overview */}
           {step === 1 && (
+            <Card className="max-w-4xl mx-auto rounded-none border-0 shadow-none">
+              <CardHeader className="px-6 pt-6">
+                <div className="text-sm font-medium text-muted-foreground mb-2">Step 1</div>
+                <CardTitle className="text-3xl font-medium">
+                  Tell us about your place
+                </CardTitle>
+                <CardDescription className="text-base mt-4">
+                  In this step, we'll ask for some quick details about your home—like how many bedrooms you have, and what type of cleaning you're looking for.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="px-0">
+                <div className="relative w-full max-w-3xl mx-auto rounded-lg overflow-hidden pb-[75%]">
+                  <video
+                    className="absolute inset-0 w-full h-full object-cover"
+                    autoPlay
+                    playsInline
+                    preload="auto"
+                    muted
+                  >
+                    <source src="/videos/property-tour.mp4" type="video/mp4" />
+                  </video>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Step 2: Service Selection */}
+          {step === 2 && (
             <Card className="rounded-none border-0 shadow-none">
               <CardHeader className="px-6 pt-6">
                 <CardTitle>Select Your Cleaning Service</CardTitle>
@@ -549,8 +587,8 @@ export default function BookingPage() {
             </Card>
           )}
 
-          {/* Step 2: Hours Selection (For hourly services only) */}
-          {step === 2 && (serviceCategory === 'Custom Areas Only' || serviceCategory === 'Mansion') && (
+          {/* Step 3: Hours Selection (For hourly services only) */}
+          {step === 3 && (serviceCategory === 'Custom Areas Only' || serviceCategory === 'Mansion') && (
             <Card className="rounded-none border-0 shadow-none">
               <CardHeader className="px-6 pt-6">
                 <CardTitle>Select Service Duration</CardTitle>
@@ -601,8 +639,8 @@ export default function BookingPage() {
             </Card>
           )}
 
-          {/* Step 3: Schedule */}
-          {step === 3 && (
+          {/* Step 4: Schedule */}
+          {step === 4 && (
             <Card className="rounded-none border-0 shadow-none">
               <CardHeader className="px-6 pt-6">
                 <CardTitle>Schedule Your Cleaning</CardTitle>
@@ -700,8 +738,8 @@ export default function BookingPage() {
             </Card>
           )}
 
-          {/* Step 4: Customer Details */}
-          {step === 4 && (
+          {/* Step 5: Customer Details */}
+          {step === 5 && (
             <Card className="rounded-none border-0 shadow-none">
               <CardHeader className="px-6 pt-6">
                 <CardTitle>Your Information</CardTitle>
