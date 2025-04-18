@@ -20,7 +20,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -39,9 +38,9 @@ import { Progress } from "@/components/ui/progress"
 const formSchema = z.object({
   serviceCategory: z.enum(['Default', 'Move In/Out', 'Custom Areas Only', 'Mansion']),
   bedrooms: z.number().min(1).max(4),
-  hours: z.number().min(2).max(12).optional(),
+  hours: z.number().min(3).max(12).optional(),
   frequency: z.enum(['one-time', 'weekly', 'biweekly', 'monthly']),
-  date: z.date(),
+  date: z.date().nullable(),
   arrivalWindow: z.enum(['8:00AM - 9:00AM', '12:00PM - 1:00PM', '3:00PM - 4:00PM']),
   customer: z.object({
     firstName: z.string().min(1, 'First name is required'),
@@ -75,8 +74,9 @@ export default function BookingPage() {
     defaultValues: {
       serviceCategory: 'Default',
       bedrooms: 1,
+      hours: undefined, // Start with undefined hours
       frequency: 'biweekly',
-      date: new Date(),
+      date: null,
       arrivalWindow: '12:00PM - 1:00PM',
       customer: {
         firstName: '',
@@ -109,7 +109,7 @@ export default function BookingPage() {
     location: Location,
     serviceCategory: ServiceCategory,
     bedrooms: number,
-    frequency: Frequency,
+    // frequency: Frequency,
     hours?: number
   ): number {
     const pricingData = PRICING_PARAMETERS[location].serviceCategories[serviceCategory]
@@ -152,7 +152,7 @@ export default function BookingPage() {
 
   // Update price when form values change
   const updatePrice = () => {
-    const firstCleaning = calculatePrice(location, serviceCategory, bedrooms, frequency, hours)
+    const firstCleaning = calculatePrice(location, serviceCategory, bedrooms, hours)
     const recurring = calculateRecurringPrice(location, serviceCategory, bedrooms, frequency, hours)
 
     setValue('price', {
@@ -234,7 +234,7 @@ export default function BookingPage() {
       return true
     }
 
-    // Disable the next 2 days
+    // Prevent booking without at least 2 days notice
     const twoDaysFromNow = addDays(today, 2)
     twoDaysFromNow.setHours(0, 0, 0, 0)
 
@@ -245,9 +245,24 @@ export default function BookingPage() {
     return false
   }
 
+  // Check if we have all required parameters to show price
+  const canShowPrice = () => {
+    const pricingData = PRICING_PARAMETERS[location].serviceCategories[serviceCategory];
+
+    if (pricingData.type === 'flat') {
+      return bedrooms != null;
+    }
+
+    if (pricingData.type === 'hourly') {
+      return hours !== undefined && hours !== null;
+    }
+
+    return true; // For flat pricing, we always have bedrooms
+  }
+
   // Format price for display
   const formatPrice = (price: number | undefined) => {
-    if (price === undefined) return ''
+    if (price === undefined || !canShowPrice()) return ''
     return `$${price.toFixed(0)}`
   }
 
@@ -359,26 +374,24 @@ export default function BookingPage() {
                     <FormItem>
                       <FormLabel>Number of Hours</FormLabel>
                       <FormControl>
-                        <RadioGroup
-                          onValueChange={(value) => {
-                            field.onChange(parseInt(value))
-                            updatePrice()
-                          }}
-                          defaultValue={field.value?.toString() || "3"}
-                          className="grid grid-cols-2 gap-4 pt-2 sm:grid-cols-4"
-                        >
+                        <div className="grid grid-cols-2 gap-4 pt-2 sm:grid-cols-4">
                           {[3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((hour) => (
-                            <FormItem
+                            <div
                               key={hour}
-                              className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground [&:has([data-state=checked])]:border-primary"
+                              className={`flex flex-col items-center justify-between rounded-md border
+                                ${field.value === hour
+                                  ? 'border-primary'
+                                  : 'border-muted bg-popover hover:bg-accent hover:text-accent-foreground'
+                                } p-4 cursor-pointer transition-all`}
+                              onClick={() => {
+                                field.onChange(hour);
+                                updatePrice();
+                              }}
                             >
-                              <FormControl>
-                                <RadioGroupItem value={hour.toString()} className="sr-only" />
-                              </FormControl>
                               <span className="text-center font-medium">{hour} Hours</span>
-                            </FormItem>
+                            </div>
                           ))}
-                        </RadioGroup>
+                        </div>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -430,7 +443,7 @@ export default function BookingPage() {
                         defaultValue={field.value}
                       >
                         <FormControl>
-                          <SelectTrigger>
+                          <SelectTrigger className="pointer-events-auto z-20">
                             <SelectValue placeholder="Select an arrival window" />
                           </SelectTrigger>
                         </FormControl>
@@ -465,7 +478,7 @@ export default function BookingPage() {
                           defaultValue={field.value}
                         >
                           <FormControl>
-                            <SelectTrigger>
+                            <SelectTrigger className="pointer-events-auto z-20">
                               <SelectValue placeholder="Select frequency" />
                             </SelectTrigger>
                           </FormControl>
@@ -630,21 +643,20 @@ export default function BookingPage() {
 
         <div className="w-full flex items-center justify-between px-6 p-4">
           <div className="flex items-center gap-4">
-            <div>
-              <p className="text-lg font-bold">
-                {formatPrice(form.watch('price.firstCleaning'))}
-              </p>
-              {form.watch('price.recurring') && (
-                <p className="text-sm text-muted-foreground">
-                  {frequency !== 'one-time'
-                    ? `${formatPrice(form.watch('price.recurring'))} for recurring cleanings`
-                    : ''}
+            {canShowPrice() && (
+              <div>
+                <p className="text-lg font-bold">
+                  {formatPrice(form.watch('price.firstCleaning'))}
                 </p>
-              )}
-            </div>
-            <div className="text-sm text-muted-foreground">
-              Step {step} of {serviceCategory === 'Custom Areas Only' || serviceCategory === 'Mansion' ? '4' : '3'}
-            </div>
+                {form.watch('price.recurring') && (
+                  <p className="text-sm text-muted-foreground">
+                    {frequency !== 'one-time'
+                      ? `${formatPrice(form.watch('price.recurring'))} for recurring cleanings`
+                      : ''}
+                  </p>
+                )}
+              </div>
+            )}
           </div>
 
           <div className="flex gap-2">
