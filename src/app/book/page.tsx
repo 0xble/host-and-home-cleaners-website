@@ -33,6 +33,7 @@ import { ROUTES } from '@/lib/routes'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { addDays, isBefore } from 'date-fns'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -66,10 +67,82 @@ const BookingFormSchema = z.object({
 type FormData = z.infer<typeof BookingFormSchema>
 
 export default function BookingPage() {
-  // Default to Myrtle Beach, could be based on user location or a parameter
+  const router = useRouter()
   const [location] = useState<Location>('MYRTLE_BEACH')
-  const [step, setStep] = useState(0) // Start at step 0 for overview
+  const [step, setStep] = useState(0)
   const [specializedService, setSpecializedService] = useState<string | null>(null)
+  const [visitedSteps, setVisitedSteps] = useState<number[]>([0])
+
+  // Handle browser back/forward buttons
+  useEffect(() => {
+    const handlePopState = (event: PopStateEvent) => {
+      if (step === 0) return
+
+      event.preventDefault()
+      prevStep()
+    }
+
+    if (step > 0) {
+      window.history.pushState(null, '', window.location.pathname)
+    }
+
+    window.addEventListener('popstate', handlePopState)
+    return () => window.removeEventListener('popstate', handlePopState)
+  }, [step])
+
+  // Handle keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = async (event: KeyboardEvent) => {
+      const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0
+      const modifierKey = isMac ? event.metaKey : event.altKey
+
+      if (modifierKey) {
+        // At step 0, let the browser handle back navigation normally
+        if (step === 0 && (event.key === '[' || event.key === 'ArrowLeft')) {
+          return
+        }
+
+        if (event.key === '[' || event.key === 'ArrowLeft') {
+          event.preventDefault()
+          prevStep()
+        } else if (event.key === ']' || event.key === 'ArrowRight') {
+          event.preventDefault()
+          // Only allow forward navigation if:
+          // 1. Current step is valid
+          // 2. Next step has been visited before OR current step is valid
+          const nextStepNumber = getNextStepNumber()
+          if (
+            step > 0 &&
+            nextStepNumber !== null &&
+            isCurrentStepValid() &&
+            (visitedSteps.includes(nextStepNumber) || await isCurrentStepValid())
+          ) {
+            nextStep()
+          }
+        }
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [step, router, visitedSteps])
+
+  // Get the next step number based on current step and service category
+  const getNextStepNumber = () => {
+    if (step === 0) return 1
+    if (step === 4) return null
+
+    if (serviceCategory === 'Custom Areas Only' || serviceCategory === 'Mansion') {
+      if (step === 1) return 2
+      if (step === 2) return 3
+      if (step === 3) return 4
+    } else {
+      if (step === 1) return 3
+      if (step === 3) return 4
+    }
+
+    return null
+  }
 
   // Calculate price based on form values
   function calculatePrice(
@@ -146,7 +219,7 @@ export default function BookingPage() {
     },
   })
 
-  const { watch, setValue } = form
+  const { watch, setValue, getValues, trigger } = form
 
   // Watch form values for price calculation
   const serviceCategory = watch('serviceCategory')
@@ -182,7 +255,7 @@ export default function BookingPage() {
   }, [serviceCategory, bedrooms, hours, frequency])
 
   // Fix the Calendar type error
-  const selectedDate = form.watch('date')
+  const selectedDate = watch('date')
 
   // Handle bedroom selection
   const handleBedroomSelect = (value: string) => {
@@ -230,31 +303,12 @@ export default function BookingPage() {
   }
 
   const nextStep = () => {
-    if (step === 0) {
-      setStep(1) // Move from overview to step 1
-      return
+    const nextStepNumber = getNextStepNumber()
+    if (nextStepNumber !== null) {
+      setStep(nextStepNumber)
+      setVisitedSteps(prev => [...new Set([...prev, nextStepNumber])])
+      updatePrice({ serviceCategory, bedrooms, hours, frequency })
     }
-
-    if (serviceCategory === 'Custom Areas Only' || serviceCategory === 'Mansion') {
-      if (step === 1) {
-        setStep(2)
-      }
-      else if (step === 2) {
-        setStep(3)
-      }
-      else if (step === 3) {
-        setStep(4)
-      }
-    }
-    else {
-      if (step === 1) {
-        setStep(3)
-      }
-      else if (step === 3) {
-        setStep(4)
-      }
-    }
-    updatePrice({ serviceCategory, bedrooms, hours, frequency })
   }
 
   const onSubmit = (data: FormData) => {
@@ -304,6 +358,51 @@ export default function BookingPage() {
       return ''
     }
     return `$${price.toFixed(0)}`
+  }
+
+  // Check if current step is valid
+  const isCurrentStepValid = () => {
+    const { getValues, trigger } = form
+
+    // Step 0 is always valid
+    if (step === 0) return true
+
+    // Step 1: Service Selection
+    if (step === 1) {
+      const serviceCategory = getValues('serviceCategory')
+      const bedrooms = getValues('bedrooms')
+      return serviceCategory !== undefined && bedrooms !== undefined
+    }
+
+    // Step 2: Hours Selection (for hourly services only)
+    if (step === 2 && (serviceCategory === 'Custom Areas Only' || serviceCategory === 'Mansion')) {
+      const hours = getValues('hours')
+      return hours !== undefined && hours >= 3 && hours <= 12
+    }
+
+    // Step 3: Schedule
+    if (step === 3) {
+      const date = getValues('date')
+      const arrivalWindow = getValues('arrivalWindow')
+      const frequency = getValues('frequency')
+      return date !== null && arrivalWindow !== undefined && frequency !== undefined
+    }
+
+    // Step 4: Customer Details
+    if (step === 4) {
+      return trigger([
+        'customer.firstName',
+        'customer.lastName',
+        'customer.email',
+        'customer.phone',
+        'customer.address',
+        'customer.city',
+        'customer.state',
+        'customer.zipCode',
+      ])
+    }
+
+    return false
   }
 
   return (
@@ -731,8 +830,8 @@ export default function BookingPage() {
         serviceCategory={serviceCategory}
         canShowPrice={canShowPrice}
         formatPrice={formatPrice}
-        watchFirstCleaning={form.watch('price.firstCleaning')}
-        watchRecurring={form.watch('price.recurring')}
+        watchFirstCleaning={watch('price.firstCleaning')}
+        watchRecurring={watch('price.recurring')}
         frequency={frequency}
         prevStep={prevStep}
         nextStep={nextStep}
