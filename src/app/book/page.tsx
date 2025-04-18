@@ -1,7 +1,6 @@
 'use client'
 
 import type { Frequency, Location, ServiceCategory } from '@/lib/types'
-import { GradientButton } from '@/components/GradientButton'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import {
@@ -203,6 +202,33 @@ export default function BookingPage() {
     updatePrice({ serviceCategory: value as ServiceCategory, bedrooms })
   }
 
+  const prevStep = () => {
+    if (step === 1) {
+      setStep(0)
+      return
+    }
+
+    if (serviceCategory === 'Custom Areas Only' || serviceCategory === 'Mansion') {
+      if (step === 2) {
+        setStep(1)
+      }
+      else if (step === 3) {
+        setStep(2)
+      }
+      else if (step === 4) {
+        setStep(3)
+      }
+    }
+    else {
+      if (step === 3) {
+        setStep(1)
+      }
+      else if (step === 4) {
+        setStep(3)
+      }
+    }
+  }
+
   const nextStep = () => {
     if (step === 0) {
       setStep(1) // Move from overview to step 1
@@ -229,28 +255,6 @@ export default function BookingPage() {
       }
     }
     updatePrice({ serviceCategory, bedrooms, hours, frequency })
-  }
-
-  const prevStep = () => {
-    if (serviceCategory === 'Custom Areas Only' || serviceCategory === 'Mansion') {
-      if (step === 2) {
-        setStep(1)
-      }
-      else if (step === 3) {
-        setStep(2)
-      }
-      else if (step === 4) {
-        setStep(3)
-      }
-    }
-    else {
-      if (step === 3) {
-        setStep(1)
-      }
-      else if (step === 4) {
-        setStep(3)
-      }
-    }
   }
 
   const onSubmit = (data: FormData) => {
@@ -315,53 +319,48 @@ export default function BookingPage() {
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           {/* Step 0: Overview */}
           {step === 0 && (
-            <div className="max-w-4xl mx-auto space-y-12 px-6 py-10">
-              <h1 className="text-4xl font-medium">
-                Need cleaning?
-                <br />
-                We're here to help
-              </h1>
-
-              <div className="space-y-12">
-                <div>
-                  <div className="flex items-center gap-4 mb-2">
-                    <div className="text-lg font-medium">1</div>
-                    <h2 className="text-lg font-medium">Tell us about your property</h2>
+            <Card className="max-w-4xl mx-auto rounded-none border-0 shadow-none">
+              <CardHeader className="px-6 pt-6">
+                <CardTitle className="text-4xl font-medium">
+                  Need cleaning?
+                  <br />
+                  We're here to help
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-12 px-6">
+                <div className="space-y-12">
+                  <div>
+                    <div className="flex items-center gap-4 mb-2">
+                      <div className="text-lg font-medium">1</div>
+                      <h2 className="text-lg font-medium">Tell us about your property</h2>
+                    </div>
+                    <p className="pl-7 text-base text-gray-600">
+                      Share some quick info—like the size of your home, what type of cleaning you need, and any special requests.
+                    </p>
                   </div>
-                  <p className="pl-7 text-base text-gray-600">
-                    Share some quick info—like the size of your home, what type of cleaning you need, and any special requests.
-                  </p>
-                </div>
 
-                <div>
-                  <div className="flex items-center gap-4 mb-2">
-                    <div className="text-lg font-medium">2</div>
-                    <h2 className="text-lg font-medium">Customize your service</h2>
+                  <div>
+                    <div className="flex items-center gap-4 mb-2">
+                      <div className="text-lg font-medium">2</div>
+                      <h2 className="text-lg font-medium">Customize your service</h2>
+                    </div>
+                    <p className="pl-7 text-base text-gray-600">
+                      Choose the cleaning package that fits your needs. Add notes, photos, or instructions for us to best serve you.
+                    </p>
                   </div>
-                  <p className="pl-7 text-base text-gray-600">
-                    Choose the cleaning package that fits your needs. Add notes, photos, or instructions for us to best serve you.
-                  </p>
-                </div>
 
-                <div>
-                  <div className="flex items-center gap-4 mb-2">
-                    <div className="text-lg font-medium">3</div>
-                    <h2 className="text-lg font-medium">Book and relax</h2>
+                  <div>
+                    <div className="flex items-center gap-4 mb-2">
+                      <div className="text-lg font-medium">3</div>
+                      <h2 className="text-lg font-medium">Book and relax</h2>
+                    </div>
+                    <p className="pl-7 text-base text-gray-600">
+                      Pick a time that works for you, confirm the details, and we'll handle the rest.
+                    </p>
                   </div>
-                  <p className="pl-7 text-base text-gray-600">
-                    Pick a time that works for you, confirm the details, and we'll handle the rest.
-                  </p>
                 </div>
-              </div>
-
-              <GradientButton
-                type="button"
-                onClick={nextStep}
-                className="w-full"
-              >
-                Get started
-              </GradientButton>
-            </div>
+              </CardContent>
+            </Card>
           )}
 
           {/* Step 1: Service Selection */}
@@ -726,20 +725,19 @@ export default function BookingPage() {
         </form>
       </Form>
 
-      {step > 0 && (
-        <BookingFormNavbar
-          step={step}
-          serviceCategory={serviceCategory}
-          canShowPrice={canShowPrice}
-          formatPrice={formatPrice}
-          watchFirstCleaning={form.watch('price.firstCleaning')}
-          watchRecurring={form.watch('price.recurring')}
-          frequency={frequency}
-          prevStep={prevStep}
-          nextStep={nextStep}
-          onSubmit={form.handleSubmit(onSubmit)}
-        />
-      )}
+      {/* Show BookingFormNavbar on all steps */}
+      <BookingFormNavbar
+        step={step}
+        serviceCategory={serviceCategory}
+        canShowPrice={canShowPrice}
+        formatPrice={formatPrice}
+        watchFirstCleaning={form.watch('price.firstCleaning')}
+        watchRecurring={form.watch('price.recurring')}
+        frequency={frequency}
+        prevStep={prevStep}
+        nextStep={nextStep}
+        onSubmit={form.handleSubmit(onSubmit)}
+      />
     </div>
   )
 }
