@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { ContentViewTracker } from '@/components/analytics/facebook/Pixel'
-import CTASection from '@/components/CTASection'
+import CTASection from '@/components/templates/sections/CTASection'
 
 import Page from '@/components/templates/Page'
 import { BUSINESS_NAME } from '@/lib/constants'

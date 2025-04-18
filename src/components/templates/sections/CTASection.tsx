@@ -1,15 +1,13 @@
 'use client'
 import type { Location } from '@/lib/types'
 import BookNowButton from '@/components/BookNowButton'
-
+import CTAButtons from '@/components/CTAButtons'
+import FindLocationInput from '@/components/FindLocationInput'
 import { cn, getPhone } from '@/lib/utils'
 import flamingoRingImage from '@/public/flamingo-ring.jpeg'
 import { useLocationStore } from '@/store/useLocationStore'
 import Image from 'next/image'
 import { Suspense } from 'react'
-
-import CTAButtons from './CTAButtons'
-import FindLocationInput from './FindLocationInput'
 
 export interface CTASectionProps {
   heading: string | JSX.Element
