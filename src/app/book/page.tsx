@@ -33,6 +33,7 @@ import {
 } from '@/components/ui/form'
 import { Location, ServiceCategory, type Frequency } from '@/lib/types'
 import { PRICING_PARAMETERS } from '@/lib/constants'
+import { Progress } from "@/components/ui/progress"
 
 // Create form validation schema
 const formSchema = z.object({
@@ -615,19 +616,16 @@ export default function BookingPage() {
 
       {/* Unified navigation and pricing footer */}
       <div className="fixed bottom-0 left-0 right-0 z-10 bg-white shadow-md">
-        {/* Progress bar */}
-        <div className="w-full h-1 bg-gray-200 flex">
-          {Array.from({ length: (serviceCategory === 'Custom Areas Only' || serviceCategory === 'Mansion' ? 4 : 3) }).map((_, index) => (
-            <div key={index} className="flex-1 flex">
-              {index > 0 && <div className="w-1 h-full bg-white"></div>}
-              <div
-                className="h-full bg-primary transition-all duration-300 ease-in-out flex-1"
-                style={{
-                  width: index < (step - 1) ? '100%' : '0%'
-                }}
-              ></div>
-            </div>
-          ))}
+        {/* Progress bar with step markers */}
+        <div className="relative w-full h-2">
+          <Progress
+            value={
+              ((step - 1) / (serviceCategory === 'Custom Areas Only' || serviceCategory === 'Mansion' ? 4 : 3)) * 100
+            }
+            className="h-2 w-full rounded-none"
+            steps={serviceCategory === 'Custom Areas Only' || serviceCategory === 'Mansion' ? 4 : 3}
+            showDividers
+          />
         </div>
 
         <div className="w-full flex items-center justify-between px-6 p-4">
