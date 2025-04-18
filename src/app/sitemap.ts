@@ -1,6 +1,7 @@
-import type { MetadataRoute } from 'next'
+import type {LocationRoute, Route} from '@/lib/routes';
 
-import { type LocationRoute, type Route, ROUTES } from '@/lib/routes'
+import type { MetadataRoute } from 'next'
+import { ROUTES } from '@/lib/routes'
 import { getBaseUrl } from '@/lib/utils'
 
 const isRoute = (value: unknown): value is Route => {

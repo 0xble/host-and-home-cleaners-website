@@ -1,5 +1,3 @@
-import { useEffect, useRef } from 'react'
-import Autoplay from 'embla-carousel-autoplay'
 import {
   Carousel,
   CarouselContent,
@@ -8,7 +6,10 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel'
 import { BUSINESS_NAME } from '@/lib/constants'
+
 import { cn } from '@/lib/utils'
+import Autoplay from 'embla-carousel-autoplay'
+import { useEffect, useRef } from 'react'
 
 const TestimonialVideo = ({ src }: { src: string }) => {
   const videoRef = useRef<HTMLVideoElement>(null)
@@ -26,7 +27,7 @@ const TestimonialVideo = ({ src }: { src: string }) => {
       ref={videoRef}
       className='h-[300px] w-[160px] rounded-lg sm:h-[415px] sm:w-[220px] md:h-[400px] md:w-[200px]'
       controls
-      preload="metadata"
+      preload='metadata'
     >
       <source src={src} type='video/mp4' />
       <track src={src} kind='captions' />

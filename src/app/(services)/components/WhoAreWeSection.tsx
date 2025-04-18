@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { BUSINESS_NAME } from '@/lib/constants'
 import { cn } from '@/lib/utils'
 
-interface WhoAreWeSectionProps {
+type WhoAreWeSectionProps = {
   className?: string
   showImage?: boolean
 }
@@ -16,13 +16,19 @@ export default function WhoAreWeSection({ className, showImage = true }: WhoAreW
         <div className='flex-1'>
           <h2 className='mb-6 text-4xl font-extralight'>So, Who Are We?</h2>
           <p className='mb-4 text-lg'>
-            At {BUSINESS_NAME}, we're more than just a cleaning service. We're a team of dedicated professionals who believe that a clean home environment is crucial for health, reduced stress, and productivity. Our commitment to excellence and attention to detail sets us apart.
+            At
+            {' '}
+            {BUSINESS_NAME}
+            , we're more than just a cleaning service. We're a team of dedicated professionals who believe that a clean home environment is crucial for health, reduced stress, and productivity. Our commitment to excellence and attention to detail sets us apart.
           </p>
           <p className='mb-4 text-lg'>
             We are insured and bonded, and our professional cleaners will treat your home or rental with the same attention we would our own.
           </p>
           <p className='text-lg'>
-            And as local cleaning experts, we understand our community's unique needs. <Link href='/about' className='text-primary hover:underline'>Learn more about our team and our commitment to excellence</Link>.
+            And as local cleaning experts, we understand our community's unique needs.
+            {' '}
+            <Link href='/about' className='text-primary hover:underline'>Learn more about our team and our commitment to excellence</Link>
+            .
           </p>
         </div>
         {showImage && (

@@ -1,4 +1,5 @@
-import { slugify, type SnakeCase } from '0xble/strings'
+import type { SnakeCase } from '0xble/strings'
+import { slugify } from '0xble/strings'
 
 import { BOOKINGKOALA_URL, LOCATIONS, SERVICES } from './constants'
 

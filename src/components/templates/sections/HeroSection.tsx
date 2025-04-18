@@ -12,7 +12,7 @@ export default function HeroSection({ heading, description, actions, photos }: H
     <section className='bg-white pt-8 lg:pt-12'>
       <div className='mx-auto grid max-w-screen-xl items-center gap-0 px-4 py-8 lg:grid-cols-12 lg:py-16'>
         <div className='mb-24 max-w-xl place-self-center lg:col-span-5 lg:mb-0'>
-          <h2 className='mb-4 text-3xl xs:text-4xl font-light md:text-5xl' style={{ lineHeight: '1.2' }}>
+          <h2 className='mb-4 text-3xl font-light xs:text-4xl md:text-5xl' style={{ lineHeight: '1.2' }}>
             <mark>100% satisfaction</mark>
             {' '}
             guaranteed,

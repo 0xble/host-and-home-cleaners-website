@@ -1,13 +1,14 @@
 import type { Metadata } from 'next'
+import { ContentViewTracker } from '@/components/analytics/facebook/Pixel'
+import Page from '@/components/templates/Page'
+
+import { BUSINESS_NAME } from '@/lib/constants'
+import heroImage from '@/public/cleaner-work.gif'
 import Image from 'next/image'
 import Link from 'next/link'
 
-import ApplyForm from '@/components/ApplyForm'
-import BonusesTable from '@/components/BonusesTable'
-import Page from '@/components/Page'
-import { BUSINESS_NAME } from '@/lib/constants'
-import { ContentViewTracker } from '@/lib/pixel'
-import heroImage from '@/public/cleaner-work.gif'
+import ApplyForm from './components/ApplyForm'
+import BonusesTable from './components/BonusesTable'
 
 const badges = [
   <svg

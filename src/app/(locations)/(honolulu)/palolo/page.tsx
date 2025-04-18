@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 
 import CompetitorComparisonTable from '@/components/CompetitorComparisonTable'
-import LocationLandingPage from '@/components/LocationLandingPage'
+import LocationLandingPage from '@/components/templates/LocationLandingPage'
 import { BUSINESS_NAME, LOCATIONS, PHONE, TAGLINE } from '@/lib/constants'
 import { ROUTES } from '@/lib/routes'
 

@@ -1,6 +1,6 @@
 'use client'
 
-import TrackedLink from '@/components/TrackedLink'
+import TrackedLink from '@/components/analytics/facebook/PixelTrackedLink'
 import { PixelEvent } from '@/lib/pixel'
 import type { Phone } from '@/lib/types'
 import { cn } from '@/lib/utils'

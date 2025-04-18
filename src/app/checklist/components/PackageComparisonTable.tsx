@@ -1,8 +1,8 @@
-import Link from 'next/link'
+import { type ServiceKey,SERVICES } from '@/lib/constants'
 
-import { SERVICES, type ServiceKey } from '@/lib/constants'
 import { ROUTES } from '@/lib/routes'
 import { cn } from '@/lib/utils'
+import Link from 'next/link'
 
 type PackageComparisonTableProps = {
   title: string | React.ReactNode
@@ -30,7 +30,7 @@ export default function PackageComparisonTable({
               <div className='text-xs sm:text-base'>{service}</div>
               <Link
                 href={ROUTES.SERVICES[key as ServiceKey].href}
-                className='mt-1 text-[10px] text-primary hover:underline sm:text-xs font-light'
+                className='mt-1 text-[10px] font-light text-primary hover:underline sm:text-xs'
               >
                 Learn more
               </Link>

@@ -1,8 +1,9 @@
-import { compareDesc, differenceInMinutes, hoursToSeconds } from 'date-fns'
-import { LOCATIONS, REVIEWS } from '0xble/notion/types'
-import { queryDatabase } from './notion'
 import type { QueryDatabaseParameters } from '@notionhq/client/build/src/api-endpoints'
+import { LOCATIONS, REVIEWS } from '0xble/notion/types'
+import { compareDesc, differenceInMinutes, hoursToSeconds } from 'date-fns'
 import { cache } from 'react'
+
+import { queryDatabase } from './notion'
 
 // In-memory cache for development
 let reviewsCache: ReviewsData | null = null
@@ -51,7 +52,6 @@ export type Location = {
   nextdoorUrl: string | null
 }
 
-// eslint-disable-next-line react-refresh/only-export-components
 export const revalidate = hoursToSeconds(3) // Revalidate every 3 hours
 
 async function fetchReviewPagesNotion(filter?: QueryDatabaseParameters['filter']) {
@@ -99,8 +99,8 @@ export const getLocations = cache(async (): Promise<LocationData> => {
     const props = page.properties
     return {
       id: page.id,
-      name: props['Name'] && 'title' in props['Name']
-        ? props['Name'].title[0]?.plain_text!
+      name: props.Name && 'title' in props.Name
+        ? props.Name.title[0]?.plain_text!
         : 'Unknown',
       googleUrl: props['Google URL'] && 'url' in props['Google URL']
         ? props['Google URL'].url
@@ -146,12 +146,14 @@ export const getReviews = cache(async (location?: string): Promise<ReviewsData> 
     const { locations } = await getLocations()
 
     // Create filter for location if provided
-    const filter: QueryDatabaseParameters['filter'] = location ? {
-      property: 'Location',
-      relation: {
-        contains: locations.find(loc => loc.name.toLowerCase() === location.toLowerCase())?.id || ''
-      }
-    } : undefined
+    const filter: QueryDatabaseParameters['filter'] = location
+      ? {
+          property: 'Location',
+          relation: {
+            contains: locations.find(loc => loc.name.toLowerCase() === location.toLowerCase())?.id || '',
+          },
+        }
+      : undefined
 
     // Fetch reviews with location filter if provided
     const reviewPages = await fetchReviewPagesNotion(filter)
@@ -185,26 +187,26 @@ export const getReviews = cache(async (location?: string): Promise<ReviewsData> 
         : 5
 
       // Find the matching location first
-      const locationId = props['Location'] && 'relation' in props['Location'] && props['Location'].relation[0]?.id
-      const location = locationId ? locations.find((location) => location.id === locationId) : null
+      const locationId = props.Location && 'relation' in props.Location && props.Location.relation[0]?.id
+      const location = locationId ? locations.find(location => location.id === locationId) : null
 
       // Get URL from "URL" property
       const url = props.URL && 'url' in props.URL && props.URL.url !== null
         ? props.URL.url
         : (() => {
-          switch (platform) {
-            case 'Google':
-              return location?.googleUrl ?? null
-            case 'Yelp':
-              return location?.yelpUrl ?? null
-            case 'Thumbtack':
-              return location?.thumbtackUrl ?? null
-            case 'Nextdoor':
-              return location?.nextdoorUrl ?? null
-            default:
-              return null
-          }
-        })();
+            switch (platform) {
+              case 'Google':
+                return location?.googleUrl ?? null
+              case 'Yelp':
+                return location?.yelpUrl ?? null
+              case 'Thumbtack':
+                return location?.thumbtackUrl ?? null
+              case 'Nextdoor':
+                return location?.nextdoorUrl ?? null
+              default:
+                return null
+            }
+          })()
 
       // Get reviewer profile URL
       const profileUrl = props['Reviewer Profile URL'] && 'url' in props['Reviewer Profile URL'] && props['Reviewer Profile URL'].url !== null

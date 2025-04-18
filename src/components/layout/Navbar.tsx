@@ -6,8 +6,8 @@ import { usePathname } from 'next/navigation'
 // React and Next.js imports
 import { useState } from 'react'
 
-import TrackedLink from '@/components/analytics/facebook/PixelTrackedLink'
 // Components
+import TrackedLink from '@/components/analytics/facebook/PixelTrackedLink'
 import BookNowButton from '@/components/BookNowButton'
 import Brand from '@/components/Brand'
 import PhoneLink from '@/components/PhoneLink'
@@ -337,7 +337,7 @@ export default function Navbar({
                                       )}
                                       >
                                         {columns.map((column, columnIndex) => (
-                                          <div key={columnIndex} className='flex flex-col'>
+                                          <div key={`column-${columnIndex}`} className='flex flex-col'>
                                             {column.map(area => (
                                               <DropdownMenuItem
                                                 key={area.href}
@@ -639,7 +639,7 @@ export default function Navbar({
                               )}
                               >
                                 {columns.map((column, columnIndex) => (
-                                  <div key={columnIndex} className='flex flex-col'>
+                                  <div key={`column-${columnIndex}`} className='flex flex-col'>
                                     {column.map(area => (
                                       <DropdownMenuItem
                                         key={area.href}

@@ -1,17 +1,17 @@
-import { Suspense } from 'react'
-
-import CTASection from '@/components/CTASection'
-import FAQSection from '@/components/FAQSection'
-import FindLocationInput from '@/components/FindLocationInput'
-import HeroSection from '@/components/HeroSection'
-import HowItWorksSection from '@/components/HowItWorksSection'
-import Page from '@/components/Page'
-import PricingSection from '@/components/PricingSection'
-import ReviewSection from '@/components/ReviewSection'
-// import ReviewsFloatingBadge from '@/components/ReviewsFloatingBadge'
-import TrustSection from '@/components/TrustSection'
 import type { LocationKey } from '@/lib/constants'
+
 import BookNowButton from '@/components/BookNowButton'
+import FindLocationInput from '@/components/FindLocationInput'
+import ReviewsSection from '@/components/reviews/ReviewsSection'
+import Page from '@/components/templates/Page'
+import CTASection from '@/components/templates/sections/CTASection'
+import FAQSection from '@/components/templates/sections/FAQSection'
+import HeroSection from '@/components/templates/sections/HeroSection'
+import HowItWorksSection from '@/components/templates/sections/HowItWorksSection'
+import PricingSection from '@/components/templates/sections/PricingSection'
+// import ReviewsFloatingBadge from '@/components/ReviewsFloatingBadge'
+import TrustSection from '@/components/templates/sections/TrustSection'
+import { Suspense } from 'react'
 
 type Step = {
   title: string
@@ -107,7 +107,7 @@ const createDefaultSections = (
   {
     id: 'reviews',
     component: (
-      <ReviewSection
+      <ReviewsSection
         heading={reviewsHeading}
         location={location}
         className='mt-12'

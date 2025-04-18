@@ -1,10 +1,11 @@
-import { slugify } from '0xble/strings'
+import type {Location, LocationKey} from '@/lib/constants';
 
+import { slugify } from '0xble/strings'
+import { ContentViewTracker } from '@/components/analytics/facebook/Pixel'
 import CTAButtons from '@/components/CTAButtons'
-import LandingPage from '@/components/LandingPage'
-import LocationsSection from '@/components/LocationsSection'
-import { type Location, type LocationKey, PHONE } from '@/lib/constants'
-import { ContentViewTracker } from '@/lib/pixel'
+import LandingPage from '@/components/templates/LandingPage'
+import LocationsSection from '@/components/templates/sections/LocationsSection'
+import { PHONE } from '@/lib/constants'
 
 type Step = {
   title: string

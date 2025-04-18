@@ -1,10 +1,10 @@
-import Link from 'next/link'
-import Image from 'next/image'
-
-import { BUSINESS_NAME } from '@/lib/constants'
-import { ROUTES } from '@/lib/routes'
 import type { Location } from '@/lib/types'
+import { BUSINESS_NAME } from '@/lib/constants'
+
+import { ROUTES } from '@/lib/routes'
 import { cn, getUrl } from '@/lib/utils'
+import Image from 'next/image'
+import Link from 'next/link'
 
 type BrandProps = {
   className?: string
@@ -30,7 +30,7 @@ export default function Brand({ className, location }: BrandProps) {
       <div className='flex flex-col items-center justify-center'>
         <div className='text-center text-xs xs:text-sm sm:text-base xl:text-lg'>{BUSINESS_NAME}</div>
         {location && (
-          <div className='text-center text-sm font-sans xs:text-base font-extralight text-gray-700 sm:text-xl'>
+          <div className='text-center font-sans text-sm font-extralight text-gray-700 xs:text-base sm:text-xl'>
             {ROUTES.LOCATIONS[location].name}
           </div>
         )}

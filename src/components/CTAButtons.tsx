@@ -2,7 +2,7 @@
 
 import { PhoneIcon } from '@heroicons/react/24/solid'
 
-import TrackedLink from '@/components/TrackedLink'
+import TrackedLink from '@/components/analytics/facebook/PixelTrackedLink'
 import BookNowButton from '@/components/BookNowButton'
 import { PixelEvent } from '@/lib/pixel'
 import type { Phone } from '@/lib/types'
@@ -18,7 +18,7 @@ export default function CTAButtons({ className, phone, preventNavigation = false
   return (
     <div className={cn('lg:flex-row flex items-center gap-6', className)}>
       <BookNowButton
-        className='xs:p-4 lg:mr-3 xs:text-base text-sm'
+        className='text-sm xs:p-4 xs:text-base lg:mr-3'
         preventNavigation={preventNavigation}
       />
 
@@ -34,7 +34,7 @@ export default function CTAButtons({ className, phone, preventNavigation = false
           <PhoneIcon className='h-7 text-primary-700 hover:text-primary-800 lg:h-10' />
           <div className='inline-flex flex-col rounded-lg text-start text-base font-medium text-gray-900'>
             <p className='text-base'>Or give us a call!</p>
-            <div className='font-extralight hover:text-primary-700 lg:text-xl xs:text-lg text-base'>
+            <div className='text-base font-extralight hover:text-primary-700 xs:text-lg lg:text-xl'>
               {phone.formatted}
             </div>
           </div>

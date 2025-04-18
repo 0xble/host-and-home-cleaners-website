@@ -1,7 +1,8 @@
-import ReviewsGridClient from './ReviewsGridClient'
 import type { LocationKey } from '@/lib/constants'
 
-interface ReviewsGridProps {
+import ReviewsGridClient from './ReviewsGridClient'
+
+type ReviewsGridProps = {
   location?: LocationKey
 }
 

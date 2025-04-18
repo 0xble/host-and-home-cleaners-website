@@ -1,10 +1,10 @@
 import { Client } from '@notionhq/client'
-import type { PageObjectResponse, QueryDatabaseParameters } from '@notionhq/client/build/src/api-endpoints'
 import { APIResponseError } from '@notionhq/client'
+import type { PageObjectResponse, QueryDatabaseParameters } from '@notionhq/client/build/src/api-endpoints'
 import { RateLimit } from 'async-sema'
 
 const notion = new Client({
-  auth: process.env.NOTION_API_KEY
+  auth: process.env.NOTION_API_KEY,
 })
 
 // Notion has a rate limit of 2700 requests per 15 minutes = 3 requests per second
@@ -12,7 +12,7 @@ const rateLimiter = RateLimit(3, { timeUnit: 1000 })
 
 async function fetchWithRetries<T>(
   apiCall: () => Promise<T>,
-  maxRetries: number = 3
+  maxRetries: number = 3,
 ): Promise<T> {
   let retries = 0
   while (retries <= maxRetries) {
@@ -50,7 +50,7 @@ export async function queryDatabase(params: QueryDatabaseParameters) {
         notion.databases.query({
           ...params,
           start_cursor: startCursor,
-        })
+        }),
       )
 
       const validPages = response.results.filter((page): page is PageObjectResponse => 'properties' in page)

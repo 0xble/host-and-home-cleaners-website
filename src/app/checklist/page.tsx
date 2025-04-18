@@ -1,12 +1,13 @@
 import type { Metadata } from 'next'
+import WhoAreWeSection from '@/app/(services)/components/WhoAreWeSection'
+
+import { ContentViewTracker } from '@/components/analytics/facebook/Pixel'
+import CTASection from '@/components/CTASection'
+import Page from '@/components/templates/Page'
+import { BUSINESS_NAME, CHECKLIST_NAME, SERVICE_CHECKLIST } from '@/lib/constants'
 import { Suspense } from 'react'
 
-import CTASection from '@/components/CTASection'
-import PackageComparisonTable from '@/components/PackageComparisonTable'
-import Page from '@/components/Page'
-import { BUSINESS_NAME, CHECKLIST_NAME, SERVICE_CHECKLIST } from '@/lib/constants'
-import { ContentViewTracker } from '@/lib/pixel'
-import WhoAreWeSection from '@/components/WhoAreWeSection'
+import PackageComparisonTable from './components/PackageComparisonTable'
 
 export const metadata: Metadata = {
   title: CHECKLIST_NAME,
@@ -21,7 +22,7 @@ export default function Checklist() {
         contentName='Checklist'
         contentId='checklist-page'
       />
-      <div className='px-4 text-center mt-24'>
+      <div className='mt-24 px-4 text-center'>
         <h1 className='mb-8 text-4xl sm:text-[45px]'>
           The
           {' '}

@@ -1,13 +1,13 @@
 import type { Metadata } from 'next'
+import WhoAreWeSection from '@/app/(services)/components/WhoAreWeSection'
+import { ContentViewTracker } from '@/components/analytics/facebook/Pixel'
+import CTASection from '@/components/CTASection'
+
+import Page from '@/components/templates/Page'
+import { BUSINESS_NAME, SERVICES } from '@/lib/constants'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Suspense } from 'react'
-
-import CTASection from '@/components/CTASection'
-import Page from '@/components/Page'
-import WhoAreWeSection from '@/components/WhoAreWeSection'
-import { BUSINESS_NAME, SERVICES } from '@/lib/constants'
-import { ContentViewTracker } from '@/lib/pixel'
 
 const title = `${BUSINESS_NAME} ${SERVICES.VACATION_RENTAL}`
 
@@ -56,8 +56,10 @@ export default function AirbnbCleaning() {
 
         <h2>What's Included in Our Vacation Rental Cleaning Service?</h2>
         <p>
-          Our vacation rental cleaning service includes comprehensive cleaning of all areas, including thorough bathroom cleaning, kitchen cleaning, linen changes, and more. We ensure your property is guest-ready with attention to detail in every room. For a complete list of inclusions, please refer to our{' '}
-          <Link href='/checklist' className='link'>comprehensive cleaning checklist</Link>.
+          Our vacation rental cleaning service includes comprehensive cleaning of all areas, including thorough bathroom cleaning, kitchen cleaning, linen changes, and more. We ensure your property is guest-ready with attention to detail in every room. For a complete list of inclusions, please refer to our
+          {' '}
+          <Link href='/checklist' className='link'>comprehensive cleaning checklist</Link>
+          .
         </p>
 
         <h2>Why Choose Our Vacation Rental Cleaning Services?</h2>
@@ -105,15 +107,18 @@ export default function AirbnbCleaning() {
           specialized services for other needs:
         </p>
         <p>
-          Need regular maintenance? We also offer{' '}
+          Need regular maintenance? We also offer
+          {' '}
           <Link href='/standard-cleaning' className='text-primary hover:underline'>
             standard cleaning
           </Link>
-          ,{' '}
+          ,
+          {' '}
           <Link href='/deep-cleaning' className='text-primary hover:underline'>
             deep cleaning
           </Link>
-          , and{' '}
+          , and
+          {' '}
           <Link href='/move-in-out-cleaning' className='text-primary hover:underline'>
             move-in/out cleaning
           </Link>

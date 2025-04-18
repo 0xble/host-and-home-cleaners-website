@@ -1,13 +1,13 @@
 import type { Metadata } from 'next'
-import { Suspense } from 'react'
+import { ContentViewTracker } from '@/components/analytics/facebook/Pixel'
 
+import BookNowButton from '@/components/BookNowButton'
 import CompetitorComparisonTable from '@/components/CompetitorComparisonTable'
 import FindLocationInput from '@/components/FindLocationInput'
-import LandingPage from '@/components/LandingPage'
+import LandingPage from '@/components/templates/LandingPage'
 // import ReviewsFloatingBadge from '@/components/ReviewsFloatingBadge'
 import { BUSINESS_NAME, TAGLINE } from '@/lib/constants'
-import { ContentViewTracker } from '@/lib/pixel'
-import BookNowButton from '@/components/BookNowButton'
+import { Suspense } from 'react'
 
 export const metadata: Metadata = {
   title: `${BUSINESS_NAME} | Professional House & Airbnb Cleaning`,

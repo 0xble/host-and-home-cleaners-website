@@ -20,7 +20,7 @@ export default function ApplyForm({ className }: ApplyFormProps) {
       >
       </iframe>
 
-      {/* eslint-disable-next-line react-dom/no-dangerously-set-innerhtml */}
+      { }
       <script
         type='text/javascript'
         dangerouslySetInnerHTML={{

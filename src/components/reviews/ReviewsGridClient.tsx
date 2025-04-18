@@ -1,17 +1,18 @@
 'use client'
 
-import { AnimatePresence, motion } from 'framer-motion'
-import { Star, ChevronRight, ChevronLeft } from 'lucide-react'
-import Image from 'next/image'
-import { useEffect, useState, useRef } from 'react'
-import { round } from 'remeda'
-import { compareDesc, formatDistanceToNow, hoursToSeconds } from 'date-fns'
-import { tz } from '@date-fns/tz'
-import type { Platform, PlatformRating, Review, ReviewsData } from '@/lib/reviews'
-import { cn } from '@/lib/utils'
-import { Skeleton } from '@/components/ui/skeleton'
 import type { LocationKey } from '@/lib/constants'
+import type { Platform, PlatformRating, Review, ReviewsData } from '@/lib/reviews'
 import { constantCase } from '0xble/strings'
+import { Skeleton } from '@/components/ui/skeleton'
+import { cn } from '@/lib/utils'
+import { tz } from '@date-fns/tz'
+import { compareDesc, formatDistanceToNow, hoursToSeconds } from 'date-fns'
+import { AnimatePresence, motion } from 'framer-motion'
+
+import { ChevronLeft,ChevronRight, Star } from 'lucide-react'
+import Image from 'next/image'
+import { useEffect, useRef,useState } from 'react'
+import { round } from 'remeda'
 
 type ValidReview = Omit<Review, 'rating' | 'text' | 'date' | 'author'> & {
   rating: number
@@ -23,7 +24,7 @@ type ValidReview = Omit<Review, 'rating' | 'text' | 'date' | 'author'> & {
   }
 }
 
-interface ReviewsGridClientProps {
+type ReviewsGridClientProps = {
   location?: LocationKey | null
 }
 
@@ -59,7 +60,7 @@ function AuthorSection({ review, url, className }: { review: ValidReview, url?: 
               alt={review.author.name}
               width={120}
               height={120}
-              className='rounded-full size-10 object-cover object-center'
+              className='size-10 rounded-full object-cover object-center'
             />
           )
         : (
@@ -72,14 +73,14 @@ function AuthorSection({ review, url, className }: { review: ValidReview, url?: 
             </div>
           )}
       <div>
-        <div className='flex items-center gap-1 text-sm sm:text-base group-hover:underline'>
+        <div className='flex items-center gap-1 text-sm group-hover:underline sm:text-base'>
           {review.author.name}
           <Image
-            src="/icons/verified.svg"
-            alt="Verified"
+            src='/icons/verified.svg'
+            alt='Verified'
             width={16}
             height={16}
-            className="size-4"
+            className='size-4'
           />
         </div>
         <div className='text-xs font-light text-gray-500 sm:text-sm'>
@@ -89,7 +90,9 @@ function AuthorSection({ review, url, className }: { review: ValidReview, url?: 
     </div>
   )
 
-  if (!url) return content
+  if (!url) {
+    return content
+  }
 
   return (
     <a
@@ -102,7 +105,6 @@ function AuthorSection({ review, url, className }: { review: ValidReview, url?: 
     </a>
   )
 }
-
 
 const AVATAR_COLORS = [
   'bg-red-500',
@@ -163,10 +165,12 @@ function ReviewCard({ review, className }: { review: ValidReview, className?: st
 
       {review.text && (
         <>
-          <p className='mb-3 sm:mb-4 text-base'>
-            "{review.text.length > maxTextLength
+          <p className='mb-3 text-base sm:mb-4'>
+            "
+            {review.text.length > maxTextLength
               ? `${review.text.slice(0, maxTextLength).split(' ').slice(0, -1).join(' ')}...`
-              : review.text}"
+              : review.text}
+            "
           </p>
 
           {review.url && (
@@ -174,7 +178,7 @@ function ReviewCard({ review, className }: { review: ValidReview, className?: st
               href={review.url}
               target='_blank'
               rel='noopener noreferrer'
-              className='mt-2 mb-3 inline-block text-xs text-primary-600 hover:underline sm:mb-4 sm:text-sm'
+              className='mb-3 mt-2 inline-block text-xs text-primary-600 hover:underline sm:mb-4 sm:text-sm'
             >
               Read more
             </a>
@@ -185,20 +189,26 @@ function ReviewCard({ review, className }: { review: ValidReview, className?: st
       {review.platform && (
         <div className='mb-3 flex items-center gap-2 sm:mb-4'>
           <PlatformIcon platform={review.platform} />
-          {review.url ? (
-            <a
-              href={review.url}
-              target='_blank'
-              rel='noopener noreferrer'
-              className='text-xs text-gray-600 hover:underline sm:text-sm'
-            >
-              Posted on {review.platform}
-            </a>
-          ) : (
-            <span className='text-xs text-gray-600 sm:text-sm'>
-              Posted on {review.platform}
-            </span>
-          )}
+          {review.url
+            ? (
+                <a
+                  href={review.url}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  className='text-xs text-gray-600 hover:underline sm:text-sm'
+                >
+                  Posted on
+                  {' '}
+                  {review.platform}
+                </a>
+              )
+            : (
+                <span className='text-xs text-gray-600 sm:text-sm'>
+                  Posted on
+                  {' '}
+                  {review.platform}
+                </span>
+              )}
         </div>
       )}
 
@@ -234,7 +244,7 @@ function getTabStyles(isActive: boolean) {
         : 'border-transparent text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700',
     ),
     count: cn(
-      isActive ? 'text-primary-700' : 'text-gray-400'
+      isActive ? 'text-primary-700' : 'text-gray-400',
     ),
   }
 }
@@ -248,7 +258,11 @@ function RatingDisplay({ rating, count, className }: { rating?: number, count: n
           {rating?.toFixed(1)}
         </>
       )}
-      <span className={className}>({count})</span>
+      <span className={className}>
+        (
+        {count}
+        )
+      </span>
     </span>
   )
 }
@@ -274,22 +288,22 @@ function PlatformRatingTabs({
     ? ratings.map(rating => ({
         ...rating,
         total_reviews: reviews.filter(
-          (review: Review) => review.platform === rating.platform &&
-          review.location &&
-          constantCase(review.location) === location
+          (review: Review) => review.platform === rating.platform
+            && review.location
+            && constantCase(review.location) === location,
         ).length,
         rating: reviews
           .filter(
-            (review: Review) => review.platform === rating.platform &&
-            review.location &&
-            constantCase(review.location) === location
+            (review: Review) => review.platform === rating.platform
+              && review.location
+              && constantCase(review.location) === location,
           )
-          .reduce((acc: number, review: Review) => acc + (review.rating ?? 0), 0) /
-          (reviews.filter(
-            (review: Review) => review.platform === rating.platform &&
-            review.location &&
-            constantCase(review.location) === location
-          ).length || 1)
+          .reduce((acc: number, review: Review) => acc + (review.rating ?? 0), 0)
+          / (reviews.filter(
+            (review: Review) => review.platform === rating.platform
+              && review.location
+              && constantCase(review.location) === location,
+          ).length || 1),
       }))
     : ratings
 
@@ -346,26 +360,28 @@ function PlatformRatingTabs({
         onClick={() => onSelectPlatform(platform)}
         className={styles.tab}
       >
-        {platform ? (
-          <>
-            <PlatformIcon platform={platform} />
-            <span>{platform}</span>
-            <RatingDisplay
-              rating={rating?.rating}
-              count={rating?.total_reviews ?? 0}
-              className={styles.count}
-            />
-          </>
-        ) : (
-          <>
-            <span>All</span>
-            <RatingDisplay
-              rating={overallRating}
-              count={totalReviews}
-              className={styles.count}
-            />
-          </>
-        )}
+        {platform
+          ? (
+              <>
+                <PlatformIcon platform={platform} />
+                <span>{platform}</span>
+                <RatingDisplay
+                  rating={rating?.rating}
+                  count={rating?.total_reviews ?? 0}
+                  className={styles.count}
+                />
+              </>
+            )
+          : (
+              <>
+                <span>All</span>
+                <RatingDisplay
+                  rating={overallRating}
+                  count={totalReviews}
+                  className={styles.count}
+                />
+              </>
+            )}
       </button>
     )
   }
@@ -389,8 +405,8 @@ function PlatformRatingTabs({
               {canScrollLeft && (
                 <>
                   <div className='pointer-events-none absolute left-0 top-0 h-full w-16 bg-gradient-to-r from-white to-transparent' />
-                  <div className='absolute left-3 top-1/2 -translate-y-1/2 transform sm:left-2'>
-                    <ChevronLeft className='h-6 w-6 text-gray-400 sm:h-5 sm:w-5' />
+                  <div className='absolute left-3 top-1/2 -translate-y-1/2 sm:left-2'>
+                    <ChevronLeft className='size-6 text-gray-400 sm:size-5' />
                   </div>
                 </>
               )}
@@ -398,8 +414,8 @@ function PlatformRatingTabs({
               {canScrollRight && (
                 <>
                   <div className='pointer-events-none absolute right-0 top-0 h-full w-16 bg-gradient-to-l from-white to-transparent' />
-                  <div className='absolute right-3 top-1/2 -translate-y-1/2 transform sm:right-2'>
-                    <ChevronRight className='h-6 w-6 text-gray-400 sm:h-5 sm:w-5' />
+                  <div className='absolute right-3 top-1/2 -translate-y-1/2 sm:right-2'>
+                    <ChevronRight className='size-6 text-gray-400 sm:size-5' />
                   </div>
                 </>
               )}
@@ -419,7 +435,9 @@ export default function ReviewsGridClient({ location }: ReviewsGridClientProps) 
   const gridRef = useRef<HTMLDivElement>(null)
 
   const getColumnCount = () => {
-    if (!gridRef.current) return 1
+    if (!gridRef.current) {
+      return 1
+    }
     const computedStyle = window.getComputedStyle(gridRef.current)
     return computedStyle.gridTemplateColumns.split(' ').length
   }
@@ -488,16 +506,16 @@ export default function ReviewsGridClient({ location }: ReviewsGridClientProps) 
 
     // Check for required properties
     const hasRequiredProperties = Boolean(
-      review.author?.name &&
-      review.date &&
-      review.rating &&
-      review.platform
+      review.author?.name
+      && review.date
+      && review.rating
+      && review.platform,
     )
 
-    return hasRequiredProperties &&
-      (!selectedPlatform || review.platform === selectedPlatform) &&
-      (!location || !review.location || constantCase(review.location) === location) &&
-      (review.rating ?? 0) >= ratingThreshold
+    return hasRequiredProperties
+      && (!selectedPlatform || review.platform === selectedPlatform)
+      && (!location || !review.location || constantCase(review.location) === location)
+      && (review.rating ?? 0) >= ratingThreshold
   }).sort((a, b) => compareDesc(a.date, b.date))
 
   const hasMoreReviews = reviews.length > visibleReviews

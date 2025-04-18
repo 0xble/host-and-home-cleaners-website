@@ -86,7 +86,7 @@ export default function HowItWorksSection({ heading, steps }: HowItWorksSectionP
         {' '}
         <br className='sm:hidden' />
         <Link
-          className='font-light text-primary-600 xs:text-xl text-lg'
+          className='text-lg font-light text-primary-600 xs:text-xl'
           href={ROUTES.CHECKLIST.href}
         >
           {CHECKLIST_NAME}

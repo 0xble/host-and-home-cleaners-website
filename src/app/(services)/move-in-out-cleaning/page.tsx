@@ -1,13 +1,13 @@
 import type { Metadata } from 'next'
+import WhoAreWeSection from '@/app/(services)/components/WhoAreWeSection'
+import { ContentViewTracker } from '@/components/analytics/facebook/Pixel'
+import CTASection from '@/components/CTASection'
+
+import Page from '@/components/templates/Page'
+import { BUSINESS_NAME, SERVICES } from '@/lib/constants'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Suspense } from 'react'
-
-import CTASection from '@/components/CTASection'
-import Page from '@/components/Page'
-import WhoAreWeSection from '@/components/WhoAreWeSection'
-import { BUSINESS_NAME, SERVICES } from '@/lib/constants'
-import { ContentViewTracker } from '@/lib/pixel'
 
 const title = `${BUSINESS_NAME} ${SERVICES.MOVE_IN_OUT}`
 
@@ -53,8 +53,10 @@ export default function MoveCleaning() {
 
         <h2>What's Included in Move-In/Move-Out Cleaning?</h2>
         <p>
-          Our move-in/move-out cleaning service provides comprehensive cleaning of all areas, including deep cleaning of appliances, thorough bathroom cleaning, window cleaning, and more. We ensure every surface is spotless and ready for the next occupants. For a complete list of inclusions, please refer to our{' '}
-          <Link href='/checklist' className='link'>comprehensive cleaning checklist</Link>.
+          Our move-in/move-out cleaning service provides comprehensive cleaning of all areas, including deep cleaning of appliances, thorough bathroom cleaning, window cleaning, and more. We ensure every surface is spotless and ready for the next occupants. For a complete list of inclusions, please refer to our
+          {' '}
+          <Link href='/checklist' className='link'>comprehensive cleaning checklist</Link>
+          .
         </p>
 
         <h2>Move-In Cleaning</h2>
@@ -89,15 +91,18 @@ export default function MoveCleaning() {
 
         <h2>Additional Services Available</h2>
         <p>
-          Need regular maintenance? We also offer{' '}
+          Need regular maintenance? We also offer
+          {' '}
           <Link href='/standard-cleaning' className='text-primary hover:underline'>
             standard cleaning
           </Link>
-          ,{' '}
+          ,
+          {' '}
           <Link href='/deep-cleaning' className='text-primary hover:underline'>
             deep cleaning
           </Link>
-          , and{' '}
+          , and
+          {' '}
           <Link href='/vacation-rental-cleaning' className='text-primary hover:underline'>
             vacation rental cleaning
           </Link>

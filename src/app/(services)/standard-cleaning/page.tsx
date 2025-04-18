@@ -1,14 +1,14 @@
 import type { Metadata } from 'next'
+import WhoAreWeSection from '@/app/(services)/components/WhoAreWeSection'
+import { ContentViewTracker } from '@/components/analytics/facebook/Pixel'
+import CTASection from '@/components/CTASection'
+
+import Page from '@/components/templates/Page'
+import { BUSINESS_NAME, SERVICES } from '@/lib/constants'
+import homeImage from '@/public/home3.jpeg'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Suspense } from 'react'
-
-import CTASection from '@/components/CTASection'
-import Page from '@/components/Page'
-import WhoAreWeSection from '@/components/WhoAreWeSection'
-import { BUSINESS_NAME, SERVICES } from '@/lib/constants'
-import { ContentViewTracker } from '@/lib/pixel'
-import homeImage from '@/public/home3.jpeg'
 
 const title = `Host & Home ${SERVICES.STANDARD}`
 
@@ -38,7 +38,10 @@ export default function StandardCleaning() {
         </h1>
         <p className='mb-20'>
           Recommended as a recurring service for maintaining the cleanliness of
-          a home after a <Link href='/deep-cleaning' className='link'>deep clean</Link>.
+          a home after a
+          {' '}
+          <Link href='/deep-cleaning' className='link'>deep clean</Link>
+          .
         </p>
       </section>
 
@@ -62,21 +65,28 @@ export default function StandardCleaning() {
         <p>
           Our standard cleaning service is designed for regular maintenance, offering a perfect balance
           of thoroughness and efficiency. We focus on essential cleaning tasks that keep your home
-          looking its best between <Link href='/deep-cleaning' className='link'>deep cleanings</Link>.
+          looking its best between
+          {' '}
+          <Link href='/deep-cleaning' className='link'>deep cleanings</Link>
+          .
           Our team arrives on time, brings their own supplies, and works efficiently to minimize
           disruption to your daily routine.
         </p>
 
         <h2>What's Included in Standard Cleaning?</h2>
         <p>
-          Our standard cleaning service includes comprehensive cleaning of all living spaces, including dusting, vacuuming, mopping, bathroom cleaning, kitchen cleaning, and more. We focus on maintaining a clean and healthy environment with attention to detail in all areas. For a complete list of inclusions, please refer to our{' '}
-          <Link href='/checklist' className='link'>comprehensive cleaning checklist</Link>.
+          Our standard cleaning service includes comprehensive cleaning of all living spaces, including dusting, vacuuming, mopping, bathroom cleaning, kitchen cleaning, and more. We focus on maintaining a clean and healthy environment with attention to detail in all areas. For a complete list of inclusions, please refer to our
+          {' '}
+          <Link href='/checklist' className='link'>comprehensive cleaning checklist</Link>
+          .
         </p>
 
         <h2>Perfect for Regular Maintenance</h2>
         <p>
-          Standard cleaning is ideal for maintaining a clean home after a{' '}
-          <Link href='/deep-cleaning' className='link'>deep clean</Link>. We recommend scheduling
+          Standard cleaning is ideal for maintaining a clean home after a
+          {' '}
+          <Link href='/deep-cleaning' className='link'>deep clean</Link>
+          . We recommend scheduling
           standard cleanings on a regular basis (weekly, bi-weekly, or monthly) to maintain optimal
           cleanliness and prevent buildup.
         </p>
@@ -97,15 +107,18 @@ export default function StandardCleaning() {
 
         <h2>Additional Services Available</h2>
         <p>
-          Need more thorough cleaning? We also offer{' '}
+          Need more thorough cleaning? We also offer
+          {' '}
           <Link href='/deep-cleaning' className='text-primary hover:underline'>
             deep cleaning
           </Link>
-          ,{' '}
+          ,
+          {' '}
           <Link href='/move-in-out-cleaning' className='text-primary hover:underline'>
             move-in/out cleaning
           </Link>
-          , and{' '}
+          , and
+          {' '}
           <Link href='/vacation-rental-cleaning' className='text-primary hover:underline'>
             vacation rental cleaning
           </Link>

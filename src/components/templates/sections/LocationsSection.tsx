@@ -1,4 +1,3 @@
-import MapFrame from '@/components/MapFrame'
 import type { ServiceAreas } from '@/lib/types'
 
 export type LocationsSectionProps = {
@@ -23,9 +22,14 @@ export default function LocationsSection({ heading, description, iframeSrc, serv
           </div>
         ))}
       </div>
-      <MapFrame
+      <iframe
+        sandbox='allow-scripts allow-popups allow-popups-to-escape-sandbox'
+        className='mx-auto mt-8 h-[400px] w-full max-w-screen-lg rounded-xl border-none sm:h-[550px]'
         src={iframeSrc}
-        className='mx-auto mt-8 h-[400px] max-w-screen-lg rounded-xl sm:h-[550px]'
+        loading='lazy'
+        scrolling='no'
+        allowFullScreen={false}
+        title='Service Areas'
       />
       {/* Form Anchor */}
       <div id='form' />

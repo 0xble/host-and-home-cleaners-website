@@ -1,13 +1,13 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
+import TrackedLink from '@/components/analytics/facebook/PixelTrackedLink'
 
 import CompetitorComparisonTable from '@/components/CompetitorComparisonTable'
-import LocalBusinessSchemaMarkup from '@/components/LocalBusinessSchemaMarkup'
-import LocationLandingPage from '@/components/LocationLandingPage'
-import TrackedLink from '@/components/TrackedLink'
+import LocalBusinessSchemaMarkup from '@/components/schema/LocalBusinessSchemaMarkup'
+import LocationLandingPage from '@/components/templates/LocationLandingPage'
 import { BUSINESS_NAME, EMAIL, LOCATIONS, PHONE, TAGLINE, URL } from '@/lib/constants'
 import { PixelEvent } from '@/lib/pixel'
 import { ROUTES } from '@/lib/routes'
+import Link from 'next/link'
 
 const SPECIFIC_BUSINESS_NAME = `${BUSINESS_NAME} ${LOCATIONS.MYRTLE_BEACH.name}`
 const SPECIFIC_URL = `https://${URL}${ROUTES.LOCATIONS.MYRTLE_BEACH.href}`

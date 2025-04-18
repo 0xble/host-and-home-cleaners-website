@@ -6,8 +6,8 @@ import type { Location } from '@/lib/types'
 import { cn } from '@/lib/utils'
 import { useLocationStore } from '@/store/useLocationStore'
 
-import Footer from './Footer'
-import Navbar from './Navbar'
+import Footer from '../layout/Footer'
+import Navbar from '../layout/Navbar'
 
 type PageProps = {
   children: React.ReactNode

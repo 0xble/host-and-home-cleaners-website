@@ -5,12 +5,11 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import Script from 'next/script'
 
-import { PostHogProvider } from '@/components/PostHogProvider'
-
-import CookieConsent from '@/components/CookieConsent'
-import GoogleAnalytics from '@/components/GoogleAnalytics'
+import CookieConsent from '@/components/analytics/CookieConsent'
+import { PixelInitializer } from '@/components/analytics/facebook/Pixel'
+import GoogleAnalytics from '@/components/analytics/google/GoogleAnalytics'
+import { PostHogProvider } from '@/components/analytics/posthog/PostHogProvider'
 import { Toaster } from '@/components/ui/toaster'
-import { PixelInitializer } from '@/lib/pixel'
 import { getBaseUrl } from '@/lib/utils'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -27,25 +26,25 @@ export const metadata: Metadata = {
     icon: [
       { url: '/favicons/favicon.ico' },
       { url: '/favicons/favicon-96x96.png', sizes: '96x96', type: 'image/png' },
-      { url: '/favicons/favicon.svg', type: 'image/svg+xml' }
+      { url: '/favicons/favicon.svg', type: 'image/svg+xml' },
     ],
     apple: [
-      { url: '/favicons/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }
+      { url: '/favicons/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
     ],
     other: [
       {
         rel: 'web-app-manifest',
         url: '/favicons/web-app-manifest-192x192.png',
         sizes: '192x192',
-        type: 'image/png'
+        type: 'image/png',
       },
       {
         rel: 'web-app-manifest',
         url: '/favicons/web-app-manifest-512x512.png',
         sizes: '512x512',
-        type: 'image/png'
-      }
-    ]
+        type: 'image/png',
+      },
+    ],
   },
   openGraph: {
     type: 'website',

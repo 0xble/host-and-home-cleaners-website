@@ -1,10 +1,8 @@
-import TrackedLink from '@/components/TrackedLink'
+import TrackedLink from '@/components/analytics/facebook/PixelTrackedLink'
 import { SERVICES } from '@/lib/constants'
 import { PixelEvent } from '@/lib/pixel'
 import { ROUTES } from '@/lib/routes'
 import { cn } from '@/lib/utils'
-
-import Badge from './Badge'
 
 type PricingCardProps = {
   name: string
@@ -34,7 +32,9 @@ function PricingCard({
     >
       {highlighted && (
         <div>
-          <Badge>Most popular</Badge>
+          <span className='rounded bg-primary-100 px-3 py-1 text-sm font-normal text-primary-800'>
+            Most popular
+          </span>
         </div>
       )}
       <h3 className='text-gray-900'>{name}</h3>

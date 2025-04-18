@@ -1,14 +1,14 @@
-import Link from 'next/link'
-import { useState } from 'react'
-import { chunk } from 'remeda'
-
+import type { Location } from '@/lib/types'
+import CookieConsent from '@/components/analytics/CookieConsent'
 import Brand from '@/components/Brand'
-import CookieConsent from '@/components/CookieConsent'
+
 import PhoneLink from '@/components/PhoneLink'
 import { SocialIcon } from '@/components/SocialIcon'
 import { BUSINESS_NAME, EMAIL, PHONE, SOCIAL_LINKS } from '@/lib/constants'
 import { ROUTES } from '@/lib/routes'
-import type { Location } from '@/lib/types'
+import Link from 'next/link'
+import { useState } from 'react'
+import { chunk } from 'remeda'
 
 type FooterLinkProps = {
   href: string
