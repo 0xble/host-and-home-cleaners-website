@@ -1,10 +1,8 @@
 'use client'
 
 import type { Location, Phone } from '@/lib/types'
-// Components
 import TrackedLink from '@/components/analytics/facebook/PixelTrackedLink'
 import BookNowButton from '@/components/BookNowButton'
-
 import Brand from '@/components/Brand'
 import PhoneLink from '@/components/PhoneLink'
 import { SocialIcon } from '@/components/SocialIcon'
@@ -19,16 +17,13 @@ import {
   SheetContent,
   SheetTrigger,
 } from '@/components/ui/sheet'
-// Lib imports
 import { CHECKLIST_NAME, EMAIL, SOCIAL_LINKS } from '@/lib/constants'
 import { PixelEvent } from '@/lib/pixel'
 import { ROUTES } from '@/lib/routes'
 import { scrollToSection } from '@/lib/scroll'
 import { cn } from '@/lib/utils'
-// External libraries
 import { Bars3Icon } from '@heroicons/react/24/solid'
 import { usePathname } from 'next/navigation'
-// React and Next.js imports
 import { useState } from 'react'
 
 function splitIntoColumns<T>(items: T[], numColumns: number): T[][] {

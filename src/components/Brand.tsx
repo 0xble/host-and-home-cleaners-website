@@ -16,7 +16,7 @@ export default function Brand({ className, location }: BrandProps) {
     <Link
       href={getUrl(location)}
       className={cn(
-        'flex items-center justify-center font-serif text-xl font-thin text-gray-900 ',
+        'flex items-center justify-center font-serif text-xl font-thin text-gray-900 z-10',
         className,
       )}
     >
