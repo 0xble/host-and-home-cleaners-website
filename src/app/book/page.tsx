@@ -73,10 +73,181 @@ export default function BookingPage() {
   const [specializedService, setSpecializedService] = useState<string | null>(null)
   const [visitedSteps, setVisitedSteps] = useState<number[]>([0])
 
+  // Initialize form with default values
+  const form = useForm<FormData>({
+    resolver: zodResolver(BookingFormSchema),
+    defaultValues: {
+      serviceCategory: 'Default',
+      bedrooms: 1,
+      hours: undefined, // Start with undefined hours
+      frequency: 'biweekly',
+      date: null,
+      arrivalWindow: '12:00PM - 1:00PM',
+      customer: {
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        address: '',
+        city: '',
+        state: '',
+        zipCode: '',
+      },
+      location,
+      price: {
+        firstCleaning: calculatePrice(location, 'Default', 1),
+        recurring: calculateRecurringPrice(location, 'Default', 1, 'biweekly'),
+      },
+    },
+  })
+
+  const { watch, setValue } = form
+
+  // Watch form values for price calculation
+  const serviceCategory = watch('serviceCategory')
+  const bedrooms = watch('bedrooms')
+  const hours = watch('hours')
+  const frequency = watch('frequency')
+
+  // Check if current step is valid
+  const isCurrentStepValid = () => {
+    const { getValues, trigger } = form
+
+    // Step 0 is always valid
+    if (step === 0)
+      return true
+
+    // Step 1: Service Selection
+    if (step === 1) {
+      const serviceCategory = getValues('serviceCategory')
+      const bedrooms = getValues('bedrooms')
+      return serviceCategory !== undefined && bedrooms !== undefined
+    }
+
+    // Step 2: Hours Selection (for hourly services only)
+    if (step === 2 && (serviceCategory === 'Custom Areas Only' || serviceCategory === 'Mansion')) {
+      const hours = getValues('hours')
+      return hours !== undefined && hours >= 3 && hours <= 12
+    }
+
+    // Step 3: Schedule
+    if (step === 3) {
+      const date = getValues('date')
+      const arrivalWindow = getValues('arrivalWindow')
+      const frequency = getValues('frequency')
+      return date !== null && arrivalWindow !== undefined && frequency !== undefined
+    }
+
+    // Step 4: Customer Details
+    if (step === 4) {
+      return trigger([
+        'customer.firstName',
+        'customer.lastName',
+        'customer.email',
+        'customer.phone',
+        'customer.address',
+        'customer.city',
+        'customer.state',
+        'customer.zipCode',
+      ])
+    }
+
+    return false
+  }
+
+  const getNextStepNumber = () => {
+    if (step === 0)
+      return 1
+    if (step === 4)
+      return null
+
+    if (serviceCategory === 'Custom Areas Only' || serviceCategory === 'Mansion') {
+      if (step === 1)
+        return 2
+      if (step === 2)
+        return 3
+      if (step === 3)
+        return 4
+    }
+    else {
+      if (step === 1)
+        return 3
+      if (step === 3)
+        return 4
+    }
+
+    return null
+  }
+
+  // Update price when form values change
+  const updatePrice = (params: {
+    serviceCategory: ServiceCategory
+    bedrooms?: number
+    hours?: number
+    frequency?: Frequency
+  }) => {
+    // Use provided values or fall back to watched values
+    const serviceCategoryValue = params.serviceCategory || serviceCategory
+    const bedroomsValue = params.bedrooms || bedrooms
+    const hoursValue = params.hours || hours
+    const frequencyValue = params.frequency || frequency
+
+    const firstCleaning = calculatePrice(location, serviceCategoryValue, bedroomsValue, hoursValue)
+    const recurring = calculateRecurringPrice(location, serviceCategoryValue, bedroomsValue, frequencyValue, hoursValue)
+
+    setValue('price', {
+      firstCleaning,
+      recurring,
+    })
+  }
+
+  const onSubmit = (data: FormData) => {
+    console.log('Form submitted:', data)
+    // In a real app, we would submit this data to an API
+    alert('Booking submitted! Check console for details.')
+  }
+
+  const prevStep = () => {
+    if (step === 1) {
+      setStep(0)
+      return
+    }
+
+    if (serviceCategory === 'Custom Areas Only' || serviceCategory === 'Mansion') {
+      if (step === 2) {
+        setStep(1)
+      }
+      else if (step === 3) {
+        setStep(2)
+      }
+      else if (step === 4) {
+        setStep(3)
+      }
+    }
+    else {
+      if (step === 3) {
+        setStep(1)
+      }
+      else if (step === 4) {
+        setStep(3)
+      }
+    }
+  }
+
+  const nextStep = () => {
+    const nextStepNumber = getNextStepNumber()
+    if (nextStepNumber !== null) {
+      setStep(nextStepNumber)
+      setVisitedSteps(prev => [...new Set([...prev, nextStepNumber])])
+      updatePrice({ serviceCategory, bedrooms, hours, frequency })
+    }
+  }
+
   // Handle browser back/forward buttons
   useEffect(() => {
     const handlePopState = (event: PopStateEvent) => {
-      if (step === 0) return
+      if (step === 0)
+        return
 
       event.preventDefault()
       prevStep()
@@ -93,7 +264,7 @@ export default function BookingPage() {
   // Handle keyboard navigation
   useEffect(() => {
     const handleKeyDown = async (event: KeyboardEvent) => {
-      const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0
+      const isMac = /Mac|iPod|iPhone|iPad/.test(navigator.userAgent)
       const modifierKey = isMac ? event.metaKey : event.altKey
 
       if (modifierKey) {
@@ -105,17 +276,18 @@ export default function BookingPage() {
         if (event.key === '[' || event.key === 'ArrowLeft') {
           event.preventDefault()
           prevStep()
-        } else if (event.key === ']' || event.key === 'ArrowRight') {
+        }
+        else if (event.key === ']' || event.key === 'ArrowRight') {
           event.preventDefault()
           // Only allow forward navigation if:
           // 1. Current step is valid
           // 2. Next step has been visited before OR current step is valid
           const nextStepNumber = getNextStepNumber()
           if (
-            step > 0 &&
-            nextStepNumber !== null &&
-            isCurrentStepValid() &&
-            (visitedSteps.includes(nextStepNumber) || await isCurrentStepValid())
+            step > 0
+            && nextStepNumber !== null
+            && isCurrentStepValid()
+            && (visitedSteps.includes(nextStepNumber) || await isCurrentStepValid())
           ) {
             nextStep()
           }
@@ -126,23 +298,6 @@ export default function BookingPage() {
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [step, router, visitedSteps])
-
-  // Get the next step number based on current step and service category
-  const getNextStepNumber = () => {
-    if (step === 0) return 1
-    if (step === 4) return null
-
-    if (serviceCategory === 'Custom Areas Only' || serviceCategory === 'Mansion') {
-      if (step === 1) return 2
-      if (step === 2) return 3
-      if (step === 3) return 4
-    } else {
-      if (step === 1) return 3
-      if (step === 3) return 4
-    }
-
-    return null
-  }
 
   // Calculate price based on form values
   function calculatePrice(
@@ -191,69 +346,6 @@ export default function BookingPage() {
     return basePrice * (1 - discount)
   }
 
-  // Initialize form with default values
-  const form = useForm<FormData>({
-    resolver: zodResolver(BookingFormSchema),
-    defaultValues: {
-      serviceCategory: 'Default',
-      bedrooms: 1,
-      hours: undefined, // Start with undefined hours
-      frequency: 'biweekly',
-      date: null,
-      arrivalWindow: '12:00PM - 1:00PM',
-      customer: {
-        firstName: '',
-        lastName: '',
-        email: '',
-        phone: '',
-        address: '',
-        city: '',
-        state: '',
-        zipCode: '',
-      },
-      location,
-      price: {
-        firstCleaning: calculatePrice(location, 'Default', 1),
-        recurring: calculateRecurringPrice(location, 'Default', 1, 'biweekly'),
-      },
-    },
-  })
-
-  const { watch, setValue, getValues, trigger } = form
-
-  // Watch form values for price calculation
-  const serviceCategory = watch('serviceCategory')
-  const bedrooms = watch('bedrooms')
-  const hours = watch('hours')
-  const frequency = watch('frequency')
-
-  // Update price when form values change
-  const updatePrice = (params: {
-    serviceCategory: ServiceCategory
-    bedrooms?: number
-    hours?: number
-    frequency?: Frequency
-  }) => {
-    // Use provided values or fall back to watched values
-    const serviceCategoryValue = params.serviceCategory || serviceCategory
-    const bedroomsValue = params.bedrooms || bedrooms
-    const hoursValue = params.hours || hours
-    const frequencyValue = params.frequency || frequency
-
-    const firstCleaning = calculatePrice(location, serviceCategoryValue, bedroomsValue, hoursValue)
-    const recurring = calculateRecurringPrice(location, serviceCategoryValue, bedroomsValue, frequencyValue, hoursValue)
-
-    setValue('price', {
-      firstCleaning,
-      recurring,
-    })
-  }
-
-  // Update price when relevant form values change
-  useEffect(() => {
-    updatePrice({ serviceCategory, bedrooms, hours, frequency })
-  }, [serviceCategory, bedrooms, hours, frequency])
-
   // Fix the Calendar type error
   const selectedDate = watch('date')
 
@@ -273,48 +365,6 @@ export default function BookingPage() {
     setSpecializedService(value)
     // Use direct values for immediate price update
     updatePrice({ serviceCategory: value as ServiceCategory, bedrooms })
-  }
-
-  const prevStep = () => {
-    if (step === 1) {
-      setStep(0)
-      return
-    }
-
-    if (serviceCategory === 'Custom Areas Only' || serviceCategory === 'Mansion') {
-      if (step === 2) {
-        setStep(1)
-      }
-      else if (step === 3) {
-        setStep(2)
-      }
-      else if (step === 4) {
-        setStep(3)
-      }
-    }
-    else {
-      if (step === 3) {
-        setStep(1)
-      }
-      else if (step === 4) {
-        setStep(3)
-      }
-    }
-  }
-
-  const nextStep = () => {
-    const nextStepNumber = getNextStepNumber()
-    if (nextStepNumber !== null) {
-      setStep(nextStepNumber)
-      setVisitedSteps(prev => [...new Set([...prev, nextStepNumber])])
-      updatePrice({ serviceCategory, bedrooms, hours, frequency })
-    }
-  }
-
-  const onSubmit = (data: FormData) => {
-    console.log('Form submitted:', data)
-    // In a real app, we would submit this data to an API
-    alert('Booking submitted! Check console for details.')
   }
 
   const isDateDisabled = (date: Date) => {
@@ -358,51 +408,6 @@ export default function BookingPage() {
       return ''
     }
     return `$${price.toFixed(0)}`
-  }
-
-  // Check if current step is valid
-  const isCurrentStepValid = () => {
-    const { getValues, trigger } = form
-
-    // Step 0 is always valid
-    if (step === 0) return true
-
-    // Step 1: Service Selection
-    if (step === 1) {
-      const serviceCategory = getValues('serviceCategory')
-      const bedrooms = getValues('bedrooms')
-      return serviceCategory !== undefined && bedrooms !== undefined
-    }
-
-    // Step 2: Hours Selection (for hourly services only)
-    if (step === 2 && (serviceCategory === 'Custom Areas Only' || serviceCategory === 'Mansion')) {
-      const hours = getValues('hours')
-      return hours !== undefined && hours >= 3 && hours <= 12
-    }
-
-    // Step 3: Schedule
-    if (step === 3) {
-      const date = getValues('date')
-      const arrivalWindow = getValues('arrivalWindow')
-      const frequency = getValues('frequency')
-      return date !== null && arrivalWindow !== undefined && frequency !== undefined
-    }
-
-    // Step 4: Customer Details
-    if (step === 4) {
-      return trigger([
-        'customer.firstName',
-        'customer.lastName',
-        'customer.email',
-        'customer.phone',
-        'customer.address',
-        'customer.city',
-        'customer.state',
-        'customer.zipCode',
-      ])
-    }
-
-    return false
   }
 
   return (
