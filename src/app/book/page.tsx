@@ -1,6 +1,7 @@
 'use client'
 
 import type { Frequency, Location, ServiceCategory } from '@/lib/types'
+import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import {
   Card,
@@ -28,12 +29,13 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { PRICING_PARAMETERS } from '@/lib/constants'
+import { ROUTES } from '@/lib/routes'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { addDays, isBefore } from 'date-fns'
+import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-
 import BookingFormNavbar from './components/BookingFormNavbar'
 
 const BookingFormSchema = z.object({
@@ -66,7 +68,7 @@ type FormData = z.infer<typeof BookingFormSchema>
 export default function BookingPage() {
   // Default to Myrtle Beach, could be based on user location or a parameter
   const [location] = useState<Location>('MYRTLE_BEACH')
-  const [step, setStep] = useState(1)
+  const [step, setStep] = useState(0) // Start at step 0 for overview
   const [specializedService, setSpecializedService] = useState<string | null>(null)
 
   // Calculate price based on form values
@@ -201,6 +203,11 @@ export default function BookingPage() {
   }
 
   const nextStep = () => {
+    if (step === 0) {
+      setStep(1) // Move from overview to step 1
+      return
+    }
+
     if (serviceCategory === 'Custom Areas Only' || serviceCategory === 'Mansion') {
       if (step === 1) {
         setStep(2)
@@ -296,8 +303,66 @@ export default function BookingPage() {
 
   return (
     <div className="relative min-h-screen pb-24">
+      <div className="p-6">
+        <Button variant="outline" size="default" asChild className="rounded-full px-5">
+          <Link href={ROUTES.HOME.href}>
+            Exit
+          </Link>
+        </Button>
+      </div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          {/* Step 0: Overview */}
+          {step === 0 && (
+            <div className="max-w-4xl mx-auto space-y-12 px-6 py-10">
+              <h1 className="text-4xl font-medium">
+                Need cleaning?
+                <br />
+                We're here to help
+              </h1>
+
+              <div className="space-y-12">
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <div className="w-10 h-10 flex items-center justify-center rounded-full border border-gray-300 text-lg font-semibold">1</div>
+                  <div className="space-y-1">
+                    <h2 className="text-xl font-semibold">Tell us about your property</h2>
+                    <p className="text-gray-600">
+                      Share some quick info—like the size of your home, what type of cleaning you need, and any special requests.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <div className="w-10 h-10 flex items-center justify-center rounded-full border border-gray-300 text-lg font-semibold">2</div>
+                  <div className="space-y-1">
+                    <h2 className="text-xl font-semibold">Customize your service</h2>
+                    <p className="text-gray-600">
+                      Choose the cleaning package that fits your needs. Add notes, photos, or instructions so we know exactly how to make your place shine.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <div className="w-10 h-10 flex items-center justify-center rounded-full border border-gray-300 text-lg font-semibold">3</div>
+                  <div className="space-y-1">
+                    <h2 className="text-xl font-semibold">Book and relax</h2>
+                    <p className="text-gray-600">
+                      Pick a time that works for you, confirm the details, and we'll handle the rest. Sit back and enjoy a spotless place!
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={nextStep}
+                className="w-full rounded-lg bg-primary px-4 py-4 text-lg font-semibold text-primary-foreground hover:opacity-90 transition-opacity"
+              >
+                Get started
+              </button>
+            </div>
+          )}
+
           {/* Step 1: Service Selection */}
           {step === 1 && (
             <Card className="rounded-none border-0 shadow-none">
@@ -660,18 +725,20 @@ export default function BookingPage() {
         </form>
       </Form>
 
-      <BookingFormNavbar
-        step={step}
-        serviceCategory={serviceCategory}
-        canShowPrice={canShowPrice}
-        formatPrice={formatPrice}
-        watchFirstCleaning={form.watch('price.firstCleaning')}
-        watchRecurring={form.watch('price.recurring')}
-        frequency={frequency}
-        prevStep={prevStep}
-        nextStep={nextStep}
-        onSubmit={form.handleSubmit(onSubmit)}
-      />
+      {step > 0 && (
+        <BookingFormNavbar
+          step={step}
+          serviceCategory={serviceCategory}
+          canShowPrice={canShowPrice}
+          formatPrice={formatPrice}
+          watchFirstCleaning={form.watch('price.firstCleaning')}
+          watchRecurring={form.watch('price.recurring')}
+          frequency={frequency}
+          prevStep={prevStep}
+          nextStep={nextStep}
+          onSubmit={form.handleSubmit(onSubmit)}
+        />
+      )}
     </div>
   )
 }
