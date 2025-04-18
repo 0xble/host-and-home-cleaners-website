@@ -1,6 +1,7 @@
 'use client'
 
 import type { Frequency, Location, ServiceCategory } from '@/lib/types'
+import { GradientButton } from '@/components/GradientButton'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import {
@@ -322,44 +323,44 @@ export default function BookingPage() {
               </h1>
 
               <div className="space-y-12">
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <div className="w-10 h-10 flex items-center justify-center rounded-full border border-gray-300 text-lg font-semibold">1</div>
-                  <div className="space-y-1">
-                    <h2 className="text-xl font-semibold">Tell us about your property</h2>
-                    <p className="text-gray-600">
-                      Share some quick info—like the size of your home, what type of cleaning you need, and any special requests.
-                    </p>
+                <div>
+                  <div className="flex items-center gap-4 mb-2">
+                    <div className="text-lg font-medium">1</div>
+                    <h2 className="text-lg font-medium">Tell us about your property</h2>
                   </div>
+                  <p className="pl-7 text-base text-gray-600">
+                    Share some quick info—like the size of your home, what type of cleaning you need, and any special requests.
+                  </p>
                 </div>
 
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <div className="w-10 h-10 flex items-center justify-center rounded-full border border-gray-300 text-lg font-semibold">2</div>
-                  <div className="space-y-1">
-                    <h2 className="text-xl font-semibold">Customize your service</h2>
-                    <p className="text-gray-600">
-                      Choose the cleaning package that fits your needs. Add notes, photos, or instructions so we know exactly how to make your place shine.
-                    </p>
+                <div>
+                  <div className="flex items-center gap-4 mb-2">
+                    <div className="text-lg font-medium">2</div>
+                    <h2 className="text-lg font-medium">Customize your service</h2>
                   </div>
+                  <p className="pl-7 text-base text-gray-600">
+                    Choose the cleaning package that fits your needs. Add notes, photos, or instructions for us to best serve you.
+                  </p>
                 </div>
 
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <div className="w-10 h-10 flex items-center justify-center rounded-full border border-gray-300 text-lg font-semibold">3</div>
-                  <div className="space-y-1">
-                    <h2 className="text-xl font-semibold">Book and relax</h2>
-                    <p className="text-gray-600">
-                      Pick a time that works for you, confirm the details, and we'll handle the rest. Sit back and enjoy a spotless place!
-                    </p>
+                <div>
+                  <div className="flex items-center gap-4 mb-2">
+                    <div className="text-lg font-medium">3</div>
+                    <h2 className="text-lg font-medium">Book and relax</h2>
                   </div>
+                  <p className="pl-7 text-base text-gray-600">
+                    Pick a time that works for you, confirm the details, and we'll handle the rest.
+                  </p>
                 </div>
               </div>
 
-              <button
+              <GradientButton
                 type="button"
                 onClick={nextStep}
-                className="w-full rounded-lg bg-primary px-4 py-4 text-lg font-semibold text-primary-foreground hover:opacity-90 transition-opacity"
+                className="w-full"
               >
                 Get started
-              </button>
+              </GradientButton>
             </div>
           )}
 
