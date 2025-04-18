@@ -20,7 +20,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Button } from '@/components/ui/button'
 import {
   Form,
   FormControl,
@@ -32,7 +31,7 @@ import {
 } from '@/components/ui/form'
 import { Location, ServiceCategory, type Frequency } from '@/lib/types'
 import { PRICING_PARAMETERS } from '@/lib/constants'
-import { Progress } from "@/components/ui/progress"
+import BookingFormNavbar from './components/BookingFormNavbar'
 
 const BookingFormSchema = z.object({
   serviceCategory: z.enum(['Default', 'Move In/Out', 'Custom Areas Only', 'Mansion']),
@@ -134,7 +133,7 @@ export default function BookingPage() {
       },
       location,
       price: {
-        firstCleaning: calculatePrice(location, 'Default', 1), // Use existing function
+        firstCleaning: calculatePrice(location, 'Default', 1),
         recurring: calculateRecurringPrice(location, 'Default', 1, 'biweekly'),
       },
     },
@@ -149,19 +148,30 @@ export default function BookingPage() {
   const frequency = watch('frequency')
 
   // Update price when form values change
-  const updatePrice = () => {
-    const firstCleaning = calculatePrice(location, serviceCategory, bedrooms, hours)
-    const recurring = calculateRecurringPrice(location, serviceCategory, bedrooms, frequency, hours)
+  const updatePrice = (params: {
+    serviceCategory: ServiceCategory,
+    bedrooms?: number,
+    hours?: number,
+    frequency?: Frequency,
+  }) => {
+    // Use provided values or fall back to watched values
+    const serviceCategoryValue = params.serviceCategory || serviceCategory;
+    const bedroomsValue = params.bedrooms || bedrooms;
+    const hoursValue = params.hours || hours;
+    const frequencyValue = params.frequency || frequency;
+
+    const firstCleaning = calculatePrice(location, serviceCategoryValue, bedroomsValue, hoursValue);
+    const recurring = calculateRecurringPrice(location, serviceCategoryValue, bedroomsValue, frequencyValue, hoursValue);
 
     setValue('price', {
       firstCleaning,
       recurring,
-    })
+    });
   }
 
   // Update price when relevant form values change
   useEffect(() => {
-    updatePrice()
+    updatePrice({ serviceCategory, bedrooms, hours, frequency })
   }, [serviceCategory, bedrooms, hours, frequency])
 
   // Fix the Calendar type error
@@ -173,14 +183,16 @@ export default function BookingPage() {
     setValue('bedrooms', bedroomCount);
     setValue('serviceCategory', 'Default');
     setSpecializedService(null);
-    updatePrice();
+    // Use direct values for immediate price update
+    updatePrice({ serviceCategory: 'Default', bedrooms: bedroomCount });
   };
 
   // Handle specialized service selection
   const handleSpecializedService = (value: string) => {
     setValue('serviceCategory', value as ServiceCategory);
     setSpecializedService(value);
-    updatePrice();
+    // Use direct values for immediate price update
+    updatePrice({ serviceCategory: value as ServiceCategory, bedrooms });
   };
 
   const nextStep = () => {
@@ -199,7 +211,7 @@ export default function BookingPage() {
         setStep(4)
       }
     }
-    updatePrice()
+    updatePrice({ serviceCategory, bedrooms, hours, frequency })
   }
 
   const prevStep = () => {
@@ -386,7 +398,7 @@ export default function BookingPage() {
                                 } p-4 cursor-pointer transition-all`}
                               onClick={() => {
                                 field.onChange(hour);
-                                updatePrice();
+                                updatePrice({ serviceCategory, bedrooms, hours: hour });
                               }}
                             >
                               <span className="text-center font-medium">{hour} Hours</span>
@@ -419,7 +431,7 @@ export default function BookingPage() {
                     <FormItem className="flex flex-col">
                       <FormLabel>Choose a Date</FormLabel>
                       <FormDescription>
-                        The next 2 days are fully booked. Select a date at least 3 days from today.
+                        Select an available date.
                       </FormDescription>
                       <Calendar
                         mode="single"
@@ -467,16 +479,16 @@ export default function BookingPage() {
                     name="frequency"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Cleaning Frequency</FormLabel>
+                        <FormLabel>Frequency</FormLabel>
                         <FormDescription>
                           {serviceCategory === 'Default'
-                            ? 'Regular cleanings receive up to 60% off after first visit'
-                            : 'Regular cleanings receive up to 20% off after first visit'}
+                            ? 'Receive up to 60% off after first visit'
+                            : 'Receive up to 20% off after first visit'}
                         </FormDescription>
                         <Select
                           onValueChange={(value) => {
                             field.onChange(value)
-                            updatePrice()
+                            updatePrice({ serviceCategory, bedrooms, hours, frequency: value as Frequency })
                           }}
                           defaultValue={field.value}
                         >
@@ -486,10 +498,10 @@ export default function BookingPage() {
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            <SelectItem value="one-time">One Time</SelectItem>
-                            <SelectItem value="weekly">Weekly (Best Value)</SelectItem>
-                            <SelectItem value="biweekly">Biweekly (Popular)</SelectItem>
+                            <SelectItem value="weekly">Weekly</SelectItem>
+                            <SelectItem value="biweekly">Biweekly</SelectItem>
                             <SelectItem value="monthly">Monthly</SelectItem>
+                            <SelectItem value="one-time">One-Time</SelectItem>
                           </SelectContent>
                         </Select>
                         <FormMessage />
@@ -630,60 +642,18 @@ export default function BookingPage() {
         </form>
       </Form>
 
-      {/* Unified navigation and pricing footer */}
-      <div className="fixed bottom-0 left-0 right-0 z-10 bg-white shadow-md">
-        {/* Progress bar with step markers */}
-        <div className="relative w-full h-2">
-          <Progress
-            value={
-              ((step - 1) / (serviceCategory === 'Custom Areas Only' || serviceCategory === 'Mansion' ? 4 : 3)) * 100
-            }
-            className="h-2 w-full rounded-none"
-            steps={serviceCategory === 'Custom Areas Only' || serviceCategory === 'Mansion' ? 4 : 3}
-            showDividers
-          />
-        </div>
-
-        <div className="w-full flex items-center justify-between px-6 p-4">
-          <div className="flex items-center gap-4">
-            {canShowPrice() && (
-              <div>
-                <p className="text-lg font-bold">
-                  {formatPrice(form.watch('price.firstCleaning'))}
-                </p>
-                {form.watch('price.recurring') && (
-                  <p className="text-sm text-muted-foreground">
-                    {frequency !== 'one-time'
-                      ? `${formatPrice(form.watch('price.recurring'))} for recurring cleanings`
-                      : ''}
-                  </p>
-                )}
-              </div>
-            )}
-          </div>
-
-          <div className="flex gap-2">
-            {step > 1 && (
-              <Button
-                type="button"
-                variant="outline"
-                onClick={prevStep}
-              >
-                Back
-              </Button>
-            )}
-            {step < 4 ? (
-              <Button type="button" onClick={nextStep}>
-                Next
-              </Button>
-            ) : (
-              <Button type="button" onClick={form.handleSubmit(onSubmit)}>
-                Complete Booking
-              </Button>
-            )}
-          </div>
-        </div>
-      </div>
+      <BookingFormNavbar
+        step={step}
+        serviceCategory={serviceCategory}
+        canShowPrice={canShowPrice}
+        formatPrice={formatPrice}
+        watchFirstCleaning={form.watch('price.firstCleaning')}
+        watchRecurring={form.watch('price.recurring')}
+        frequency={frequency}
+        prevStep={prevStep}
+        nextStep={nextStep}
+        onSubmit={form.handleSubmit(onSubmit)}
+      />
     </div>
   )
 }
