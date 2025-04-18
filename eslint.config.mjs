@@ -17,6 +17,8 @@ export default antfu(
       css: true,
     },
     ignores: ['next-env.d.ts'],
+  },
+  {
     files: ['**/*.{js,jsx,ts,tsx}'],
   },
   ...tailwind.configs['flat/recommended'],
