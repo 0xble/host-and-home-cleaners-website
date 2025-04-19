@@ -1,7 +1,7 @@
 'use client'
 
 import type { Location } from '@/lib/types'
-import type { BookingFrequency } from './types'
+import type { BookingFrequency, BookingPricingParams, BookingServiceCategory } from './types'
 import { BookingFormOption } from '@/components/BookingFormOption'
 import { GradientButton } from '@/components/GradientButton'
 import LottieAnimation from '@/components/LottieAnimation'
@@ -49,7 +49,7 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { BookingArrivalWindowSchema, BookingFrequencySchema, BookingHourlyPricingParamsSchema, BookingPricingParamsSchema, BookingServiceCategorySchema } from './types'
 
-const BookingFormDataSchema = z.object({
+const BookingFormValidationSchema = z.object({
   location: LocationSchema,
   serviceCategory: BookingServiceCategorySchema,
   frequency: BookingFrequencySchema,
@@ -72,62 +72,45 @@ const BookingFormDataSchema = z.object({
   }),
 })
 
-type BookingFormData = z.infer<typeof BookingFormDataSchema>
+type BookingFormValid = z.infer<typeof BookingFormValidationSchema>
+
+const BookingFormStateSchema = BookingFormValidationSchema.partial()
+type BookingFormState = z.infer<typeof BookingFormStateSchema>
 
 const BookingFormStorageSchema = z.object({
-  formData: BookingFormDataSchema,
+  formData: BookingFormStateSchema,
   step: z.object({ current: z.number(), total: z.number() }),
   visitedSteps: z.array(z.number()),
 })
+
+type BookingFormStorage = z.infer<typeof BookingFormStorageSchema>
 
 export default function BookingPage() {
   const router = useRouter()
   const [location] = useState<Location>('MYRTLE_BEACH')
   const [step, setStep] = useState({ current: 0, total: 3 })
-  const prevServiceRef = useRef<BookingFormData['serviceCategory'] | null>(null)
+  const prevServiceRef = useRef<BookingServiceCategory | null>(null)
   const [visitedSteps, setVisitedSteps] = useState<number[]>([0])
   const [isRestoring, setIsRestoring] = useState(true)
 
   // Initialize form with default values
-  const form = useForm<BookingFormData>({
-    resolver: zodResolver(BookingFormDataSchema),
+  const form = useForm({
+    resolver: zodResolver(BookingFormValidationSchema),
     defaultValues: {
       location,
       serviceCategory: 'default',
       frequency: 'biweekly',
-      date: undefined,
-      arrivalWindow: '12:00PM - 1:00PM',
-      customer: {
-        firstName: undefined,
-        lastName: undefined,
-        email: undefined,
-        phone: undefined,
-        address: undefined,
-        city: undefined,
-        state: undefined,
-        zipCode: undefined,
-      },
-      pricingParams: {
-        type: 'flat',
-        bedrooms: 1,
-      },
-      price: calculatePrice(
-        location,
-        'default',
-        'biweekly',
-        { type: 'flat', bedrooms: 1 },
-      ),
     },
   })
 
-  const { watch, setValue, handleSubmit, getValues, trigger, control } = form
+  const { watch, setValue, handleSubmit, getValues, trigger, reset } = form
 
   // Watch form values for price calculation
-  const selectedServiceCategory = watch('serviceCategory')
   const selectedFrequency = watch('frequency')
-  const selectedPricingParams = watch('pricingParams')
-  const selectedDate = watch('date')
-
+  const selectedServiceCategory = watch('serviceCategory') as BookingFormState['serviceCategory']
+  const selectedPricingParams = watch('pricingParams') as BookingFormState['pricingParams']
+  const selectedDate = watch('date') as BookingFormState['date']
+  const selectedArrivalWindow = watch('arrivalWindow') as BookingFormState['arrivalWindow']
   const price = watch('price')
 
   // Save form state to sessionStorage
@@ -144,14 +127,11 @@ export default function BookingPage() {
   }
 
   // Update price when form values change
-  const updatePrice = (params: {
-    serviceCategory: BookingFormData['serviceCategory']
-    frequency?: BookingFormData['frequency']
-    pricingParams?: BookingFormData['pricingParams']
-  }) => {
-    const serviceCategory = params.serviceCategory || selectedServiceCategory
-    const frequency = params.frequency || selectedFrequency
-    const pricingParams = params.pricingParams || selectedPricingParams
+  const updatePrice = (
+    serviceCategory: BookingServiceCategory,
+    frequency: BookingFrequency,
+    pricingParams: BookingPricingParams,
+  ) => {
     setValue('price', calculatePrice(location, serviceCategory, frequency, pricingParams))
   }
 
@@ -160,14 +140,22 @@ export default function BookingPage() {
     if (!isRestoring) {
       saveFormState()
     }
-  }, [step, selectedServiceCategory, selectedPricingParams, selectedFrequency, visitedSteps])
+  }, [
+    step,
+    selectedServiceCategory,
+    selectedPricingParams,
+    selectedDate,
+    selectedFrequency,
+    selectedArrivalWindow,
+    visitedSteps,
+  ])
 
   // Restore form state on component mount
   useEffect(() => {
     const savedState = sessionStorage.getItem('bookingFormState')
     if (savedState) {
       try {
-        const { formData, step: savedStep, visitedSteps: savedSteps } = BookingFormStorageSchema.parse(JSON.parse(savedState))
+        const { formData, step: savedStep, visitedSteps: savedSteps } = JSON.parse(savedState) as BookingFormStorage
 
         // Restore date as Date object (it's stored as string in JSON)
         if (formData.date) {
@@ -175,20 +163,29 @@ export default function BookingPage() {
         }
 
         // Restore form values
-        Object.entries(formData).forEach(([key, value]) => {
-          setValue(key as keyof BookingFormData, value)
-        })
+        for (const [key, value] of Object.entries(formData)) {
+          if (key in form) {
+            setValue(key as keyof BookingFormValid, value as BookingFormValid[keyof BookingFormValid])
+          }
+          else {
+            // If out-of-date or invalid, reset the form
+            reset()
+            break
+          }
+        }
 
         // Restore UI state
         setStep(savedStep)
         setVisitedSteps(savedSteps)
 
         // Update price calculations
-        updatePrice({
-          serviceCategory: formData.serviceCategory,
-          pricingParams: formData.pricingParams,
-          frequency: formData.frequency,
-        })
+        if (formData.serviceCategory && formData.frequency && formData.pricingParams) {
+          updatePrice(
+            formData.serviceCategory,
+            formData.frequency,
+            formData.pricingParams,
+          )
+        }
       }
       catch (error) {
         console.error('Error restoring form state:', error)
@@ -250,7 +247,7 @@ export default function BookingPage() {
     if (step.current === 5)
       return null
 
-    if (selectedPricingParams.type === 'hourly') {
+    if (selectedPricingParams?.type === 'hourly') {
       if (step.current === 1)
         return 2
       if (step.current === 2)
@@ -272,7 +269,7 @@ export default function BookingPage() {
     return null
   }
 
-  const onSubmit = (data: BookingFormData) => {
+  const onSubmit = (data: BookingFormValid) => {
     console.log('Form submitted:', data)
     // Clear session storage on successful submission
     sessionStorage.removeItem('bookingFormState')
@@ -318,7 +315,6 @@ export default function BookingPage() {
     if (nextStepNumber !== null) {
       setStep({ ...step, current: nextStepNumber })
       setVisitedSteps(prev => [...new Set([...prev, nextStepNumber])])
-      updatePrice({ serviceCategory: selectedServiceCategory, pricingParams: selectedPricingParams, frequency: selectedFrequency })
     }
   }
 
@@ -378,13 +374,12 @@ export default function BookingPage() {
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [step, router, visitedSteps])
 
-  // Calculate price based on form values
   function calculatePrice(
-    location: BookingFormData['location'],
-    serviceCategory: BookingFormData['serviceCategory'],
-    frequency: BookingFormData['frequency'],
-    params: BookingFormData['pricingParams'],
-  ): BookingFormData['price'] {
+    location: Location,
+    serviceCategory: BookingServiceCategory,
+    frequency: BookingFrequency,
+    params: BookingPricingParams,
+  ): BookingFormValid['price'] {
     const pricing = PRICING_PARAMETERS[location][serviceCategory]
 
     switch (pricing.type) {
@@ -417,15 +412,20 @@ export default function BookingPage() {
     }
   }
 
-  const handleServiceCategorySelect = (
-    serviceCategory: BookingFormData['serviceCategory'],
-    pricingParams?: BookingFormData['pricingParams'],
+  const handleSelectServiceCategory = (
+    serviceCategory: BookingServiceCategory,
+    pricingParams: BookingPricingParams | null,
   ) => {
     setValue('serviceCategory', serviceCategory)
     if (pricingParams) {
       setValue('pricingParams', pricingParams)
+      updatePrice(serviceCategory, selectedFrequency, pricingParams)
     }
-    updatePrice({ serviceCategory, pricingParams, frequency: selectedFrequency })
+    else {
+      // Reset fields
+      setValue('pricingParams', undefined as any)
+      setValue('price', undefined as any)
+    }
   }
 
   const isDateDisabled = (date: Date) => {
@@ -450,15 +450,15 @@ export default function BookingPage() {
 
   // Check if we have all required parameters to show price
   const canShowPrice = () => {
-    if (selectedPricingParams.type === 'flat') {
+    if (selectedPricingParams?.type === 'flat') {
       return selectedPricingParams.bedrooms != null
     }
 
-    if (selectedPricingParams.type === 'hourly') {
+    if (selectedPricingParams?.type === 'hourly') {
       return selectedPricingParams.hours != null
     }
 
-    return true
+    return false
   }
 
   // Format price for display
@@ -495,44 +495,44 @@ export default function BookingPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-12 px-6">
+                <div className="border-b border-neutral-300 pb-8">
+                  <div className="flex items-center gap-8">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-4 mb-2">
+                        <div className="text-lg font-medium">1</div>
+                        <h2 className="text-lg font-medium">Choose your service</h2>
+                      </div>
+                      <p className="pl-7 text-sm">
+                        Select the cleaning type that best fits your situation and your needs.
+                      </p>
+                    </div>
+                    <div className="relative flex-shrink-0 size-20">
+                      <Image
+                        src="/broom-dustpan.png"
+                        alt="Broom and dustpan illustration"
+                        fill
+                        className="object-contain"
+                      />
+                    </div>
+                  </div>
+                </div>
+
                 <div className="space-y-8">
                   <div className="border-b border-neutral-300 pb-8">
                     <div className="flex items-center gap-8">
                       <div className="flex-1">
                         <div className="flex items-center gap-4 mb-2">
-                          <div className="text-lg font-medium">1</div>
-                          <h2 className="text-lg font-medium">Tell us about your property</h2>
+                          <div className="text-lg font-medium">2</div>
+                          <h2 className="text-lg font-medium">Tell us about your place</h2>
                         </div>
                         <p className="pl-7 text-sm">
-                          Share some basic info—home size, cleaning type, and any requests.
+                          Share some basic info and add any notes, photos, or instructions.
                         </p>
                       </div>
                       <div className="relative flex-shrink-0 size-20">
                         <Image
                           src="/living-room.png"
                           alt="Living room illustration"
-                          fill
-                          className="object-contain"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="border-b border-neutral-300 pb-8">
-                    <div className="flex items-center gap-8">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-4 mb-2">
-                          <div className="text-lg font-medium">2</div>
-                          <h2 className="text-lg font-medium">Customize your service</h2>
-                        </div>
-                        <p className="pl-7 text-sm">
-                          Choose the cleaning type and add any notes, photos, or instructions.
-                        </p>
-                      </div>
-                      <div className="relative flex-shrink-0 size-20">
-                        <Image
-                          src="/broom-dustpan.png"
-                          alt="Broom and dustpan illustration"
                           fill
                           className="object-contain"
                         />
@@ -608,8 +608,8 @@ export default function BookingPage() {
                 <div className="space-y-4">
                   <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
                     <BookingFormOption
-                      isSelected={selectedPricingParams.type === 'flat' && selectedPricingParams.bedrooms === 1}
-                      onClick={() => handleServiceCategorySelect('default', { type: 'flat', bedrooms: 1 })}
+                      isSelected={selectedPricingParams?.type === 'flat' && selectedPricingParams?.bedrooms === 1}
+                      onClick={() => handleSelectServiceCategory('default', { type: 'flat', bedrooms: 1 })}
                     >
                       <div className="relative mb-4 aspect-square size-16">
                         <Image
@@ -624,8 +624,8 @@ export default function BookingPage() {
                     </BookingFormOption>
 
                     <BookingFormOption
-                      isSelected={selectedPricingParams.type === 'flat' && selectedPricingParams.bedrooms === 2}
-                      onClick={() => handleServiceCategorySelect('default', { type: 'flat', bedrooms: 2 })}
+                      isSelected={selectedPricingParams?.type === 'flat' && selectedPricingParams?.bedrooms === 2}
+                      onClick={() => handleSelectServiceCategory('default', { type: 'flat', bedrooms: 2 })}
                     >
                       <div className="relative mb-4 aspect-square size-16">
                         <Image
@@ -640,8 +640,8 @@ export default function BookingPage() {
                     </BookingFormOption>
 
                     <BookingFormOption
-                      isSelected={selectedPricingParams.type === 'flat' && selectedPricingParams.bedrooms === 3}
-                      onClick={() => handleServiceCategorySelect('default', { type: 'flat', bedrooms: 3 })}
+                      isSelected={selectedPricingParams?.type === 'flat' && selectedPricingParams?.bedrooms === 3}
+                      onClick={() => handleSelectServiceCategory('default', { type: 'flat', bedrooms: 3 })}
                     >
                       <div className="relative mb-4 aspect-square size-16">
                         <Image
@@ -656,8 +656,8 @@ export default function BookingPage() {
                     </BookingFormOption>
 
                     <BookingFormOption
-                      isSelected={selectedPricingParams.type === 'flat' && selectedPricingParams.bedrooms === 4}
-                      onClick={() => handleServiceCategorySelect('default', { type: 'flat', bedrooms: 4 })}
+                      isSelected={selectedPricingParams?.type === 'flat' && selectedPricingParams?.bedrooms === 4}
+                      onClick={() => handleSelectServiceCategory('default', { type: 'flat', bedrooms: 4 })}
                     >
                       <div className="relative mb-4 aspect-square size-16">
                         <Image
@@ -688,7 +688,7 @@ export default function BookingPage() {
                     <BookingFormOption
                       isSelected={selectedServiceCategory === 'move-in-out'}
                       onClick={() => {
-                        handleServiceCategorySelect('move-in-out', selectedPricingParams)
+                        handleSelectServiceCategory('move-in-out', null)
                       }}
                     >
                       <div className="flex items-center justify-between w-full">
@@ -708,7 +708,7 @@ export default function BookingPage() {
 
                     <BookingFormOption
                       isSelected={selectedServiceCategory === 'custom'}
-                      onClick={() => handleServiceCategorySelect('custom', selectedPricingParams)}
+                      onClick={() => handleSelectServiceCategory('custom', null)}
                     >
                       <div className="flex items-center justify-between w-full">
                         <div className="flex flex-col">
@@ -727,7 +727,7 @@ export default function BookingPage() {
 
                     <BookingFormOption
                       isSelected={selectedServiceCategory === 'mansion'}
-                      onClick={() => handleServiceCategorySelect('mansion', selectedPricingParams)}
+                      onClick={() => handleSelectServiceCategory('mansion', null)}
                     >
                       <div className="flex items-center justify-between w-full">
                         <div className="flex flex-col">
@@ -763,7 +763,7 @@ export default function BookingPage() {
               </CardHeader>
               <CardContent className="px-6">
                 <FormField
-                  control={control}
+                  control={form.control}
                   name="pricingParams.hours"
                   render={({ field }) => (
                     <FormItem>
@@ -776,7 +776,7 @@ export default function BookingPage() {
                               isSelected={field.value === value}
                               onClick={() => {
                                 field.onChange(value)
-                                updatePrice({ serviceCategory: selectedServiceCategory, pricingParams: { type: 'hourly', hours: value } })
+                                updatePrice(selectedServiceCategory, selectedFrequency, { type: 'hourly', hours: value })
                               }}
                             >
                               <span className="text-center font-medium">{`${value} Hours`}</span>
@@ -803,7 +803,7 @@ export default function BookingPage() {
               </CardHeader>
               <CardContent className="space-y-6 px-6">
                 <FormField
-                  control={control}
+                  control={form.control}
                   name="date"
                   render={({ field }) => (
                     <FormItem className="flex flex-col">
@@ -825,7 +825,7 @@ export default function BookingPage() {
 
                 {selectedDate && (
                   <FormField
-                    control={control}
+                    control={form.control}
                     name="arrivalWindow"
                     render={({ field }) => (
                       <FormItem>
@@ -851,22 +851,17 @@ export default function BookingPage() {
                   />
                 )}
 
-                {(selectedServiceCategory !== 'move-in-out') && (
+                {(selectedServiceCategory && selectedPricingParams && selectedServiceCategory !== 'move-in-out') && (
                   <FormField
                     control={form.control}
                     name="frequency"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Frequency</FormLabel>
-                        <FormDescription>
-                          {selectedServiceCategory === 'default'
-                            ? 'Receive up to 60% off after first visit'
-                            : 'Receive up to 20% off after first visit'}
-                        </FormDescription>
                         <Select
                           onValueChange={(value) => {
                             field.onChange(value)
-                            updatePrice({ serviceCategory: selectedServiceCategory, frequency: value as BookingFrequency })
+                            updatePrice(selectedServiceCategory, value as BookingFrequency, selectedPricingParams)
                           }}
                           defaultValue={field.value}
                         >
