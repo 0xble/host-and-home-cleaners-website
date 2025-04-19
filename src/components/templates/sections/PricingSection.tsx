@@ -26,7 +26,7 @@ function PricingCard({
   return (
     <div
       className={cn(
-        'mx-auto flex max-w-xl flex-col gap-4 rounded-lg border border-gray-200 bg-white p-6 text-center shadow xl:max-w-lg xl:p-8',
+        'mx-auto flex max-w-xl flex-col gap-4 rounded-lg border border-neutral-400 bg-white p-6 text-center shadow xl:max-w-lg xl:p-8',
         highlighted && 'border-primary-500 ',
       )}
     >
@@ -37,18 +37,18 @@ function PricingCard({
           </span>
         </div>
       )}
-      <h3 className="text-gray-900">{name}</h3>
+      <h3 className="text-shade">{name}</h3>
       <p className="text-sm">{estimatedTime}</p>
-      <span className="text-5xl text-gray-900">
+      <span className="text-5xl text-shade">
         {estimatedPrice}
       </span>
       <p className="text-xs">*starting at price</p>
       <TrackedLink
         href={ROUTES.BOOKING.href}
         className={cn(
-          'my-4 rounded-lg bg-gray-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:ring-4 focus:ring-gray-200',
+          'my-4 rounded-lg bg-shade px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-neutral-900 focus:ring-4 focus:ring-neutral-400',
           highlighted
-          && 'bg-primary-700 hover:bg-primary-800 focus:ring-primary-200',
+          && 'bg-primary hover:bg-primary-800 focus:ring-primary-200',
         )}
         eventName={PixelEvent.SCHEDULE}
         eventParams={{ service_type: name }}
@@ -59,7 +59,7 @@ function PricingCard({
       <h4 className="text-lg font-medium">
         {includes || 'Includes'}
       </h4>
-      <ul className="space-y-4 text-left text-gray-900">
+      <ul className="space-y-4 text-left text-shade">
         {features}
       </ul>
     </div>
@@ -82,7 +82,7 @@ export default function PricingSection({ heading, description, pricing }: Pricin
     <div className="bg-white">
       <div className="mx-auto px-4 py-8 sm:py-16 lg:max-w-screen-lg lg:px-6 xl:max-w-screen-2xl">
         <div className="mx-auto mb-8 max-w-screen-md text-center lg:mb-12">
-          <h2 className="mb-4 tracking-tight text-gray-900">{heading}</h2>
+          <h2 className="mb-4 tracking-tight text-shade">{heading}</h2>
           {typeof description === 'string' ? <p className="text-left text-base sm:text-lg">{description}</p> : description}
         </div>
         <div className="grid gap-8 sm:grid-cols-2 sm:gap-10 xl:grid-cols-4 xl:gap-4">

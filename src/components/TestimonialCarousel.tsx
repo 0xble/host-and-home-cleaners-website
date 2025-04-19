@@ -48,14 +48,14 @@ function TestimonialFigure({
 }) {
   return (
     <figure className="flex flex-col items-center justify-center rounded-t-lg bg-white p-3 text-center sm:p-4 md:rounded-t-none md:rounded-ss-lg md:p-8">
-      <blockquote className="mx-auto mb-3 max-w-full text-sm text-gray-500 sm:mb-4 sm:text-base md:max-w-2xl lg:mb-8">
-        <h3 className="text-base text-gray-900 sm:text-lg">{heading}</h3>
+      <blockquote className="mx-auto mb-3 max-w-full text-sm text-muted-foreground sm:mb-4 sm:text-base md:max-w-2xl lg:mb-8">
+        <h3 className="text-base text-shade sm:text-lg">{heading}</h3>
         <p className="my-2 sm:my-4">{text}</p>
       </blockquote>
       <figcaption className="flex items-center justify-center">
         <div className="text-center text-sm font-medium sm:text-base">
           <div>{name}</div>
-          <div className="text-xs text-gray-500 sm:text-sm">{label}</div>
+          <div className="text-xs text-muted-foreground sm:text-sm">{label}</div>
         </div>
       </figcaption>
     </figure>

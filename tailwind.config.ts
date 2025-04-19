@@ -39,12 +39,12 @@ const config = {
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         shade: {
-          light: '#FFFFFF',
           DEFAULT: '#222222',
-          5: '#2222220D',
-          30: '#2222224D',
+          light: '#FFFFFF',
+          dark: '#222222',
         },
         neutral: {
+          DEFAULT: '#5E5E5E',
           50: '#F7F7F7',
           100: '#EBEBEB',
           200: '#DDDDDD',
@@ -53,9 +53,11 @@ const config = {
           500: '#B0B0B0',
           600: '#717171',
           700: '#5E5E5E',
+          800: '#4B4B4B',
+          900: '#383838',
         },
         primary: {
-          DEFAULT: '#FF385C',
+          DEFAULT: '#FF385C', // Same as 700
           50: '#FFF0F1',
           100: '#FFE2E5',
           200: '#FFE2E5',
@@ -135,6 +137,13 @@ const config = {
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
+      },
+      gradientColorStops: {
+        gradient: {
+          start: '#D33753',
+          middle: '#D13660',
+          end: '#C72D65',
+        },
       },
     },
   },

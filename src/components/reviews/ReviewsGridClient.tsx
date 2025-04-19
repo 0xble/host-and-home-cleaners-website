@@ -7,12 +7,13 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
 import { tz } from '@date-fns/tz'
 import { compareDesc, formatDistanceToNow, hoursToSeconds } from 'date-fns'
-import { AnimatePresence, motion } from 'framer-motion'
 
+import { AnimatePresence, motion } from 'framer-motion'
 import { ChevronLeft, ChevronRight, Star } from 'lucide-react'
 import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 import { round } from 'remeda'
+import { Button } from '../ui/button'
 
 type ValidReview = Omit<Review, 'rating' | 'text' | 'date' | 'author'> & {
   rating: number
@@ -83,7 +84,7 @@ function AuthorSection({ review, url, className }: { review: ValidReview, url?: 
             className="size-4"
           />
         </div>
-        <div className="text-xs font-light text-gray-500 sm:text-sm">
+        <div className="text-xs font-light text-muted-foreground sm:text-sm">
           {formatDistanceToNow(review.date, { addSuffix: true, in: tz('America/Los_Angeles') })}
         </div>
       </div>
@@ -125,7 +126,7 @@ const AVATAR_COLORS = [
   'bg-pink-500',
   'bg-rose-500',
   'bg-slate-500',
-  'bg-gray-500',
+  'bg-muted-foreground',
   'bg-zinc-500',
   'bg-neutral-500',
   'bg-stone-500',
@@ -240,11 +241,11 @@ function getTabStyles(isActive: boolean) {
     tab: cn(
       'flex shrink-0 items-center gap-2 border-b-2 px-3 py-2 text-sm font-medium transition-colors whitespace-nowrap',
       isActive
-        ? 'border-primary-700 text-primary-700 hover:bg-gray-50'
-        : 'border-transparent text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700',
+        ? 'border-primary text-primary hover:bg-gray-50'
+        : 'border-transparent text-muted-foreground hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700',
     ),
     count: cn(
-      isActive ? 'text-primary-700' : 'text-gray-400',
+      isActive ? 'text-primary' : 'text-gray-400',
     ),
   }
 }
@@ -395,7 +396,7 @@ function PlatformRatingTabs({
             onScroll={handleScroll}
             className="no-scrollbar flex max-w-full overflow-x-auto px-6 py-3 sm:px-4 sm:py-2 [&::-webkit-scrollbar]:hidden"
           >
-            <div className="flex gap-3 border-b border-gray-200 sm:gap-2">
+            <div className="flex gap-3 border-b border-neutral-400 sm:gap-2">
               {allPlatforms.map(platform => renderTab(platform))}
             </div>
           </div>
@@ -559,13 +560,13 @@ export default function ReviewsGridClient({ location }: ReviewsGridClientProps) 
             animate={{ opacity: 1 }}
             transition={{ duration: 0.2 }}
           >
-            <button
-              className="my-4 rounded-lg bg-primary-700 px-4 py-2 text-center text-sm font-medium text-white hover:bg-primary-800 focus:ring-4 focus:ring-primary-200 sm:px-5 sm:py-2.5"
+            <Button
+              className=""
               type="button"
               onClick={handleViewMore}
             >
               View More
-            </button>
+            </Button>
           </motion.div>
         )}
       </div>

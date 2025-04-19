@@ -34,7 +34,7 @@ export default function CTASection(props: CTASectionProps) {
         />
       )}
       <div className={cn('mt-4 flex flex-col gap-6 md:mt-0', !showImage ? 'md:max-w-2xl md:mx-auto md:text-center' : '')}>
-        <h2 className="tracking-tight text-gray-900 sm:text-5xl">{heading}</h2>
+        <h2 className="tracking-tight text-shade sm:text-5xl">{heading}</h2>
         <p className="text-left">{body}</p>
         {
           location === null

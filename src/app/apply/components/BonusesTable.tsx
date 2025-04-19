@@ -6,7 +6,7 @@ const bonuses = [
   //   bonus: '$10 per 5-star review',
   //   icon: (
   //     <svg
-  //       className='mr-2 size-5 fill-current text-primary-700'
+  //       className='mr-2 size-5 fill-current text-primary'
   //       xmlns='http://www.w3.org/2000/svg'
   //       enableBackground='new 0 0 24 24'
   //       viewBox='0 0 24 24'
@@ -24,7 +24,7 @@ const bonuses = [
     bonus: '$100 every month',
     icon: (
       <svg
-        className="mr-2 size-5 fill-current text-primary-700"
+        className="mr-2 size-5 fill-current text-primary"
         xmlns="http://www.w3.org/2000/svg"
         enableBackground="new 0 0 24 24"
         viewBox="0 0 24 24"
@@ -42,7 +42,7 @@ const bonuses = [
     bonus: '$20 per job',
     icon: (
       <svg
-        className="mr-2 size-5 fill-current text-primary-700"
+        className="mr-2 size-5 fill-current text-primary"
         xmlns="http://www.w3.org/2000/svg"
         enableBackground="new 0 0 24 24"
         viewBox="0 0 24 24"
@@ -60,7 +60,7 @@ const bonuses = [
     bonus: '$50 per referral',
     icon: (
       <svg
-        className="mr-2 size-5 fill-current text-primary-700"
+        className="mr-2 size-5 fill-current text-primary"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 66 66"
         id="handshake"
@@ -75,7 +75,7 @@ const bonuses = [
   //   bonus: '1.25x pay per job past 5pm',
   //   icon: (
   //     <svg
-  //       className='mr-2 h-5 w-5 fill-current text-primary-700'
+  //       className='mr-2 h-5 w-5 fill-current text-primary'
   //       xmlns='http://www.w3.org/2000/svg'
   //       enableBackground='new 0 0 24 24'
   //       viewBox='0 0 24 24'
@@ -95,7 +95,7 @@ const bonuses = [
   //   bonus: '0.75x pay per hour overtime',
   //   icon: (
   //     <svg
-  //       className='mr-2 h-5 w-5 fill-current text-primary-700'
+  //       className='mr-2 h-5 w-5 fill-current text-primary'
   //       xmlns='http://www.w3.org/2000/svg'
   //       viewBox='0 0 66 66'
   //       id='mop'
@@ -113,20 +113,20 @@ export default function BonusesTable() {
       className={cn('mx-auto max-w-screen-md overflow-x-auto')}
     >
       <div className="overflow-hidden">
-        <div className="grid grid-cols-3 gap-4 border-b border-gray-200 p-4 text-xs font-medium text-gray-900 md:grid-cols-3 md:text-sm">
+        <div className="grid grid-cols-3 gap-4 border-b border-neutral-400 p-4 text-xs font-medium text-shade md:grid-cols-3 md:text-sm">
           <div className="col-span-2">Criteria</div>
           <div>Bonus</div>
         </div>
         {bonuses.map(({ criteria, bonus, icon }) => (
           <div
             key={criteria}
-            className="grid grid-cols-3 gap-4 border-b border-gray-200 p-4 text-xs md:grid-cols-3 md:text-sm"
+            className="grid grid-cols-3 gap-4 border-b border-neutral-400 p-4 text-xs md:grid-cols-3 md:text-sm"
           >
-            <div className="col-span-2 flex text-gray-900">
+            <div className="col-span-2 flex text-shade">
               {icon}
               {criteria}
             </div>
-            <div className="text-gray-500">{bonus}</div>
+            <div className="text-muted-foreground">{bonus}</div>
           </div>
         ))}
       </div>

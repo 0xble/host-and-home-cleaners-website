@@ -449,7 +449,7 @@ export default function BookingPage() {
                       <div className="text-lg font-medium">1</div>
                       <h2 className="text-lg font-medium">Tell us about your property</h2>
                     </div>
-                    <p className="pl-7 text-base text-gray-600">
+                    <p className="pl-7 text-base">
                       Share some quick info—like the size of your home, what type of cleaning you need, and any special requests.
                     </p>
                   </div>
@@ -459,7 +459,7 @@ export default function BookingPage() {
                       <div className="text-lg font-medium">2</div>
                       <h2 className="text-lg font-medium">Customize your service</h2>
                     </div>
-                    <p className="pl-7 text-base text-gray-600">
+                    <p className="pl-7 text-base">
                       Choose the cleaning package that fits your needs. Add notes, photos, or instructions for us to best serve you.
                     </p>
                   </div>
@@ -469,7 +469,7 @@ export default function BookingPage() {
                       <div className="text-lg font-medium">3</div>
                       <h2 className="text-lg font-medium">Book and relax</h2>
                     </div>
-                    <p className="pl-7 text-base text-gray-600">
+                    <p className="pl-7 text-base">
                       Pick a time that works for you, confirm the details, and we'll handle the rest.
                     </p>
                   </div>
@@ -535,9 +535,9 @@ export default function BookingPage() {
                 </div>
 
                 <div className="relative flex items-center py-2">
-                  <div className="grow border-t border-gray-300"></div>
-                  <span className="mx-4 shrink text-gray-600">OR</span>
-                  <div className="grow border-t border-gray-300"></div>
+                  <div className="grow border-t border-neutral-400"></div>
+                  <span className="mx-4 shrink text-muted-foreground">OR</span>
+                  <div className="grow border-t border-neutral-400"></div>
                 </div>
 
                 {/* Specialized Services */}

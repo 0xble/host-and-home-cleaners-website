@@ -22,7 +22,7 @@ export default function PackageComparisonTable({
   return (
     <div id="detailed-pricing" className={cn('w-full overflow-x-auto')}>
       <div className="overflow-hidden">
-        <div className="grid grid-cols-6 gap-x-6 border-b border-gray-200 p-4 font-medium text-gray-900 sm:grid-cols-7 sm:gap-x-16">
+        <div className="grid grid-cols-6 gap-x-6 border-b border-neutral-400 p-4 font-medium text-shade sm:grid-cols-7 sm:gap-x-16">
           <div className="col-span-2 text-sm sm:col-span-3 sm:text-xl">
             {title}
           </div>
@@ -41,7 +41,7 @@ export default function PackageComparisonTable({
         {inclusions.map(({ name, services }) => (
           <div
             key={name}
-            className="grid grid-cols-6 gap-x-6 border-b border-gray-200 p-4 text-xs text-gray-900 sm:grid-cols-7 sm:gap-x-16"
+            className="grid grid-cols-6 gap-x-6 border-b border-neutral-400 p-4 text-xs text-shade sm:grid-cols-7 sm:gap-x-16"
           >
             <div className="col-span-2 flex items-center text-sm sm:col-span-3">
               {name}

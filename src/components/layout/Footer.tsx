@@ -40,7 +40,7 @@ interface FooterColumnProps {
 function FooterColumn({ title, links, columns = 1 }: FooterColumnProps) {
   return (
     <div>
-      <h4 className="mb-6 text-sm uppercase text-gray-900">
+      <h4 className="mb-6 text-sm uppercase text-shade">
         {title}
       </h4>
       <div
@@ -55,7 +55,7 @@ function FooterColumn({ title, links, columns = 1 }: FooterColumnProps) {
         {chunk(links, Math.ceil(links.length / columns)).map(linkGroup => (
           <ul
             key={`${title}-${linkGroup.map(link => link.name).join('-')}`}
-            className="text-gray-500"
+            className="text-muted-foreground"
           >
             {linkGroup.map(link => (
               <li key={link.href} className="mb-4">
@@ -95,10 +95,10 @@ function SocialLinks({ location }: SocialLinksProps) {
 
   return (
     <>
-      <h4 className="mb-6 text-sm uppercase text-gray-900">
+      <h4 className="mb-6 text-sm uppercase text-shade">
         Socials
       </h4>
-      <ul className="flex items-center gap-4 text-gray-500">
+      <ul className="flex items-center gap-4 text-muted-foreground">
         {Object.values(SOCIAL_LINKS).map(social => (
           <SocialIcon
             key={social.name}
@@ -130,7 +130,7 @@ export default function Footer({ location }: FooterProps) {
                 case 'MYRTLE_BEACH':
                   return (
                     <>
-                      <h4 className="mb-6 text-sm uppercase text-gray-900">
+                      <h4 className="mb-6 text-sm uppercase text-shade">
                         Contacts
                       </h4>
                       <ul className="mb-8 text-gray-700">
@@ -142,7 +142,7 @@ export default function Footer({ location }: FooterProps) {
                         </li>
                         <li className="mb-4">
                           <a
-                            className="text-lg font-extralight hover:text-primary-700 max-xs:text-sm"
+                            className="text-lg font-extralight hover:text-primary max-xs:text-sm"
                             href={`mailto:${EMAIL.MYRTLE_BEACH}`}
                           >
                             {EMAIL.MYRTLE_BEACH}
@@ -154,7 +154,7 @@ export default function Footer({ location }: FooterProps) {
                 case 'HONOLULU':
                   return (
                     <>
-                      <h4 className="mb-6 text-sm uppercase text-gray-900">
+                      <h4 className="mb-6 text-sm uppercase text-shade">
                         Contacts
                       </h4>
                       <ul className="mb-8 text-gray-700">
@@ -163,7 +163,7 @@ export default function Footer({ location }: FooterProps) {
                         </li>
                         <li className="mb-4">
                           <a
-                            className="text-lg font-extralight hover:text-primary-700 max-xs:text-sm"
+                            className="text-lg font-extralight hover:text-primary max-xs:text-sm"
                             href={`mailto:${EMAIL.HONOLULU}`}
                           >
                             {EMAIL.HONOLULU}
@@ -175,13 +175,13 @@ export default function Footer({ location }: FooterProps) {
                 case null:
                   return (
                     <>
-                      <h4 className="mb-6 text-sm uppercase text-gray-900">
+                      <h4 className="mb-6 text-sm uppercase text-shade">
                         Contacts
                       </h4>
                       <ul className="mb-8 text-gray-700">
                         <li className="mb-4">
                           <a
-                            className="text-lg font-extralight hover:text-primary-700 max-xs:text-sm"
+                            className="text-lg font-extralight hover:text-primary max-xs:text-sm"
                             href={`mailto:${EMAIL.SUPPORT}`}
                           >
                             {EMAIL.SUPPORT}
@@ -194,7 +194,7 @@ export default function Footer({ location }: FooterProps) {
             })()}
 
             {/* Business Hours */}
-            <h4 className="mb-6 text-sm uppercase text-gray-900">
+            <h4 className="mb-6 text-sm uppercase text-shade">
               Business Hours
             </h4>
             <ul className="mb-8 text-gray-700">
@@ -259,10 +259,10 @@ export default function Footer({ location }: FooterProps) {
             ]}
           />
         </div>
-        <hr className="my-6 border-gray-200 sm:mx-auto md:my-8" />
+        <hr className="my-6 border-neutral-400 sm:mx-auto md:my-8" />
         <div className="pb-10 pt-6 text-center md:p-0">
           <Brand location={location} />
-          <span className="mt-2 block text-center text-sm text-gray-500">
+          <span className="mt-2 block text-center text-sm text-muted-foreground">
             Copyright ©
             {' '}
             {new Date().getFullYear()}

@@ -71,7 +71,7 @@ export function SocialIcon({ href, name, className }: SocialIconProps) {
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className={cn('text-gray-500 hover:text-primary-700', className)}
+      className={cn('text-muted-foreground hover:text-primary', className)}
       aria-label={name}
     >
       <svg

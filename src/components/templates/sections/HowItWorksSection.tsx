@@ -61,8 +61,8 @@ export default function HowItWorksSection({ heading, steps }: HowItWorksSectionP
   return (
     <div className="bg-white">
       <div className="mx-auto max-w-screen-xl px-4 py-8 lg:px-6 lg:py-16">
-        <div className="text-center text-gray-900">
-          <h2 className="mb-4 tracking-tight text-gray-900">{heading}</h2>
+        <div className="text-center text-shade">
+          <h2 className="mb-4 tracking-tight text-shade">{heading}</h2>
         </div>
         <div className="mt-12 grid gap-6 font-light md:grid-cols-3 lg:mt-14 lg:gap-12">
           {steps.map(async (step, index) => {

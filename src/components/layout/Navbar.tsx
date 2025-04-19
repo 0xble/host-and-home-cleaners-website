@@ -62,8 +62,8 @@ function NavbarLink({
       className={cn(
         'block rounded py-2 pl-3 pr-4',
         isActive
-          ? 'text-white bg-primary-700 lg:bg-transparent lg:text-primary-700'
-          : 'text-gray-900 hover:bg-gray-100',
+          ? 'text-white bg-primary lg:bg-transparent lg:text-primary'
+          : 'text-shade hover:bg-gray-100',
         className,
       )}
       eventName={href === ROUTES.BOOKING.href ? PixelEvent.SCHEDULE : 'NavClick'}
@@ -111,7 +111,7 @@ export default function Navbar({
               <SheetTrigger asChild>
                 <button
                   type="button"
-                  className="inline-flex size-10 items-center justify-center rounded-lg p-2 text-sm text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 lg:hidden"
+                  className="inline-flex size-10 items-center justify-center rounded-lg p-2 text-sm text-muted-foreground hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-neutral-400 lg:hidden"
                 >
                   <span className="sr-only">Open main menu</span>
                   <Bars3Icon className="size-6" />
@@ -129,7 +129,7 @@ export default function Navbar({
                           <DropdownMenuTrigger asChild>
                             <button
                               type="button"
-                              className="flex w-full items-center justify-between rounded px-3 py-2 text-gray-900 hover:bg-gray-100 md:border-0 md:hover:bg-transparent md:hover:text-primary-700"
+                              className="flex w-full items-center justify-between rounded px-3 py-2 text-shade hover:bg-gray-100 md:border-0 md:hover:bg-transparent md:hover:text-primary"
                             >
                               {ROUTES.ABOUT.name}
                               <svg
@@ -206,7 +206,7 @@ export default function Navbar({
                           <DropdownMenuTrigger asChild>
                             <button
                               type="button"
-                              className="flex w-full items-center justify-between rounded px-3 py-2 text-gray-900 hover:bg-gray-100 md:border-0 md:hover:bg-transparent md:hover:text-primary-700"
+                              className="flex w-full items-center justify-between rounded px-3 py-2 text-shade hover:bg-gray-100 md:border-0 md:hover:bg-transparent md:hover:text-primary"
                             >
                               Services
                               <svg
@@ -254,7 +254,7 @@ export default function Navbar({
                           <DropdownMenuTrigger asChild>
                             <button
                               type="button"
-                              className="flex w-full items-center justify-between rounded px-3 py-2 text-gray-900 hover:bg-gray-100 md:border-0 md:hover:bg-transparent md:hover:text-primary-700"
+                              className="flex w-full items-center justify-between rounded px-3 py-2 text-shade hover:bg-gray-100 md:border-0 md:hover:bg-transparent md:hover:text-primary"
                             >
                               Locations
                               <svg
@@ -360,7 +360,7 @@ export default function Navbar({
                     {/* CTA Button */}
                     <div className="mt-6 flex justify-center">
                       <BookNowButton
-                        className="z-50 rounded-lg border-b border-gray-200 px-5 py-3 text-sm"
+                        className="z-50 rounded-lg border-b border-neutral-400 px-5 py-3 text-sm"
                         size="sm"
                       />
                     </div>
@@ -368,11 +368,11 @@ export default function Navbar({
                   <div className="mt-4">
                     <div className="space-y-6">
                       {/* Divider */}
-                      <div className="h-px bg-gray-200" />
+                      <div className="h-px bg-neutral-400" />
 
                       {/* Contacts */}
                       <div>
-                        <h4 className="mb-4 text-sm uppercase text-gray-900">Contacts</h4>
+                        <h4 className="mb-4 text-sm uppercase text-shade">Contacts</h4>
                         <ul className="mb-4 text-gray-700">
                           {phone && (
                             <li className="mb-4">
@@ -381,7 +381,7 @@ export default function Navbar({
                           )}
                           <li className="mb-4">
                             <a
-                              className="text-lg font-extralight hover:text-primary-700"
+                              className="text-lg font-extralight hover:text-primary"
                               href={`mailto:${location ? EMAIL[location] : EMAIL.SUPPORT}`}
                             >
                               Email Us
@@ -393,7 +393,7 @@ export default function Navbar({
                       {/* Social Links */}
                       {location && (
                         <div>
-                          <h4 className="mb-4 text-sm uppercase text-gray-900">Socials</h4>
+                          <h4 className="mb-4 text-sm uppercase text-shade">Socials</h4>
                           <ul className="flex items-center gap-4">
                             {Object.values(SOCIAL_LINKS).map(social => (
                               <SocialIcon
@@ -422,14 +422,14 @@ export default function Navbar({
           >
             <ul className="mt-4 flex flex-col rounded-lg border bg-white p-4 font-light lg:mt-0 lg:flex-row lg:space-x-8 lg:border-0 lg:p-0 rtl:space-x-reverse">
               <li>
-                <NavbarLink className="lg:p-0 lg:hover:bg-transparent lg:hover:text-primary-700" href={ROUTES.HOME.href}>{ROUTES.HOME.name}</NavbarLink>
+                <NavbarLink className="lg:p-0 lg:hover:bg-transparent lg:hover:text-primary" href={ROUTES.HOME.href}>{ROUTES.HOME.name}</NavbarLink>
               </li>
               <li>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <button
                       type="button"
-                      className="flex items-center justify-between rounded px-3 py-2 text-gray-900 hover:bg-gray-100 md:border-0 md:hover:bg-transparent md:hover:text-primary-700 lg:p-0"
+                      className="flex items-center justify-between rounded px-3 py-2 text-shade hover:bg-gray-100 md:border-0 md:hover:bg-transparent md:hover:text-primary lg:p-0"
                     >
                       {ROUTES.ABOUT.name}
                       <svg
@@ -506,7 +506,7 @@ export default function Navbar({
                   <DropdownMenuTrigger asChild>
                     <button
                       type="button"
-                      className="flex items-center justify-between rounded px-3 py-2 text-gray-900 hover:bg-gray-100 md:border-0 md:hover:bg-transparent md:hover:text-primary-700 lg:p-0"
+                      className="flex items-center justify-between rounded px-3 py-2 text-shade hover:bg-gray-100 md:border-0 md:hover:bg-transparent md:hover:text-primary lg:p-0"
                     >
                       Services
                       <svg
@@ -556,7 +556,7 @@ export default function Navbar({
                   <DropdownMenuTrigger asChild>
                     <button
                       type="button"
-                      className="flex items-center justify-between rounded px-3 py-2 text-gray-900 hover:bg-gray-100 md:border-0 md:hover:bg-transparent md:hover:text-primary-700 lg:p-0"
+                      className="flex items-center justify-between rounded px-3 py-2 text-shade hover:bg-gray-100 md:border-0 md:hover:bg-transparent md:hover:text-primary lg:p-0"
                     >
                       Locations
                       <svg
@@ -656,7 +656,7 @@ export default function Navbar({
                 </DropdownMenu>
               </li>
               <li>
-                <NavbarLink className="lg:p-0 lg:hover:bg-transparent lg:hover:text-primary-700" href={ROUTES.LOGIN.href}>{ROUTES.LOGIN.name}</NavbarLink>
+                <NavbarLink className="lg:p-0 lg:hover:bg-transparent lg:hover:text-primary" href={ROUTES.LOGIN.href}>{ROUTES.LOGIN.name}</NavbarLink>
               </li>
             </ul>
           </div>

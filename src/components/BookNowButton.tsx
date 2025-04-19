@@ -26,7 +26,7 @@ export default function BookNowButton({
   const searchParams = useSearchParams()
 
   // Base styles for the button
-  const baseStyles = 'inline-flex items-center justify-center rounded-xl bg-primary-700 text-center font-medium text-white hover:bg-primary-800 focus:ring-4 focus:ring-primary-300'
+  const baseStyles = 'inline-flex items-center justify-center rounded-xl bg-primary text-center font-medium text-white hover:bg-primary-800 focus:ring-4 focus:ring-primary-300'
 
   // Size-specific styles
   const sizeStyles = {

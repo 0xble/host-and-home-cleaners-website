@@ -13,7 +13,7 @@ import BonusesTable from './components/BonusesTable'
 const badges = [
   <svg
     key="Indeed"
-    className="w-40 fill-current text-gray-500"
+    className="w-40 fill-current text-muted-foreground"
     version="1.1"
     id="Layer_1"
     xmlns="http://www.w3.org/2000/svg"
@@ -32,7 +32,7 @@ const badges = [
   </svg>,
   <svg
     key="Glassdoor"
-    className="w-40 fill-current text-gray-500"
+    className="w-40 fill-current text-muted-foreground"
     viewBox="0 0 1200 360"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -45,7 +45,7 @@ const badges = [
   </svg>,
   <svg
     key="Care.com"
-    className="w-40 fill-current text-gray-500"
+    className="w-40 fill-current text-muted-foreground"
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 145 40"
   >
@@ -82,7 +82,7 @@ const badges = [
   </svg>,
   <svg
     key="Google"
-    className="w-40 fill-current text-gray-500"
+    className="w-40 fill-current text-muted-foreground"
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 272 92"
     width="272"
@@ -119,7 +119,7 @@ export default function Apply() {
               <h1 className="mb-4 text-4xl leading-none tracking-tight sm:text-5xl xl:text-6xl">
                 Cleaners wanted!
               </h1>
-              <h3 className="mb-4 text-gray-800">
+              <h3 className="mb-4">
                 Let&apos;s get you
                 {' '}
                 <mark>more booking</mark>
@@ -139,7 +139,7 @@ export default function Apply() {
               </p>
               <Link
                 href="#form"
-                className="ml-12 items-center justify-center place-self-center rounded-xl bg-primary-700 p-4 text-center font-medium text-white hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 lg:mr-3 lg:px-6 lg:py-4 lg:text-xl"
+                className="ml-12 items-center justify-center place-self-center rounded-xl bg-primary p-4 text-center font-medium text-white hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 lg:mr-3 lg:px-6 lg:py-4 lg:text-xl"
               >
                 Apply now
               </Link>
@@ -155,10 +155,10 @@ export default function Apply() {
 
         {/* Bonuses */}
         <section>
-          <h2 className="mb-4 text-center tracking-tight text-gray-900">
+          <h2 className="mb-4 text-center tracking-tight text-shade">
             Earn more with our bonuses
           </h2>
-          <p className="mb-20 text-center text-gray-500">
+          <p className="mb-20 text-center text-muted-foreground">
             We believe in recognizing and rewarding the hard work and dedication
             of our cleaning professionals.
           </p>
@@ -168,7 +168,7 @@ export default function Apply() {
         {/* Trust Badges */}
         <section className="bg-white">
           <div className="mx-auto max-w-screen-xl p-4 lg:py-8">
-            <div className="flex flex-col justify-between gap-12 text-gray-500 md:flex-row lg:mt-0">
+            <div className="flex flex-col justify-between gap-12 text-muted-foreground md:flex-row lg:mt-0">
               {badges.map(badge => (
                 <div key={badge.key} className="flex items-center justify-center">
                   {badge}
@@ -180,7 +180,7 @@ export default function Apply() {
 
         {/* Form */}
         <section className="text-center">
-          <h2 className="mb-4 text-center tracking-tight text-gray-900">
+          <h2 className="mb-4 text-center tracking-tight text-shade">
             Tell us about yourself!
           </h2>
           <p>

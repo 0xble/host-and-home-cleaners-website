@@ -28,7 +28,7 @@ export default function PhoneLink({ className, phone, children }: PhoneLinkProps
   return (
     <TrackedLink
       className={cn(
-        'text-base font-extralight hover:text-primary-700 lg:text-lg whitespace-nowrap',
+        'text-base font-extralight hover:text-primary lg:text-lg whitespace-nowrap',
         className,
       )}
       href={`tel:+${phone.plain}`}

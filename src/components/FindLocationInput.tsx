@@ -57,7 +57,7 @@ export default function FindLocationInput({
   return (
     <div className={cn('flex items-center justify-center gap-3', className)}>
       <svg
-        className="size-12 fill-current text-primary-700 lg:h-10"
+        className="size-12 fill-current text-primary lg:h-10"
         xmlns="http://www.w3.org/2000/svg"
         enableBackground="new -60.562 -37.846 1024 1024"
         viewBox="-60.562 -37.846 1024 1024"
@@ -951,7 +951,7 @@ export default function FindLocationInput({
             }}
           />
           <Button
-            className="inline-flex items-center justify-center rounded-lg bg-primary-700 p-4 text-center font-medium text-white hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 lg:mr-3"
+            className="inline-flex items-center justify-center rounded-lg bg-primary p-4 text-center font-medium text-white hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 lg:mr-3"
             type="submit"
           >
             Find

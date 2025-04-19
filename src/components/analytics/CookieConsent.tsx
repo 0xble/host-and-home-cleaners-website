@@ -144,7 +144,7 @@ export default function CookieConsent({ variant = 'default', forceShow = false }
                 </div>
               </div>
               <div className="border-border flex gap-2 border-t bg-slate-50 p-3 dark:bg-slate-900 sm:p-4">
-                <Button onClick={accept} className="w-full bg-primary-700 text-sm text-white hover:bg-primary-800 sm:text-base">
+                <Button onClick={accept} className="w-full bg-primary text-sm text-white hover:bg-primary-800 sm:text-base">
                   Accept
                 </Button>
                 <Button onClick={decline} className="w-full text-sm sm:text-base" variant="outline">
@@ -178,7 +178,7 @@ export default function CookieConsent({ variant = 'default', forceShow = false }
               </p>
             </div>
             <div className="mt-2 flex items-center gap-2 border-t bg-slate-50 px-3 py-2 dark:bg-slate-900 sm:p-3">
-              <Button onClick={accept} className="h-8 w-full rounded-full bg-primary-700 text-sm text-white hover:bg-primary-800 sm:h-9 sm:text-base">
+              <Button onClick={accept} className="h-8 w-full rounded-full bg-primary text-sm text-white hover:bg-primary-800 sm:h-9 sm:text-base">
                 accept
               </Button>
               <Button onClick={decline} className="h-8 w-full rounded-full text-sm sm:h-9 sm:text-base" variant="outline">

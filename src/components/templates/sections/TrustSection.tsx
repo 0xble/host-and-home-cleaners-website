@@ -26,7 +26,7 @@ export default function TrustSection({ className }: TrustSectionProps) {
   return (
     <section className={cn('bg-white ', className)}>
       <div className="mx-auto max-w-screen-xl p-4 lg:py-8">
-        <div className="mt-16 flex flex-col justify-between gap-12 text-gray-500 md:flex-row lg:mt-0">
+        <div className="mt-16 flex flex-col justify-between gap-12 text-muted-foreground md:flex-row lg:mt-0">
           {icons.map(({ icon, alt }) => (
             <div key={alt} className="flex items-center justify-center">
               <div className="relative h-10 w-40">

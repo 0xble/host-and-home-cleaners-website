@@ -80,7 +80,7 @@
   p,
   ol,
   ul {
-    @apply text-lg font-light text-neutral-600;
+    @apply text-lg font-light text-neutral;
   }
 
   b {
@@ -92,7 +92,7 @@
   }
 
   mark {
-    @apply bg-primary-400;
+    @apply bg-accent-light;
   }
 
   .prose h2 {

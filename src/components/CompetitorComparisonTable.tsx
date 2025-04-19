@@ -43,7 +43,7 @@ export default function CompetitorComparisonTable() {
   return (
     <div id="detailed-pricing" className={cn('w-full overflow-x-auto')}>
       <div className="overflow-hidden">
-        <div className="grid grid-cols-3 items-center justify-center gap-x-16 border-b border-gray-200 p-4 text-xs font-medium text-gray-900 md:text-sm">
+        <div className="grid grid-cols-3 items-center justify-center gap-x-16 border-b border-neutral-400 p-4 text-xs font-medium text-shade md:text-sm">
           <div className="flex items-center" />
           <div>{BUSINESS_NAME}</div>
           <div>Competitors</div>
@@ -53,7 +53,7 @@ export default function CompetitorComparisonTable() {
             <div
               key={criteria}
               className={cn(
-                'grid grid-cols-3 items-center justify-center gap-x-16 border-b border-gray-200 p-4 text-xs text-gray-900 md:text-sm',
+                'grid grid-cols-3 items-center justify-center gap-x-16 border-b border-neutral-400 p-4 text-xs text-shade md:text-sm',
                 // Remove border on last item
                 index === comparisonCriteria.length - 1 && 'border-b-0',
               )}

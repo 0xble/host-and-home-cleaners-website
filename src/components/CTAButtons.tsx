@@ -31,10 +31,10 @@ export default function CTAButtons({ className, phone, preventNavigation = false
           isExternal
           preventNavigation={preventNavigation}
         >
-          <PhoneIcon className="h-7 text-primary-700 hover:text-primary-800 lg:h-10" />
-          <div className="inline-flex flex-col rounded-lg text-start text-base font-medium text-gray-900">
+          <PhoneIcon className="h-7 text-primary hover:text-primary-800 lg:h-10" />
+          <div className="inline-flex flex-col rounded-lg text-start text-base font-medium text-shade">
             <p className="text-base">Or give us a call!</p>
-            <div className="text-base font-extralight hover:text-primary-700 xs:text-lg lg:text-xl">
+            <div className="text-base font-extralight hover:text-primary xs:text-lg lg:text-xl">
               {phone.formatted}
             </div>
           </div>
