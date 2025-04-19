@@ -24,7 +24,7 @@ const DEFAULT_EVENT_PARAMS = {}
  *
  * @example
  * // Basic usage with Next.js Link
- * <TrackedLink href="/booking" eventName={PixelEvent.SCHEDULE}>
+ * <TrackedLink href="/booking" eventName={PixelEvent.INITIATE_CHECKOUT}>
  *   Book Now
  * </TrackedLink>
  *

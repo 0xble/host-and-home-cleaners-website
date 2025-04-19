@@ -77,7 +77,7 @@ export default function Navbar({
             : 'text-gray-900 hover:bg-gray-100',
           className,
         )}
-        eventName={href === ROUTES.BOOKING.href ? PixelEvent.SCHEDULE : 'NavClick'}
+        eventName={href === ROUTES.BOOKING.href ? PixelEvent.INITIATE_CHECKOUT : 'NavClick'}
         eventParams={href === ROUTES.BOOKING.href ? {} : { path: href }}
         onClick={() => setIsOpen(false)}
         {...props}
