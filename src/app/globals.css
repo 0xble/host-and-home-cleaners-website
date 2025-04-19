@@ -96,7 +96,7 @@
   }
 
   .prose h2 {
-    @apply text-shade;
+    @apply font-extralight text-shade;
   }
 
   .prose h3 {
@@ -122,6 +122,6 @@
 
 @layer components {
   .link {
-    @apply text-primary hover:underline no-underline;
+    @apply text-primary hover:underline;
   }
 }

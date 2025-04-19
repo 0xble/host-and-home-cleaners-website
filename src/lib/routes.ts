@@ -51,7 +51,7 @@ export const ROUTES = {
   },
   BOOKING: {
     name: 'Booking',
-    href: `${BOOKINGKOALA_URL}/booknow/home_cleaning?form_id=1&coupon=SPRING10`,
+    href: `/book`,
     priority: 0.8,
     changeFrequency: 'weekly',
   },

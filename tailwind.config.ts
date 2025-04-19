@@ -1,6 +1,5 @@
 /* eslint-disable ts/no-require-imports */
 import type { Config } from 'tailwindcss'
-// import colors from 'tailwindcss/colors'
 
 const config = {
   content: [
@@ -58,25 +57,26 @@ const config = {
         primary: {
           DEFAULT: '#FF385C',
           50: '#FFF0F1',
-          100: '#FFF0F1',
+          100: '#FFE2E5',
           200: '#FFE2E5',
-          300: '#FFCAD2',
-          400: '#FF9FAC',
-          500: '#FF6980',
-          600: '#FF385C',
-          700: '#F6475F',
+          300: '#FFE2E5',
+          400: '#FFCAD2',
+          500: '#FF9FAC',
+          600: '#FF6980',
+          700: '#FF385C',
           800: '#ED1143',
           900: '#C80839',
           foreground: 'hsl(var(--primary-foreground))',
         },
         error: {
-          50: '#FEF8F6',
-          600: '#C13515',
+          DEFAULT: '#C13515',
+          light: '#FEF8F6',
+          dark: '#C13515',
         },
         accent: {
           DEFAULT: '#D03660',
-          50: '#F6D7DF',
-          600: '#D03660',
+          light: '#F6D7DF',
+          dark: '#D03660',
           foreground: 'hsl(var(--accent-foreground))',
         },
         secondary: {
@@ -110,19 +110,14 @@ const config = {
         DEFAULT: {
           css: {
             h1: {
-              fontWeight: '200',
-              color: '#222222',
+              fontWeight: 'inherit',
             },
             h2: {
-              fontWeight: '200',
-              color: '#222222',
+              fontWeight: 'inherit',
             },
             a: {
-              'color': '#FF385C',
-              'fontWeight': 'inherit',
-              '&:hover': {
-                textDecoration: 'underline',
-              },
+              fontWeight: 'inherit',
+              textDecoration: 'none',
             },
           },
         },
