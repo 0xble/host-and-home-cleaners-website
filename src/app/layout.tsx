@@ -65,11 +65,6 @@ export default function RootLayout({ children }: LayoutProps) {
           {children}
 
           {/* Third-party Scripts */}
-          <Script
-            src="dist/flowbite.min.js"
-            strategy="lazyOnload"
-            crossOrigin="anonymous"
-          />
           <Script src="https://tally.so/widgets/embed.js" strategy="lazyOnload" />
 
           {/* Analytics */}

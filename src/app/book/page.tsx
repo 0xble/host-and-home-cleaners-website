@@ -1,7 +1,8 @@
 'use client'
 
 import type { Frequency, Location, ServiceCategory } from '@/lib/types'
-import { BookingFormOption } from '@/components/SelectionCard'
+import { BookingFormOption } from '@/components/BookingFormOption'
+import LottieAnimation from '@/components/LottieAnimation'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import {
@@ -20,7 +21,6 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
-
 import { Input } from '@/components/ui/input'
 import {
   Select,
@@ -31,11 +31,14 @@ import {
 } from '@/components/ui/select'
 import { PRICING_PARAMETERS } from '@/lib/constants'
 import { ROUTES } from '@/lib/routes'
+import HouseAnimation from '@/public/lottie/house.json'
+import SprayAnimation from '@/public/lottie/spray.json'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { addDays, isBefore } from 'date-fns'
+import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import BookingFormNavbar from './components/BookingFormNavbar'
@@ -72,6 +75,7 @@ export default function BookingPage() {
   const [location] = useState<Location>('MYRTLE_BEACH')
   const [step, setStep] = useState(0)
   const [specializedService, setSpecializedService] = useState<string | null>(null)
+  const prevServiceRef = useRef<string | null>(null)
   const [visitedSteps, setVisitedSteps] = useState<number[]>([0])
 
   // Initialize form with default values
@@ -372,7 +376,7 @@ export default function BookingPage() {
 
   // Handle specialized service selection
   const handleSpecializedService = (value: string) => {
-    setValue('serviceCategory', value as ServiceCategory)
+    prevServiceRef.current = specializedService
     setSpecializedService(value)
     // Use direct values for immediate price update
     updatePrice({ serviceCategory: value as ServiceCategory, bedrooms })
@@ -510,27 +514,78 @@ export default function BookingPage() {
           {step === 2 && (
             <Card className="rounded-none border-0 shadow-none">
               <CardHeader className="px-6 pt-6">
-                <CardTitle>Select Your Cleaning Service</CardTitle>
+                <CardTitle>What is the size of the house?</CardTitle>
                 <CardDescription>
-                  Choose your property type or specialized cleaning service
+                  A standard deep cleaning covers all areas of the house, including bathrooms, kitchens, and living areas.
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-8 px-6">
                 {/* Bedroom Selection */}
                 <div className="space-y-4">
-                  <h3 className="text-lg font-medium">Number of Bedrooms</h3>
-                  <p className="text-sm">Select the number of bedrooms in your property</p>
+                  <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+                    <BookingFormOption
+                      isSelected={bedrooms === 1 && !specializedService}
+                      onClick={() => handleBedroomSelect('1')}
+                    >
+                      <div className="relative mb-4 aspect-square size-16">
+                        <Image
+                          src="/icons/sizes/one-bedroom.svg"
+                          alt="One Bedroom"
+                          fill
+                          className="transition-colors"
+                        />
+                      </div>
+                      <h3 className="text-lg font-medium">One Bedroom</h3>
+                      <p className="mt-1 text-sm text-muted-foreground">Up to 1,000 sq ft</p>
+                    </BookingFormOption>
 
-                  <div className="grid grid-cols-2 gap-4 pt-2 sm:grid-cols-4">
-                    {[1, 2, 3, 4].map(num => (
-                      <BookingFormOption
-                        key={num}
-                        title={`${num} ${num === 1 ? 'Bedroom' : 'Bedrooms'}`}
-                        isSelected={bedrooms === num}
-                        isDisabled={!!specializedService}
-                        onClick={() => handleBedroomSelect(num.toString())}
-                      />
-                    ))}
+                    <BookingFormOption
+                      isSelected={bedrooms === 2 && !specializedService}
+                      onClick={() => handleBedroomSelect('2')}
+                    >
+                      <div className="relative mb-4 aspect-square size-16">
+                        <Image
+                          src="/icons/sizes/two-bedroom.svg"
+                          alt="Two Bedroom"
+                          fill
+                          className="transition-colors"
+                        />
+                      </div>
+                      <h3 className="text-lg font-medium">Two Bedroom</h3>
+                      <p className="mt-1 text-sm text-muted-foreground">Up to 1,500 sq ft</p>
+                    </BookingFormOption>
+
+                    <BookingFormOption
+                      isSelected={bedrooms === 3 && !specializedService}
+                      onClick={() => handleBedroomSelect('3')}
+                    >
+                      <div className="relative mb-4 aspect-square size-16">
+                        <Image
+                          src="/icons/sizes/three-bedroom.svg"
+                          alt="Three Bedroom"
+                          fill
+                          className="transition-colors"
+                        />
+                      </div>
+                      <h3 className="text-lg font-medium">Three Bedroom</h3>
+                      <p className="mt-1 text-sm text-muted-foreground">Up to 2,500 sq ft</p>
+                    </BookingFormOption>
+
+                    <BookingFormOption
+                      isSelected={bedrooms === 4 && !specializedService}
+                      onClick={() => handleBedroomSelect('4')}
+                    >
+                      <div className="relative mb-4 aspect-square size-16">
+                        <Image
+                          className="transition-colors"
+                          src="/icons/sizes/four-bedroom.svg"
+                          alt="Four Bedroom"
+                          fill
+                        />
+                      </div>
+                      <h3 className="text-lg font-medium">Four Bedroom</h3>
+                      <p className="mt-1 text-sm text-muted-foreground">Up to 3,500 sq ft</p>
+                    </BookingFormOption>
                   </div>
                 </div>
 
@@ -542,30 +597,67 @@ export default function BookingPage() {
 
                 {/* Specialized Services */}
                 <div className="space-y-4">
-                  <h3 className="text-lg font-medium">Specialized Cleaning</h3>
+                  <h3 className="text-lg font-medium">Do you need a specialized cleaning?</h3>
                   <p className="text-muted-foreground text-sm">Select one of our specialized cleaning options</p>
 
                   <div className="grid grid-cols-1 gap-4 pt-2 sm:grid-cols-3">
                     <BookingFormOption
-                      title="Move In/Out"
-                      description="For moving in or out of a property"
                       isSelected={specializedService === 'Move In/Out'}
-                      onClick={() => handleSpecializedService('Move In/Out')}
-                    />
+                      onClick={() => {
+                        handleSpecializedService('Move In/Out')
+                      }}
+                    >
+                      <div className="flex items-center justify-between w-full">
+                        <div className="flex flex-col">
+                          <span className="font-medium">Move In/Out</span>
+                          <span className="text-muted-foreground text-xs">For moving in or out of a property</span>
+                        </div>
+                        <div className="size-16 flex-shrink-0">
+                          <LottieAnimation
+                            className="w-full h-full"
+                            animationData={HouseAnimation}
+                            onPlay={prevServiceRef.current !== 'Move In/Out' && specializedService === 'Move In/Out' ? () => {} : undefined}
+                          />
+                        </div>
+                      </div>
+                    </BookingFormOption>
 
                     <BookingFormOption
-                      title="Custom Areas Only"
-                      description="For specific areas that need attention"
                       isSelected={specializedService === 'Custom Areas Only'}
                       onClick={() => handleSpecializedService('Custom Areas Only')}
-                    />
+                    >
+                      <div className="flex items-center justify-between w-full">
+                        <div className="flex flex-col">
+                          <span className="font-medium">Custom Areas Only</span>
+                          <span className="text-muted-foreground text-xs">For specific areas that need attention</span>
+                        </div>
+                        <div className="size-16 flex-shrink-0">
+                          <LottieAnimation
+                            className="w-full h-full"
+                            animationData={SprayAnimation}
+                            onPlay={prevServiceRef.current !== 'Custom Areas Only' && specializedService === 'Custom Areas Only' ? () => {} : undefined}
+                          />
+                        </div>
+                      </div>
+                    </BookingFormOption>
 
                     <BookingFormOption
-                      title="Mansion"
-                      description="For large properties with 5+ bedrooms"
                       isSelected={specializedService === 'Mansion'}
                       onClick={() => handleSpecializedService('Mansion')}
-                    />
+                    >
+                      <div className="flex items-center justify-between w-full">
+                        <div className="flex flex-col">
+                          <span className="font-medium">Mansion</span>
+                          <span className="text-muted-foreground text-xs">For large properties with 5+ bedrooms</span>
+                        </div>
+                        <div className="size-16 flex-shrink-0">
+                          {/* <LottieAnimation
+                            animationData={MansionAnimation}
+                            onPlay={prevServiceRef.current !== 'Mansion' && specializedService === 'Mansion' ? () => {} : undefined}
+                          /> */}
+                        </div>
+                      </div>
+                    </BookingFormOption>
                   </div>
                 </div>
               </CardContent>
@@ -597,13 +689,14 @@ export default function BookingPage() {
                           {[3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(hour => (
                             <BookingFormOption
                               key={hour}
-                              title={`${hour} Hours`}
                               isSelected={field.value === hour}
                               onClick={() => {
                                 field.onChange(hour)
                                 updatePrice({ serviceCategory, bedrooms, hours: hour })
                               }}
-                            />
+                            >
+                              <span className="text-center font-medium">{`${hour} Hours`}</span>
+                            </BookingFormOption>
                           ))}
                         </div>
                       </FormControl>

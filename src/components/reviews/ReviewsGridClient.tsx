@@ -30,11 +30,11 @@ interface ReviewsGridClientProps {
 }
 
 const PLATFORM_ICONS = {
-  Google: '/icons/google.svg',
-  Facebook: '/icons/facebook.svg',
-  Yelp: '/icons/yelp.svg',
-  Thumbtack: '/icons/thumbtack.png',
-  Nextdoor: '/icons/nextdoor.png',
+  Google: '/icons/brands/google.svg',
+  Facebook: '/icons/brands/facebook.svg',
+  Yelp: '/icons/brands/yelp.svg',
+  Thumbtack: '/icons/brands/thumbtack.png',
+  Nextdoor: '/icons/brands/nextdoor.png',
 } as const
 
 // Platform Icon Component

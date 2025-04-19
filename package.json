@@ -44,6 +44,7 @@
     "embla-carousel-autoplay": "^8.5.2",
     "embla-carousel-react": "^8.5.2",
     "framer-motion": "^12.6.2",
+    "lottie-react": "^2.4.1",
     "lucide-react": "^0.344.0",
     "magic-string": "^0.30.17",
     "next": "^15.2.4",

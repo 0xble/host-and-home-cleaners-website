@@ -45,6 +45,7 @@ const config = {
         },
         neutral: {
           DEFAULT: '#5E5E5E',
+          light: '#C2C2C2',
           50: '#F7F7F7',
           100: '#EBEBEB',
           200: '#DDDDDD',
