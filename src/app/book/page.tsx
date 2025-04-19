@@ -32,6 +32,7 @@ import {
 import { PRICING_PARAMETERS } from '@/lib/constants'
 import { ROUTES } from '@/lib/routes'
 import HouseAnimation from '@/public/lottie/house.json'
+import MansionAnimation from '@/public/lottie/mansion.json'
 import SprayAnimation from '@/public/lottie/spray.json'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { addDays, isBefore } from 'date-fns'
@@ -651,10 +652,10 @@ export default function BookingPage() {
                           <span className="text-muted-foreground text-xs">For large properties with 5+ bedrooms</span>
                         </div>
                         <div className="size-16 flex-shrink-0">
-                          {/* <LottieAnimation
+                          <LottieAnimation
                             animationData={MansionAnimation}
                             onPlay={prevServiceRef.current !== 'Mansion' && specializedService === 'Mansion' ? () => {} : undefined}
-                          /> */}
+                          />
                         </div>
                       </div>
                     </BookingFormOption>
