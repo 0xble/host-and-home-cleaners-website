@@ -49,7 +49,7 @@ const BookingFormSchema = z.object({
   bedrooms: z.number().min(1).max(4),
   hours: z.number().min(3).max(12).optional(),
   frequency: z.enum(['one-time', 'weekly', 'biweekly', 'monthly']),
-  date: z.date().nullable(),
+  date: z.date(),
   arrivalWindow: z.enum(['8:00AM - 9:00AM', '12:00PM - 1:00PM', '3:00PM - 4:00PM']),
   customer: z.object({
     firstName: z.string().min(1, 'First name is required'),
@@ -85,19 +85,19 @@ export default function BookingPage() {
     defaultValues: {
       serviceCategory: 'Default',
       bedrooms: 1,
-      hours: undefined, // Start with undefined hours
       frequency: 'biweekly',
-      date: null,
+      hours: undefined, // Start with undefined hours
+      date: undefined,
       arrivalWindow: '12:00PM - 1:00PM',
       customer: {
-        firstName: '',
-        lastName: '',
-        email: '',
-        phone: '',
-        address: '',
-        city: '',
-        state: '',
-        zipCode: '',
+        firstName: undefined,
+        lastName: undefined,
+        email: undefined,
+        phone: undefined,
+        address: undefined,
+        city: undefined,
+        state: undefined,
+        zipCode: undefined
       },
       location,
       price: {
