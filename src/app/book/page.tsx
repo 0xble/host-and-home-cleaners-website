@@ -32,7 +32,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Spinner } from '@/components/ui/spinner'
 import { PRICING_PARAMETERS } from '@/lib/constants'
 import { ROUTES } from '@/lib/routes'
 import { LocationSchema } from '@/lib/types'
@@ -48,6 +47,16 @@ import { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { BookingArrivalWindowSchema, BookingFrequencySchema, BookingHourlyPricingParamsSchema, BookingPricingParamsSchema, BookingServiceCategorySchema } from './types'
+
+enum BookingStep {
+  GETTING_STARTED = 0,
+  TELL_US_ABOUT_YOUR_PLACE = 1,
+  SERVICE_SELECTION = 2,
+  HOURS_SELECTION = 3,
+  SCHEDULE = 4,
+  CUSTOMER_DETAILS = 5,
+  CONFIRMATION = 6,
+}
 
 const BookingFormValidationSchema = z.object({
   location: LocationSchema,
@@ -77,21 +86,21 @@ type BookingFormValid = z.infer<typeof BookingFormValidationSchema>
 const BookingFormStateSchema = BookingFormValidationSchema.partial()
 type BookingFormState = z.infer<typeof BookingFormStateSchema>
 
-const BookingFormStorageSchema = z.object({
-  formData: BookingFormStateSchema,
-  step: z.object({ current: z.number(), total: z.number() }),
-  visitedSteps: z.array(z.number()),
-})
+// const BookingFormStorageSchema = z.object({
+//   formData: BookingFormStateSchema,
+//   step: z.object({ current: z.number(), total: z.number() }),
+//   visitedSteps: z.array(z.number()),
+// })
 
-type BookingFormStorage = z.infer<typeof BookingFormStorageSchema>
+// type BookingFormStorage = z.infer<typeof BookingFormStorageSchema>
 
 export default function BookingPage() {
   const router = useRouter()
   const [location] = useState<Location>('MYRTLE_BEACH')
-  const [step, setStep] = useState({ current: 0, total: 3 })
+  const [step, setStep] = useState<{ current: BookingStep, total: number }>({ current: BookingStep.GETTING_STARTED, total: 5 })
   const prevServiceRef = useRef<BookingServiceCategory | null>(null)
   const [visitedSteps, setVisitedSteps] = useState<number[]>([0])
-  const [isRestoring, setIsRestoring] = useState(true)
+  // const [isRestoring, setIsRestoring] = useState(true)
 
   // Initialize form with default values
   const form = useForm({
@@ -103,7 +112,20 @@ export default function BookingPage() {
     },
   })
 
-  const { watch, setValue, handleSubmit, getValues, trigger, reset } = form
+  const { watch, setValue, handleSubmit, getValues, trigger } = form
+
+  const updatePrice = (
+    serviceCategory: BookingServiceCategory,
+    pricingParams: BookingPricingParams,
+    frequency: BookingFrequency,
+  ) => {
+    setValue('price', calculatePrice(
+      location,
+      serviceCategory,
+      frequency,
+      pricingParams,
+    ))
+  }
 
   // Watch form values for price calculation
   const selectedFrequency = watch('frequency')
@@ -113,32 +135,46 @@ export default function BookingPage() {
   const selectedArrivalWindow = watch('arrivalWindow') as BookingFormState['arrivalWindow']
   const price = watch('price')
 
-  // Save form state to sessionStorage
-  const saveFormState = (data = getValues()) => {
-    if (step.current > 0) {
-      const stateToSave = {
-        formData: data,
-        step: { current: step.current, total: step.total },
-        visitedSteps,
-      }
+  // // Save form state to sessionStorage
+  // const saveFormState = (data = getValues()) => {
+  //   if (step.current > 0) {
+  //     const stateToSave = {
+  //       formData: data,
+  //       step: { current: step.current, total: step.total },
+  //       visitedSteps,
+  //     }
 
-      sessionStorage.setItem('bookingFormState', JSON.stringify(stateToSave))
+  //     sessionStorage.setItem('bookingFormState', JSON.stringify(stateToSave))
+  //   }
+  // }
+
+  // Check if we have all required parameters to show price
+  const canShowPrice = () => {
+    if (selectedPricingParams?.type === 'flat') {
+      return selectedPricingParams.bedrooms != null
     }
-  }
 
-  // Update price when form values change
-  const updatePrice = (
-    serviceCategory: BookingServiceCategory,
-    frequency: BookingFrequency,
-    pricingParams: BookingPricingParams,
-  ) => {
-    setValue('price', calculatePrice(location, serviceCategory, frequency, pricingParams))
+    if (selectedPricingParams?.type === 'hourly') {
+      return selectedPricingParams.hours != null
+    }
+
+    return false
   }
 
   // Save form state when values change
   useEffect(() => {
-    if (!isRestoring) {
-      saveFormState()
+    // if (!isRestoring) {
+    //   saveFormState()
+    // }
+
+    // Update price when form values change
+    if (canShowPrice() && selectedServiceCategory && selectedPricingParams && selectedFrequency) {
+      updatePrice(selectedServiceCategory, selectedPricingParams, selectedFrequency)
+    }
+
+    // Log form values if development mode
+    if (process.env.NODE_ENV === 'development') {
+      console.log('Form values:', getValues())
     }
   }, [
     step,
@@ -152,71 +188,69 @@ export default function BookingPage() {
 
   // Restore form state on component mount
   useEffect(() => {
-    const savedState = sessionStorage.getItem('bookingFormState')
-    if (savedState) {
-      try {
-        const { formData, step: savedStep, visitedSteps: savedSteps } = JSON.parse(savedState) as BookingFormStorage
+    // TODO:
+    // const savedState = sessionStorage.getItem('bookingFormState')
+    // if (savedState) {
+    //   try {
+    //     const { formData, step: savedStep, visitedSteps: savedSteps } = JSON.parse(savedState) as BookingFormStorage
 
-        // Restore date as Date object (it's stored as string in JSON)
-        if (formData.date) {
-          formData.date = new Date(formData.date)
-        }
+    //     // Restore date as Date object (it's stored as string in JSON)
+    //     if (formData.date) {
+    //       formData.date = new Date(formData.date)
+    //     }
 
-        // Restore form values
-        for (const [key, value] of Object.entries(formData)) {
-          if (key in form) {
-            setValue(key as keyof BookingFormValid, value as BookingFormValid[keyof BookingFormValid])
-          }
-          else {
-            // If out-of-date or invalid, reset the form
-            reset()
-            break
-          }
-        }
+    //     // Restore form values
+    //     let hasError = false
+    //     for (const [key, value] of Object.entries(formData)) {
+    //       if (key in form) {
+    //         setValue(key as keyof BookingFormValid, value as BookingFormValid[keyof BookingFormValid])
+    //       }
+    //       else {
+    //         // If out-of-date or invalid, reset the form
+    //         hasError = true
+    //         reset()
+    //         break
+    //       }
+    //     }
 
-        // Restore UI state
-        setStep(savedStep)
-        setVisitedSteps(savedSteps)
-
-        // Update price calculations
-        if (formData.serviceCategory && formData.frequency && formData.pricingParams) {
-          updatePrice(
-            formData.serviceCategory,
-            formData.frequency,
-            formData.pricingParams,
-          )
-        }
-      }
-      catch (error) {
-        console.error('Error restoring form state:', error)
-        // If there's an error, clear the invalid state
-        sessionStorage.removeItem('bookingFormState')
-      }
-    }
-    setIsRestoring(false)
+    //     if (!hasError) {
+    //       // Restore UI state
+    //       setStep(savedStep)
+    //       setVisitedSteps(savedSteps)
+    //     }
+    //   }
+    //   catch (error) {
+    //     console.error('Error restoring form state:', error)
+    //     // If there's an error, clear the invalid state
+    //     sessionStorage.removeItem('bookingFormState')
+    //   }
+    // }
+    // setIsRestoring(false)
   }, [])
 
   // Check if current step is valid
   const isCurrentStepValid = () => {
     // Step 0 is always valid
-    if (step.current === 0)
+    if (step.current === BookingStep.GETTING_STARTED)
+      return true
+    if (step.current === BookingStep.TELL_US_ABOUT_YOUR_PLACE)
       return true
 
     // Step 1: Service Selection
-    if (step.current === 1) {
+    if (step.current === BookingStep.SERVICE_SELECTION) {
       const serviceCategory = getValues('serviceCategory')
       const pricingParams = getValues('pricingParams')
       return serviceCategory !== undefined && pricingParams !== undefined
     }
 
     // Step 2: Hours Selection (for hourly services only)
-    if (step.current === 2 && (selectedServiceCategory === 'custom' || selectedServiceCategory === 'mansion')) {
+    if (step.current === BookingStep.HOURS_SELECTION && (selectedServiceCategory === 'custom' || selectedServiceCategory === 'mansion')) {
       const pricingParams = getValues('pricingParams')
       return pricingParams !== undefined && pricingParams.type === 'hourly'
     }
 
     // Step 3: Schedule
-    if (step.current === 3) {
+    if (step.current === BookingStep.SCHEDULE) {
       const date = getValues('date')
       const arrivalWindow = getValues('arrivalWindow')
       const frequency = getValues('frequency')
@@ -224,7 +258,7 @@ export default function BookingPage() {
     }
 
     // Step 4: Customer Details
-    if (step.current === 4) {
+    if (step.current === BookingStep.CUSTOMER_DETAILS) {
       return trigger([
         'customer.firstName',
         'customer.lastName',
@@ -242,30 +276,24 @@ export default function BookingPage() {
   }
 
   const getNextStepNumber = () => {
-    if (step.current === 0)
-      return 1
-    if (step.current === 5)
-      return null
-
-    if (selectedPricingParams?.type === 'hourly') {
-      if (step.current === 1)
-        return 2
-      if (step.current === 2)
-        return 3
-      if (step.current === 3)
-        return 4
-      if (step.current === 4)
-        return 5
+    switch (step.current) {
+      case BookingStep.GETTING_STARTED:
+        return BookingStep.TELL_US_ABOUT_YOUR_PLACE
+      case BookingStep.TELL_US_ABOUT_YOUR_PLACE:
+        return BookingStep.SERVICE_SELECTION
+      case BookingStep.SERVICE_SELECTION:
+        if (selectedPricingParams?.type === 'hourly') {
+          return BookingStep.HOURS_SELECTION
+        }
+        else if (selectedPricingParams?.type === 'flat') {
+          return BookingStep.SCHEDULE
+        }
+        break
+      case BookingStep.HOURS_SELECTION:
+        return BookingStep.SCHEDULE
+      case BookingStep.SCHEDULE:
+        return BookingStep.CUSTOMER_DETAILS
     }
-    else {
-      if (step.current === 1)
-        return 2
-      if (step.current === 2)
-        return 4
-      if (step.current === 4)
-        return 5
-    }
-
     return null
   }
 
@@ -278,34 +306,34 @@ export default function BookingPage() {
   }
 
   const prevStep = () => {
-    if (step.current === 1) {
-      setStep({ ...step, current: 0 })
+    if (step.current === BookingStep.SERVICE_SELECTION) {
+      setStep({ ...step, current: BookingStep.GETTING_STARTED })
       return
     }
 
     if (selectedServiceCategory === 'custom' || selectedServiceCategory === 'mansion') {
-      if (step.current === 2) {
-        setStep({ ...step, current: 1 })
+      if (step.current === BookingStep.HOURS_SELECTION) {
+        setStep({ ...step, current: BookingStep.SERVICE_SELECTION })
       }
-      else if (step.current === 3) {
-        setStep({ ...step, current: 2 })
+      else if (step.current === BookingStep.SCHEDULE) {
+        setStep({ ...step, current: BookingStep.HOURS_SELECTION })
       }
-      else if (step.current === 4) {
-        setStep({ ...step, current: 3 })
+      else if (step.current === BookingStep.CUSTOMER_DETAILS) {
+        setStep({ ...step, current: BookingStep.SCHEDULE })
       }
-      else if (step.current === 5) {
-        setStep({ ...step, current: 4 })
+      else if (step.current === BookingStep.CONFIRMATION) {
+        setStep({ ...step, current: BookingStep.CUSTOMER_DETAILS as BookingStep })
       }
     }
     else {
-      if (step.current === 2) {
-        setStep({ ...step, current: 1 })
+      if (step.current === BookingStep.SCHEDULE) {
+        setStep({ ...step, current: BookingStep.SERVICE_SELECTION })
       }
-      else if (step.current === 4) {
-        setStep({ ...step, current: 2 })
+      else if (step.current === BookingStep.CUSTOMER_DETAILS) {
+        setStep({ ...step, current: BookingStep.SCHEDULE })
       }
-      else if (step.current === 5) {
-        setStep({ ...step, current: 4 })
+      else if (step.current === BookingStep.CONFIRMATION) {
+        setStep({ ...step, current: BookingStep.CUSTOMER_DETAILS as BookingStep })
       }
     }
   }
@@ -382,6 +410,11 @@ export default function BookingPage() {
   ): BookingFormValid['price'] {
     const pricing = PRICING_PARAMETERS[location][serviceCategory]
 
+    if (process.env.NODE_ENV === 'development') {
+      console.log('params', params)
+      console.log('pricing', pricing)
+    }
+
     switch (pricing.type) {
       case 'flat': {
         if (params.type === 'flat') {
@@ -414,18 +447,11 @@ export default function BookingPage() {
 
   const handleSelectServiceCategory = (
     serviceCategory: BookingServiceCategory,
-    pricingParams: BookingPricingParams | null,
+    pricingParams: BookingPricingParams,
   ) => {
     setValue('serviceCategory', serviceCategory)
-    if (pricingParams) {
-      setValue('pricingParams', pricingParams)
-      updatePrice(serviceCategory, selectedFrequency, pricingParams)
-    }
-    else {
-      // Reset fields
-      setValue('pricingParams', undefined as any)
-      setValue('price', undefined as any)
-    }
+    setValue('pricingParams', pricingParams)
+    updatePrice(serviceCategory, pricingParams, selectedFrequency)
   }
 
   const isDateDisabled = (date: Date) => {
@@ -448,19 +474,6 @@ export default function BookingPage() {
     return false
   }
 
-  // Check if we have all required parameters to show price
-  const canShowPrice = () => {
-    if (selectedPricingParams?.type === 'flat') {
-      return selectedPricingParams.bedrooms != null
-    }
-
-    if (selectedPricingParams?.type === 'hourly') {
-      return selectedPricingParams.hours != null
-    }
-
-    return false
-  }
-
   // Format price for display
   const formatPrice = (price: number | null | undefined) => {
     return `$${price?.toFixed(0) ?? ''}`
@@ -469,11 +482,11 @@ export default function BookingPage() {
   return (
     <div className="relative min-h-screen pb-24">
       {/* Show a loading indicator while restoring state */}
-      {isRestoring && (
+      {/* {isRestoring && (
         <div className="fixed inset-0 bg-background/80 flex items-center justify-center z-50">
           <Spinner />
         </div>
-      )}
+      )} */}
 
       <div className="p-6">
         <Button variant="outline" size="default" asChild className="rounded-full px-5">
@@ -484,8 +497,7 @@ export default function BookingPage() {
       </div>
       <Form {...form}>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-          {/* Step 0: Overview */}
-          {step.current === 0 && (
+          {step.current === BookingStep.GETTING_STARTED && (
             <Card className="max-w-4xl mx-auto rounded-none border-0 shadow-none">
               <CardHeader className="px-6 pt-6">
                 <CardTitle className="text-4xl font-medium">
@@ -566,8 +578,7 @@ export default function BookingPage() {
             </Card>
           )}
 
-          {/* Step 1: First Step Card */}
-          {step.current === 1 && (
+          {step.current === BookingStep.TELL_US_ABOUT_YOUR_PLACE && (
             <Card className="max-w-4xl mx-auto rounded-none border-0 shadow-none">
               <CardHeader className="px-6 pt-6">
                 <div className="text-sm font-medium text-muted-foreground mb-2">Step 1</div>
@@ -594,8 +605,7 @@ export default function BookingPage() {
             </Card>
           )}
 
-          {/* Step 2: Service Selection */}
-          {step.current === 2 && (
+          {step.current === BookingStep.SERVICE_SELECTION && (
             <Card className="rounded-none border-0 shadow-none">
               <CardHeader className="px-6 pt-6">
                 <CardTitle>What is the size of the house?</CardTitle>
@@ -688,7 +698,7 @@ export default function BookingPage() {
                     <BookingFormOption
                       isSelected={selectedServiceCategory === 'move-in-out'}
                       onClick={() => {
-                        handleSelectServiceCategory('move-in-out', null)
+                        handleSelectServiceCategory('move-in-out', { type: 'flat', bedrooms: 1 })
                       }}
                     >
                       <div className="flex items-center justify-between w-full">
@@ -708,7 +718,7 @@ export default function BookingPage() {
 
                     <BookingFormOption
                       isSelected={selectedServiceCategory === 'custom'}
-                      onClick={() => handleSelectServiceCategory('custom', null)}
+                      onClick={() => handleSelectServiceCategory('custom', { type: 'hourly', hours: undefined as any })}
                     >
                       <div className="flex items-center justify-between w-full">
                         <div className="flex flex-col">
@@ -727,7 +737,7 @@ export default function BookingPage() {
 
                     <BookingFormOption
                       isSelected={selectedServiceCategory === 'mansion'}
-                      onClick={() => handleSelectServiceCategory('mansion', null)}
+                      onClick={() => handleSelectServiceCategory('mansion', { type: 'hourly', hours: undefined as any })}
                     >
                       <div className="flex items-center justify-between w-full">
                         <div className="flex flex-col">
@@ -748,8 +758,7 @@ export default function BookingPage() {
             </Card>
           )}
 
-          {/* Step 3: Hours Selection (For hourly services only) */}
-          {step.current === 3 && (selectedServiceCategory === 'custom' || selectedServiceCategory === 'mansion') && (
+          {step.current === BookingStep.HOURS_SELECTION && (
             <Card className="rounded-none border-0 shadow-none">
               <CardHeader className="px-6 pt-6">
                 <CardTitle>Select Service Duration</CardTitle>
@@ -776,7 +785,13 @@ export default function BookingPage() {
                               isSelected={field.value === value}
                               onClick={() => {
                                 field.onChange(value)
-                                updatePrice(selectedServiceCategory, selectedFrequency, { type: 'hourly', hours: value })
+                                if (selectedServiceCategory && selectedFrequency) {
+                                  updatePrice(
+                                    selectedServiceCategory,
+                                    { type: 'hourly', hours: value },
+                                    selectedFrequency,
+                                  )
+                                }
                               }}
                             >
                               <span className="text-center font-medium">{`${value} Hours`}</span>
@@ -792,8 +807,7 @@ export default function BookingPage() {
             </Card>
           )}
 
-          {/* Step 4: Schedule */}
-          {step.current === 4 && (
+          {step.current === BookingStep.SCHEDULE && (
             <Card className="rounded-none border-0 shadow-none">
               <CardHeader className="px-6 pt-6">
                 <CardTitle>Schedule Your Cleaning</CardTitle>
@@ -859,9 +873,11 @@ export default function BookingPage() {
                       <FormItem>
                         <FormLabel>Frequency</FormLabel>
                         <Select
-                          onValueChange={(value) => {
+                          onValueChange={(value: BookingFrequency) => {
                             field.onChange(value)
-                            updatePrice(selectedServiceCategory, value as BookingFrequency, selectedPricingParams)
+                            if (selectedServiceCategory && selectedPricingParams) {
+                              updatePrice(selectedServiceCategory, selectedPricingParams, value)
+                            }
                           }}
                           defaultValue={field.value}
                         >
@@ -886,8 +902,7 @@ export default function BookingPage() {
             </Card>
           )}
 
-          {/* Step 5: Customer Details */}
-          {step.current === 5 && (
+          {step.current === BookingStep.CUSTOMER_DETAILS && (
             <Card className="rounded-none border-0 shadow-none">
               <CardHeader className="px-6 pt-6">
                 <CardTitle>Your Information</CardTitle>
