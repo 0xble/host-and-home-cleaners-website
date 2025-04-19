@@ -6,14 +6,13 @@ import * as ProgressPrimitive from '@radix-ui/react-progress'
 import * as React from 'react'
 
 type ProgressProps = React.ComponentPropsWithoutRef<typeof ProgressPrimitive.Root> & {
-  steps?: number
-  showDividers?: boolean
+  segments?: number
 }
 
 const Progress = React.forwardRef<
   React.ElementRef<typeof ProgressPrimitive.Root>,
   ProgressProps
->(({ className, value, steps = 3, showDividers = false, ...props }, ref) => (
+>(({ className, value, segments, ...props }, ref) => (
   <ProgressPrimitive.Root
     ref={ref}
     className={cn(
@@ -27,10 +26,10 @@ const Progress = React.forwardRef<
       style={{ transform: `translateX(-${100 - (value || 0)}%)` }}
     />
 
-    {showDividers && steps > 1 && (
+    {segments && segments > 1 && (
       <div className="pointer-events-none absolute left-0 top-0 size-full">
-        {Array.from({ length: steps - 1 }, (_, i) => {
-          const position = ((i + 1) / steps) * 100
+        {Array.from({ length: segments - 1 }, (_, i) => {
+          const position = ((i + 1) / segments) * 100
           return (
             <div
               key={i}

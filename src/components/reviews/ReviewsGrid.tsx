@@ -1,9 +1,9 @@
-import type { LocationKey } from '@/lib/constants'
+import type { Location } from '@/lib/constants'
 
 import ReviewsGridClient from './ReviewsGridClient'
 
 interface ReviewsGridProps {
-  location?: LocationKey
+  location?: Location
 }
 
 export default function ReviewsGrid({ location }: ReviewsGridProps) {

@@ -1,6 +1,6 @@
 'use client'
 
-import type { LocationKey } from '@/lib/constants'
+import type { Location } from '@/lib/constants'
 import type { Platform, PlatformRating, Review, ReviewsData } from '@/lib/reviews'
 import { constantCase } from '0xble/strings'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -26,7 +26,7 @@ type ValidReview = Omit<Review, 'rating' | 'text' | 'date' | 'author'> & {
 }
 
 interface ReviewsGridClientProps {
-  location?: LocationKey | null
+  location?: Location | null
 }
 
 const PLATFORM_ICONS = {
@@ -281,7 +281,7 @@ function PlatformRatingTabs({
   selectedPlatform: Platform | null
   onSelectPlatform: (_platform: Platform | null) => void
   className?: string
-  location?: LocationKey | null
+  location?: Location | null
   reviews: Review[]
 }) {
   // Filter ratings if location is provided

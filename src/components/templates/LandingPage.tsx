@@ -1,4 +1,4 @@
-import type { LocationKey } from '@/lib/constants'
+import type { Location } from '@/lib/constants'
 
 import BookNowButton from '@/components/BookNowButton'
 import FindLocationInput from '@/components/FindLocationInput'
@@ -25,7 +25,7 @@ interface Section {
 }
 
 interface LandingPageProps {
-  location: LocationKey | null
+  location: Location | null
   reviewsBadgeId: string
   photosFolder: string
   pricing: {
@@ -61,7 +61,7 @@ interface LandingPageProps {
   sections?: Section[]
 }
 
-function createDefaultSections(heroHeading: React.ReactNode, heroDescription: string, heroActions: React.ReactElement | undefined, reviewsHeading: string, howItWorksHeading: string, howItWorksSteps: Step[], pricingHeading: string, pricing: LandingPageProps['pricing'], pricingDescription: React.ReactNode, faqHeading: string, faqDescription: string, faqs: LandingPageProps['copy']['faqs'], ctaHeading: string, ctaBody: React.ReactNode, location: LocationKey | null, photosFolder: string): Section[] {
+function createDefaultSections(heroHeading: React.ReactNode, heroDescription: string, heroActions: React.ReactElement | undefined, reviewsHeading: string, howItWorksHeading: string, howItWorksSteps: Step[], pricingHeading: string, pricing: LandingPageProps['pricing'], pricingDescription: React.ReactNode, faqHeading: string, faqDescription: string, faqs: LandingPageProps['copy']['faqs'], ctaHeading: string, ctaBody: React.ReactNode, location: Location | null, photosFolder: string): Section[] {
   return [
     {
       id: 'hero',

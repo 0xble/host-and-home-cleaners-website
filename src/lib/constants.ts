@@ -1,4 +1,6 @@
-import type { SocialLink, SocialPlatform } from './types'
+import type { BookingFlatPricingParams, BookingFrequency, BookingServiceCategory } from '@/app/book/types'
+import type { Location, SocialLink, SocialPlatform } from './types'
+import { z } from 'zod'
 
 export const BUSINESS_NAME = 'Host & Home Cleaners'
 export const TAGLINE = '100% satisfaction guaranteed, or we\'ll redo it for FREE'
@@ -780,9 +782,6 @@ export const LOCATIONS = {
   },
 } as const
 
-export type LocationKey = keyof typeof LOCATIONS
-export type Location = typeof LOCATIONS[LocationKey]
-
 export const SOCIAL_LINKS: Record<SocialPlatform, SocialLink> = {
   Facebook: {
     name: 'Facebook',
@@ -821,103 +820,111 @@ export const SOCIAL_LINKS: Record<SocialPlatform, SocialLink> = {
   },
 }
 
-export type ServiceCategory = 'Default' | 'Move In/Out' | 'Custom Areas Only' | 'Mansion'
+const PricingParamsSchema = z.discriminatedUnion('type', [
+  z.object({
+    type: z.literal('flat'),
+    bedrooms: z.custom<{ [_ in BookingFlatPricingParams['bedrooms']]: number }>(),
+    frequencies: z.custom<{ [_ in BookingFrequency]: number }>().optional(),
+  }),
+  z.object({
+    type: z.literal('hourly'),
+    hourlyRate: z.number(),
+    frequencies: z.custom<{ [_ in BookingFrequency]: number }>().optional(),
+  }),
+])
+type PricingParams = z.infer<typeof PricingParamsSchema>
 
-export const PRICING_PARAMETERS = {
+export const PRICING_PARAMETERS: Readonly<Record<Location, Record<BookingServiceCategory, PricingParams>>> = {
   MYRTLE_BEACH: {
-    serviceCategories: {
-      'Default': {
-        type: 'flat' as const,
-        bedrooms: {
-          1: 149,
-          2: 179,
-          3: 209,
-          4: 239,
-        },
-        frequencies: {
-          'one-time': 0,
-          'weekly': 0.6,
-          'biweekly': 0.5,
-          'monthly': 0.3,
-        },
+    'default': {
+      type: 'flat',
+      bedrooms: {
+        1: 149,
+        2: 179,
+        3: 209,
+        4: 239,
       },
-      'Move In/Out': {
-        type: 'flat' as const,
-        bedrooms: {
-          1: 229,
-          2: 269,
-          3: 309,
-          4: 349,
-        },
+      frequencies: {
+        'one-time': 0,
+        'weekly': 0.6,
+        'biweekly': 0.5,
+        'monthly': 0.3,
       },
-      'Custom Areas Only': {
-        type: 'hourly' as const,
-        hourlyRate: 65,
-        frequencies: {
-          'one-time': 0,
-          'weekly': 0.2,
-          'biweekly': 0.15,
-          'monthly': 0.1,
-        },
+    },
+    'move-in-out': {
+      type: 'flat',
+      bedrooms: {
+        1: 229,
+        2: 269,
+        3: 309,
+        4: 349,
       },
-      'Mansion': {
-        type: 'hourly' as const,
-        hourlyRate: 75,
-        frequencies: {
-          'one-time': 0,
-          'weekly': 0.2,
-          'biweekly': 0.15,
-          'monthly': 0.1,
-        },
+    },
+    'custom': {
+      type: 'hourly',
+      hourlyRate: 65,
+      frequencies: {
+        'one-time': 0,
+        'weekly': 0.2,
+        'biweekly': 0.15,
+        'monthly': 0.1,
+      },
+    },
+    'mansion': {
+      type: 'hourly',
+      hourlyRate: 75,
+      frequencies: {
+        'one-time': 0,
+        'weekly': 0.2,
+        'biweekly': 0.15,
+        'monthly': 0.1,
       },
     },
   },
   HONOLULU: {
-    serviceCategories: {
-      'Default': {
-        type: 'flat' as const,
-        bedrooms: {
-          1: 169,
-          2: 199,
-          3: 239,
-          4: 279,
-        },
-        frequencies: {
-          'one-time': 0,
-          'weekly': 0.6,
-          'biweekly': 0.5,
-          'monthly': 0.3,
-        },
+    'default': {
+      type: 'flat',
+      bedrooms: {
+        1: 169,
+        2: 199,
+        3: 239,
+        4: 279,
       },
-      'Move In/Out': {
-        type: 'flat' as const,
-        bedrooms: {
-          1: 259,
-          2: 299,
-          3: 339,
-          4: 379,
-        },
+      frequencies: {
+        'one-time': 0,
+        'weekly': 0.6,
+        'biweekly': 0.5,
+        'monthly': 0.3,
       },
-      'Custom Areas Only': {
-        type: 'hourly' as const,
-        hourlyRate: 75,
-        frequencies: {
-          'one-time': 0,
-          'weekly': 0.2,
-          'biweekly': 0.15,
-          'monthly': 0.1,
-        },
+    },
+    'move-in-out': {
+      type: 'flat',
+      bedrooms: {
+        1: 259,
+        2: 299,
+        3: 339,
+        4: 379,
       },
-      'Mansion': {
-        type: 'hourly' as const,
-        hourlyRate: 85,
-        frequencies: {
-          'one-time': 0,
-          'weekly': 0.2,
-          'biweekly': 0.15,
-          'monthly': 0.1,
-        },
+    },
+    'custom': {
+      type: 'hourly',
+      hourlyRate: 75,
+      frequencies: {
+        'one-time': 0,
+        'weekly': 0.2,
+        'biweekly': 0.15,
+        'monthly': 0.1,
+      },
+    },
+    'mansion': {
+      type: 'hourly',
+      hourlyRate: 85,
+      frequencies: {
+        'one-time': 0,
+        'weekly': 0.2,
+        'biweekly': 0.15,
+        'monthly': 0.1,
       },
     },
   },
-} as const
+}

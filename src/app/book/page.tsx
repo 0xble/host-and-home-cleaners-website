@@ -1,7 +1,9 @@
 'use client'
 
-import type { Frequency, Location, ServiceCategory } from '@/lib/types'
+import type { Location } from '@/lib/types'
+import type { BookingFrequency } from './types'
 import { BookingFormOption } from '@/components/BookingFormOption'
+import { GradientButton } from '@/components/GradientButton'
 import LottieAnimation from '@/components/LottieAnimation'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
@@ -22,6 +24,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { Progress } from '@/components/ui/progress'
 import {
   Select,
   SelectContent,
@@ -29,9 +32,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { Spinner } from '@/components/ui/spinner'
 import { PRICING_PARAMETERS } from '@/lib/constants'
 import { ROUTES } from '@/lib/routes'
-import HouseAnimation from '@/public/lottie/house.json'
+import { LocationSchema } from '@/lib/types'
+import HouseCleanAnimation from '@/public/lottie/house-clean.json'
 import MansionAnimation from '@/public/lottie/mansion.json'
 import SprayAnimation from '@/public/lottie/spray.json'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -42,15 +47,14 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import BookingFormNavbar from './components/BookingFormNavbar'
+import { BookingArrivalWindowSchema, BookingFrequencySchema, BookingHourlyPricingParamsSchema, BookingPricingParamsSchema, BookingServiceCategorySchema } from './types'
 
-const BookingFormSchema = z.object({
-  serviceCategory: z.enum(['Default', 'Move In/Out', 'Custom Areas Only', 'Mansion']),
-  bedrooms: z.number().min(1).max(4),
-  hours: z.number().min(3).max(12).optional(),
-  frequency: z.enum(['one-time', 'weekly', 'biweekly', 'monthly']),
+const BookingFormDataSchema = z.object({
+  location: LocationSchema,
+  serviceCategory: BookingServiceCategorySchema,
+  frequency: BookingFrequencySchema,
   date: z.date(),
-  arrivalWindow: z.enum(['8:00AM - 9:00AM', '12:00PM - 1:00PM', '3:00PM - 4:00PM']),
+  arrivalWindow: BookingArrivalWindowSchema,
   customer: z.object({
     firstName: z.string().min(1, 'First name is required'),
     lastName: z.string().min(1, 'Last name is required'),
@@ -61,32 +65,36 @@ const BookingFormSchema = z.object({
     state: z.string().min(1, 'State is required'),
     zipCode: z.string().min(5, 'ZIP code is required'),
   }),
-  location: z.enum(['MYRTLE_BEACH', 'HONOLULU']),
+  pricingParams: BookingPricingParamsSchema,
   price: z.object({
-    firstCleaning: z.number(),
+    initial: z.number(),
     recurring: z.number().nullable().optional(),
   }),
 })
 
-// Extract type from the schema
-type FormData = z.infer<typeof BookingFormSchema>
+type BookingFormData = z.infer<typeof BookingFormDataSchema>
+
+const BookingFormStorageSchema = z.object({
+  formData: BookingFormDataSchema,
+  step: z.object({ current: z.number(), total: z.number() }),
+  visitedSteps: z.array(z.number()),
+})
 
 export default function BookingPage() {
   const router = useRouter()
   const [location] = useState<Location>('MYRTLE_BEACH')
-  const [step, setStep] = useState(0)
-  const [specializedService, setSpecializedService] = useState<string | null>(null)
-  const prevServiceRef = useRef<string | null>(null)
+  const [step, setStep] = useState({ current: 0, total: 3 })
+  const prevServiceRef = useRef<BookingFormData['serviceCategory'] | null>(null)
   const [visitedSteps, setVisitedSteps] = useState<number[]>([0])
+  const [isRestoring, setIsRestoring] = useState(true)
 
   // Initialize form with default values
-  const form = useForm<FormData>({
-    resolver: zodResolver(BookingFormSchema),
+  const form = useForm<BookingFormData>({
+    resolver: zodResolver(BookingFormDataSchema),
     defaultValues: {
-      serviceCategory: 'Default',
-      bedrooms: 1,
+      location,
+      serviceCategory: 'default',
       frequency: 'biweekly',
-      hours: undefined, // Start with undefined hours
       date: undefined,
       arrivalWindow: '12:00PM - 1:00PM',
       customer: {
@@ -97,45 +105,120 @@ export default function BookingPage() {
         address: undefined,
         city: undefined,
         state: undefined,
-        zipCode: undefined
+        zipCode: undefined,
       },
-      location,
-      price: {
-        firstCleaning: calculatePrice(location, 'Default', 1),
-        recurring: calculateRecurringPrice(location, 'Default', 1, 'biweekly'),
+      pricingParams: {
+        type: 'flat',
+        bedrooms: 1,
       },
+      price: calculatePrice(
+        location,
+        'default',
+        'biweekly',
+        { type: 'flat', bedrooms: 1 },
+      ),
     },
   })
 
   const { watch, setValue, handleSubmit, getValues, trigger, control } = form
 
   // Watch form values for price calculation
-  const serviceCategory = watch('serviceCategory')
-  const bedrooms = watch('bedrooms')
-  const hours = watch('hours')
-  const frequency = watch('frequency')
+  const selectedServiceCategory = watch('serviceCategory')
+  const selectedFrequency = watch('frequency')
+  const selectedPricingParams = watch('pricingParams')
+  const selectedDate = watch('date')
+
+  const price = watch('price')
+
+  // Save form state to sessionStorage
+  const saveFormState = (data = getValues()) => {
+    if (step.current > 0) {
+      const stateToSave = BookingFormStorageSchema.parse({
+        formData: data,
+        step: { current: step.current, total: step.total },
+        visitedSteps,
+      })
+      sessionStorage.setItem('bookingFormState', JSON.stringify(stateToSave))
+    }
+  }
+
+  // Update price when form values change
+  const updatePrice = (params: {
+    serviceCategory: BookingFormData['serviceCategory']
+    frequency?: BookingFormData['frequency']
+    pricingParams?: BookingFormData['pricingParams']
+  }) => {
+    const serviceCategory = params.serviceCategory || selectedServiceCategory
+    const frequency = params.frequency || selectedFrequency
+    const pricingParams = params.pricingParams || selectedPricingParams
+    setValue('price', calculatePrice(location, serviceCategory, frequency, pricingParams))
+  }
+
+  // Save form state when values change
+  useEffect(() => {
+    if (!isRestoring) {
+      saveFormState()
+    }
+  }, [step, selectedServiceCategory, selectedPricingParams, selectedFrequency, visitedSteps])
+
+  // Restore form state on component mount
+  useEffect(() => {
+    const savedState = sessionStorage.getItem('bookingFormState')
+    if (savedState) {
+      try {
+        const { formData, step: savedStep, visitedSteps: savedSteps } = BookingFormStorageSchema.parse(JSON.parse(savedState))
+
+        // Restore date as Date object (it's stored as string in JSON)
+        if (formData.date) {
+          formData.date = new Date(formData.date)
+        }
+
+        // Restore form values
+        Object.entries(formData).forEach(([key, value]) => {
+          setValue(key as keyof BookingFormData, value)
+        })
+
+        // Restore UI state
+        setStep(savedStep)
+        setVisitedSteps(savedSteps)
+
+        // Update price calculations
+        updatePrice({
+          serviceCategory: formData.serviceCategory,
+          pricingParams: formData.pricingParams,
+          frequency: formData.frequency,
+        })
+      }
+      catch (error) {
+        console.error('Error restoring form state:', error)
+        // If there's an error, clear the invalid state
+        sessionStorage.removeItem('bookingFormState')
+      }
+    }
+    setIsRestoring(false)
+  }, [])
 
   // Check if current step is valid
   const isCurrentStepValid = () => {
     // Step 0 is always valid
-    if (step === 0)
+    if (step.current === 0)
       return true
 
     // Step 1: Service Selection
-    if (step === 1) {
+    if (step.current === 1) {
       const serviceCategory = getValues('serviceCategory')
-      const bedrooms = getValues('bedrooms')
-      return serviceCategory !== undefined && bedrooms !== undefined
+      const pricingParams = getValues('pricingParams')
+      return serviceCategory !== undefined && pricingParams !== undefined
     }
 
     // Step 2: Hours Selection (for hourly services only)
-    if (step === 2 && (serviceCategory === 'Custom Areas Only' || serviceCategory === 'Mansion')) {
-      const hours = getValues('hours')
-      return hours !== undefined && hours >= 3 && hours <= 12
+    if (step.current === 2 && (selectedServiceCategory === 'custom' || selectedServiceCategory === 'mansion')) {
+      const pricingParams = getValues('pricingParams')
+      return pricingParams !== undefined && pricingParams.type === 'hourly'
     }
 
     // Step 3: Schedule
-    if (step === 3) {
+    if (step.current === 3) {
       const date = getValues('date')
       const arrivalWindow = getValues('arrivalWindow')
       const frequency = getValues('frequency')
@@ -143,7 +226,7 @@ export default function BookingPage() {
     }
 
     // Step 4: Customer Details
-    if (step === 4) {
+    if (step.current === 4) {
       return trigger([
         'customer.firstName',
         'customer.lastName',
@@ -156,93 +239,75 @@ export default function BookingPage() {
       ])
     }
 
+    // Default case
     return false
   }
 
   const getNextStepNumber = () => {
-    if (step === 0)
+    if (step.current === 0)
       return 1
-    if (step === 5)
+    if (step.current === 5)
       return null
 
-    if (serviceCategory === 'Custom Areas Only' || serviceCategory === 'Mansion') {
-      if (step === 1)
+    if (selectedPricingParams.type === 'hourly') {
+      if (step.current === 1)
         return 2
-      if (step === 2)
+      if (step.current === 2)
         return 3
-      if (step === 3)
+      if (step.current === 3)
         return 4
-      if (step === 4)
+      if (step.current === 4)
         return 5
-    } else {
-      if (step === 1)
+    }
+    else {
+      if (step.current === 1)
         return 2
-      if (step === 2)
+      if (step.current === 2)
         return 4
-      if (step === 4)
+      if (step.current === 4)
         return 5
     }
 
     return null
   }
 
-  // Update price when form values change
-  const updatePrice = (params: {
-    serviceCategory: ServiceCategory
-    bedrooms?: number
-    hours?: number
-    frequency?: Frequency
-  }) => {
-    // Use provided values or fall back to watched values
-    const serviceCategoryValue = params.serviceCategory || serviceCategory
-    const bedroomsValue = params.bedrooms || bedrooms
-    const hoursValue = params.hours || hours
-    const frequencyValue = params.frequency || frequency
-
-    const firstCleaning = calculatePrice(location, serviceCategoryValue, bedroomsValue, hoursValue)
-    const recurring = calculateRecurringPrice(location, serviceCategoryValue, bedroomsValue, frequencyValue, hoursValue)
-
-    setValue('price', {
-      firstCleaning,
-      recurring,
-    })
-  }
-
-  const onSubmit = (data: FormData) => {
+  const onSubmit = (data: BookingFormData) => {
     console.log('Form submitted:', data)
+    // Clear session storage on successful submission
+    sessionStorage.removeItem('bookingFormState')
     // In a real app, we would submit this data to an API
     alert('Booking submitted! Check console for details.')
   }
 
   const prevStep = () => {
-    if (step === 1) {
-      setStep(0)
+    if (step.current === 1) {
+      setStep({ ...step, current: 0 })
       return
     }
 
-    if (serviceCategory === 'Custom Areas Only' || serviceCategory === 'Mansion') {
-      if (step === 2) {
-        setStep(1)
+    if (selectedServiceCategory === 'custom' || selectedServiceCategory === 'mansion') {
+      if (step.current === 2) {
+        setStep({ ...step, current: 1 })
       }
-      else if (step === 3) {
-        setStep(2)
+      else if (step.current === 3) {
+        setStep({ ...step, current: 2 })
       }
-      else if (step === 4) {
-        setStep(3)
+      else if (step.current === 4) {
+        setStep({ ...step, current: 3 })
       }
-      else if (step === 5) {
-        setStep(4)
+      else if (step.current === 5) {
+        setStep({ ...step, current: 4 })
       }
     }
     else {
-      if (step === 2) {
-        setStep(1)
+      if (step.current === 2) {
+        setStep({ ...step, current: 1 })
       }
-      else if (step === 4) {
-        setStep(2)
+      else if (step.current === 4) {
+        setStep({ ...step, current: 2 })
       }
-      else if (step === 5) {
-        setStep(4)
+      else if (step.current === 5) {
+        setStep({ ...step, current: 4 })
       }
     }
   }
@@ -250,23 +315,23 @@ export default function BookingPage() {
   const nextStep = () => {
     const nextStepNumber = getNextStepNumber()
     if (nextStepNumber !== null) {
-      setStep(nextStepNumber)
+      setStep({ ...step, current: nextStepNumber })
       setVisitedSteps(prev => [...new Set([...prev, nextStepNumber])])
-      updatePrice({ serviceCategory, bedrooms, hours, frequency })
+      updatePrice({ serviceCategory: selectedServiceCategory, pricingParams: selectedPricingParams, frequency: selectedFrequency })
     }
   }
 
   // Handle browser back/forward buttons
   useEffect(() => {
     const handlePopState = (event: PopStateEvent) => {
-      if (step === 0)
+      if (step.current === 0)
         return
 
       event.preventDefault()
       prevStep()
     }
 
-    if (step > 0) {
+    if (step.current > 0) {
       window.history.pushState(null, '', window.location.pathname)
     }
 
@@ -282,7 +347,7 @@ export default function BookingPage() {
 
       if (modifierKey) {
         // At step 0, let the browser handle back navigation normally
-        if (step === 0 && (event.key === '[' || event.key === 'ArrowLeft')) {
+        if (step.current === 0 && (event.key === '[' || event.key === 'ArrowLeft')) {
           return
         }
 
@@ -297,7 +362,7 @@ export default function BookingPage() {
           // 2. Next step has been visited before OR current step is valid
           const nextStepNumber = getNextStepNumber()
           if (
-            step > 0
+            step.current > 0
             && nextStepNumber !== null
             && isCurrentStepValid()
             && (visitedSteps.includes(nextStepNumber) || await isCurrentStepValid())
@@ -314,71 +379,52 @@ export default function BookingPage() {
 
   // Calculate price based on form values
   function calculatePrice(
-    location: Location,
-    serviceCategory: ServiceCategory,
-    bedrooms: number,
-    hours?: number,
-  ): number {
-    const pricingData = PRICING_PARAMETERS[location].serviceCategories[serviceCategory]
+    location: BookingFormData['location'],
+    serviceCategory: BookingFormData['serviceCategory'],
+    frequency: BookingFormData['frequency'],
+    params: BookingFormData['pricingParams'],
+  ): BookingFormData['price'] {
+    const pricing = PRICING_PARAMETERS[location][serviceCategory]
 
-    if (pricingData.type === 'flat') {
-      return pricingData.bedrooms[bedrooms as keyof typeof pricingData.bedrooms] || 0
+    switch (pricing.type) {
+      case 'flat': {
+        if (params.type === 'flat') {
+          const initial = pricing.bedrooms[params.bedrooms]
+          const recurring = frequency && pricing.frequencies ? initial * (1 - pricing.frequencies[frequency]) : undefined
+          return {
+            initial,
+            recurring,
+          }
+        }
+        else {
+          throw new Error('Mismatch pricing types')
+        }
+      }
+      case 'hourly': {
+        if (params.type === 'hourly') {
+          const initial = pricing.hourlyRate * params.hours
+          const recurring = frequency && pricing.frequencies ? initial * (1 - pricing.frequencies[frequency]) : undefined
+          return {
+            initial,
+            recurring,
+          }
+        }
+        else {
+          throw new Error('Mismatch pricing types')
+        }
+      }
     }
-    else if (pricingData.type === 'hourly' && hours) {
-      return pricingData.hourlyRate * hours
-    }
-
-    return 0
   }
 
-  // Calculate recurring price with discount
-  function calculateRecurringPrice(
-    location: Location,
-    serviceCategory: ServiceCategory,
-    bedrooms: number,
-    frequency: Frequency,
-    hours?: number,
-  ): number | undefined {
-    if (frequency === 'one-time' || serviceCategory === 'Move In/Out') {
-      return undefined
+  const handleServiceCategorySelect = (
+    serviceCategory: BookingFormData['serviceCategory'],
+    pricingParams?: BookingFormData['pricingParams'],
+  ) => {
+    setValue('serviceCategory', serviceCategory)
+    if (pricingParams) {
+      setValue('pricingParams', pricingParams)
     }
-
-    const pricingData = PRICING_PARAMETERS[location].serviceCategories[serviceCategory]
-    let basePrice = 0
-    let discount = 0
-
-    if (pricingData.type === 'flat' && pricingData.frequencies) {
-      basePrice = pricingData.bedrooms[bedrooms as keyof typeof pricingData.bedrooms] || 0
-      discount = pricingData.frequencies[frequency]
-    }
-    else if (pricingData.type === 'hourly' && hours) {
-      basePrice = pricingData.hourlyRate * hours
-      discount = pricingData.frequencies[frequency]
-    }
-
-    return basePrice * (1 - discount)
-  }
-
-  // Fix the Calendar type error
-  const selectedDate = watch('date')
-
-  // Handle bedroom selection
-  const handleBedroomSelect = (value: string) => {
-    const bedroomCount = Number.parseInt(value)
-    setValue('bedrooms', bedroomCount)
-    setValue('serviceCategory', 'Default')
-    setSpecializedService(null)
-    // Use direct values for immediate price update
-    updatePrice({ serviceCategory: 'Default', bedrooms: bedroomCount })
-  }
-
-  // Handle specialized service selection
-  const handleSpecializedService = (value: string) => {
-    prevServiceRef.current = specializedService
-    setSpecializedService(value)
-    setValue('serviceCategory', value as ServiceCategory)
-    // Use direct values for immediate price update
-    updatePrice({ serviceCategory: value as ServiceCategory, bedrooms })
+    updatePrice({ serviceCategory, pricingParams, frequency: selectedFrequency })
   }
 
   const isDateDisabled = (date: Date) => {
@@ -403,19 +449,12 @@ export default function BookingPage() {
 
   // Check if we have all required parameters to show price
   const canShowPrice = () => {
-    const pricingData = PRICING_PARAMETERS[location].serviceCategories[serviceCategory]
-    const price = calculatePrice(location, serviceCategory, bedrooms, hours)
-
-    if (price === 0) {
-      return false
+    if (selectedPricingParams.type === 'flat') {
+      return selectedPricingParams.bedrooms != null
     }
 
-    if (pricingData.type === 'flat') {
-      return bedrooms != null
-    }
-
-    if (pricingData.type === 'hourly') {
-      return hours !== undefined && hours !== null
+    if (selectedPricingParams.type === 'hourly') {
+      return selectedPricingParams.hours != null
     }
 
     return true
@@ -423,14 +462,18 @@ export default function BookingPage() {
 
   // Format price for display
   const formatPrice = (price: number | null | undefined) => {
-    if (price == null || !canShowPrice()) {
-      return ''
-    }
-    return `$${price.toFixed(0)}`
+    return `$${price?.toFixed(0) ?? ''}`
   }
 
   return (
     <div className="relative min-h-screen pb-24">
+      {/* Show a loading indicator while restoring state */}
+      {isRestoring && (
+        <div className="fixed inset-0 bg-background/80 flex items-center justify-center z-50">
+          <Spinner />
+        </div>
+      )}
+
       <div className="p-6">
         <Button variant="outline" size="default" asChild className="rounded-full px-5">
           <Link href={ROUTES.HOME.href}>
@@ -441,7 +484,7 @@ export default function BookingPage() {
       <Form {...form}>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
           {/* Step 0: Overview */}
-          {step === 0 && (
+          {step.current === 0 && (
             <Card className="max-w-4xl mx-auto rounded-none border-0 shadow-none">
               <CardHeader className="px-6 pt-6">
                 <CardTitle className="text-4xl font-medium">
@@ -451,43 +494,79 @@ export default function BookingPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-12 px-6">
-                <div className="space-y-12">
-                  <div>
-                    <div className="flex items-center gap-4 mb-2">
-                      <div className="text-lg font-medium">1</div>
-                      <h2 className="text-lg font-medium">Tell us about your property</h2>
+                <div className="space-y-8">
+                  <div className="border-b border-neutral-300 pb-8">
+                    <div className="flex items-center gap-8">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-4 mb-2">
+                          <div className="text-lg font-medium">1</div>
+                          <h2 className="text-lg font-medium">Tell us about your property</h2>
+                        </div>
+                        <p className="pl-7 text-sm">
+                          Share some basic info—home size, cleaning type, and any requests.
+                        </p>
+                      </div>
+                      <div className="relative flex-shrink-0 size-20">
+                        <Image
+                          src="/living-room.png"
+                          alt="Living room illustration"
+                          fill
+                          className="object-contain"
+                        />
+                      </div>
                     </div>
-                    <p className="pl-7 text-base">
-                      Share some quick info—like the size of your home, what type of cleaning you need, and any special requests.
-                    </p>
+                  </div>
+
+                  <div className="border-b border-neutral-300 pb-8">
+                    <div className="flex items-center gap-8">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-4 mb-2">
+                          <div className="text-lg font-medium">2</div>
+                          <h2 className="text-lg font-medium">Customize your service</h2>
+                        </div>
+                        <p className="pl-7 text-sm">
+                          Choose the cleaning type and add any notes, photos, or instructions.
+                        </p>
+                      </div>
+                      <div className="relative flex-shrink-0 size-20">
+                        <Image
+                          src="/broom-dustpan.png"
+                          alt="Broom and dustpan illustration"
+                          fill
+                          className="object-contain"
+                        />
+                      </div>
+                    </div>
                   </div>
 
                   <div>
-                    <div className="flex items-center gap-4 mb-2">
-                      <div className="text-lg font-medium">2</div>
-                      <h2 className="text-lg font-medium">Customize your service</h2>
+                    <div className="flex items-center gap-8">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-4 mb-2">
+                          <div className="text-lg font-medium">3</div>
+                          <h2 className="text-lg font-medium">Book and relax</h2>
+                        </div>
+                        <p className="pl-7 text-sm">
+                          Pick a time that works, confirm details, and we’ll handle the rest.
+                        </p>
+                      </div>
+                      <div className="relative flex-shrink-0 size-20">
+                        <Image
+                          src="/door.avif"
+                          alt="Door illustration"
+                          fill
+                          className="object-contain"
+                        />
+                      </div>
                     </div>
-                    <p className="pl-7 text-base">
-                      Choose the cleaning package that fits your needs. Add notes, photos, or instructions for us to best serve you.
-                    </p>
-                  </div>
-
-                  <div>
-                    <div className="flex items-center gap-4 mb-2">
-                      <div className="text-lg font-medium">3</div>
-                      <h2 className="text-lg font-medium">Book and relax</h2>
-                    </div>
-                    <p className="pl-7 text-base">
-                      Pick a time that works for you, confirm the details, and we'll handle the rest.
-                    </p>
                   </div>
                 </div>
               </CardContent>
             </Card>
           )}
 
-          {/* Step 1: Property Overview */}
-          {step === 1 && (
+          {/* Step 1: First Step Card */}
+          {step.current === 1 && (
             <Card className="max-w-4xl mx-auto rounded-none border-0 shadow-none">
               <CardHeader className="px-6 pt-6">
                 <div className="text-sm font-medium text-muted-foreground mb-2">Step 1</div>
@@ -515,7 +594,7 @@ export default function BookingPage() {
           )}
 
           {/* Step 2: Service Selection */}
-          {step === 2 && (
+          {step.current === 2 && (
             <Card className="rounded-none border-0 shadow-none">
               <CardHeader className="px-6 pt-6">
                 <CardTitle>What is the size of the house?</CardTitle>
@@ -528,8 +607,8 @@ export default function BookingPage() {
                 <div className="space-y-4">
                   <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
                     <BookingFormOption
-                      isSelected={bedrooms === 1 && !specializedService}
-                      onClick={() => handleBedroomSelect('1')}
+                      isSelected={selectedPricingParams.type === 'flat' && selectedPricingParams.bedrooms === 1}
+                      onClick={() => handleServiceCategorySelect('default', { type: 'flat', bedrooms: 1 })}
                     >
                       <div className="relative mb-4 aspect-square size-16">
                         <Image
@@ -544,8 +623,8 @@ export default function BookingPage() {
                     </BookingFormOption>
 
                     <BookingFormOption
-                      isSelected={bedrooms === 2 && !specializedService}
-                      onClick={() => handleBedroomSelect('2')}
+                      isSelected={selectedPricingParams.type === 'flat' && selectedPricingParams.bedrooms === 2}
+                      onClick={() => handleServiceCategorySelect('default', { type: 'flat', bedrooms: 2 })}
                     >
                       <div className="relative mb-4 aspect-square size-16">
                         <Image
@@ -560,8 +639,8 @@ export default function BookingPage() {
                     </BookingFormOption>
 
                     <BookingFormOption
-                      isSelected={bedrooms === 3 && !specializedService}
-                      onClick={() => handleBedroomSelect('3')}
+                      isSelected={selectedPricingParams.type === 'flat' && selectedPricingParams.bedrooms === 3}
+                      onClick={() => handleServiceCategorySelect('default', { type: 'flat', bedrooms: 3 })}
                     >
                       <div className="relative mb-4 aspect-square size-16">
                         <Image
@@ -576,8 +655,8 @@ export default function BookingPage() {
                     </BookingFormOption>
 
                     <BookingFormOption
-                      isSelected={bedrooms === 4 && !specializedService}
-                      onClick={() => handleBedroomSelect('4')}
+                      isSelected={selectedPricingParams.type === 'flat' && selectedPricingParams.bedrooms === 4}
+                      onClick={() => handleServiceCategorySelect('default', { type: 'flat', bedrooms: 4 })}
                     >
                       <div className="relative mb-4 aspect-square size-16">
                         <Image
@@ -606,9 +685,9 @@ export default function BookingPage() {
 
                   <div className="grid grid-cols-1 gap-4 pt-2 sm:grid-cols-3">
                     <BookingFormOption
-                      isSelected={specializedService === 'Move In/Out'}
+                      isSelected={selectedServiceCategory === 'move-in-out'}
                       onClick={() => {
-                        handleSpecializedService('Move In/Out')
+                        handleServiceCategorySelect('move-in-out', selectedPricingParams)
                       }}
                     >
                       <div className="flex items-center justify-between w-full">
@@ -619,16 +698,16 @@ export default function BookingPage() {
                         <div className="size-16 flex-shrink-0">
                           <LottieAnimation
                             className="w-full h-full"
-                            animationData={HouseAnimation}
-                            onPlay={prevServiceRef.current !== 'Move In/Out' && specializedService === 'Move In/Out' ? () => {} : undefined}
+                            animationData={HouseCleanAnimation}
+                            onPlay={prevServiceRef.current !== 'move-in-out' && selectedServiceCategory === 'move-in-out' ? () => {} : undefined}
                           />
                         </div>
                       </div>
                     </BookingFormOption>
 
                     <BookingFormOption
-                      isSelected={specializedService === 'Custom Areas Only'}
-                      onClick={() => handleSpecializedService('Custom Areas Only')}
+                      isSelected={selectedServiceCategory === 'custom'}
+                      onClick={() => handleServiceCategorySelect('custom', selectedPricingParams)}
                     >
                       <div className="flex items-center justify-between w-full">
                         <div className="flex flex-col">
@@ -639,25 +718,25 @@ export default function BookingPage() {
                           <LottieAnimation
                             className="w-full h-full"
                             animationData={SprayAnimation}
-                            onPlay={prevServiceRef.current !== 'Custom Areas Only' && specializedService === 'Custom Areas Only' ? () => {} : undefined}
+                            onPlay={prevServiceRef.current !== 'custom' && selectedServiceCategory === 'custom' ? () => {} : undefined}
                           />
                         </div>
                       </div>
                     </BookingFormOption>
 
                     <BookingFormOption
-                      isSelected={specializedService === 'Mansion'}
-                      onClick={() => handleSpecializedService('Mansion')}
+                      isSelected={selectedServiceCategory === 'mansion'}
+                      onClick={() => handleServiceCategorySelect('mansion', selectedPricingParams)}
                     >
                       <div className="flex items-center justify-between w-full">
                         <div className="flex flex-col">
                           <span className="font-medium">Mansion</span>
-                          <span className="text-muted-foreground text-xs">For large properties with 5+ bedrooms</span>
+                          <span className="text-muted-foreground text-xs">For large properties with 4+ bedrooms</span>
                         </div>
                         <div className="size-16 flex-shrink-0">
                           <LottieAnimation
                             animationData={MansionAnimation}
-                            onPlay={prevServiceRef.current !== 'Mansion' && specializedService === 'Mansion' ? () => {} : undefined}
+                            onPlay={prevServiceRef.current !== 'mansion' && selectedServiceCategory === 'mansion' ? () => {} : undefined}
                           />
                         </div>
                       </div>
@@ -669,14 +748,14 @@ export default function BookingPage() {
           )}
 
           {/* Step 3: Hours Selection (For hourly services only) */}
-          {step === 3 && (serviceCategory === 'Custom Areas Only' || serviceCategory === 'Mansion') && (
+          {step.current === 3 && (selectedServiceCategory === 'custom' || selectedServiceCategory === 'mansion') && (
             <Card className="rounded-none border-0 shadow-none">
               <CardHeader className="px-6 pt-6">
                 <CardTitle>Select Service Duration</CardTitle>
                 <CardDescription>
                   Choose how many hours you need for your
                   {' '}
-                  {serviceCategory}
+                  {selectedServiceCategory}
                   {' '}
                   service
                 </CardDescription>
@@ -684,22 +763,22 @@ export default function BookingPage() {
               <CardContent className="px-6">
                 <FormField
                   control={control}
-                  name="hours"
+                  name="pricingParams.hours"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Number of Hours</FormLabel>
                       <FormControl>
                         <div className="grid grid-cols-2 gap-4 pt-2 sm:grid-cols-4">
-                          {[3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(hour => (
+                          {BookingHourlyPricingParamsSchema.shape.hours.options.map(({ value }) => (
                             <BookingFormOption
-                              key={hour}
-                              isSelected={field.value === hour}
+                              key={`${value} hours`}
+                              isSelected={field.value === value}
                               onClick={() => {
-                                field.onChange(hour)
-                                updatePrice({ serviceCategory, bedrooms, hours: hour })
+                                field.onChange(value)
+                                updatePrice({ serviceCategory: selectedServiceCategory, pricingParams: { type: 'hourly', hours: value } })
                               }}
                             >
-                              <span className="text-center font-medium">{`${hour} Hours`}</span>
+                              <span className="text-center font-medium">{`${value} Hours`}</span>
                             </BookingFormOption>
                           ))}
                         </div>
@@ -713,7 +792,7 @@ export default function BookingPage() {
           )}
 
           {/* Step 4: Schedule */}
-          {step === 4 && (
+          {step.current === 4 && (
             <Card className="rounded-none border-0 shadow-none">
               <CardHeader className="px-6 pt-6">
                 <CardTitle>Schedule Your Cleaning</CardTitle>
@@ -771,7 +850,7 @@ export default function BookingPage() {
                   />
                 )}
 
-                {(serviceCategory !== 'Move In/Out') && (
+                {(selectedServiceCategory !== 'move-in-out') && (
                   <FormField
                     control={form.control}
                     name="frequency"
@@ -779,14 +858,14 @@ export default function BookingPage() {
                       <FormItem>
                         <FormLabel>Frequency</FormLabel>
                         <FormDescription>
-                          {serviceCategory === 'Default'
+                          {selectedServiceCategory === 'default'
                             ? 'Receive up to 60% off after first visit'
                             : 'Receive up to 20% off after first visit'}
                         </FormDescription>
                         <Select
                           onValueChange={(value) => {
                             field.onChange(value)
-                            updatePrice({ serviceCategory, bedrooms, hours, frequency: value as Frequency })
+                            updatePrice({ serviceCategory: selectedServiceCategory, frequency: value as BookingFrequency })
                           }}
                           defaultValue={field.value}
                         >
@@ -797,7 +876,7 @@ export default function BookingPage() {
                           </FormControl>
                           <SelectContent>
                             <SelectItem value="weekly">Weekly</SelectItem>
-                            <SelectItem value="biweekly">Biweekly</SelectItem>
+                            <SelectItem value="biweekly">Bi-Weekly</SelectItem>
                             <SelectItem value="monthly">Monthly</SelectItem>
                             <SelectItem value="one-time">One-Time</SelectItem>
                           </SelectContent>
@@ -812,7 +891,7 @@ export default function BookingPage() {
           )}
 
           {/* Step 5: Customer Details */}
-          {step === 5 && (
+          {step.current === 5 && (
             <Card className="rounded-none border-0 shadow-none">
               <CardHeader className="px-6 pt-6">
                 <CardTitle>Your Information</CardTitle>
@@ -940,19 +1019,75 @@ export default function BookingPage() {
         </form>
       </Form>
 
-      {/* Show BookingFormNavbar on all steps */}
-      <BookingFormNavbar
-        step={step}
-        serviceCategory={serviceCategory}
-        canShowPrice={canShowPrice}
-        formatPrice={formatPrice}
-        watchFirstCleaning={watch('price.firstCleaning')}
-        watchRecurring={watch('price.recurring')}
-        frequency={frequency}
-        prevStep={prevStep}
-        nextStep={nextStep}
-        onSubmit={handleSubmit(onSubmit)}
-      />
+      {/* Show bottom navigation bar on all steps */}
+      <div className="fixed inset-x-0 bottom-20 z-10 bg-white">
+        {/* Progress bar - show on all steps */}
+        <Progress
+          className="h-2 w-full rounded-none"
+          segments={step.total}
+          value={step.current === 0 ? 0 : ((step.current - 1) / step.total) * 100}
+        />
+      </div>
+
+      {/* Navigation and pricing */}
+      <div className="fixed inset-x-0 bottom-0 z-10 h-20 bg-white shadow-md">
+        <div className="flex size-full items-center justify-between px-6 py-4">
+          {step.current === 0
+            ? (
+                <GradientButton
+                  type="button"
+                  onClick={nextStep}
+                  className="w-full"
+                >
+                  Get started
+                </GradientButton>
+              )
+            : (
+                <>
+                  <div className="flex items-center gap-4">
+                    {canShowPrice() && (
+                      <div className="flex flex-col justify-center">
+                        <div className="text-lg font-medium">
+                          {formatPrice(price.initial)}
+                        </div>
+                        {price.recurring && (
+                          <div className="text-muted-foreground text-sm">
+                            {selectedFrequency !== 'one-time'
+                              ? `${formatPrice(price.recurring)} for recurring cleanings`
+                              : ''}
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    {step.current > 0 && (
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={prevStep}
+                      >
+                        Back
+                      </Button>
+                    )}
+                    {step.current < step.total
+                      ? (
+                          <Button type="button" onClick={nextStep}>
+                            Next
+                          </Button>
+                        )
+                      : (
+                          <Button type="button" onClick={() => handleSubmit(onSubmit)()}>
+                            Book
+                          </Button>
+                        )}
+                  </div>
+                </>
+              )}
+        </div>
+      </div>
+
     </div>
   )
 }

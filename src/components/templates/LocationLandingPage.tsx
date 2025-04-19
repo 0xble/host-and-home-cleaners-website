@@ -1,4 +1,4 @@
-import type { Location, LocationKey } from '@/lib/constants'
+import type { LocationData, Location } from '@/lib/constants'
 
 import { slugify } from '0xble/strings'
 import { ContentViewTracker } from '@/components/analytics/facebook/Pixel'
@@ -13,8 +13,8 @@ interface Step {
 }
 
 interface LocationPageProps {
-  locationKey: LocationKey
-  location: Location
+  locationKey: Location
+  location: LocationData
   reviewsBadgeId: string
   googleMapsEmbedUrl: string
   photosFolder: string

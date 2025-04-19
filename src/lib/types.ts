@@ -1,12 +1,16 @@
-import { LOCATIONS } from './constants'
+import { z } from "zod"
+import { LOCATIONS } from "./constants"
+
+export const LocationSchema = z.enum(Object.keys(LOCATIONS) as [Location, ...Location[]])
+export type Location = keyof typeof LOCATIONS
+export type LocationData = typeof LOCATIONS[Location]
 
 export interface Phone {
   formatted: string
   plain: string
 }
 
-export type Location = keyof typeof LOCATIONS
-export const isLocation = (value: unknown): value is Location => Object.keys(LOCATIONS).includes(value as string)
+export const isLocation = (value: unknown): value is Location => LocationSchema.options.includes(value as any)
 
 export type ServiceAreas = (typeof LOCATIONS)[keyof typeof LOCATIONS]['serviceAreas']
 export const isServiceAreas = (value: unknown): value is ServiceAreas => Object.values(LOCATIONS).some((location: { serviceAreas: readonly string[] }) => location.serviceAreas.includes(value as string))
@@ -23,45 +27,3 @@ export interface SocialLink {
   name: SocialPlatform
   href: Record<Location, string>
 }
-
-export type Frequency = 'one-time' | 'weekly' | 'biweekly' | 'monthly'
-
-export type ServiceCategory = 'Default' | 'Move In/Out' | 'Custom Areas Only' | 'Mansion'
-
-export interface FlatPricingData {
-  type: 'flat'
-  bedrooms: Record<number, number>
-  frequencies?: Record<Frequency, number>
-}
-
-export interface HourlyPricingData {
-  type: 'hourly'
-  hourlyRate: number
-  frequencies: Record<Frequency, number>
-}
-
-export interface BookingFormData {
-  serviceCategory: ServiceCategory
-  bedrooms: number
-  hours?: number
-  frequency: Frequency
-  date: Date
-  arrivalWindow: string
-  customer: {
-    firstName: string
-    lastName: string
-    email: string
-    phone: string
-    address: string
-    city: string
-    state: string
-    zipCode: string
-  }
-  location: Location
-  price: {
-    firstCleaning: number
-    recurring?: number
-  }
-}
-
-export type ArrivalWindow = '8:00AM - 9:00AM' | '12:00PM - 1:00PM' | '3:00PM - 4:00PM'

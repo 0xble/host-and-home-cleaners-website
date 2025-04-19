@@ -1,13 +1,13 @@
 'use client'
 
-import type { LocationKey } from '@/lib/constants'
+import type { Location } from '@/lib/constants'
 import ReviewsGridClient from '@/components/reviews/ReviewsGridClient'
 import { TestimonialCarousel } from '@/components/TestimonialCarousel'
 import { cn } from '@/lib/utils'
 
 export interface ReviewSectionProps {
   heading: string
-  location?: LocationKey | null
+  location?: Location | null
   className?: string
 }
 
