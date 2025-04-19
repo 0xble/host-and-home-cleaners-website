@@ -94,10 +94,12 @@ type BookingFormState = z.infer<typeof BookingFormStateSchema>
 
 // type BookingFormStorage = z.infer<typeof BookingFormStorageSchema>
 
+// Define step transitions in a single place
 export default function BookingPage() {
   const router = useRouter()
   const [location] = useState<Location>('MYRTLE_BEACH')
-  const [step, setStep] = useState<{ current: BookingStep, total: number }>({ current: BookingStep.GETTING_STARTED, total: 5 })
+  const [step, setStep] = useState<BookingStep>(BookingStep.GETTING_STARTED)
+  const [progress, setProgress] = useState<{ value: number, max: number }>({ value: 0, max: 5 })
   const prevServiceRef = useRef<BookingServiceCategory | null>(null)
   const [visitedSteps, setVisitedSteps] = useState<number[]>([0])
   // const [isRestoring, setIsRestoring] = useState(true)
@@ -167,11 +169,6 @@ export default function BookingPage() {
     //   saveFormState()
     // }
 
-    // Update price when form values change
-    if (canShowPrice() && selectedServiceCategory && selectedPricingParams && selectedFrequency) {
-      updatePrice(selectedServiceCategory, selectedPricingParams, selectedFrequency)
-    }
-
     // Log form values if development mode
     if (process.env.NODE_ENV === 'development') {
       console.log('Form values:', getValues())
@@ -228,29 +225,61 @@ export default function BookingPage() {
     // setIsRestoring(false)
   }, [])
 
+  const STEP_TRANSITIONS: Readonly<Record<BookingStep, { next: () => BookingStep | null, prev: () => BookingStep | null }>> = {
+    [BookingStep.GETTING_STARTED]: {
+      next: () => BookingStep.TELL_US_ABOUT_YOUR_PLACE,
+      prev: () => null,
+    },
+    [BookingStep.TELL_US_ABOUT_YOUR_PLACE]: {
+      next: () => BookingStep.SERVICE_SELECTION,
+      prev: () => BookingStep.GETTING_STARTED,
+    },
+    [BookingStep.SERVICE_SELECTION]: {
+      next: () => selectedPricingParams?.type === 'hourly' ? BookingStep.HOURS_SELECTION : BookingStep.SCHEDULE,
+      prev: () => BookingStep.TELL_US_ABOUT_YOUR_PLACE,
+    },
+    [BookingStep.HOURS_SELECTION]: {
+      next: () => BookingStep.SCHEDULE,
+      prev: () => BookingStep.SERVICE_SELECTION,
+    },
+    [BookingStep.SCHEDULE]: {
+      next: () => BookingStep.CUSTOMER_DETAILS,
+      prev: () => selectedPricingParams?.type === 'hourly' ? BookingStep.HOURS_SELECTION : BookingStep.SERVICE_SELECTION,
+    },
+    [BookingStep.CUSTOMER_DETAILS]: {
+      next: () => BookingStep.CONFIRMATION,
+      prev: () => BookingStep.SCHEDULE,
+    },
+    [BookingStep.CONFIRMATION]: {
+      next: () => null,
+      prev: () => BookingStep.CUSTOMER_DETAILS,
+    },
+  }
+
+
   // Check if current step is valid
   const isCurrentStepValid = () => {
     // Step 0 is always valid
-    if (step.current === BookingStep.GETTING_STARTED)
+    if (step === BookingStep.GETTING_STARTED)
       return true
-    if (step.current === BookingStep.TELL_US_ABOUT_YOUR_PLACE)
+    if (step === BookingStep.TELL_US_ABOUT_YOUR_PLACE)
       return true
 
     // Step 1: Service Selection
-    if (step.current === BookingStep.SERVICE_SELECTION) {
+    if (step === BookingStep.SERVICE_SELECTION) {
       const serviceCategory = getValues('serviceCategory')
       const pricingParams = getValues('pricingParams')
       return serviceCategory !== undefined && pricingParams !== undefined
     }
 
     // Step 2: Hours Selection (for hourly services only)
-    if (step.current === BookingStep.HOURS_SELECTION && (selectedServiceCategory === 'custom' || selectedServiceCategory === 'mansion')) {
+    if (step === BookingStep.HOURS_SELECTION && (selectedServiceCategory === 'custom' || selectedServiceCategory === 'mansion')) {
       const pricingParams = getValues('pricingParams')
       return pricingParams !== undefined && pricingParams.type === 'hourly'
     }
 
     // Step 3: Schedule
-    if (step.current === BookingStep.SCHEDULE) {
+    if (step === BookingStep.SCHEDULE) {
       const date = getValues('date')
       const arrivalWindow = getValues('arrivalWindow')
       const frequency = getValues('frequency')
@@ -258,7 +287,7 @@ export default function BookingPage() {
     }
 
     // Step 4: Customer Details
-    if (step.current === BookingStep.CUSTOMER_DETAILS) {
+    if (step === BookingStep.CUSTOMER_DETAILS) {
       return trigger([
         'customer.firstName',
         'customer.lastName',
@@ -276,25 +305,38 @@ export default function BookingPage() {
   }
 
   const getNextStepNumber = () => {
-    switch (step.current) {
-      case BookingStep.GETTING_STARTED:
-        return BookingStep.TELL_US_ABOUT_YOUR_PLACE
-      case BookingStep.TELL_US_ABOUT_YOUR_PLACE:
-        return BookingStep.SERVICE_SELECTION
-      case BookingStep.SERVICE_SELECTION:
-        if (selectedPricingParams?.type === 'hourly') {
-          return BookingStep.HOURS_SELECTION
-        }
-        else if (selectedPricingParams?.type === 'flat') {
-          return BookingStep.SCHEDULE
-        }
-        break
-      case BookingStep.HOURS_SELECTION:
-        return BookingStep.SCHEDULE
-      case BookingStep.SCHEDULE:
-        return BookingStep.CUSTOMER_DETAILS
+    const currentStep = step
+    const transition = STEP_TRANSITIONS[currentStep]
+
+    if (!transition) return null
+
+    return transition.next()
+  }
+
+  const getPrevStepNumber = () => {
+    const currentStep = step
+    const transition = STEP_TRANSITIONS[currentStep]
+
+    if (!transition) return null
+
+    return transition.prev()
+  }
+
+  const prevStep = () => {
+    const prevStepNumber = getPrevStepNumber()
+    if (prevStepNumber !== null) {
+      setStep(prevStepNumber)
+      setProgress({ ...progress, value: progress.value - 1 })
     }
-    return null
+  }
+
+  const nextStep = () => {
+    const nextStepNumber = getNextStepNumber()
+    if (nextStepNumber !== null) {
+      setStep(nextStepNumber)
+      setProgress({ ...progress, value: progress.value + 1 })
+      setVisitedSteps(prev => [...new Set([...prev, nextStepNumber])])
+    }
   }
 
   const onSubmit = (data: BookingFormValid) => {
@@ -305,58 +347,17 @@ export default function BookingPage() {
     alert('Booking submitted! Check console for details.')
   }
 
-  const prevStep = () => {
-    if (step.current === BookingStep.SERVICE_SELECTION) {
-      setStep({ ...step, current: BookingStep.GETTING_STARTED })
-      return
-    }
-
-    if (selectedServiceCategory === 'custom' || selectedServiceCategory === 'mansion') {
-      if (step.current === BookingStep.HOURS_SELECTION) {
-        setStep({ ...step, current: BookingStep.SERVICE_SELECTION })
-      }
-      else if (step.current === BookingStep.SCHEDULE) {
-        setStep({ ...step, current: BookingStep.HOURS_SELECTION })
-      }
-      else if (step.current === BookingStep.CUSTOMER_DETAILS) {
-        setStep({ ...step, current: BookingStep.SCHEDULE })
-      }
-      else if (step.current === BookingStep.CONFIRMATION) {
-        setStep({ ...step, current: BookingStep.CUSTOMER_DETAILS as BookingStep })
-      }
-    }
-    else {
-      if (step.current === BookingStep.SCHEDULE) {
-        setStep({ ...step, current: BookingStep.SERVICE_SELECTION })
-      }
-      else if (step.current === BookingStep.CUSTOMER_DETAILS) {
-        setStep({ ...step, current: BookingStep.SCHEDULE })
-      }
-      else if (step.current === BookingStep.CONFIRMATION) {
-        setStep({ ...step, current: BookingStep.CUSTOMER_DETAILS as BookingStep })
-      }
-    }
-  }
-
-  const nextStep = () => {
-    const nextStepNumber = getNextStepNumber()
-    if (nextStepNumber !== null) {
-      setStep({ ...step, current: nextStepNumber })
-      setVisitedSteps(prev => [...new Set([...prev, nextStepNumber])])
-    }
-  }
-
   // Handle browser back/forward buttons
   useEffect(() => {
     const handlePopState = (event: PopStateEvent) => {
-      if (step.current === 0)
+      if (step === BookingStep.GETTING_STARTED)
         return
 
       event.preventDefault()
       prevStep()
     }
 
-    if (step.current > 0) {
+    if (step > BookingStep.GETTING_STARTED) {
       window.history.pushState(null, '', window.location.pathname)
     }
 
@@ -372,7 +373,7 @@ export default function BookingPage() {
 
       if (modifierKey) {
         // At step 0, let the browser handle back navigation normally
-        if (step.current === 0 && (event.key === '[' || event.key === 'ArrowLeft')) {
+        if (step === BookingStep.GETTING_STARTED && (event.key === '[' || event.key === 'ArrowLeft')) {
           return
         }
 
@@ -387,7 +388,7 @@ export default function BookingPage() {
           // 2. Next step has been visited before OR current step is valid
           const nextStepNumber = getNextStepNumber()
           if (
-            step.current > 0
+            step
             && nextStepNumber !== null
             && isCurrentStepValid()
             && (visitedSteps.includes(nextStepNumber) || await isCurrentStepValid())
@@ -449,6 +450,15 @@ export default function BookingPage() {
     serviceCategory: BookingServiceCategory,
     pricingParams: BookingPricingParams,
   ) => {
+    switch (pricingParams.type) {
+      case 'hourly':
+        setProgress({ ...progress, max: 5 })
+        break
+      case 'flat':
+        setProgress({ ...progress, max: 4 })
+        break
+    }
+
     setValue('serviceCategory', serviceCategory)
     setValue('pricingParams', pricingParams)
     updatePrice(serviceCategory, pricingParams, selectedFrequency)
@@ -497,7 +507,7 @@ export default function BookingPage() {
       </div>
       <Form {...form}>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-          {step.current === BookingStep.GETTING_STARTED && (
+          {step === BookingStep.GETTING_STARTED && (
             <Card className="max-w-4xl mx-auto rounded-none border-0 shadow-none">
               <CardHeader className="px-6 pt-6">
                 <CardTitle className="text-4xl font-medium">
@@ -578,7 +588,7 @@ export default function BookingPage() {
             </Card>
           )}
 
-          {step.current === BookingStep.TELL_US_ABOUT_YOUR_PLACE && (
+          {step === BookingStep.TELL_US_ABOUT_YOUR_PLACE && (
             <Card className="max-w-4xl mx-auto rounded-none border-0 shadow-none">
               <CardHeader className="px-6 pt-6">
                 <div className="text-sm font-medium text-muted-foreground mb-2">Step 1</div>
@@ -605,7 +615,7 @@ export default function BookingPage() {
             </Card>
           )}
 
-          {step.current === BookingStep.SERVICE_SELECTION && (
+          {step === BookingStep.SERVICE_SELECTION && (
             <Card className="rounded-none border-0 shadow-none">
               <CardHeader className="px-6 pt-6">
                 <CardTitle>What is the size of the house?</CardTitle>
@@ -758,7 +768,7 @@ export default function BookingPage() {
             </Card>
           )}
 
-          {step.current === BookingStep.HOURS_SELECTION && (
+          {step === BookingStep.HOURS_SELECTION && (
             <Card className="rounded-none border-0 shadow-none">
               <CardHeader className="px-6 pt-6">
                 <CardTitle>Select Service Duration</CardTitle>
@@ -807,7 +817,7 @@ export default function BookingPage() {
             </Card>
           )}
 
-          {step.current === BookingStep.SCHEDULE && (
+          {step === BookingStep.SCHEDULE && (
             <Card className="rounded-none border-0 shadow-none">
               <CardHeader className="px-6 pt-6">
                 <CardTitle>Schedule Your Cleaning</CardTitle>
@@ -902,7 +912,7 @@ export default function BookingPage() {
             </Card>
           )}
 
-          {step.current === BookingStep.CUSTOMER_DETAILS && (
+          {step === BookingStep.CUSTOMER_DETAILS && (
             <Card className="rounded-none border-0 shadow-none">
               <CardHeader className="px-6 pt-6">
                 <CardTitle>Your Information</CardTitle>
@@ -1035,15 +1045,15 @@ export default function BookingPage() {
         {/* Progress bar - show on all steps */}
         <Progress
           className="h-2 w-full rounded-none"
-          segments={step.total}
-          value={step.current === 0 ? 0 : ((step.current - 1) / step.total) * 100}
+          segments={progress.max}
+          value={progress.value}
         />
       </div>
 
       {/* Navigation and pricing */}
       <div className="fixed inset-x-0 bottom-0 z-10 h-20 bg-white shadow-md">
         <div className="flex size-full items-center justify-between px-6 py-4">
-          {step.current === 0
+          {step === BookingStep.GETTING_STARTED
             ? (
                 <GradientButton
                   type="button"
@@ -1073,7 +1083,7 @@ export default function BookingPage() {
                   </div>
 
                   <div className="flex items-center gap-2">
-                    {step.current > 0 && (
+                    {step > 0 && (
                       <Button
                         type="button"
                         variant="outline"
@@ -1082,7 +1092,7 @@ export default function BookingPage() {
                         Back
                       </Button>
                     )}
-                    {step.current < step.total
+                    {step < Object.keys(STEP_TRANSITIONS).length
                       ? (
                           <Button type="button" onClick={nextStep}>
                             Next
