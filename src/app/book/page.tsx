@@ -63,7 +63,7 @@ const BookingFormSchema = z.object({
   }),
   location: z.enum(['MYRTLE_BEACH', 'HONOLULU']),
   price: z.object({
-    firstCleaning: z.number().nullable(),
+    firstCleaning: z.number(),
     recurring: z.number().nullable().optional(),
   }),
 })
@@ -406,6 +406,11 @@ export default function BookingPage() {
   // Check if we have all required parameters to show price
   const canShowPrice = () => {
     const pricingData = PRICING_PARAMETERS[location].serviceCategories[serviceCategory]
+    const price = calculatePrice(location, serviceCategory, bedrooms, hours)
+
+    if (price === 0) {
+      return false
+    }
 
     if (pricingData.type === 'flat') {
       return bedrooms != null
@@ -415,7 +420,7 @@ export default function BookingPage() {
       return hours !== undefined && hours !== null
     }
 
-    return true // For flat pricing, we always have bedrooms
+    return true
   }
 
   // Format price for display
