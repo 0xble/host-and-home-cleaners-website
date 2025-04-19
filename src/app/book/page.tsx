@@ -107,7 +107,7 @@ export default function BookingPage() {
     },
   })
 
-  const { watch, setValue } = form
+  const { watch, setValue, handleSubmit, getValues, trigger, control } = form
 
   // Watch form values for price calculation
   const serviceCategory = watch('serviceCategory')
@@ -117,8 +117,6 @@ export default function BookingPage() {
 
   // Check if current step is valid
   const isCurrentStepValid = () => {
-    const { getValues, trigger } = form
-
     // Step 0 is always valid
     if (step === 0)
       return true
@@ -441,7 +439,7 @@ export default function BookingPage() {
         </Button>
       </div>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
           {/* Step 0: Overview */}
           {step === 0 && (
             <Card className="max-w-4xl mx-auto rounded-none border-0 shadow-none">
@@ -685,7 +683,7 @@ export default function BookingPage() {
               </CardHeader>
               <CardContent className="px-6">
                 <FormField
-                  control={form.control}
+                  control={control}
                   name="hours"
                   render={({ field }) => (
                     <FormItem>
@@ -725,7 +723,7 @@ export default function BookingPage() {
               </CardHeader>
               <CardContent className="space-y-6 px-6">
                 <FormField
-                  control={form.control}
+                  control={control}
                   name="date"
                   render={({ field }) => (
                     <FormItem className="flex flex-col">
@@ -747,7 +745,7 @@ export default function BookingPage() {
 
                 {selectedDate && (
                   <FormField
-                    control={form.control}
+                    control={control}
                     name="arrivalWindow"
                     render={({ field }) => (
                       <FormItem>
@@ -953,7 +951,7 @@ export default function BookingPage() {
         frequency={frequency}
         prevStep={prevStep}
         nextStep={nextStep}
-        onSubmit={form.handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(onSubmit)}
       />
     </div>
   )
