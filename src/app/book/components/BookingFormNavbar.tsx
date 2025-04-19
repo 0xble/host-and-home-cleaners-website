@@ -64,15 +64,15 @@ export default function BookingFormNavbar({
                   <div className="flex items-center gap-4">
                     {canShowPrice() && (
                       <div className="flex flex-col justify-center">
-                        <p className="text-lg font-bold">
+                        <div className="text-lg font-medium">
                           {formatPrice(watchFirstCleaning)}
-                        </p>
+                        </div>
                         {watchRecurring && (
-                          <p className="text-muted-foreground text-sm">
+                          <div className="text-muted-foreground text-sm">
                             {frequency !== 'one-time'
                               ? `${formatPrice(watchRecurring)} for recurring cleanings`
                               : ''}
-                          </p>
+                          </div>
                         )}
                       </div>
                     )}
