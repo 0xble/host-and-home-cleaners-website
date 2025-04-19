@@ -176,8 +176,7 @@ export default function BookingPage() {
         return 4
       if (step === 4)
         return 5
-    }
-    else {
+    } else {
       if (step === 1)
         return 2
       if (step === 2)
@@ -379,6 +378,7 @@ export default function BookingPage() {
   const handleSpecializedService = (value: string) => {
     prevServiceRef.current = specializedService
     setSpecializedService(value)
+    setValue('serviceCategory', value as ServiceCategory)
     // Use direct values for immediate price update
     updatePrice({ serviceCategory: value as ServiceCategory, bedrooms })
   }

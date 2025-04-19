@@ -50,7 +50,7 @@ function PricingCard({
           highlighted
           && 'bg-primary hover:bg-primary-800 focus:ring-primary-200',
         )}
-        eventName={PixelEvent.SCHEDULE}
+        eventName={PixelEvent.INITIATE_CHECKOUT}
         eventParams={{ service_type: name }}
       >
         Book a cleaning

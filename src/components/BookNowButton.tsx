@@ -68,7 +68,7 @@ export default function BookNowButton({
     <TrackedLink
       href={constructBookingUrl()}
       className={cn(baseStyles, sizeStyles[size], className)}
-      eventName={PixelEvent.SCHEDULE}
+      eventName={PixelEvent.INITIATE_CHECKOUT}
       preventNavigation={preventNavigation}
     >
       Book Now
