@@ -3,7 +3,7 @@ import { ContentViewTracker } from '@/components/analytics/facebook/Pixel'
 import Page from '@/components/templates/Page'
 
 import { BUSINESS_NAME } from '@/lib/constants'
-import heroImage from '@/public/cleaner-work.gif'
+import heroImage from '@/public/assets/cleaner-work.gif'
 import Image from 'next/image'
 import Link from 'next/link'
 

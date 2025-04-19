@@ -5,7 +5,7 @@ import Page from '@/components/templates/Page'
 
 import CTASection from '@/components/templates/sections/CTASection'
 import { BUSINESS_NAME, SERVICES } from '@/lib/constants'
-import homeImage from '@/public/home3.jpeg'
+import homeImage from '@/public/assets/home3.jpeg'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Suspense } from 'react'
