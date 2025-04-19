@@ -133,11 +133,12 @@ export default function BookingPage() {
   // Save form state to sessionStorage
   const saveFormState = (data = getValues()) => {
     if (step.current > 0) {
-      const stateToSave = BookingFormStorageSchema.parse({
+      const stateToSave = {
         formData: data,
         step: { current: step.current, total: step.total },
         visitedSteps,
-      })
+      }
+
       sessionStorage.setItem('bookingFormState', JSON.stringify(stateToSave))
     }
   }
@@ -547,7 +548,7 @@ export default function BookingPage() {
                           <h2 className="text-lg font-medium">Book and relax</h2>
                         </div>
                         <p className="pl-7 text-sm">
-                          Pick a time that works, confirm details, and we’ll handle the rest.
+                          Pick a time that works, confirm details, and we'll handle the rest.
                         </p>
                       </div>
                       <div className="relative flex-shrink-0 size-20">
