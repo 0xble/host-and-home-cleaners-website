@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { FormField, FormItem, FormControl, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { cn } from '@/lib/utils'
-import { constructFullAddress } from '../../utils'
+import { constructFullAddress, extractAddressComponents } from '../../utils'
 import { MapWithMarker } from '../MapWithMarker'
 import { AddressAutocompleteInput } from '../AddressAutocompleteInput'
 import type { BaseStepProps } from '../../types'
@@ -23,11 +23,12 @@ export function AddressInputStep({ form, onValidityChangeAction }: BaseStepProps
   const coordinates = watch('customer.coordinates')
 
   useEffect(() => {
-    const isValid = !errors.customer?.address &&
-                   !errors.customer?.city &&
-                   !errors.customer?.state &&
-                   !errors.customer?.zipCode &&
-                   !!address && !!city && !!state && !!zipCode
+    const isValid =
+      !errors.customer?.address &&
+      !errors.customer?.city &&
+      !errors.customer?.state &&
+      !errors.customer?.zipCode &&
+      !!address && !!city && !!state && !!zipCode
 
     onValidityChangeAction(isValid)
   }, [address, city, state, zipCode, errors, onValidityChangeAction])
@@ -73,27 +74,16 @@ export function AddressInputStep({ form, onValidityChangeAction }: BaseStepProps
                           const lng = place.geometry.location.lng()
                           setValue('customer.coordinates', { lat, lng })
 
-                          // Update city, state, zip based on selected place
-                          const addressComponents = place.address_components || []
-                          let city = ''
-                          let state = ''
-                          let zipCode = ''
+                          if (!place.address_components) return
 
-                          for (const component of addressComponents) {
-                            const types = component.types
-                            if (types.includes('locality')) {
-                              city = component.long_name
-                            } else if (types.includes('administrative_area_level_1')) {
-                              state = component.short_name
-                            } else if (types.includes('postal_code')) {
-                              zipCode = component.long_name
-                            }
-                          }
+                          const components = extractAddressComponents(place.address_components)
 
-                          setValue('customer.city', city)
-                          setValue('customer.state', state)
-                          setValue('customer.zipCode', zipCode)
+                          if (components.city) setValue('customer.city', components.city)
+                          if (components.state) setValue('customer.state', components.state)
+                          if (components.zipCode) setValue('customer.zipCode', components.zipCode)
+
                           setShowAddressFields(true) // Show fields immediately on place selection
+
                           trigger('customer.zipCode') // Trigger validation after setting ZIP code
                         }
                       }}
@@ -234,24 +224,12 @@ export function AddressInputStep({ form, onValidityChangeAction }: BaseStepProps
 
                     // Update city, state, zip
                     if (place && place.address_components) {
-                      let cityVal = ''
-                      let stateVal = ''
-                      let zipVal = ''
+                      const components = extractAddressComponents(place.address_components)
 
-                      for (const component of place.address_components) {
-                        const types = component.types
-                        if (types.includes('locality')) {
-                          cityVal = component.long_name
-                        } else if (types.includes('administrative_area_level_1')) {
-                          stateVal = component.short_name
-                        } else if (types.includes('postal_code')) {
-                          zipVal = component.long_name
-                        }
-                      }
+                      if (components.city) setValue('customer.city', components.city)
+                      if (components.state) setValue('customer.state', components.state)
+                      if (components.zipCode) setValue('customer.zipCode', components.zipCode)
 
-                      setValue('customer.city', cityVal)
-                      setValue('customer.state', stateVal)
-                      setValue('customer.zipCode', zipVal)
                       setShowAddressFields(true) // Show additional fields when map marker is moved
                     }
                   }
