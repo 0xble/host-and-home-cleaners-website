@@ -5,6 +5,7 @@ import { clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 import { EMAIL, LOCATIONS, PHONE } from './constants'
 import { ROUTES } from './routes'
+import type { a } from 'node_modules/framer-motion/dist/types.d-B50aGbjN'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -100,4 +101,8 @@ export function getLocationsString(
 
 export const formatPrice = (price: number | null | undefined) => {
   return `$${price?.toFixed(0) ?? ''}`
+}
+
+export const roundToEvenDown = (num: number) => {
+  return Math.floor(num / 2) * 2
 }

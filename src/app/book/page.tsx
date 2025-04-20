@@ -32,6 +32,7 @@ import { TellUsAboutYourPlaceStep } from './components/steps/TellUsAboutYourPlac
 import { GoogleMapsLoader } from '@/lib/google/GoogleMapsLoader'
 import { formatPrice } from '@/lib/utils'
 import { addDays } from 'date-fns'
+import { calculatePrice } from './utils'
 
 // Defines the components for each step
 type StepComponent = ComponentType<BaseStepProps>
@@ -48,11 +49,14 @@ const STEP_COMPONENTS: Readonly<Record<BookingStep, StepComponent>> = {
   // [BookingStep.CONFIRMATION]: ConfirmationStep,
 }
 
+// Subtract 1 for hours and size selection being mutually exclusive
+const MAX_STEPS = (Object.keys(STEP_COMPONENTS).length - 1) - 1
+
 export default function BookingPage() {
   const router = useRouter()
   const [location] = useState<Location>('MYRTLE_BEACH')
   const [currentStep, setCurrentStep] = useState<BookingStep>(BookingStep.GETTING_STARTED)
-  const [progress, setProgress] = useState<{ value: number, max: number }>({ value: 0, max: 7 })
+  const [progress, setProgress] = useState<{ value: number, max: number }>({ value: 0, max: MAX_STEPS })
   const [visitedSteps, setVisitedSteps] = useState<BookingStep[]>([])
   const [isStepValid, setIsStepValid] = useState(true)
   const [isGoogleMapsLoaded, setIsGoogleMapsLoaded] = useState(false)
@@ -417,8 +421,8 @@ export default function BookingPage() {
       <div className="fixed inset-x-0 bottom-20 z-10 bg-white">
         <Progress
           className="h-2 w-full rounded-none"
-          segments={progress.max}
-          value={progress.value}
+          segments={progress.max / 2}
+          value={progress.value / progress.max * 100}
         />
       </div>
 
@@ -462,11 +466,23 @@ export default function BookingPage() {
                   case BookingStep.SIZE_SELECTION:
                     form.setValue('pricingParams.type', 'flat')
                     form.setValue('pricingParams.bedrooms', 2)
+                    form.setValue('price', calculatePrice(
+                      selectedServiceCategory,
+                      selectedFrequency,
+                      { type: 'flat', bedrooms: 2 },
+                      PRICING_PARAMETERS[location][selectedServiceCategory]
+                    ))
                     nextStep(true)
                     break
                   case BookingStep.HOURS_SELECTION:
                     form.setValue('pricingParams.type', 'hourly')
                     form.setValue('pricingParams.hours', 4)
+                    form.setValue('price', calculatePrice(
+                      selectedServiceCategory,
+                      selectedFrequency,
+                      { type: 'hourly', hours: 4 },
+                      PRICING_PARAMETERS[location][selectedServiceCategory])
+                    )
                     nextStep(true)
                     break
                   case BookingStep.SCHEDULE:

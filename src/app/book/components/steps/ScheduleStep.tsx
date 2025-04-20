@@ -1,6 +1,6 @@
 'use client'
 
-import { FormField, FormItem, FormLabel, FormControl, FormMessage, FormDescription } from '@/components/ui/form'
+import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Calendar } from '@/components/ui/calendar'
 import { addDays, isBefore } from 'date-fns'
@@ -62,10 +62,6 @@ export function ScheduleStep({ form, onValidityChangeAction }: BaseStepProps) {
           name="date"
           render={({ field }) => (
             <FormItem className="flex flex-col">
-              <FormLabel>Choose a Date</FormLabel>
-              <FormDescription>
-                Select an available date.
-              </FormDescription>
               <Calendar
                 className="mx-auto rounded-md border"
                 mode="single"
