@@ -53,19 +53,8 @@ import { AddressAutocompleteInput } from './components/AddressAutocompleteInput'
 import { MapWithMarker, type Coordinates } from './components/MapWithMarker'
 import { cn } from '@/lib/utils'
 import { constructFullAddress } from './utils'
-
-enum BookingStep {
-  GETTING_STARTED = 0,
-  CHOOSE_YOUR_SERVICE = 1,
-  SERVICE_SELECTION = 2,
-  TELL_US_ABOUT_YOUR_PLACE = 3,
-  SIZE_SELECTION = 4,
-  HOURS_SELECTION = 5,
-  CUSTOMER_DETAILS = 6,
-  ADDRESS_INPUT = 7,
-  SCHEDULE = 8,
-  CONFIRMATION = 9,
-}
+import { STEP_COMPONENTS } from './components/steps'
+import { BookingStep } from './types/steps'
 
 const BookingFormValidationSchema = z.object({
   location: LocationSchema,
@@ -587,6 +576,12 @@ export default function BookingPage() {
     return undefined;
   }, []);
 
+  const handleStepValidityChange = (isValid: boolean) => {
+    setIsStepValid(isValid)
+  }
+
+  const CurrentStepComponent = STEP_COMPONENTS[step]
+
   return (
     <div className="relative min-h-screen pb-24">
       <LoadScript
@@ -603,734 +598,257 @@ export default function BookingPage() {
         </div>
         <Form {...form}>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-            {step === BookingStep.GETTING_STARTED && (
-              <Card className="max-w-4xl mx-auto rounded-none border-0 shadow-none">
-                <CardHeader className="pt-2">
-                  <CardTitle className="text-4xl font-medium">
-                    Need cleaning?
-                    <br />
-                    We're here to help
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-12 px-6">
-                  <div className="border-b border-neutral-300 pb-8">
-                    <div className="flex items-center gap-8">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-4 mb-2">
-                          <div className="text-lg font-medium">1</div>
-                          <h2 className="text-lg font-medium">Choose your service</h2>
-                        </div>
-                        <p className="pl-7 text-sm">
-                          Select the cleaning type that best fits your situation and your needs.
-                        </p>
+            {CurrentStepComponent ? (
+              <CurrentStepComponent
+                form={form}
+                onValidityChange={handleStepValidityChange}
+              />
+            ) : (
+              // Render your existing non-modularized steps here
+              <>
+                {step === BookingStep.TELL_US_ABOUT_YOUR_PLACE && (
+                  <Card className="max-w-4xl mx-auto rounded-none border-0 shadow-none">
+                    <CardHeader>
+                      <div className="text-sm font-medium text-muted-foreground mb-2">Step 2</div>
+                      <CardTitle className="text-3xl font-medium">
+                        Tell us about your place
+                      </CardTitle>
+                      <CardDescription className="text-base mt-4">
+                        In this step, we'll ask for some quick details about your home—like how many bedrooms you have, and what type of cleaning you're looking for.
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="px-0">
+                      <div className="relative w-full max-w-3xl mx-auto rounded-lg overflow-hidden pb-[75%]">
+                        <video
+                          className="absolute inset-0 w-full h-full object-cover"
+                          autoPlay
+                          playsInline
+                          preload="auto"
+                          muted
+                        >
+                          <source src="/videos/property-tour.mp4" type="video/mp4" />
+                        </video>
                       </div>
-                      <div className="relative flex-shrink-0 size-20">
-                        <Image
-                          src="/broom-dustpan.png"
-                          alt="Broom and dustpan illustration"
-                          fill
-                          className="object-contain"
-                        />
-                      </div>
-                    </div>
-                  </div>
+                    </CardContent>
+                  </Card>
+                )}
 
-                  <div className="space-y-8">
-                    <div className="border-b border-neutral-300 pb-8">
-                      <div className="flex items-center gap-8">
-                        <div className="flex-1">
-                          <div className="flex items-center gap-4 mb-2">
-                            <div className="text-lg font-medium">2</div>
-                            <h2 className="text-lg font-medium">Tell us about your place</h2>
-                          </div>
-                          <p className="pl-7 text-sm">
-                            Share some basic info and add any notes, photos, or instructions.
-                          </p>
-                        </div>
-                        <div className="relative flex-shrink-0 size-20">
-                          <Image
-                            src="/living-room.png"
-                            alt="Living room illustration"
-                            fill
-                            className="object-contain"
-                          />
-                        </div>
-                      </div>
-                    </div>
+                {step === BookingStep.SIZE_SELECTION && (
+                  <Card className="rounded-none border-0 shadow-none">
+                    <CardHeader className="pt-2">
+                      <CardTitle>What is the size of your place?</CardTitle>
+                      <CardDescription>
+                        Select the number of bedrooms in your home to help us estimate the service duration and price.
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-8 px-6">
+                      {/* Bedroom Selection */}
+                      <div className="space-y-4">
+                        <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+                          <BookingFormOption
+                            isSelected={selectedPricingParams?.type === 'flat' && selectedPricingParams?.bedrooms === 1}
+                            onClick={() => handleSelectPricingParameters({ type: 'flat', bedrooms: 1 })}
+                          >
+                            <div className="relative mb-4 aspect-square size-16">
+                              <Image
+                                src="/icons/sizes/one-bedroom.svg"
+                                alt="One Bedroom"
+                                fill
+                                className="transition-colors"
+                              />
+                            </div>
+                            <h3 className="text-lg font-medium">One Bedroom</h3>
+                            <p className="mt-1 text-sm text-muted-foreground">Up to 1,000 sq ft</p>
+                          </BookingFormOption>
 
-                    <div>
-                      <div className="flex items-center gap-8">
-                        <div className="flex-1">
-                          <div className="flex items-center gap-4 mb-2">
-                            <div className="text-lg font-medium">3</div>
-                            <h2 className="text-lg font-medium">Book and relax</h2>
-                          </div>
-                          <p className="pl-7 text-sm">
-                            Pick a time that works, confirm details, and we'll handle the rest.
-                          </p>
-                        </div>
-                        <div className="relative flex-shrink-0 size-20">
-                          <Image
-                            src="/door.avif"
-                            alt="Door illustration"
-                            fill
-                            className="object-contain"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
+                          <BookingFormOption
+                            isSelected={selectedPricingParams?.type === 'flat' && selectedPricingParams?.bedrooms === 2}
+                            onClick={() => handleSelectPricingParameters({ type: 'flat', bedrooms: 2 })}
+                          >
+                            <div className="relative mb-4 aspect-square size-16">
+                              <Image
+                                src="/icons/sizes/two-bedroom.svg"
+                                alt="Two Bedroom"
+                                fill
+                                className="transition-colors"
+                              />
+                            </div>
+                            <h3 className="text-lg font-medium">Two Bedroom</h3>
+                            <p className="mt-1 text-sm text-muted-foreground">Up to 1,500 sq ft</p>
+                          </BookingFormOption>
 
-            {step === BookingStep.CHOOSE_YOUR_SERVICE && (
-              <Card className="max-w-4xl mx-auto rounded-none border-0 shadow-none">
-                <CardHeader>
-                  <div className="text-sm font-medium text-muted-foreground mb-2">Step 1</div>
-                  <CardTitle className="text-3xl font-medium">
-                    Choose your service
-                  </CardTitle>
-                  <CardDescription className="text-base mt-4">
-                    Let's start with aute elit nostrud magna ut deserunt laborum Lorem duis. Irure velit sunt in aute do officia est proident qui minim nulla mollit.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="px-0">
-                  <div className="relative w-full max-w-3xl mx-auto rounded-lg overflow-hidden pb-[75%]">
-                    <Image
-                      src="/assets/cleaner.png"
-                      alt="House cleaner"
-                      fill
-                      className="object-contain animate-wiggle"
-                      style={{ animationDelay: '200ms' }}
-                    />
-                  </div>
-                </CardContent>
-              </Card>
-            )}
+                          <BookingFormOption
+                            isSelected={selectedPricingParams?.type === 'flat' && selectedPricingParams?.bedrooms === 3}
+                            onClick={() => handleSelectPricingParameters({ type: 'flat', bedrooms: 3 })}
+                          >
+                            <div className="relative mb-4 aspect-square size-16">
+                              <Image
+                                src="/icons/sizes/three-bedroom.svg"
+                                alt="Three Bedroom"
+                                fill
+                                className="transition-colors"
+                              />
+                            </div>
+                            <h3 className="text-lg font-medium">Three Bedroom</h3>
+                            <p className="mt-1 text-sm text-muted-foreground">Up to 2,500 sq ft</p>
+                          </BookingFormOption>
 
-            {/* TODO: Add learn more modal that appears to show additional information about each service */}
-            {step === BookingStep.SERVICE_SELECTION && (
-              <Card className="max-w-4xl mx-auto rounded-none border-0 shadow-none">
-                <CardHeader className="pt-2">
-                  <CardTitle>What are we cleaning today?</CardTitle>
-                  <CardDescription>
-                    Select the type of cleaning service that best fits your needs.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-8 px-6">
-                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                    <BookingFormOption
-                      isSelected={selectedServiceCategory === 'default'}
-                      onClick={() => handleSelectServiceCategory('default')}
-                    >
-                      <div className="flex items-center justify-between w-full">
-                        <div className="flex flex-col">
-                          <span className="font-medium">Deep Clean</span>
-                          <span className="text-muted-foreground text-xs">Recommended for places that haven't been professionally cleaned and follow up upkeep</span>
-                        </div>
-                        <div className="size-16 flex-shrink-0">
-                          <LottieAnimation
-                            className="w-full h-full"
-                            animationData={ChecklistAnimation}
-                            onPlay={prevServiceRef.current !== 'default' && selectedServiceCategory === 'default' ? () => {} : undefined}
-                          />
+                          <BookingFormOption
+                            isSelected={selectedPricingParams?.type === 'flat' && selectedPricingParams?.bedrooms === 4}
+                            onClick={() => handleSelectPricingParameters({ type: 'flat', bedrooms: 4 })}
+                          >
+                            <div className="relative mb-4 aspect-square size-16">
+                              <Image
+                                className="transition-colors"
+                                src="/icons/sizes/four-bedroom.svg"
+                                alt="Four Bedroom"
+                                fill
+                              />
+                            </div>
+                            <h3 className="text-lg font-medium">Four Bedroom</h3>
+                            <p className="mt-1 text-sm text-muted-foreground">Up to 3,500 sq ft</p>
+                          </BookingFormOption>
                         </div>
                       </div>
-                    </BookingFormOption>
+                    </CardContent>
+                  </Card>
+                )}
 
-                    <BookingFormOption
-                      isSelected={selectedServiceCategory === 'move-in-out'}
-                      onClick={() => handleSelectServiceCategory('move-in-out')}
-                    >
-                      <div className="flex items-center justify-between w-full">
-                        <div className="flex flex-col">
-                          <span className="font-medium">Move In/Out</span>
-                          <span className="text-muted-foreground text-xs">For moving in or out of a property</span>
-                        </div>
-                        <div className="size-16 flex-shrink-0">
-                          <LottieAnimation
-                            className="w-full h-full"
-                            animationData={HouseCleanAnimation}
-                            onPlay={prevServiceRef.current !== 'move-in-out' && selectedServiceCategory === 'move-in-out' ? () => {} : undefined}
-                          />
-                        </div>
-                      </div>
-                    </BookingFormOption>
-
-                    <BookingFormOption
-                      isSelected={selectedServiceCategory === 'custom'}
-                      onClick={() => handleSelectServiceCategory('custom')}
-                    >
-                      <div className="flex items-center justify-between w-full">
-                        <div className="flex flex-col">
-                          <span className="font-medium">Custom Areas Only</span>
-                          <span className="text-muted-foreground text-xs">For specific areas that need attention</span>
-                        </div>
-                        <div className="size-16 flex-shrink-0">
-                          <LottieAnimation
-                            className="w-full h-full"
-                            animationData={SprayAnimation}
-                            onPlay={prevServiceRef.current !== 'custom' && selectedServiceCategory === 'custom' ? () => {} : undefined}
-                          />
-                        </div>
-                      </div>
-                    </BookingFormOption>
-
-                    <BookingFormOption
-                      isSelected={selectedServiceCategory === 'mansion'}
-                      onClick={() => handleSelectServiceCategory('mansion')}
-                    >
-                      <div className="flex items-center justify-between w-full">
-                        <div className="flex flex-col">
-                          <span className="font-medium">Mansion</span>
-                          <span className="text-muted-foreground text-xs">For large properties with 4+ bedrooms</span>
-                        </div>
-                        <div className="size-16 flex-shrink-0">
-                          <LottieAnimation
-                            animationData={MansionAnimation}
-                            onPlay={prevServiceRef.current !== 'mansion' && selectedServiceCategory === 'mansion' ? () => {} : undefined}
-                          />
-                        </div>
-                      </div>
-                    </BookingFormOption>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-
-            {step === BookingStep.TELL_US_ABOUT_YOUR_PLACE && (
-              <Card className="max-w-4xl mx-auto rounded-none border-0 shadow-none">
-                <CardHeader>
-                  <div className="text-sm font-medium text-muted-foreground mb-2">Step 2</div>
-                  <CardTitle className="text-3xl font-medium">
-                    Tell us about your place
-                  </CardTitle>
-                  <CardDescription className="text-base mt-4">
-                    In this step, we'll ask for some quick details about your home—like how many bedrooms you have, and what type of cleaning you're looking for.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="px-0">
-                  <div className="relative w-full max-w-3xl mx-auto rounded-lg overflow-hidden pb-[75%]">
-                    <video
-                      className="absolute inset-0 w-full h-full object-cover"
-                      autoPlay
-                      playsInline
-                      preload="auto"
-                      muted
-                    >
-                      <source src="/videos/property-tour.mp4" type="video/mp4" />
-                    </video>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-
-            {step === BookingStep.SIZE_SELECTION && (
-              <Card className="rounded-none border-0 shadow-none">
-                <CardHeader className="pt-2">
-                  <CardTitle>What is the size of your place?</CardTitle>
-                  <CardDescription>
-                    Select the number of bedrooms in your home to help us estimate the service duration and price.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-8 px-6">
-                  {/* Bedroom Selection */}
-                  <div className="space-y-4">
-                    <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-                      <BookingFormOption
-                        isSelected={selectedPricingParams?.type === 'flat' && selectedPricingParams?.bedrooms === 1}
-                        onClick={() => handleSelectPricingParameters({ type: 'flat', bedrooms: 1 })}
-                      >
-                        <div className="relative mb-4 aspect-square size-16">
-                          <Image
-                            src="/icons/sizes/one-bedroom.svg"
-                            alt="One Bedroom"
-                            fill
-                            className="transition-colors"
-                          />
-                        </div>
-                        <h3 className="text-lg font-medium">One Bedroom</h3>
-                        <p className="mt-1 text-sm text-muted-foreground">Up to 1,000 sq ft</p>
-                      </BookingFormOption>
-
-                      <BookingFormOption
-                        isSelected={selectedPricingParams?.type === 'flat' && selectedPricingParams?.bedrooms === 2}
-                        onClick={() => handleSelectPricingParameters({ type: 'flat', bedrooms: 2 })}
-                      >
-                        <div className="relative mb-4 aspect-square size-16">
-                          <Image
-                            src="/icons/sizes/two-bedroom.svg"
-                            alt="Two Bedroom"
-                            fill
-                            className="transition-colors"
-                          />
-                        </div>
-                        <h3 className="text-lg font-medium">Two Bedroom</h3>
-                        <p className="mt-1 text-sm text-muted-foreground">Up to 1,500 sq ft</p>
-                      </BookingFormOption>
-
-                      <BookingFormOption
-                        isSelected={selectedPricingParams?.type === 'flat' && selectedPricingParams?.bedrooms === 3}
-                        onClick={() => handleSelectPricingParameters({ type: 'flat', bedrooms: 3 })}
-                      >
-                        <div className="relative mb-4 aspect-square size-16">
-                          <Image
-                            src="/icons/sizes/three-bedroom.svg"
-                            alt="Three Bedroom"
-                            fill
-                            className="transition-colors"
-                          />
-                        </div>
-                        <h3 className="text-lg font-medium">Three Bedroom</h3>
-                        <p className="mt-1 text-sm text-muted-foreground">Up to 2,500 sq ft</p>
-                      </BookingFormOption>
-
-                      <BookingFormOption
-                        isSelected={selectedPricingParams?.type === 'flat' && selectedPricingParams?.bedrooms === 4}
-                        onClick={() => handleSelectPricingParameters({ type: 'flat', bedrooms: 4 })}
-                      >
-                        <div className="relative mb-4 aspect-square size-16">
-                          <Image
-                            className="transition-colors"
-                            src="/icons/sizes/four-bedroom.svg"
-                            alt="Four Bedroom"
-                            fill
-                          />
-                        </div>
-                        <h3 className="text-lg font-medium">Four Bedroom</h3>
-                        <p className="mt-1 text-sm text-muted-foreground">Up to 3,500 sq ft</p>
-                      </BookingFormOption>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-
-            {step === BookingStep.HOURS_SELECTION && (
-              <Card className="rounded-none border-0 shadow-none">
-                <CardHeader className="pt-2">
-                  <CardTitle>Select Service Duration</CardTitle>
-                  <CardDescription>
-                    Choose how many hours you need for your
-                    {' '}
-                    {selectedServiceCategory === 'custom' ? 'custom' : selectedServiceCategory === 'mansion' ? 'mansion' : ''}
-                    {' '}
-                    cleaning service
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="px-6">
-                  <FormField
-                    control={form.control}
-                    name="pricingParams.hours"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Number of Hours</FormLabel>
-                        <FormControl>
-                          <div className="grid grid-cols-2 gap-4 pt-2 sm:grid-cols-4">
-                            {BookingHourlyPricingParamsSchema.shape.hours.options.map(({ value }) => (
-                              <BookingFormOption
-                                key={`${value} hours`}
-                                isSelected={field.value === value}
-                                onClick={() => handleSelectPricingParameters({ type: 'hourly', hours: value })}
-                              >
-                                <span className="text-center font-medium">{`${value} Hours`}</span>
-                              </BookingFormOption>
-                            ))}
-                          </div>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </CardContent>
-              </Card>
-            )}
-
-            {step === BookingStep.ADDRESS_INPUT && (
-              <Card className="rounded-none border-0 shadow-none">
-                <CardHeader className="pt-2">
-                  <CardTitle>Where is the cleaning?</CardTitle>
-                  <CardDescription>
-                    Enter your address to help us find you.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-6 px-6">
-                  <div className="max-w-xl mx-auto">
-                    <div className="border rounded-lg overflow-hidden">
+                {step === BookingStep.HOURS_SELECTION && (
+                  <Card className="rounded-none border-0 shadow-none">
+                    <CardHeader className="pt-2">
+                      <CardTitle>Select Service Duration</CardTitle>
+                      <CardDescription>
+                        Choose how many hours you need for your
+                        {' '}
+                        {selectedServiceCategory === 'custom' ? 'custom' : selectedServiceCategory === 'mansion' ? 'mansion' : ''}
+                        {' '}
+                        cleaning service
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="px-6">
                       <FormField
                         control={form.control}
-                        name="customer.address"
+                        name="pricingParams.hours"
                         render={({ field }) => (
-                          <FormItem className="m-0">
+                          <FormItem>
+                            <FormLabel>Number of Hours</FormLabel>
                             <FormControl>
-                              <AddressAutocompleteInput
-                                value={field.value || ''}
-                                showAddressFields={showAddressFields}
-                                onChange={(value: string) => {
-                                  field.onChange(value);
-                                  handleAddressChange(value);
-                                }}
-                                onPlaceSelected={(place: google.maps.places.PlaceResult) => {
-                                  if (place.geometry?.location) {
-                                    const lat = place.geometry.location.lat();
-                                    const lng = place.geometry.location.lng();
-                                    setValue('customer.coordinates', { lat, lng });
-
-                                    // Update city, state, zip based on selected place
-                                    const addressComponents = place.address_components || [];
-                                    let city = '';
-                                    let state = '';
-                                    let zipCode = '';
-
-                                    for (const component of addressComponents) {
-                                      const types = component.types;
-                                      if (types.includes('locality')) {
-                                        city = component.long_name;
-                                      } else if (types.includes('administrative_area_level_1')) {
-                                        state = component.short_name;
-                                      } else if (types.includes('postal_code')) {
-                                        zipCode = component.long_name;
-                                      }
-                                    }
-
-                                    setValue('customer.city', city);
-                                    setValue('customer.state', state);
-                                    setValue('customer.zipCode', zipCode);
-                                    setShowAddressFields(true); // Show fields immediately on place selection
-                                    trigger('customer.zipCode'); // Trigger validation after setting ZIP code
-                                  }
-                                }}
-                              />
+                              <div className="grid grid-cols-2 gap-4 pt-2 sm:grid-cols-4">
+                                {BookingHourlyPricingParamsSchema.shape.hours.options.map(({ value }) => (
+                                  <BookingFormOption
+                                    key={`${value} hours`}
+                                    isSelected={field.value === value}
+                                    onClick={() => handleSelectPricingParameters({ type: 'hourly', hours: value })}
+                                  >
+                                    <span className="text-center font-medium">{`${value} Hours`}</span>
+                                  </BookingFormOption>
+                                ))}
+                              </div>
                             </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </CardContent>
+                  </Card>
+                )}
+
+                {step === BookingStep.SCHEDULE && (
+                  <Card className="rounded-none border-0 shadow-none">
+                    <CardHeader className="pt-2">
+                      <CardTitle>Schedule Your Cleaning</CardTitle>
+                      <CardDescription>
+                        Select a date, time, and frequency for your service
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-6 px-6">
+                      <FormField
+                        control={form.control}
+                        name="date"
+                        render={({ field }) => (
+                          <FormItem className="flex flex-col">
+                            <FormLabel>Choose a Date</FormLabel>
+                            <FormDescription>
+                              Select an available date.
+                            </FormDescription>
+                            <Calendar
+                              mode="single"
+                              selected={selectedDate || undefined}
+                              onSelect={date => date && field.onChange(date)}
+                              disabled={isDateDisabled}
+                              className="mx-auto rounded-md border"
+                            />
+                            <FormMessage />
                           </FormItem>
                         )}
                       />
 
-                      {/* Additional fields container with animation */}
-                      <div
-                        className={`
-                          divide-y border-t
-                          transition-all duration-1000 ease-in-out
-                          ${showAddressFields
-                            ? 'max-h-[500px] opacity-100 transform-none delay-500'
-                            : 'max-h-0 opacity-0 pointer-events-none transform translate-y-[-10px]'
-                          }
-                        `}
-                      >
-                        {/* Apt field */}
+                      {selectedDate && (
                         <FormField
                           control={form.control}
-                          name="customer.apt"
+                          name="arrivalWindow"
                           render={({ field }) => (
-                            <FormItem className="m-0">
-                              <FormControl>
-                                <Input
-                                  label="Apt, suite, unit (if applicable)"
-                                  className={cn(
-                                    'h-14 border-0 rounded-none focus-visible:ring-0 focus-visible:ring-offset-0',
-                                    showAddressFields
-                                      ? 'opacity-100 transform-none'
-                                      : 'opacity-0 transform translate-y-[-10px]',
-                                    'transition-[opacity,transform] duration-1000 ease-in-out delay-[800ms]'
-                                  )}
-                                  {...field}
-                                />
-                              </FormControl>
+                            <FormItem>
+                              <FormLabel>Arrival Window</FormLabel>
+                              <Select
+                                onValueChange={field.onChange}
+                                defaultValue={field.value}
+                              >
+                                <FormControl>
+                                  <SelectTrigger className="pointer-events-auto z-20">
+                                    <SelectValue placeholder="Select an arrival window" />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                  <SelectItem value="8:00AM - 9:00AM">8:00AM - 9:00AM</SelectItem>
+                                  <SelectItem value="12:00PM - 1:00PM">12:00PM - 1:00PM</SelectItem>
+                                  <SelectItem value="3:00PM - 4:00PM">3:00PM - 4:00PM</SelectItem>
+                                </SelectContent>
+                              </Select>
+                              <FormMessage />
                             </FormItem>
                           )}
                         />
+                      )}
 
-                        {/* City field */}
+                      {(selectedServiceCategory && selectedPricingParams && selectedServiceCategory !== 'move-in-out') && (
                         <FormField
                           control={form.control}
-                          name="customer.city"
+                          name="frequency"
                           render={({ field }) => (
-                            <FormItem className="m-0">
-                              <FormControl>
-                                <Input
-                                  label="City / town"
-                                  className={cn(
-                                    'h-14 border-0 rounded-none focus-visible:ring-0 focus-visible:ring-offset-0',
-                                    showAddressFields
-                                      ? 'opacity-100 transform-none'
-                                      : 'opacity-0 transform translate-y-[-10px]',
-                                    'transition-[opacity,transform] duration-1000 ease-in-out delay-[1200ms]'
-                                  )}
-                                  {...field}
-                                />
-                              </FormControl>
-                            </FormItem>
-                          )}
-                        />
-
-                        {/* State field */}
-                        <FormField
-                          control={form.control}
-                          name="customer.state"
-                          render={({ field }) => (
-                            <FormItem className="m-0">
-                              <FormControl>
-                                <Input
-                                  label="State / territory"
-                                  className={cn(
-                                    'h-14 border-0 rounded-none focus-visible:ring-0 focus-visible:ring-offset-0',
-                                    showAddressFields
-                                      ? 'opacity-100 transform-none'
-                                      : 'opacity-0 transform translate-y-[-10px]',
-                                    'transition-[opacity,transform] duration-1000 ease-in-out delay-[1600ms]'
-                                  )}
-                                  {...field}
-                                />
-                              </FormControl>
-                            </FormItem>
-                          )}
-                        />
-
-                        {/* ZIP field */}
-                        <FormField
-                          control={form.control}
-                          name="customer.zipCode"
-                          render={({ field }) => (
-                            <FormItem className="m-0">
-                              <FormControl>
-                                <Input
-                                  label="ZIP code"
-                                  className={cn(
-                                    'h-14 border-0 rounded-none focus-visible:ring-0 focus-visible:ring-offset-0',
-                                    showAddressFields
-                                      ? 'opacity-100 transform-none'
-                                      : 'opacity-0 transform translate-y-[-10px]',
-                                    'transition-[opacity,transform] duration-1000 ease-in-out delay-[2000ms]'
-                                  )}
-                                  {...field}
-                                />
-                              </FormControl>
-                              <FormMessage className="px-4 pb-2" />
-                            </FormItem>
-                          )}
-                        />
-                      </div>
-                    </div>
-
-                    {/* Map */}
-                    <div className="w-full h-[300px] mt-6 rounded-lg overflow-hidden">
-                      <MapWithMarker
-                        coordinates={customerCoordinates}
-                        address={constructFullAddress({
-                          address: customerAddress,
-                          apt: customerApt,
-                          city: customerCity,
-                          state: customerState,
-                          zipCode: customerZipCode,
-                        })}
-                        onPositionChange={(position: Coordinates) => {
-                          setValue('customer.coordinates', position);
-
-                          // Use reverse geocoding to update address fields
-                          const geocoder = new google.maps.Geocoder();
-                          geocoder.geocode({ location: position }, (results, status) => {
-                            if (status === 'OK' && results && results.length > 0) {
-                              const place = results[0];
-                              if (place && place.formatted_address) {
-                                setValue('customer.address', place.formatted_address);
-                              }
-
-                              // Update city, state, zip
-                              if (place && place.address_components) {
-                                let cityVal = '';
-                                let stateVal = '';
-                                let zipVal = '';
-
-                                for (const component of place.address_components) {
-                                  const types = component.types;
-                                  if (types.includes('locality')) {
-                                    cityVal = component.long_name;
-                                  } else if (types.includes('administrative_area_level_1')) {
-                                    stateVal = component.short_name;
-                                  } else if (types.includes('postal_code')) {
-                                    zipVal = component.long_name;
+                            <FormItem>
+                              <FormLabel>Frequency</FormLabel>
+                              <Select
+                                onValueChange={(value: BookingFrequency) => {
+                                  field.onChange(value)
+                                  if (selectedServiceCategory && selectedPricingParams) {
+                                    updatePrice(selectedServiceCategory, selectedPricingParams, value)
                                   }
-                                }
-
-                                setValue('customer.city', cityVal);
-                                setValue('customer.state', stateVal);
-                                setValue('customer.zipCode', zipVal);
-                                setShowAddressFields(true); // Show additional fields when map marker is moved
-                              }
-                            }
-                          });
-                        }}
-                      />
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-
-            {step === BookingStep.SCHEDULE && (
-              <Card className="rounded-none border-0 shadow-none">
-                <CardHeader className="pt-2">
-                  <CardTitle>Schedule Your Cleaning</CardTitle>
-                  <CardDescription>
-                    Select a date, time, and frequency for your service
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-6 px-6">
-                  <FormField
-                    control={form.control}
-                    name="date"
-                    render={({ field }) => (
-                      <FormItem className="flex flex-col">
-                        <FormLabel>Choose a Date</FormLabel>
-                        <FormDescription>
-                          Select an available date.
-                        </FormDescription>
-                        <Calendar
-                          mode="single"
-                          selected={selectedDate || undefined}
-                          onSelect={date => date && field.onChange(date)}
-                          disabled={isDateDisabled}
-                          className="mx-auto rounded-md border"
+                                }}
+                                defaultValue={field.value}
+                              >
+                                <FormControl>
+                                  <SelectTrigger className="pointer-events-auto z-20">
+                                    <SelectValue placeholder="Select frequency" />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                  <SelectItem value="weekly">Weekly</SelectItem>
+                                  <SelectItem value="biweekly">Bi-Weekly</SelectItem>
+                                  <SelectItem value="monthly">Monthly</SelectItem>
+                                  <SelectItem value="one-time">One-Time</SelectItem>
+                                </SelectContent>
+                              </Select>
+                              <FormMessage />
+                            </FormItem>
+                          )}
                         />
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  {selectedDate && (
-                    <FormField
-                      control={form.control}
-                      name="arrivalWindow"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Arrival Window</FormLabel>
-                          <Select
-                            onValueChange={field.onChange}
-                            defaultValue={field.value}
-                          >
-                            <FormControl>
-                              <SelectTrigger className="pointer-events-auto z-20">
-                                <SelectValue placeholder="Select an arrival window" />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              <SelectItem value="8:00AM - 9:00AM">8:00AM - 9:00AM</SelectItem>
-                              <SelectItem value="12:00PM - 1:00PM">12:00PM - 1:00PM</SelectItem>
-                              <SelectItem value="3:00PM - 4:00PM">3:00PM - 4:00PM</SelectItem>
-                            </SelectContent>
-                          </Select>
-                          <FormMessage />
-                        </FormItem>
                       )}
-                    />
-                  )}
-
-                  {(selectedServiceCategory && selectedPricingParams && selectedServiceCategory !== 'move-in-out') && (
-                    <FormField
-                      control={form.control}
-                      name="frequency"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Frequency</FormLabel>
-                          <Select
-                            onValueChange={(value: BookingFrequency) => {
-                              field.onChange(value)
-                              if (selectedServiceCategory && selectedPricingParams) {
-                                updatePrice(selectedServiceCategory, selectedPricingParams, value)
-                              }
-                            }}
-                            defaultValue={field.value}
-                          >
-                            <FormControl>
-                              <SelectTrigger className="pointer-events-auto z-20">
-                                <SelectValue placeholder="Select frequency" />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              <SelectItem value="weekly">Weekly</SelectItem>
-                              <SelectItem value="biweekly">Bi-Weekly</SelectItem>
-                              <SelectItem value="monthly">Monthly</SelectItem>
-                              <SelectItem value="one-time">One-Time</SelectItem>
-                            </SelectContent>
-                          </Select>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  )}
-                </CardContent>
-              </Card>
-            )}
-
-            {step === BookingStep.CUSTOMER_DETAILS && (
-              <Card className="rounded-none border-0 shadow-none">
-                <CardHeader className="pt-2">
-                  <CardTitle>Your Information</CardTitle>
-                  <CardDescription>
-                    Enter your contact and address details
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-6 px-6">
-                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                    <FormField
-                      control={form.control}
-                      name="customer.firstName"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>First Name</FormLabel>
-                          <FormControl>
-                            <Input label="First Name" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="customer.lastName"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Last Name</FormLabel>
-                          <FormControl>
-                            <Input label="Last Name" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                    <FormField
-                      control={form.control}
-                      name="customer.email"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Email</FormLabel>
-                          <FormControl>
-                            <Input label="Email" type="email" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="customer.phone"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Phone Number</FormLabel>
-                          <FormControl>
-                            <Input label="Phone Number" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                </CardContent>
-              </Card>
+                    </CardContent>
+                  </Card>
+                )}
+              </>
             )}
           </form>
         </Form>
