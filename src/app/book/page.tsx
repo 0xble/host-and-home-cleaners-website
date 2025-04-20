@@ -52,6 +52,7 @@ import { LoadScript, LoadScriptProps } from '@react-google-maps/api'
 import { AddressAutocompleteInput } from './components/AddressAutocompleteInput'
 import { MapWithMarker, type Coordinates } from './components/MapWithMarker'
 import { cn } from '@/lib/utils'
+import { constructFullAddress } from './utils'
 
 enum BookingStep {
   GETTING_STARTED = 0,
@@ -78,7 +79,7 @@ const BookingFormValidationSchema = z.object({
     email: z.string().email('Invalid email address'),
     phone: z.string().min(10, 'Phone number is required'),
     address: z.string().min(1, 'Address is required'),
-    unit: z.string().optional(),
+    apt: z.string().optional(),
     city: z.string().min(1, 'City is required'),
     state: z.string().min(1, 'State is required'),
     zipCode: z.string().min(5, 'ZIP code is required'),
@@ -149,6 +150,12 @@ export default function BookingPage() {
   const selectedDate = watch('date') as BookingFormState['date']
   const selectedArrivalWindow = watch('arrivalWindow') as BookingFormState['arrivalWindow']
   const price = watch('price')
+  const customerAddress = watch('customer.address')
+  const customerApt = watch('customer.apt')
+  const customerCity = watch('customer.city')
+  const customerState = watch('customer.state')
+  const customerZipCode = watch('customer.zipCode')
+  const customerCoordinates = watch('customer.coordinates')
 
   // // Save form state to sessionStorage
   // const saveFormState = (data = getValues()) => {
@@ -910,7 +917,7 @@ export default function BookingPage() {
                 <CardHeader className="pt-2">
                   <CardTitle>Where is the cleaning?</CardTitle>
                   <CardDescription>
-                    Enter your address to help us find your home.
+                    Enter your address to help us find you.
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6 px-6">
@@ -975,10 +982,10 @@ export default function BookingPage() {
                           }
                         `}
                       >
-                        {/* Unit field */}
+                        {/* Apt field */}
                         <FormField
                           control={form.control}
-                          name="customer.unit"
+                          name="customer.apt"
                           render={({ field }) => (
                             <FormItem className="m-0">
                               <FormControl>
@@ -1069,10 +1076,17 @@ export default function BookingPage() {
                       </div>
                     </div>
 
-                    {/* Map (always visible) */}
+                    {/* Map */}
                     <div className="w-full h-[300px] mt-6 rounded-lg overflow-hidden">
                       <MapWithMarker
-                        coordinates={form.watch('customer.coordinates')}
+                        coordinates={customerCoordinates}
+                        address={constructFullAddress({
+                          address: customerAddress,
+                          apt: customerApt,
+                          city: customerCity,
+                          state: customerState,
+                          zipCode: customerZipCode,
+                        })}
                         onPositionChange={(position: Coordinates) => {
                           setValue('customer.coordinates', position);
 
