@@ -67,11 +67,11 @@ export function ScheduleStep({ form, onValidityChangeAction }: BaseStepProps) {
                 Select an available date.
               </FormDescription>
               <Calendar
+                className="mx-auto rounded-md border"
                 mode="single"
                 selected={selectedDate || undefined}
                 onSelect={date => date && field.onChange(date)}
                 disabled={isDateDisabled}
-                className="mx-auto rounded-md border"
               />
               <FormMessage />
             </FormItem>
