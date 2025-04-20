@@ -2,10 +2,8 @@
 
 import type { Location } from '@/lib/types'
 import type {
-  BookingFrequency,
-  BookingPricingParams,
-  BookingServiceCategory,
   BookingFormData,
+  BaseStepProps
 } from './types'
 import { BookingFormSchema } from './types'
 import { GradientButton } from '@/components/GradientButton'
@@ -17,37 +15,44 @@ import { Progress } from '@/components/ui/progress'
 import { PRICING_PARAMETERS } from '@/lib/constants'
 import { ROUTES } from '@/lib/routes'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { addDays, isBefore } from 'date-fns'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import React, { useRef, useState, useCallback, useEffect } from 'react'
+import { useState, useEffect, type ComponentType } from 'react'
 import { useForm } from 'react-hook-form'
-import { STEP_COMPONENTS } from './components/steps'
 import { BookingStep } from './types'
+import { AddressInputStep } from './components/steps/AddressInputStep'
+import { ChooseYourServiceStep } from './components/steps/ChooseYourServiceStep'
+import { CustomerDetailsStep } from './components/steps/CustomerDetailsStep'
+import { GettingStartedStep } from './components/steps/GettingStartedStep'
+import { HoursSelectionStep } from './components/steps/HoursSelectionStep'
+import { ScheduleStep } from './components/steps/ScheduleStep'
+import { ServiceSelectionStep } from './components/steps/ServiceSelectionStep'
+import { SizeSelectionStep } from './components/steps/SizeSelectionStep'
+import { TellUsAboutYourPlaceStep } from './components/steps/TellUsAboutYourPlaceStep'
+import { GoogleMapsLoader } from '@/lib/google/GoogleMapsLoader'
+import { formatPrice } from '@/lib/utils'
 
-// Add this helper function at the top level
-const loadGoogleMapsScript = (callback: () => void) => {
-  if (window.google) {
-    callback();
-    return;
-  }
-
-  const script = document.createElement('script');
-  script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`;
-  script.async = true;
-  script.defer = true;
-  script.onload = callback;
-  document.head.appendChild(script);
-};
+// Defines the components for each step
+type StepComponent = ComponentType<BaseStepProps>
+const STEP_COMPONENTS: Readonly<Record<BookingStep, StepComponent>> = {
+  [BookingStep.GETTING_STARTED]: GettingStartedStep,
+  [BookingStep.CHOOSE_YOUR_SERVICE]: ChooseYourServiceStep,
+  [BookingStep.SERVICE_SELECTION]: ServiceSelectionStep,
+  [BookingStep.TELL_US_ABOUT_YOUR_PLACE]: TellUsAboutYourPlaceStep,
+  [BookingStep.SIZE_SELECTION]: SizeSelectionStep,
+  [BookingStep.HOURS_SELECTION]: HoursSelectionStep,
+  [BookingStep.CUSTOMER_DETAILS]: CustomerDetailsStep,
+  [BookingStep.ADDRESS_INPUT]: AddressInputStep,
+  [BookingStep.SCHEDULE]: ScheduleStep,
+  // [BookingStep.CONFIRMATION]: ConfirmationStep,
+}
 
 export default function BookingPage() {
   const router = useRouter()
   const [location] = useState<Location>('MYRTLE_BEACH')
-  const [currentStep, setCurrentStep] = useState<BookingStep>(BookingStep.GETTING_STARTED)
+  const [currentStep, setCurrentStep] = useState<BookingStep>(BookingStep.CUSTOMER_DETAILS)
   const [progress, setProgress] = useState<{ value: number, max: number }>({ value: 0, max: 6 })
-  const prevServiceRef = useRef<BookingServiceCategory | null>(null)
   const [visitedSteps, setVisitedSteps] = useState<number[]>([0])
-  const [showAddressFields, setShowAddressFields] = useState(false);
   const [isStepValid, setIsStepValid] = useState(true)
   const [isGoogleMapsLoaded, setIsGoogleMapsLoaded] = useState(false)
   const [isLoadingMaps, setIsLoadingMaps] = useState(false)
@@ -61,20 +66,7 @@ export default function BookingPage() {
     },
   })
 
-  const { watch, setValue, handleSubmit, getValues, trigger, formState: { errors } } = form
-
-  const updatePrice = (
-    serviceCategory: BookingServiceCategory,
-    pricingParams: BookingPricingParams,
-    frequency: BookingFrequency,
-  ) => {
-    setValue('price', calculatePrice(
-      location,
-      serviceCategory,
-      frequency,
-      pricingParams,
-    ))
-  }
+  const { watch, handleSubmit, getValues, trigger, formState: { errors } } = form
 
   // Watch form values for price calculation
   const selectedFrequency = watch('frequency')
@@ -82,13 +74,11 @@ export default function BookingPage() {
   const selectedPricingParams = watch('pricingParams') as BookingFormData['pricingParams']
   const selectedDate = watch('date') as BookingFormData['date']
   const selectedArrivalWindow = watch('arrivalWindow') as BookingFormData['arrivalWindow']
-  const price = watch('price')
   const customerAddress = watch('customer.address')
-  const customerApt = watch('customer.apt')
   const customerCity = watch('customer.city')
   const customerState = watch('customer.state')
   const customerZipCode = watch('customer.zipCode')
-  const customerCoordinates = watch('customer.coordinates')
+  const price = watch('price')
 
   // Check if we have all required parameters to show price
   const canShowPrice = () => {
@@ -184,7 +174,7 @@ export default function BookingPage() {
       prev: () => BookingStep.CUSTOMER_DETAILS,
     },
     [BookingStep.SCHEDULE]: {
-      next: () => BookingStep.CONFIRMATION,
+      next: () => /* BookingStep.CONFIRMATION, */ null,
       prev: () => {
         if (!selectedServiceCategory) return null
 
@@ -201,10 +191,10 @@ export default function BookingPage() {
         }
       },
     },
-    [BookingStep.CONFIRMATION]: {
-      next: () => null,
-      prev: () => BookingStep.SCHEDULE,
-    },
+    // [BookingStep.CONFIRMATION]: {
+    //   next: () => null,
+    //   prev: () => BookingStep.SCHEDULE,
+    // },
   }
 
   // Check if current step is valid
@@ -289,14 +279,14 @@ export default function BookingPage() {
       // If next step is ADDRESS_INPUT and Google Maps isn't loaded yet
       if (nextStepNumber === BookingStep.ADDRESS_INPUT && !isGoogleMapsLoaded && !isLoadingMaps) {
         setIsLoadingMaps(true);
-        loadGoogleMapsScript(() => {
+        try {
+          await GoogleMapsLoader.getInstance().load();
           setIsGoogleMapsLoaded(true);
+        } catch (error) {
+          console.error('Failed to load Google Maps:', error);
+        } finally {
           setIsLoadingMaps(false);
-          setCurrentStep(nextStepNumber);
-          setProgress({ ...progress, value: progress.value + 1 });
-          setVisitedSteps(prev => [...new Set([...prev, nextStepNumber])]);
-        });
-        return;
+        }
       }
 
       setCurrentStep(nextStepNumber)
@@ -369,106 +359,6 @@ export default function BookingPage() {
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [currentStep, router, visitedSteps])
 
-  function calculatePrice(
-    location: Location,
-    serviceCategory: BookingServiceCategory,
-    frequency: BookingFrequency,
-    params: BookingPricingParams,
-  ): BookingFormData['price'] {
-    const config = PRICING_PARAMETERS[location][serviceCategory]
-    if (!config) throw new Error(`No pricing config found for ${location} ${serviceCategory}`)
-
-    if (process.env.NODE_ENV === 'development') {
-      console.log('params', params)
-      console.log('pricing', config)
-    }
-
-    switch (config.type) {
-      case 'flat': {
-        if (params.type === 'flat') {
-          const initial = config.bedrooms[params.bedrooms]
-          if (typeof initial !== 'number') throw new Error(`Invalid price for ${params.bedrooms} bedrooms`)
-
-          const recurring = frequency && config.frequencies && config.frequencies[frequency]
-            ? initial * (1 - config.frequencies[frequency])
-            : null
-
-          return {
-            initial,
-            recurring,
-          }
-        }
-        else {
-          throw new Error('Mismatch pricing types')
-        }
-      }
-      case 'hourly': {
-        if (params.type === 'hourly') {
-          const initial = config.hourlyRate * params.hours
-          const recurring = frequency && config.frequencies && config.frequencies[frequency]
-            ? initial * (1 - config.frequencies[frequency])
-            : null
-
-          return {
-            initial,
-            recurring,
-          }
-        }
-        else {
-          throw new Error('Mismatch pricing types')
-        }
-      }
-    }
-  }
-
-  const handleSelectServiceCategory = (serviceCategory: BookingServiceCategory) => {
-    setValue('serviceCategory', serviceCategory)
-
-    const config = PRICING_PARAMETERS[location][serviceCategory]
-    if (!config) throw new Error(`No pricing config found for ${location} ${serviceCategory}`)
-
-    switch (config.type) {
-      case 'hourly':
-        setProgress({ ...progress, max: 6 })
-        break
-      case 'flat':
-        setProgress({ ...progress, max: 5 })
-        break
-    }
-  }
-
-  const handleSelectPricingParameters = (params: BookingPricingParams) => {
-    setValue('pricingParams', params)
-    if (selectedServiceCategory && selectedFrequency) {
-      updatePrice(selectedServiceCategory, params, selectedFrequency)
-    }
-  }
-
-  const isDateDisabled = (date: Date) => {
-    const today = new Date()
-    today.setHours(0, 0, 0, 0)
-
-    // Disable past dates
-    if (isBefore(date, today)) {
-      return true
-    }
-
-    // Prevent booking without at least 2 days notice
-    const twoDaysFromNow = addDays(today, 2)
-    twoDaysFromNow.setHours(0, 0, 0, 0)
-
-    if (!isBefore(date, today) && isBefore(date, twoDaysFromNow)) {
-      return true
-    }
-
-    return false
-  }
-
-  // Format price for display
-  const formatPrice = (price: number | null | undefined) => {
-    return `$${price?.toFixed(0) ?? ''}`
-  }
-
   const handleStepValidityChange = (isValid: boolean) => {
     setIsStepValid(isValid)
   }
@@ -502,9 +392,8 @@ export default function BookingPage() {
         </form>
       </Form>
 
-      {/* Show bottom navigation bar on all steps */}
+      {/* Progress bar above bottom navigaton */}
       <div className="fixed inset-x-0 bottom-20 z-10 bg-white">
-        {/* Progress bar - show on all steps */}
         <Progress
           className="h-2 w-full rounded-none"
           segments={progress.max}

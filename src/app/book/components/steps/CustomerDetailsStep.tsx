@@ -15,11 +15,12 @@ export function CustomerDetailsStep({ form, onValidityChangeAction }: BaseStepPr
   const phone = watch('customer.phone')
 
   useEffect(() => {
-    const isValid = !errors.customer?.firstName &&
-                   !errors.customer?.lastName &&
-                   !errors.customer?.email &&
-                   !errors.customer?.phone &&
-                   !!firstName && !!lastName && !!email && !!phone
+    const isValid =
+        !errors.customer?.firstName &&
+        !errors.customer?.lastName &&
+        !errors.customer?.email &&
+        !errors.customer?.phone &&
+        !!firstName && !!lastName && !!email && !!phone
 
     onValidityChangeAction(isValid)
   }, [firstName, lastName, email, phone, errors, onValidityChangeAction])

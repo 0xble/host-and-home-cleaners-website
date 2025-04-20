@@ -97,3 +97,7 @@ export function getLocationsString(
     )
     .join(', ')
 }
+
+export const formatPrice = (price: number | null | undefined) => {
+  return `$${price?.toFixed(0) ?? ''}`
+}

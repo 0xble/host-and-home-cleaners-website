@@ -87,7 +87,7 @@ export enum BookingStep {
   CUSTOMER_DETAILS = 6,
   ADDRESS_INPUT = 7,
   SCHEDULE = 8,
-  CONFIRMATION = 9,
+  // CONFIRMATION = 9,
 }
 
 export interface BaseStepProps {
