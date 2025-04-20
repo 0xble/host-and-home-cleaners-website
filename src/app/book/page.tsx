@@ -50,7 +50,7 @@ const STEP_COMPONENTS: Readonly<Record<BookingStep, StepComponent>> = {
 export default function BookingPage() {
   const router = useRouter()
   const [location] = useState<Location>('MYRTLE_BEACH')
-  const [currentStep, setCurrentStep] = useState<BookingStep>(BookingStep.GETTING_STARTED)
+  const [currentStep, setCurrentStep] = useState<BookingStep>(BookingStep.CUSTOMER_DETAILS)
   const [progress, setProgress] = useState<{ value: number, max: number }>({ value: 0, max: 6 })
   const [visitedSteps, setVisitedSteps] = useState<number[]>([0])
   const [isStepValid, setIsStepValid] = useState(true)
