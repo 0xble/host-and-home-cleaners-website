@@ -50,8 +50,8 @@ import { BookingArrivalWindowSchema, BookingFrequencySchema, BookingHourlyPricin
 
 enum BookingStep {
   GETTING_STARTED = 0,
-  TELL_US_ABOUT_YOUR_PLACE = 1,
-  SERVICE_SELECTION = 2,
+  SERVICE_CATEGORY_SELECTION = 1,
+  SIZE_SELECTION = 2,
   HOURS_SELECTION = 3,
   SCHEDULE = 4,
   CUSTOMER_DETAILS = 5,
@@ -227,24 +227,24 @@ export default function BookingPage() {
 
   const STEP_TRANSITIONS: Readonly<Record<BookingStep, { next: () => BookingStep | null, prev: () => BookingStep | null }>> = {
     [BookingStep.GETTING_STARTED]: {
-      next: () => BookingStep.TELL_US_ABOUT_YOUR_PLACE,
+      next: () => BookingStep.SERVICE_CATEGORY_SELECTION,
       prev: () => null,
     },
-    [BookingStep.TELL_US_ABOUT_YOUR_PLACE]: {
-      next: () => BookingStep.SERVICE_SELECTION,
+    [BookingStep.SERVICE_CATEGORY_SELECTION]: {
+      next: () => selectedPricingParams?.type === 'hourly' ? BookingStep.HOURS_SELECTION : BookingStep.SIZE_SELECTION,
       prev: () => BookingStep.GETTING_STARTED,
     },
-    [BookingStep.SERVICE_SELECTION]: {
-      next: () => selectedPricingParams?.type === 'hourly' ? BookingStep.HOURS_SELECTION : BookingStep.SCHEDULE,
-      prev: () => BookingStep.TELL_US_ABOUT_YOUR_PLACE,
+    [BookingStep.SIZE_SELECTION]: {
+      next: () => BookingStep.SCHEDULE,
+      prev: () => BookingStep.SERVICE_CATEGORY_SELECTION,
     },
     [BookingStep.HOURS_SELECTION]: {
       next: () => BookingStep.SCHEDULE,
-      prev: () => BookingStep.SERVICE_SELECTION,
+      prev: () => BookingStep.SERVICE_CATEGORY_SELECTION,
     },
     [BookingStep.SCHEDULE]: {
       next: () => BookingStep.CUSTOMER_DETAILS,
-      prev: () => selectedPricingParams?.type === 'hourly' ? BookingStep.HOURS_SELECTION : BookingStep.SERVICE_SELECTION,
+      prev: () => selectedPricingParams?.type === 'hourly' ? BookingStep.HOURS_SELECTION : BookingStep.SIZE_SELECTION,
     },
     [BookingStep.CUSTOMER_DETAILS]: {
       next: () => BookingStep.CONFIRMATION,
@@ -262,23 +262,20 @@ export default function BookingPage() {
     // Step 0 is always valid
     if (step === BookingStep.GETTING_STARTED)
       return true
-    if (step === BookingStep.TELL_US_ABOUT_YOUR_PLACE)
+    if (step === BookingStep.SERVICE_CATEGORY_SELECTION)
       return true
 
-    // Step 1: Service Selection
-    if (step === BookingStep.SERVICE_SELECTION) {
-      const serviceCategory = getValues('serviceCategory')
-      const pricingParams = getValues('pricingParams')
-      return serviceCategory !== undefined && pricingParams !== undefined
+    // Step 2: Size Selection
+    if (step === BookingStep.SIZE_SELECTION) {
+      return selectedPricingParams !== undefined && selectedPricingParams.type === 'flat'
     }
 
-    // Step 2: Hours Selection (for hourly services only)
-    if (step === BookingStep.HOURS_SELECTION && (selectedServiceCategory === 'custom' || selectedServiceCategory === 'mansion')) {
-      const pricingParams = getValues('pricingParams')
-      return pricingParams !== undefined && pricingParams.type === 'hourly'
+    // Step 3: Hours Selection (for hourly services only)
+    if (step === BookingStep.HOURS_SELECTION) {
+      return selectedPricingParams !== undefined && selectedPricingParams.type === 'hourly'
     }
 
-    // Step 3: Schedule
+    // Step 4: Schedule
     if (step === BookingStep.SCHEDULE) {
       const date = getValues('date')
       const arrivalWindow = getValues('arrivalWindow')
@@ -286,7 +283,7 @@ export default function BookingPage() {
       return date !== null && arrivalWindow !== undefined && frequency !== undefined
     }
 
-    // Step 4: Customer Details
+    // Step 5: Customer Details
     if (step === BookingStep.CUSTOMER_DETAILS) {
       return trigger([
         'customer.firstName',
@@ -448,20 +445,43 @@ export default function BookingPage() {
 
   const handleSelectServiceCategory = (
     serviceCategory: BookingServiceCategory,
-    pricingParams: BookingPricingParams,
+    pricingParams: Partial<BookingPricingParams>,
   ) => {
-    switch (pricingParams.type) {
-      case 'hourly':
-        setProgress({ ...progress, max: 5 })
-        break
-      case 'flat':
-        setProgress({ ...progress, max: 4 })
-        break
-    }
+    // Store the previous service category for animation triggering
+    prevServiceRef.current = selectedServiceCategory ?? null
 
+    // Set form values
     setValue('serviceCategory', serviceCategory)
-    setValue('pricingParams', pricingParams)
-    updatePrice(serviceCategory, pricingParams, selectedFrequency)
+
+    // For service selection step, we may not have all pricing params yet
+    if (step === BookingStep.SERVICE_CATEGORY_SELECTION) {
+      // Just set the pricingParams type for now, the actual values will be set in the next step
+      if (pricingParams.type === 'flat') {
+        setValue('pricingParams', { type: 'flat', bedrooms: 1 });
+      } else if (pricingParams.type === 'hourly') {
+        setValue('pricingParams', { type: 'hourly', hours: 4 });
+      }
+
+      // Update progress bar max based on the service type
+      if (pricingParams.type === 'hourly') {
+        setProgress({ ...progress, max: 6 }) // Extra step for hours selection
+      } else {
+        setProgress({ ...progress, max: 5 }) // Standard flow
+      }
+    } else {
+      // For size/hours selection, ensure we have valid values
+      if (pricingParams.type === 'flat' && pricingParams.bedrooms === undefined) {
+        pricingParams.bedrooms = 1;
+      } else if (pricingParams.type === 'hourly' && pricingParams.hours === undefined) {
+        pricingParams.hours = 4;
+      }
+
+      // Set the complete pricing params
+      setValue('pricingParams', pricingParams as BookingPricingParams)
+
+      // Only update price if we have all the required params
+      updatePrice(serviceCategory, pricingParams as BookingPricingParams, selectedFrequency)
+    }
   }
 
   const isDateDisabled = (date: Date) => {
@@ -588,39 +608,107 @@ export default function BookingPage() {
             </Card>
           )}
 
-          {step === BookingStep.TELL_US_ABOUT_YOUR_PLACE && (
+          {step === BookingStep.SERVICE_CATEGORY_SELECTION && (
             <Card className="max-w-4xl mx-auto rounded-none border-0 shadow-none">
               <CardHeader className="px-6 pt-6">
-                <div className="text-sm font-medium text-muted-foreground mb-2">Step 1</div>
+                <div className="text-sm font-medium text-muted-foreground mb-2">Step 1 of {progress.max}</div>
                 <CardTitle className="text-3xl font-medium">
-                  Tell us about your place
+                  Choose your service
                 </CardTitle>
                 <CardDescription className="text-base mt-4">
-                  In this step, we'll ask for some quick details about your home—like how many bedrooms you have, and what type of cleaning you're looking for.
+                  Select the type of cleaning service that best fits your needs. We'll customize the experience based on your selection.
                 </CardDescription>
               </CardHeader>
-              <CardContent className="px-0">
-                <div className="relative w-full max-w-3xl mx-auto rounded-lg overflow-hidden pb-[75%]">
-                  <video
-                    className="absolute inset-0 w-full h-full object-cover"
-                    autoPlay
-                    playsInline
-                    preload="auto"
-                    muted
+              <CardContent className="space-y-8 px-6">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <BookingFormOption
+                    isSelected={selectedServiceCategory === 'default'}
+                    onClick={() => handleSelectServiceCategory('default', { type: 'flat', bedrooms: 1 })}
                   >
-                    <source src="/videos/property-tour.mp4" type="video/mp4" />
-                  </video>
+                    <div className="flex items-center justify-between w-full">
+                      <div className="flex flex-col">
+                        <span className="font-medium">Standard Cleaning</span>
+                        <span className="text-muted-foreground text-xs">Regular cleaning for homes of all sizes</span>
+                      </div>
+                      <div className="size-16 flex-shrink-0">
+                        <Image
+                          src="/icons/sizes/house.svg"
+                          alt="Standard cleaning"
+                          width={64}
+                          height={64}
+                          className="transition-colors"
+                        />
+                      </div>
+                    </div>
+                  </BookingFormOption>
+
+                  <BookingFormOption
+                    isSelected={selectedServiceCategory === 'move-in-out'}
+                    onClick={() => handleSelectServiceCategory('move-in-out', { type: 'flat', bedrooms: 1 })}
+                  >
+                    <div className="flex items-center justify-between w-full">
+                      <div className="flex flex-col">
+                        <span className="font-medium">Move In/Out</span>
+                        <span className="text-muted-foreground text-xs">For moving in or out of a property</span>
+                      </div>
+                      <div className="size-16 flex-shrink-0">
+                        <LottieAnimation
+                          className="w-full h-full"
+                          animationData={HouseCleanAnimation}
+                          onPlay={prevServiceRef.current !== 'move-in-out' && selectedServiceCategory === 'move-in-out' ? () => {} : undefined}
+                        />
+                      </div>
+                    </div>
+                  </BookingFormOption>
+
+                  <BookingFormOption
+                    isSelected={selectedServiceCategory === 'custom'}
+                    onClick={() => handleSelectServiceCategory('custom', { type: 'hourly', hours: 4 })}
+                  >
+                    <div className="flex items-center justify-between w-full">
+                      <div className="flex flex-col">
+                        <span className="font-medium">Custom Areas Only</span>
+                        <span className="text-muted-foreground text-xs">For specific areas that need attention</span>
+                      </div>
+                      <div className="size-16 flex-shrink-0">
+                        <LottieAnimation
+                          className="w-full h-full"
+                          animationData={SprayAnimation}
+                          onPlay={prevServiceRef.current !== 'custom' && selectedServiceCategory === 'custom' ? () => {} : undefined}
+                        />
+                      </div>
+                    </div>
+                  </BookingFormOption>
+
+                  <BookingFormOption
+                    isSelected={selectedServiceCategory === 'mansion'}
+                    onClick={() => handleSelectServiceCategory('mansion', { type: 'hourly', hours: 4 })}
+                  >
+                    <div className="flex items-center justify-between w-full">
+                      <div className="flex flex-col">
+                        <span className="font-medium">Mansion</span>
+                        <span className="text-muted-foreground text-xs">For large properties with 4+ bedrooms</span>
+                      </div>
+                      <div className="size-16 flex-shrink-0">
+                        <LottieAnimation
+                          animationData={MansionAnimation}
+                          onPlay={prevServiceRef.current !== 'mansion' && selectedServiceCategory === 'mansion' ? () => {} : undefined}
+                        />
+                      </div>
+                    </div>
+                  </BookingFormOption>
                 </div>
               </CardContent>
             </Card>
           )}
 
-          {step === BookingStep.SERVICE_SELECTION && (
+          {step === BookingStep.SIZE_SELECTION && (
             <Card className="rounded-none border-0 shadow-none">
               <CardHeader className="px-6 pt-6">
-                <CardTitle>What is the size of the house?</CardTitle>
+                <div className="text-sm font-medium text-muted-foreground mb-2">Step 2 of {progress.max}</div>
+                <CardTitle>What is the size of your home?</CardTitle>
                 <CardDescription>
-                  A standard deep cleaning covers all areas of the house, including bathrooms, kitchens, and living areas.
+                  Select the number of bedrooms in your home to help us estimate the service duration and price.
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-8 px-6">
@@ -629,7 +717,7 @@ export default function BookingPage() {
                   <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
                     <BookingFormOption
                       isSelected={selectedPricingParams?.type === 'flat' && selectedPricingParams?.bedrooms === 1}
-                      onClick={() => handleSelectServiceCategory('default', { type: 'flat', bedrooms: 1 })}
+                      onClick={() => handleSelectServiceCategory(selectedServiceCategory || 'default', { type: 'flat', bedrooms: 1 })}
                     >
                       <div className="relative mb-4 aspect-square size-16">
                         <Image
@@ -645,7 +733,7 @@ export default function BookingPage() {
 
                     <BookingFormOption
                       isSelected={selectedPricingParams?.type === 'flat' && selectedPricingParams?.bedrooms === 2}
-                      onClick={() => handleSelectServiceCategory('default', { type: 'flat', bedrooms: 2 })}
+                      onClick={() => handleSelectServiceCategory(selectedServiceCategory || 'default', { type: 'flat', bedrooms: 2 })}
                     >
                       <div className="relative mb-4 aspect-square size-16">
                         <Image
@@ -661,7 +749,7 @@ export default function BookingPage() {
 
                     <BookingFormOption
                       isSelected={selectedPricingParams?.type === 'flat' && selectedPricingParams?.bedrooms === 3}
-                      onClick={() => handleSelectServiceCategory('default', { type: 'flat', bedrooms: 3 })}
+                      onClick={() => handleSelectServiceCategory(selectedServiceCategory || 'default', { type: 'flat', bedrooms: 3 })}
                     >
                       <div className="relative mb-4 aspect-square size-16">
                         <Image
@@ -677,7 +765,7 @@ export default function BookingPage() {
 
                     <BookingFormOption
                       isSelected={selectedPricingParams?.type === 'flat' && selectedPricingParams?.bedrooms === 4}
-                      onClick={() => handleSelectServiceCategory('default', { type: 'flat', bedrooms: 4 })}
+                      onClick={() => handleSelectServiceCategory(selectedServiceCategory || 'default', { type: 'flat', bedrooms: 4 })}
                     >
                       <div className="relative mb-4 aspect-square size-16">
                         <Image
@@ -692,78 +780,6 @@ export default function BookingPage() {
                     </BookingFormOption>
                   </div>
                 </div>
-
-                <div className="relative flex items-center py-2">
-                  <div className="grow border-t border-neutral-400"></div>
-                  <span className="mx-4 shrink text-muted-foreground">OR</span>
-                  <div className="grow border-t border-neutral-400"></div>
-                </div>
-
-                {/* Specialized Services */}
-                <div className="space-y-4">
-                  <h3 className="text-lg font-medium">Do you need a specialized cleaning?</h3>
-                  <p className="text-muted-foreground text-sm">Select one of our specialized cleaning options</p>
-
-                  <div className="grid grid-cols-1 gap-4 pt-2 sm:grid-cols-3">
-                    <BookingFormOption
-                      isSelected={selectedServiceCategory === 'move-in-out'}
-                      onClick={() => {
-                        handleSelectServiceCategory('move-in-out', { type: 'flat', bedrooms: 1 })
-                      }}
-                    >
-                      <div className="flex items-center justify-between w-full">
-                        <div className="flex flex-col">
-                          <span className="font-medium">Move In/Out</span>
-                          <span className="text-muted-foreground text-xs">For moving in or out of a property</span>
-                        </div>
-                        <div className="size-16 flex-shrink-0">
-                          <LottieAnimation
-                            className="w-full h-full"
-                            animationData={HouseCleanAnimation}
-                            onPlay={prevServiceRef.current !== 'move-in-out' && selectedServiceCategory === 'move-in-out' ? () => {} : undefined}
-                          />
-                        </div>
-                      </div>
-                    </BookingFormOption>
-
-                    <BookingFormOption
-                      isSelected={selectedServiceCategory === 'custom'}
-                      onClick={() => handleSelectServiceCategory('custom', { type: 'hourly', hours: undefined as any })}
-                    >
-                      <div className="flex items-center justify-between w-full">
-                        <div className="flex flex-col">
-                          <span className="font-medium">Custom Areas Only</span>
-                          <span className="text-muted-foreground text-xs">For specific areas that need attention</span>
-                        </div>
-                        <div className="size-16 flex-shrink-0">
-                          <LottieAnimation
-                            className="w-full h-full"
-                            animationData={SprayAnimation}
-                            onPlay={prevServiceRef.current !== 'custom' && selectedServiceCategory === 'custom' ? () => {} : undefined}
-                          />
-                        </div>
-                      </div>
-                    </BookingFormOption>
-
-                    <BookingFormOption
-                      isSelected={selectedServiceCategory === 'mansion'}
-                      onClick={() => handleSelectServiceCategory('mansion', { type: 'hourly', hours: undefined as any })}
-                    >
-                      <div className="flex items-center justify-between w-full">
-                        <div className="flex flex-col">
-                          <span className="font-medium">Mansion</span>
-                          <span className="text-muted-foreground text-xs">For large properties with 4+ bedrooms</span>
-                        </div>
-                        <div className="size-16 flex-shrink-0">
-                          <LottieAnimation
-                            animationData={MansionAnimation}
-                            onPlay={prevServiceRef.current !== 'mansion' && selectedServiceCategory === 'mansion' ? () => {} : undefined}
-                          />
-                        </div>
-                      </div>
-                    </BookingFormOption>
-                  </div>
-                </div>
               </CardContent>
             </Card>
           )}
@@ -771,13 +787,14 @@ export default function BookingPage() {
           {step === BookingStep.HOURS_SELECTION && (
             <Card className="rounded-none border-0 shadow-none">
               <CardHeader className="px-6 pt-6">
+                <div className="text-sm font-medium text-muted-foreground mb-2">Step 2 of {progress.max}</div>
                 <CardTitle>Select Service Duration</CardTitle>
                 <CardDescription>
                   Choose how many hours you need for your
                   {' '}
-                  {selectedServiceCategory}
+                  {selectedServiceCategory === 'custom' ? 'custom' : selectedServiceCategory === 'mansion' ? 'mansion' : ''}
                   {' '}
-                  service
+                  cleaning service
                 </CardDescription>
               </CardHeader>
               <CardContent className="px-6">
