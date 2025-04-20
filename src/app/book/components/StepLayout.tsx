@@ -1,28 +1,38 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { cn } from '@/lib/utils'
 import type { ReactNode } from 'react'
 
 interface StepLayoutProps {
-  title: string
-  description?: string
+  title: string | ReactNode
+  description?: string | ReactNode
   children: ReactNode
   className?: string
-  contentClassName?: string
+  label?: string
 }
 
 export function StepLayout({
   title,
   description,
   children,
-  className = "rounded-none border-0 shadow-none",
-  contentClassName = "px-6"
+  className,
+  label,
 }: StepLayoutProps) {
   return (
-    <Card className={className}>
+    <Card className="max-w-4xl mx-auto rounded-none border-0 shadow-none">
       <CardHeader className="pt-2">
-        <CardTitle>{title}</CardTitle>
-        {description && <CardDescription>{description}</CardDescription>}
+        {label && (
+          <div className="text-sm font-medium text-muted-foreground mb-2">{label}</div>
+        )}
+        <CardTitle>
+          {title}
+        </CardTitle>
+        {description && (
+          <CardDescription>
+            {description}
+          </CardDescription>
+        )}
       </CardHeader>
-      <CardContent className={contentClassName}>
+      <CardContent className={cn("px-6", className)}>
         {children}
       </CardContent>
     </Card>

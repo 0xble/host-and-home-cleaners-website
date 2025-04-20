@@ -1,120 +1,80 @@
 'use client'
 
 import Image from 'next/image'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form'
 import { BookingFormOption } from '@/components/BookingFormOption'
+import { StepLayout } from '../StepLayout'
+import { useStepValidation } from '../../hooks/useStepValidation'
 import type { BaseStepProps } from '../../types'
-import { useEffect } from 'react'
 import { PRICING_PARAMETERS } from '@/lib/constants'
+import { calculatePrice } from '../../utils'
+
+const BEDROOM_OPTIONS = [
+  { bedrooms: 1, label: 'One Bedroom', sqft: '1,000', icon: 'one-bedroom' },
+  { bedrooms: 2, label: 'Two Bedroom', sqft: '1,500', icon: 'two-bedroom' },
+  { bedrooms: 3, label: 'Three Bedroom', sqft: '2,500', icon: 'three-bedroom' },
+  { bedrooms: 4, label: 'Four Bedroom', sqft: '3,500', icon: 'four-bedroom' },
+] as const
 
 export function SizeSelectionStep({ form, onValidityChangeAction }: BaseStepProps) {
-  const { watch, setValue, getValues } = form
-  const selectedPricingParams = watch('pricingParams')
-  const location = form.getValues('location')
+  const { setValue, getValues } = form
 
-  const handleSelectPricingParameters = (bedrooms: number) => {
-    const selectedService = getValues('serviceCategory')
-    if (!selectedService) return
+  // Use the useStepValidation hook for validation
+  useStepValidation(form, onValidityChangeAction, {
+    fields: ['pricingParams'],
+    customValidation: (formData) =>
+      formData.pricingParams?.type === 'flat' &&
+      formData.pricingParams?.bedrooms !== undefined
+  })
 
-    const config = PRICING_PARAMETERS[location][selectedService]
-    if (config.type !== 'flat') return
-
-    const basePrice = config.bedrooms[bedrooms]
-    if (typeof basePrice !== 'number') return
-
-    setValue('pricingParams', {
-      type: 'flat',
-      bedrooms,
-      basePrice,
-      frequency: 'one-time',
-      service: 'standard'
-    })
+  const handleSelectBedrooms = (bedrooms: number) => {
+    const { location, serviceCategory, frequency } = getValues()
+    const config = PRICING_PARAMETERS[location][serviceCategory]
+    if (config.type === 'flat') {
+      setValue('price', calculatePrice(serviceCategory, frequency, { type: 'flat', bedrooms }, config))
+      setValue('pricingParams', { type: 'flat', bedrooms })
+    } else {
+      throw new Error('Expected flat pricing parameters')
+    }
   }
 
-  useEffect(() => {
-    // This step is valid if we have selected a flat pricing with bedrooms
-    const isValid = selectedPricingParams?.type === 'flat' && selectedPricingParams?.bedrooms != null
-    onValidityChangeAction(isValid)
-  }, [selectedPricingParams, onValidityChangeAction])
-
   return (
-    <Card className="rounded-none border-0 shadow-none">
-      <CardHeader className="pt-2">
-        <CardTitle>What is the size of your place?</CardTitle>
-        <CardDescription>
-          Select the number of bedrooms in your home to help us estimate the service duration and price.
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-8 px-6">
-        {/* Bedroom Selection */}
-        <div className="space-y-4">
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-            <BookingFormOption
-              isSelected={selectedPricingParams?.type === 'flat' && selectedPricingParams?.bedrooms === 1}
-              onClick={() => handleSelectPricingParameters(1)}
-            >
-              <div className="relative mb-4 aspect-square size-16">
-                <Image
-                  src="/icons/sizes/one-bedroom.svg"
-                  alt="One Bedroom"
-                  fill
-                  className="transition-colors"
-                />
+    <StepLayout
+      title="What is the size of your place?"
+      description="Select the number of bedrooms in your home to help us estimate the service duration and price."
+    >
+      <FormField
+        control={form.control}
+        name="pricingParams.bedrooms"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Number of Bedrooms</FormLabel>
+            <FormControl>
+              <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+                {BEDROOM_OPTIONS.map(({ bedrooms, label, sqft, icon }) => (
+                  <BookingFormOption
+                    key={bedrooms}
+                    isSelected={field.value === bedrooms}
+                    onClick={() => handleSelectBedrooms(bedrooms)}
+                  >
+                    <div className="relative mb-4 aspect-square size-16">
+                      <Image
+                        src={`/icons/sizes/${icon}.svg`}
+                        alt={label}
+                        fill
+                        className="transition-colors"
+                      />
+                    </div>
+                    <h3 className="text-lg font-medium">{label}</h3>
+                    <p className="mt-1 text-sm text-muted-foreground">Up to {sqft} sq ft</p>
+                  </BookingFormOption>
+                ))}
               </div>
-              <h3 className="text-lg font-medium">One Bedroom</h3>
-              <p className="mt-1 text-sm text-muted-foreground">Up to 1,000 sq ft</p>
-            </BookingFormOption>
-
-            <BookingFormOption
-              isSelected={selectedPricingParams?.type === 'flat' && selectedPricingParams?.bedrooms === 2}
-              onClick={() => handleSelectPricingParameters(2)}
-            >
-              <div className="relative mb-4 aspect-square size-16">
-                <Image
-                  src="/icons/sizes/two-bedroom.svg"
-                  alt="Two Bedroom"
-                  fill
-                  className="transition-colors"
-                />
-              </div>
-              <h3 className="text-lg font-medium">Two Bedroom</h3>
-              <p className="mt-1 text-sm text-muted-foreground">Up to 1,500 sq ft</p>
-            </BookingFormOption>
-
-            <BookingFormOption
-              isSelected={selectedPricingParams?.type === 'flat' && selectedPricingParams?.bedrooms === 3}
-              onClick={() => handleSelectPricingParameters(3)}
-            >
-              <div className="relative mb-4 aspect-square size-16">
-                <Image
-                  src="/icons/sizes/three-bedroom.svg"
-                  alt="Three Bedroom"
-                  fill
-                  className="transition-colors"
-                />
-              </div>
-              <h3 className="text-lg font-medium">Three Bedroom</h3>
-              <p className="mt-1 text-sm text-muted-foreground">Up to 2,500 sq ft</p>
-            </BookingFormOption>
-
-            <BookingFormOption
-              isSelected={selectedPricingParams?.type === 'flat' && selectedPricingParams?.bedrooms === 4}
-              onClick={() => handleSelectPricingParameters(4)}
-            >
-              <div className="relative mb-4 aspect-square size-16">
-                <Image
-                  className="transition-colors"
-                  src="/icons/sizes/four-bedroom.svg"
-                  alt="Four Bedroom"
-                  fill
-                />
-              </div>
-              <h3 className="text-lg font-medium">Four Bedroom</h3>
-              <p className="mt-1 text-sm text-muted-foreground">Up to 3,500 sq ft</p>
-            </BookingFormOption>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    </StepLayout>
   )
 }

@@ -1,3 +1,6 @@
+import { type PricingParams } from "@/lib/constants"
+import type { BookingServiceCategory, BookingFrequency, BookingPricingParams, BookingFormData } from "./types"
+
 /**
  * Constructs a formatted address string in two lines:
  * Line 1: Street address with apt/unit
@@ -64,4 +67,46 @@ export function extractAddressComponents(addressComponents: google.maps.Geocoder
   }
 
   return result;
+}
+export function calculatePrice(
+  serviceCategory: BookingServiceCategory,
+  frequency: BookingFrequency,
+  params: BookingPricingParams,
+  config: PricingParams,
+): BookingFormData['price'] {
+  switch (config.type) {
+    case 'flat': {
+      if (params.type === 'flat') {
+        const initial = config.bedrooms[params.bedrooms]
+        if (typeof initial !== 'number') throw new Error(`Invalid bedrooms pricing parameter ${params.bedrooms} for ${serviceCategory}`)
+        const recurring = frequency && config.frequencies && config.frequencies[frequency]
+          ? initial * (1 - config.frequencies[frequency])
+          : null
+
+        return {
+          initial,
+          recurring,
+        }
+      }
+      else {
+        throw new Error('Mismatch pricing types')
+      }
+    }
+    case 'hourly': {
+      if (params.type === 'hourly') {
+        const initial = config.hourlyRate * params.hours
+        const recurring = frequency && config.frequencies && config.frequencies[frequency]
+          ? initial * (1 - config.frequencies[frequency])
+          : null
+
+        return {
+          initial,
+          recurring,
+        }
+      }
+      else {
+        throw new Error('Mismatch pricing types')
+      }
+    }
+  }
 }

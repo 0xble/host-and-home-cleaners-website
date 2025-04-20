@@ -1,20 +1,26 @@
 'use client'
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { FormField, FormItem, FormLabel, FormControl, FormMessage, FormDescription } from '@/components/ui/form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Calendar } from '@/components/ui/calendar'
 import { addDays, isBefore } from 'date-fns'
+import { StepLayout } from '../StepLayout'
+import { useStepValidation } from '../../hooks/useStepValidation'
 import type { BaseStepProps } from '../../types'
 import type { BookingFrequency } from '../../types'
 
 export function ScheduleStep({ form, onValidityChangeAction }: BaseStepProps) {
   const { watch, setValue } = form
   const selectedDate = watch('date')
-  const selectedArrivalWindow = watch('arrivalWindow')
-  const selectedFrequency = watch('frequency')
   const selectedServiceCategory = watch('serviceCategory')
   const selectedPricingParams = watch('pricingParams')
+
+  // Use useStepValidation for validation
+  useStepValidation(form, onValidityChangeAction, {
+    fields: ['date', 'arrivalWindow'],
+    customValidation: (formData) =>
+      formData.serviceCategory === 'move-in-out' || formData.frequency !== undefined
+  })
 
   const isDateDisabled = (date: Date) => {
     const today = new Date()
@@ -45,21 +51,12 @@ export function ScheduleStep({ form, onValidityChangeAction }: BaseStepProps) {
     }
   }
 
-  // This step is valid if we have a date, arrival window, and frequency (if applicable)
-  const isValid = Boolean(selectedDate && selectedArrivalWindow && (
-    selectedServiceCategory === 'move-in-out' || selectedFrequency
-  ))
-  onValidityChangeAction(isValid)
-
   return (
-    <Card className="rounded-none border-0 shadow-none">
-      <CardHeader className="pt-2">
-        <CardTitle>Schedule Your Cleaning</CardTitle>
-        <CardDescription>
-          Select a date, time, and frequency for your service
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-6 px-6">
+    <StepLayout
+      title="Schedule Your Cleaning"
+      description="Select a date, time, and frequency for your service"
+    >
+      <div className="space-y-6">
         <FormField
           control={form.control}
           name="date"
@@ -137,7 +134,7 @@ export function ScheduleStep({ form, onValidityChangeAction }: BaseStepProps) {
             )}
           />
         )}
-      </CardContent>
-    </Card>
+      </div>
+    </StepLayout>
   )
 }

@@ -820,7 +820,7 @@ export const SOCIAL_LINKS: Record<SocialPlatform, SocialLink> = {
   },
 }
 
-const PricingParamsSchema = z.discriminatedUnion('type', [
+export const PricingParamsSchema = z.discriminatedUnion('type', [
   z.object({
     type: z.literal('flat'),
     bedrooms: z.custom<{ [_ in BookingFlatPricingParams['bedrooms']]: number }>(),
@@ -832,7 +832,7 @@ const PricingParamsSchema = z.discriminatedUnion('type', [
     frequencies: z.custom<{ [_ in BookingFrequency]: number }>().optional(),
   }),
 ])
-type PricingParams = z.infer<typeof PricingParamsSchema>
+export type PricingParams = z.infer<typeof PricingParamsSchema>
 
 export const PRICING_PARAMETERS: Readonly<Record<Location, Record<BookingServiceCategory, PricingParams>>> = {
   MYRTLE_BEACH: {

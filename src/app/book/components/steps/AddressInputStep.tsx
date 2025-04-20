@@ -44,6 +44,7 @@ export function AddressInputStep({ form, onValidityChangeAction }: BaseStepProps
     return undefined
   }
 
+  // TODO: Handle loading state
   // Check if Google Maps is loaded
   if (typeof window === 'undefined' || !window.google?.maps) {
     return (

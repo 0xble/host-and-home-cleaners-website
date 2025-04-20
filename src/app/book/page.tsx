@@ -50,7 +50,7 @@ const STEP_COMPONENTS: Readonly<Record<BookingStep, StepComponent>> = {
 export default function BookingPage() {
   const router = useRouter()
   const [location] = useState<Location>('MYRTLE_BEACH')
-  const [currentStep, setCurrentStep] = useState<BookingStep>(BookingStep.CUSTOMER_DETAILS)
+  const [currentStep, setCurrentStep] = useState<BookingStep>(BookingStep.GETTING_STARTED)
   const [progress, setProgress] = useState<{ value: number, max: number }>({ value: 0, max: 6 })
   const [visitedSteps, setVisitedSteps] = useState<number[]>([0])
   const [isStepValid, setIsStepValid] = useState(true)
@@ -61,12 +61,12 @@ export default function BookingPage() {
     resolver: zodResolver(BookingFormSchema),
     defaultValues: {
       location,
-      serviceCategory: 'default',
       frequency: 'biweekly',
     },
+    mode: 'onTouched'
   })
 
-  const { watch, handleSubmit, getValues, trigger, formState: { errors } } = form
+  const { watch, handleSubmit, getValues, formState: { errors } } = form
 
   // Watch form values for price calculation
   const selectedFrequency = watch('frequency')
@@ -226,21 +226,23 @@ export default function BookingPage() {
     }
 
     if (currentStep === BookingStep.CUSTOMER_DETAILS) {
-      return trigger([
-        'customer.firstName',
-        'customer.lastName',
-        'customer.email',
-        'customer.phone',
-      ])
+      const { customer } = getValues()
+      return Boolean(
+        customer?.firstName &&
+        customer?.lastName &&
+        customer?.email &&
+        customer?.phone
+      )
     }
 
     if (currentStep === BookingStep.ADDRESS_INPUT) {
-      return trigger([
-        'customer.address',
-        'customer.city',
-        'customer.state',
-        'customer.zipCode',
-      ])
+      const { customer } = getValues()
+      return Boolean(
+        customer?.address &&
+        customer?.city &&
+        customer?.state &&
+        customer?.zipCode
+      )
     }
 
     return false
