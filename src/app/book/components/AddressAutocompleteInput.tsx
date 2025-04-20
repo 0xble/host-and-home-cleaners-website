@@ -14,7 +14,7 @@ interface AddressAutocompleteProps {
 
 export function AddressAutocompleteInput({
   label = 'Address',
-  value,
+  value = '',
   onChange,
   onPlaceSelected,
   className,
@@ -95,7 +95,7 @@ export function AddressAutocompleteInput({
           'h-14 border-0 rounded-none focus-visible:ring-0 focus-visible:ring-offset-0',
           className
         )}
-        value={inputValue}
+        value={inputValue || ''}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
         label={label}
