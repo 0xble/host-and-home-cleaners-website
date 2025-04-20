@@ -17,7 +17,7 @@ import { ROUTES } from '@/lib/routes'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useState, useEffect, type ComponentType } from 'react'
+import { useState, useEffect, type ComponentType, useCallback } from 'react'
 import { useForm } from 'react-hook-form'
 import { BookingStep } from './types'
 import { AddressInputStep } from './components/steps/AddressInputStep'
@@ -31,6 +31,7 @@ import { SizeSelectionStep } from './components/steps/SizeSelectionStep'
 import { TellUsAboutYourPlaceStep } from './components/steps/TellUsAboutYourPlaceStep'
 import { GoogleMapsLoader } from '@/lib/google/GoogleMapsLoader'
 import { formatPrice } from '@/lib/utils'
+import { addDays } from 'date-fns'
 
 // Defines the components for each step
 type StepComponent = ComponentType<BaseStepProps>
@@ -51,8 +52,8 @@ export default function BookingPage() {
   const router = useRouter()
   const [location] = useState<Location>('MYRTLE_BEACH')
   const [currentStep, setCurrentStep] = useState<BookingStep>(BookingStep.GETTING_STARTED)
-  const [progress, setProgress] = useState<{ value: number, max: number }>({ value: 0, max: 6 })
-  const [visitedSteps, setVisitedSteps] = useState<number[]>([0])
+  const [progress, setProgress] = useState<{ value: number, max: number }>({ value: 0, max: 7 })
+  const [visitedSteps, setVisitedSteps] = useState<BookingStep[]>([])
   const [isStepValid, setIsStepValid] = useState(true)
   const [isGoogleMapsLoaded, setIsGoogleMapsLoaded] = useState(false)
   const [isLoadingMaps, setIsLoadingMaps] = useState(false)
@@ -97,7 +98,7 @@ export default function BookingPage() {
   useEffect(() => {
     // Log form values if development mode
     if (process.env.NODE_ENV === 'development') {
-      console.log('Form values:', getValues())
+      console.log('Updated form values', getValues())
     }
 
     const validateStep = async () => {
@@ -159,9 +160,9 @@ export default function BookingPage() {
               return BookingStep.SIZE_SELECTION
             case 'hourly':
               return BookingStep.HOURS_SELECTION
-          default:
-        return null
-        }
+            default:
+              return null
+          }
       },
       prev: () => BookingStep.ADDRESS_INPUT,
     },
@@ -186,9 +187,9 @@ export default function BookingPage() {
               return BookingStep.SIZE_SELECTION
             case 'hourly':
               return BookingStep.HOURS_SELECTION
-          default:
-        return null
-        }
+            default:
+              return null
+          }
       },
     },
     // [BookingStep.CONFIRMATION]: {
@@ -271,8 +272,8 @@ export default function BookingPage() {
     }
   }
 
-  const nextStep = async () => {
-    const isValid = await isCurrentStepValid()
+  const nextStep = async (override?: boolean) => {
+    const isValid = override || await isCurrentStepValid()
     if (!isValid) return
 
     const nextStepNumber = getNextStepNumber()
@@ -290,9 +291,9 @@ export default function BookingPage() {
         }
       }
 
-      setCurrentStep(nextStepNumber)
+      setVisitedSteps(prev => [...new Set([...prev, currentStep])])
       setProgress({ ...progress, value: progress.value + 1 })
-      setVisitedSteps(prev => [...new Set([...prev, nextStepNumber])])
+      setCurrentStep(nextStepNumber)
     }
   }
 
@@ -308,7 +309,7 @@ export default function BookingPage() {
   useEffect(() => {
     const handlePopState = (event: PopStateEvent) => {
       if (currentStep === BookingStep.GETTING_STARTED)
-        return
+        return undefined
 
       event.preventDefault()
       prevStep()
@@ -331,12 +332,13 @@ export default function BookingPage() {
       if (modifierKey) {
         // At step 0, let the browser handle back navigation normally
         if (currentStep === BookingStep.GETTING_STARTED && (event.key === '[' || event.key === 'ArrowLeft')) {
-          return
+          return undefined
         }
 
         if (event.key === '[' || event.key === 'ArrowLeft') {
           event.preventDefault()
           prevStep()
+          return undefined
         }
         else if (event.key === ']' || event.key === 'ArrowRight') {
           event.preventDefault()
@@ -352,17 +354,35 @@ export default function BookingPage() {
           ) {
             nextStep()
           }
+          return undefined
         }
       }
+      return undefined
     }
 
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [currentStep, router, visitedSteps])
 
-  const handleStepValidityChange = (isValid: boolean) => {
+  const handleStepValidityChange = useCallback((isValid: boolean) => {
     setIsStepValid(isValid)
-  }
+
+    // Add a small delay to ensure state is updated
+    setTimeout(() => {
+      if (
+        isValid &&
+        !visitedSteps.includes(currentStep) &&
+        [
+          BookingStep.SERVICE_SELECTION,
+          BookingStep.CUSTOMER_DETAILS,
+          BookingStep.SIZE_SELECTION,
+          BookingStep.HOURS_SELECTION
+        ].includes(currentStep)
+      ) {
+        setTimeout(() => nextStep(true), 100)
+      }
+    }, 0)
+  }, [currentStep, nextStep, visitedSteps])
 
   const CurrentStepComponent = STEP_COMPONENTS[currentStep]
 
@@ -402,6 +422,67 @@ export default function BookingPage() {
         />
       </div>
 
+      {/* Skip button for development */}
+      {process.env.NODE_ENV === 'development' && (
+        <div className="fixed inset-x-0 bottom-24 z-20 px-6 py-2 bg-transparent pointer-events-none">
+          <div className="flex justify-end pointer-events-auto">
+            <Button
+              variant="outline"
+              size="default"
+              className="font-mono border-2 border-dashed border-yellow-400 bg-yellow-50 hover:bg-yellow-100 text-yellow-700"
+              onClick={() => {
+                switch (currentStep) {
+                  case BookingStep.GETTING_STARTED:
+                    nextStep(true)
+                    break
+                  case BookingStep.CHOOSE_YOUR_SERVICE:
+                    nextStep(true)
+                    break
+                  case BookingStep.SERVICE_SELECTION:
+                    form.setValue('serviceCategory', 'default')
+                    nextStep(true)
+                    break
+                  case BookingStep.TELL_US_ABOUT_YOUR_PLACE:
+                    nextStep(true)
+                    break
+                  case BookingStep.CUSTOMER_DETAILS:
+                    form.setValue('customer.firstName', 'John')
+                    form.setValue('customer.lastName', 'Doe')
+                    form.setValue('customer.email', 'john.doe@example.com')
+                    form.setValue('customer.phone', '1234567890')
+                    nextStep(true)
+                    break
+                  case BookingStep.ADDRESS_INPUT:
+                    form.setValue('customer.address', '123 Main St')
+                    form.setValue('customer.city', 'Myrtle Beach')
+                    form.setValue('customer.state', 'SC')
+                    form.setValue('customer.zipCode', '29577')
+                    nextStep(true)
+                    break
+                  case BookingStep.SIZE_SELECTION:
+                    form.setValue('pricingParams.type', 'flat')
+                    form.setValue('pricingParams.bedrooms', 2)
+                    nextStep(true)
+                    break
+                  case BookingStep.HOURS_SELECTION:
+                    form.setValue('pricingParams.type', 'hourly')
+                    form.setValue('pricingParams.hours', 4)
+                    nextStep(true)
+                    break
+                  case BookingStep.SCHEDULE:
+                    form.setValue('date', addDays(new Date(), 4))
+                    form.setValue('arrivalWindow', '8:00AM - 9:00AM')
+                    nextStep(true)
+                    break
+                }
+              }}
+            >
+              Skip →
+            </Button>
+          </div>
+        </div>
+      )}
+
       {/* Navigation and pricing */}
       <div className="fixed inset-x-0 bottom-0 z-10 h-20 bg-white shadow-md">
         <div className="flex size-full items-center justify-between px-6 py-4">
@@ -409,7 +490,7 @@ export default function BookingPage() {
             ? (
                 <GradientButton
                   type="button"
-                  onClick={nextStep}
+                  onClick={() => nextStep()}
                   className="w-full"
                 >
                   Get started
@@ -448,7 +529,7 @@ export default function BookingPage() {
                       ? (
                           <Button
                             type="button"
-                            onClick={nextStep}
+                            onClick={() => nextStep()}
                             disabled={!isStepValid}
                           >
                             Next

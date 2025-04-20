@@ -3,7 +3,7 @@
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { StepLayout } from '../StepLayout'
-import { useStepValidation } from '../../hooks/useStepValidation'
+import { useEffect } from 'react'
 import type { BaseStepProps } from '../../types'
 
 const formatPhoneNumber = (value: string) => {
@@ -26,15 +26,20 @@ const formatPhoneNumber = (value: string) => {
 }
 
 export function CustomerDetailsStep({ form, onValidityChangeAction }: BaseStepProps) {
-  // Use useStepValidation for validation
-  useStepValidation(form, onValidityChangeAction, {
-    customValidation: (formData) => Boolean(
-      formData.customer?.firstName &&
-      formData.customer?.lastName &&
-      formData.customer?.email &&
-      formData.customer?.phone?.replace(/\D/g, '').length === 10 // Ensure phone has exactly 10 digits
+  const firstName = form.watch('customer.firstName')
+  const lastName = form.watch('customer.lastName')
+  const email = form.watch('customer.email')
+  const phone = form.watch('customer.phone')
+
+  useEffect(() => {
+    const isValid = Boolean(
+      firstName &&
+      lastName &&
+      email &&
+      phone?.replace(/\D/g, '').length === 10 // Ensure phone has exactly 10 digits
     )
-  })
+    onValidityChangeAction(isValid)
+  }, [firstName, lastName, email, phone, onValidityChangeAction])
 
   return (
     <StepLayout
