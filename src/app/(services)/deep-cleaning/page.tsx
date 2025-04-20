@@ -28,7 +28,7 @@ export default function DeepCleaning() {
       <section className="px-4 text-center">
         <Image
           className="mx-auto mb-24 h-[300px] w-full max-w-screen-lg md:h-[450px] lg:rounded-b"
-          src="/home2.jpeg"
+          src="/assets/home2.jpeg"
           alt="cleaner walking with supplies"
           style={{ objectFit: 'cover' }}
           width={1280}

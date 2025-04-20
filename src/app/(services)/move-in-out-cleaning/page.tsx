@@ -27,7 +27,7 @@ export default function MoveCleaning() {
       <section className="px-4 text-center">
         <Image
           className="mx-auto mb-24 h-[300px] w-full max-w-screen-lg md:h-[450px] lg:rounded-b"
-          src="/home1.jpeg"
+          src="/assets/home1.jpeg"
           alt="cleaner preparing for move out"
           style={{ objectFit: 'cover' }}
           width={1280}

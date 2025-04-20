@@ -12,7 +12,7 @@ import { cn } from '@/lib/utils'
 import Image from 'next/image'
 
 async function getFeaturedImages(folder: string): Promise<{ name: string, image: StaticImport }[]> {
-  const dir = path.join(process.cwd(), 'public', folder)
+  const dir = path.join(process.cwd(), 'public', 'assets', folder)
   const filenames = fs
     .readdirSync(dir)
     // Filter filenames to include only common image formats (jpg, jpeg, png, gif, webp).
@@ -21,7 +21,7 @@ async function getFeaturedImages(folder: string): Promise<{ name: string, image:
     .sort((a, b) => a.localeCompare(b, undefined, { numeric: true }))
 
   return await Promise.all(filenames.map(async (name) => {
-    const imageModule = await import(`/public/${folder}/${name}`)
+    const imageModule = await import(`/public/assets/${folder}/${name}`)
     return { name, image: imageModule.default }
   }))
 }

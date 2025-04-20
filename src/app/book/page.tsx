@@ -32,7 +32,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { PRICING_PARAMETERS } from '@/lib/constants'
+import { PRICING_PARAMETERS, LOCATIONS } from '@/lib/constants'
 import { ROUTES } from '@/lib/routes'
 import { LocationSchema } from '@/lib/types'
 import HouseCleanAnimation from '@/public/lottie/house-clean.json'
@@ -82,7 +82,14 @@ const BookingFormValidationSchema = z.object({
     apt: z.string().optional(),
     city: z.string().min(1, 'City is required'),
     state: z.string().min(1, 'State is required'),
-    zipCode: z.string().min(5, 'ZIP code is required'),
+    zipCode: z.string()
+      .min(5, 'ZIP code is required')
+      .refine(
+        (zip) => Object.values(LOCATIONS).some(
+          location => (location as unknown as { zipCodes: string[] }).zipCodes.includes(zip)
+        ),
+        'Sorry, looks like we\'re not in your area. Please try another ZIP code.'
+      ),
     coordinates: z.object({
       lat: z.number(),
       lng: z.number(),
@@ -112,11 +119,12 @@ type BookingFormState = z.infer<typeof BookingFormStateSchema>
 export default function BookingPage() {
   const router = useRouter()
   const [location] = useState<Location>('MYRTLE_BEACH')
-  const [step, setStep] = useState<BookingStep>(BookingStep.ADDRESS_INPUT)
+  const [step, setStep] = useState<BookingStep>(BookingStep.GETTING_STARTED)
   const [progress, setProgress] = useState<{ value: number, max: number }>({ value: 0, max: 6 })
   const prevServiceRef = useRef<BookingServiceCategory | null>(null)
   const [visitedSteps, setVisitedSteps] = useState<number[]>([0])
   const [showAddressFields, setShowAddressFields] = useState(false);
+  const [isStepValid, setIsStepValid] = useState(true)
 
   // Initialize form with default values
   const form = useForm({
@@ -126,9 +134,10 @@ export default function BookingPage() {
       serviceCategory: 'default',
       frequency: 'biweekly',
     },
+    mode: "onTouched",
   })
 
-  const { watch, setValue, handleSubmit, getValues, trigger } = form
+  const { watch, setValue, handleSubmit, getValues, trigger, formState: { errors } } = form
 
   const updatePrice = (
     serviceCategory: BookingServiceCategory,
@@ -185,14 +194,16 @@ export default function BookingPage() {
 
   // Save form state when values change
   useEffect(() => {
-    // if (!isRestoring) {
-    //   saveFormState()
-    // }
-
     // Log form values if development mode
     if (process.env.NODE_ENV === 'development') {
       console.log('Form values:', getValues())
     }
+
+    const validateStep = async () => {
+      const isValid = await isCurrentStepValid()
+      setIsStepValid(isValid)
+    }
+    validateStep()
   }, [
     step,
     selectedServiceCategory,
@@ -201,7 +212,18 @@ export default function BookingPage() {
     selectedFrequency,
     selectedArrivalWindow,
     visitedSteps,
+    customerAddress,
+    customerCity,
+    customerState,
+    customerZipCode,
   ])
+
+  // Debug log for form errors
+  useEffect(() => {
+    if (process.env.NODE_ENV === 'development') {
+      console.log('Form errors:', errors)
+    }
+  }, [errors])
 
   // Restore form state on component mount
   useEffect(() => {
@@ -246,11 +268,6 @@ export default function BookingPage() {
   }, [])
 
   const STEP_TRANSITIONS: Readonly<Record<BookingStep, { next: () => BookingStep | null, prev: () => BookingStep | null }>> = {
-    // TOOD: Move to right location after testing
-    [BookingStep.ADDRESS_INPUT]: {
-      next: () => null,
-      prev: () => null,
-    },
     [BookingStep.GETTING_STARTED]: {
       next: () => BookingStep.CHOOSE_YOUR_SERVICE,
       prev: () => null,
@@ -264,6 +281,14 @@ export default function BookingPage() {
       prev: () => BookingStep.CHOOSE_YOUR_SERVICE,
     },
     [BookingStep.TELL_US_ABOUT_YOUR_PLACE]: {
+      next: () => BookingStep.ADDRESS_INPUT,
+      prev: () => BookingStep.SERVICE_SELECTION,
+    },
+    [BookingStep.ADDRESS_INPUT]: {
+      next: () => BookingStep.CUSTOMER_DETAILS,
+      prev: () => BookingStep.TELL_US_ABOUT_YOUR_PLACE,
+    },
+    [BookingStep.CUSTOMER_DETAILS]: {
       next: () => {
         if (selectedServiceCategory) {
           const config = PRICING_PARAMETERS[location][selectedServiceCategory]
@@ -276,7 +301,7 @@ export default function BookingPage() {
         }
         return null
       },
-      prev: () => BookingStep.SERVICE_SELECTION,
+      prev: () => BookingStep.ADDRESS_INPUT,
     },
     [BookingStep.SIZE_SELECTION]: {
       next: () => BookingStep.CUSTOMER_DETAILS,
@@ -286,8 +311,8 @@ export default function BookingPage() {
       next: () => BookingStep.CUSTOMER_DETAILS,
       prev: () => BookingStep.TELL_US_ABOUT_YOUR_PLACE,
     },
-    [BookingStep.CUSTOMER_DETAILS]: {
-      next: () => BookingStep.SCHEDULE,
+    [BookingStep.SCHEDULE]: {
+      next: () => BookingStep.CONFIRMATION,
       prev: () => {
         if (selectedServiceCategory) {
           const config = PRICING_PARAMETERS[location][selectedServiceCategory]
@@ -299,11 +324,7 @@ export default function BookingPage() {
           }
         }
         return null
-      }
-    },
-    [BookingStep.SCHEDULE]: {
-      next: () => BookingStep.CONFIRMATION,
-      prev: () => BookingStep.CUSTOMER_DETAILS,
+      },
     },
     [BookingStep.CONFIRMATION]: {
       next: () => null,
@@ -313,18 +334,24 @@ export default function BookingPage() {
 
 
   // Check if current step is valid
-  const isCurrentStepValid = () => {
+  const isCurrentStepValid = async () => {
     if (step === BookingStep.GETTING_STARTED)
       return true
-    if (step === BookingStep.SERVICE_SELECTION)
+    if (step === BookingStep.CHOOSE_YOUR_SERVICE)
+      return true
+    if (step === BookingStep.TELL_US_ABOUT_YOUR_PLACE)
       return true
 
+    if (step === BookingStep.SERVICE_SELECTION) {
+      return selectedServiceCategory !== undefined
+    }
+
     if (step === BookingStep.SIZE_SELECTION) {
-      return selectedPricingParams !== undefined && selectedPricingParams.type === 'flat'
+      return selectedPricingParams?.type === 'flat' && selectedPricingParams?.bedrooms != null
     }
 
     if (step === BookingStep.HOURS_SELECTION) {
-      return selectedPricingParams !== undefined && selectedPricingParams.type === 'hourly'
+      return selectedPricingParams?.type === 'hourly' && selectedPricingParams?.hours != null
     }
 
     if (step === BookingStep.SCHEDULE) {
@@ -340,6 +367,11 @@ export default function BookingPage() {
         'customer.lastName',
         'customer.email',
         'customer.phone',
+      ])
+    }
+
+    if (step === BookingStep.ADDRESS_INPUT) {
+      return trigger([
         'customer.address',
         'customer.city',
         'customer.state',
@@ -376,7 +408,10 @@ export default function BookingPage() {
     }
   }
 
-  const nextStep = () => {
+  const nextStep = async () => {
+    const isValid = await isCurrentStepValid()
+    if (!isValid) return
+
     const nextStepNumber = getNextStepNumber()
     if (nextStepNumber !== null) {
       setStep(nextStepNumber)
@@ -436,7 +471,7 @@ export default function BookingPage() {
           if (
             step
             && nextStepNumber !== null
-            && isCurrentStepValid()
+            && await isCurrentStepValid()
             && (visitedSteps.includes(nextStepNumber) || await isCurrentStepValid())
           ) {
             nextStep()
@@ -963,6 +998,7 @@ export default function BookingPage() {
                                     setValue('customer.state', state);
                                     setValue('customer.zipCode', zipCode);
                                     setShowAddressFields(true); // Show fields immediately on place selection
+                                    trigger('customer.zipCode'); // Trigger validation after setting ZIP code
                                   }
                                 }}
                               />
@@ -1070,6 +1106,7 @@ export default function BookingPage() {
                                   {...field}
                                 />
                               </FormControl>
+                              <FormMessage className="px-4 pb-2" />
                             </FormItem>
                           )}
                         />
@@ -1352,7 +1389,11 @@ export default function BookingPage() {
                       )}
                       {step < Object.keys(STEP_TRANSITIONS).length
                         ? (
-                            <Button type="button" onClick={nextStep}>
+                            <Button
+                              type="button"
+                              onClick={nextStep}
+                              disabled={!isStepValid}
+                            >
                               Next
                             </Button>
                           )

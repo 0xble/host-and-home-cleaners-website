@@ -47,7 +47,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: 'website',
-    images: '/home/1.jpg',
+    images: 'assets/home/1.jpg',
     url: './',
   },
 }
