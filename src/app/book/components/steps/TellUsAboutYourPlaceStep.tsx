@@ -3,6 +3,7 @@
 import { StepLayout } from '../StepLayout'
 import { useStepValidation } from '../../hooks/useStepValidation'
 import type { BaseStepProps } from '../../types'
+import { CardTitle, CardDescription } from '@/components/ui/card'
 
 export function TellUsAboutYourPlaceStep({ form, onValidityChangeAction }: BaseStepProps) {
     // This step is always valid because it's just informational
@@ -10,11 +11,11 @@ export function TellUsAboutYourPlaceStep({ form, onValidityChangeAction }: BaseS
 
   return (
     <StepLayout
-      title={<h1 className="text-3xl font-medium">Tell us about your place</h1>}
+      title={<CardTitle className="text-3xl font-medium">Tell us about your place</CardTitle>}
       description={
-        <p className="text-base mt-4">
+        <CardDescription className="text-base mt-4">
           Next up, we'll ask for some quick details about your home—like how many bedrooms you have, and what type of cleaning you're looking for.
-        </p>
+        </CardDescription>
       }
       label="Step 2"
       className="px-0"

@@ -1,6 +1,6 @@
 'use client'
 
-import { memo, useCallback, useRef, useEffect } from 'react'
+import { memo, useRef, useEffect } from 'react'
 import { BookingFormOption } from '@/components/BookingFormOption'
 import LottieAnimation from '@/components/LottieAnimation'
 import type { LottieAnimationProps } from '@/components/LottieAnimation'
@@ -61,36 +61,9 @@ function ServiceSelectionStepComponent({ form, onValidityChangeAction }: BaseSte
     customValidation: (formData) => formData.serviceCategory !== undefined
   })
 
-  const handleSelectServiceCategory = useCallback((serviceCategory: BookingServiceCategory) => {
+  const handleSelectServiceCategory = (serviceCategory: BookingServiceCategory) => {
     setValue('serviceCategory', serviceCategory)
-  }, [setValue])
-
-  const renderServiceOption = useCallback((
-    id: BookingServiceCategory,
-    title: string,
-    description: string,
-    animation: LottieAnimationProps['animationData']
-  ) => (
-    <BookingFormOption
-      key={id}
-      isSelected={selectedServiceCategory === id}
-      onClick={() => handleSelectServiceCategory(id)}
-    >
-      <div className="flex items-center justify-between w-full">
-        <div className="flex flex-col">
-          <span className="text-lg font-medium">{title}</span>
-          <span className="text-muted-foreground text-sm mt-1">{description}</span>
-        </div>
-        <div className="size-16 flex-shrink-0">
-          <LottieAnimation
-            className="w-full h-full"
-            animationData={animation}
-            onPlay={prevServiceCategoryRef.current !== id && selectedServiceCategory === id ? () => {} : undefined}
-          />
-        </div>
-      </div>
-    </BookingFormOption>
-  ), [selectedServiceCategory, handleSelectServiceCategory])
+  }
 
   return (
     <StepLayout
@@ -100,12 +73,25 @@ function ServiceSelectionStepComponent({ form, onValidityChangeAction }: BaseSte
     >
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {SERVICE_OPTIONS.map(({ id, title, description, animation }) => (
-          renderServiceOption(
-            id,
-            title,
-            description,
-            animation
-          )
+          <BookingFormOption
+            key={id}
+            isSelected={selectedServiceCategory === id}
+            onClick={() => handleSelectServiceCategory(id)}
+          >
+            <div className="flex items-center justify-between w-full">
+              <div className="flex flex-col">
+                <span className="text-lg font-medium">{title}</span>
+                <span className="text-muted-foreground text-sm mt-1">{description}</span>
+              </div>
+              <div className="size-16 flex-shrink-0">
+                <LottieAnimation
+                  className="w-full h-full"
+                  animationData={animation}
+                  onPlay={prevServiceCategoryRef.current !== id && selectedServiceCategory === id ? () => {} : undefined}
+                />
+              </div>
+            </div>
+          </BookingFormOption>
         ))}
       </div>
     </StepLayout>
