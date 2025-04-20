@@ -1,28 +1,60 @@
 'use client'
 
-import { memo, useCallback } from 'react'
+import { memo, useCallback, useRef, useEffect } from 'react'
 import { BookingFormOption } from '@/components/BookingFormOption'
 import LottieAnimation from '@/components/LottieAnimation'
+import type { LottieAnimationProps } from '@/components/LottieAnimation'
 import { StepLayout } from '../StepLayout'
 import { useStepValidation } from '../../hooks/useStepValidation'
-import { STEP_CONTENT } from '../../constants/steps'
 import type { BaseStepProps } from '../../types'
 import type { BookingServiceCategory } from '../../types'
 import ChecklistAnimation from '@/public/lottie/checklist.json'
-import HouseCleanAnimation from '@/public/lottie/house-clean.json'
+import HouseCleanAnimation from '@/public/lottie/house.json'
 import SprayAnimation from '@/public/lottie/spray.json'
 import MansionAnimation from '@/public/lottie/mansion.json'
 
-const ANIMATIONS = {
-  default: ChecklistAnimation,
-  'move-in-out': HouseCleanAnimation,
-  custom: SprayAnimation,
-  mansion: MansionAnimation,
-} as const
+const SERVICE_OPTIONS: {
+  id: BookingServiceCategory
+  title: string
+  description: string
+  animation: LottieAnimationProps['animationData']
+}[] = [
+  {
+    id: 'default',
+    title: "Deep Clean",
+    description: "Recommended for places that haven't been professionally cleaned",
+    animation: ChecklistAnimation
+  },
+  {
+    id: 'move-in-out',
+    title: "Move In/Out",
+    description: "For moving in or out of a property",
+    animation: HouseCleanAnimation
+  },
+  {
+    id: 'custom',
+    title: "Custom Areas Only",
+    description: "For specific areas that need attention",
+    animation: SprayAnimation
+  },
+  {
+    id: 'mansion',
+    title: "Mansion",
+    description: "For large properties with 4+ bedrooms",
+    animation: MansionAnimation
+  }
+]
 
 function ServiceSelectionStepComponent({ form, onValidityChangeAction }: BaseStepProps) {
+  const prevServiceCategoryRef = useRef<BookingServiceCategory | null>(null)
+
   const { watch, setValue } = form
   const selectedServiceCategory = watch('serviceCategory')
+
+  // Update prevServiceCategoryRef when selectedServiceCategory changes
+  useEffect(() => {
+    prevServiceCategoryRef.current = selectedServiceCategory
+  }, [selectedServiceCategory])
 
   // Validate step
   useStepValidation(form, onValidityChangeAction, {
@@ -36,7 +68,8 @@ function ServiceSelectionStepComponent({ form, onValidityChangeAction }: BaseSte
   const renderServiceOption = useCallback((
     id: BookingServiceCategory,
     title: string,
-    description: string
+    description: string,
+    animation: LottieAnimationProps['animationData']
   ) => (
     <BookingFormOption
       key={id}
@@ -51,7 +84,8 @@ function ServiceSelectionStepComponent({ form, onValidityChangeAction }: BaseSte
         <div className="size-16 flex-shrink-0">
           <LottieAnimation
             className="w-full h-full"
-            animationData={ANIMATIONS[id]}
+            animationData={animation}
+            onPlay={prevServiceCategoryRef.current !== id && selectedServiceCategory === id ? () => {} : undefined}
           />
         </div>
       </div>
@@ -60,16 +94,17 @@ function ServiceSelectionStepComponent({ form, onValidityChangeAction }: BaseSte
 
   return (
     <StepLayout
-      title={STEP_CONTENT.SERVICE_SELECTION.title}
-      description={STEP_CONTENT.SERVICE_SELECTION.description}
+      title='What are we cleaning today?'
+      description='Select the type of cleaning service that best fits your needs. Each option is tailored to different cleaning requirements.'
       className="max-w-4xl mx-auto rounded-none border-0 shadow-none"
     >
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        {Object.entries(STEP_CONTENT.SERVICE_SELECTION.options).map(([key, { title, description }]) => (
+        {SERVICE_OPTIONS.map(({ id, title, description, animation }) => (
           renderServiceOption(
-            key as BookingServiceCategory,
+            id,
             title,
-            description
+            description,
+            animation
           )
         ))}
       </div>

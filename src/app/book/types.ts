@@ -2,39 +2,31 @@ import { z } from 'zod'
 import { UseFormReturn } from 'react-hook-form'
 import { LocationSchema } from '@/lib/types'
 import { LOCATIONS } from '@/lib/constants'
-import { FREQUENCIES, HOME_SIZES, ARRIVAL_WINDOWS, US_STATES, SERVICES } from './constants'
 
-// Basic types derived from constants
-export type Service = 'default' | 'move-in-out' | 'custom' | 'mansion'
-export type Frequency = 'one-time' | 'weekly' | 'biweekly' | 'monthly'
-export type HomeSize = typeof HOME_SIZES[number]['id']
-export type ArrivalWindow = typeof ARRIVAL_WINDOWS[number]['id']
-export type USState = typeof US_STATES[number]['id']
+export const BookingServiceCategorySchema = z.enum(['default', 'move-in-out', 'custom', 'mansion'])
+export type BookingServiceCategory = z.infer<typeof BookingServiceCategorySchema>
 
-export type BookingServiceCategory = Service
-export type BookingFrequency = Frequency
+export const BookingFrequencySchema = z.enum(['one-time', 'weekly', 'biweekly', 'monthly'])
+export type BookingFrequency = z.infer<typeof BookingFrequencySchema>
 
-// Booking form schemas
-export const BookingServiceCategorySchema = z.enum(['default', 'move-in-out', 'custom', 'mansion'] as const)
-export const BookingFrequencySchema = z.enum(['one-time', 'weekly', 'biweekly', 'monthly'] as const)
+export const BookingArrivalWindowSchema = z.enum(['8:00AM - 9:00AM', '12:00PM - 1:00PM', '3:00PM - 4:00PM'])
+export type BookingArrivalWindow = z.infer<typeof BookingArrivalWindowSchema>
 
-export const BookingArrivalWindowSchema = z.enum(ARRIVAL_WINDOWS.map(w => w.id) as [string, ...string[]])
-
-// Pricing schemas
-export const BookingFlatPricingParamsSchema = z.object({
-  type: z.literal('flat'),
-  bedrooms: z.number(),
+const BookingBasePricingParamsSchema = z.object({
+  type: z.string(),
   basePrice: z.number(),
-  frequency: z.enum(FREQUENCIES.map(f => f.id) as [string, ...string[]]),
-  service: z.enum(SERVICES.map(s => s.id) as [string, ...string[]]),
+  frequency: BookingFrequencySchema,
+  service: BookingServiceCategorySchema,
 })
 
-export const BookingHourlyPricingParamsSchema = z.object({
+export const BookingFlatPricingParamsSchema = BookingBasePricingParamsSchema.extend({
+  type: z.literal('flat'),
+  bedrooms: z.number(),
+})
+
+export const BookingHourlyPricingParamsSchema = BookingBasePricingParamsSchema.extend({
   type: z.literal('hourly'),
   hours: z.number(),
-  baseHours: z.number(),
-  frequency: z.enum(FREQUENCIES.map(f => f.id) as [string, ...string[]]),
-  service: z.enum(SERVICES.map(s => s.id) as [string, ...string[]]),
 })
 
 export type BookingFlatPricingParams = z.infer<typeof BookingFlatPricingParamsSchema>
@@ -46,7 +38,7 @@ export const BookingPricingParamsSchema = z.discriminatedUnion('type', [
 ])
 export type BookingPricingParams = z.infer<typeof BookingPricingParamsSchema>
 
-// Form validation schema
+// Used for booking form validation
 export const BookingFormSchema = z.object({
   location: LocationSchema,
   serviceCategory: BookingServiceCategorySchema,
@@ -85,32 +77,6 @@ export const BookingFormSchema = z.object({
 export type BookingFormData = z.infer<typeof BookingFormSchema>
 export type BookingFormState = Partial<BookingFormData>
 
-// Component interfaces
-export interface CustomerDetails {
-  firstName: string
-  lastName: string
-  email: string
-  phone: string
-}
-
-export interface Address {
-  street: string
-  unit?: string
-  city: string
-  state: USState
-  zipCode: string
-}
-
-export interface BookingDetails {
-  service: Service
-  frequency: Frequency
-  homeSize: HomeSize
-  date: Date
-  arrivalWindow: ArrivalWindow
-  specialInstructions?: string
-}
-
-// Step types
 export enum BookingStep {
   GETTING_STARTED = 0,
   CHOOSE_YOUR_SERVICE = 1,
@@ -129,12 +95,5 @@ export interface BaseStepProps {
   currentStep: BookingStep
   setCurrentStep: (step: BookingStep) => void
   onValidityChangeAction: (isValid: boolean) => void
-}
-
-export type Step = 'service' | 'customer' | 'address' | 'review'
-
-export interface StepComponentProps {
-  onNext: () => void
-  onBack?: () => void
-  isLastStep?: boolean
+  isGoogleMapsLoaded?: boolean
 }

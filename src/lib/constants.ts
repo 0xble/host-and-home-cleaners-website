@@ -847,7 +847,7 @@ export const PRICING_PARAMETERS: Readonly<Record<Location, Record<BookingService
       frequencies: {
         'one-time': 0,
         'weekly': 0.6,
-        'bi-weekly': 0.5,
+        'biweekly': 0.5,
         'monthly': 0.3,
       },
     },
@@ -866,7 +866,7 @@ export const PRICING_PARAMETERS: Readonly<Record<Location, Record<BookingService
       frequencies: {
         'one-time': 0,
         'weekly': 0.2,
-        'bi-weekly': 0.15,
+        'biweekly': 0.15,
         'monthly': 0.1,
       },
     },
@@ -876,7 +876,7 @@ export const PRICING_PARAMETERS: Readonly<Record<Location, Record<BookingService
       frequencies: {
         'one-time': 0,
         'weekly': 0.2,
-        'bi-weekly': 0.15,
+        'biweekly': 0.15,
         'monthly': 0.1,
       },
     },
@@ -893,7 +893,7 @@ export const PRICING_PARAMETERS: Readonly<Record<Location, Record<BookingService
       frequencies: {
         'one-time': 0,
         'weekly': 0.6,
-        'bi-weekly': 0.5,
+        'biweekly': 0.5,
         'monthly': 0.3,
       },
     },
@@ -912,7 +912,7 @@ export const PRICING_PARAMETERS: Readonly<Record<Location, Record<BookingService
       frequencies: {
         'one-time': 0,
         'weekly': 0.2,
-        'bi-weekly': 0.15,
+        'biweekly': 0.15,
         'monthly': 0.1,
       },
     },
@@ -922,7 +922,7 @@ export const PRICING_PARAMETERS: Readonly<Record<Location, Record<BookingService
       frequencies: {
         'one-time': 0,
         'weekly': 0.2,
-        'bi-weekly': 0.15,
+        'biweekly': 0.15,
         'monthly': 0.1,
       },
     },

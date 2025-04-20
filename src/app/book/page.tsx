@@ -22,9 +22,23 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React, { useRef, useState, useCallback, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-import { LoadScript, LoadScriptProps } from '@react-google-maps/api'
 import { STEP_COMPONENTS } from './components/steps'
 import { BookingStep } from './types'
+
+// Add this helper function at the top level
+const loadGoogleMapsScript = (callback: () => void) => {
+  if (window.google) {
+    callback();
+    return;
+  }
+
+  const script = document.createElement('script');
+  script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`;
+  script.async = true;
+  script.defer = true;
+  script.onload = callback;
+  document.head.appendChild(script);
+};
 
 export default function BookingPage() {
   const router = useRouter()
@@ -35,30 +49,15 @@ export default function BookingPage() {
   const [visitedSteps, setVisitedSteps] = useState<number[]>([0])
   const [showAddressFields, setShowAddressFields] = useState(false);
   const [isStepValid, setIsStepValid] = useState(true)
+  const [isGoogleMapsLoaded, setIsGoogleMapsLoaded] = useState(false)
+  const [isLoadingMaps, setIsLoadingMaps] = useState(false)
 
   const form = useForm<BookingFormData>({
     resolver: zodResolver(BookingFormSchema),
     defaultValues: {
       location,
-      serviceCategory: undefined,
-      frequency: undefined,
-      date: undefined,
-      arrivalWindow: undefined,
-      customer: {
-        firstName: '',
-        lastName: '',
-        email: '',
-        phone: '',
-        address: '',
-        city: '',
-        state: '',
-        zipCode: '',
-      },
-      pricingParams: undefined,
-      price: {
-        initial: 0,
-        recurring: null,
-      },
+      serviceCategory: 'default',
+      frequency: 'biweekly',
     },
   })
 
@@ -177,12 +176,12 @@ export default function BookingPage() {
       prev: () => BookingStep.ADDRESS_INPUT,
     },
     [BookingStep.SIZE_SELECTION]: {
-      next: () => BookingStep.CUSTOMER_DETAILS,
-      prev: () => BookingStep.TELL_US_ABOUT_YOUR_PLACE,
+      next: () => BookingStep.SCHEDULE,
+      prev: () => BookingStep.CUSTOMER_DETAILS,
     },
     [BookingStep.HOURS_SELECTION]: {
-      next: () => BookingStep.CUSTOMER_DETAILS,
-      prev: () => BookingStep.TELL_US_ABOUT_YOUR_PLACE,
+      next: () => BookingStep.SCHEDULE,
+      prev: () => BookingStep.CUSTOMER_DETAILS,
     },
     [BookingStep.SCHEDULE]: {
       next: () => BookingStep.CONFIRMATION,
@@ -287,6 +286,19 @@ export default function BookingPage() {
 
     const nextStepNumber = getNextStepNumber()
     if (nextStepNumber !== null) {
+      // If next step is ADDRESS_INPUT and Google Maps isn't loaded yet
+      if (nextStepNumber === BookingStep.ADDRESS_INPUT && !isGoogleMapsLoaded && !isLoadingMaps) {
+        setIsLoadingMaps(true);
+        loadGoogleMapsScript(() => {
+          setIsGoogleMapsLoaded(true);
+          setIsLoadingMaps(false);
+          setCurrentStep(nextStepNumber);
+          setProgress({ ...progress, value: progress.value + 1 });
+          setVisitedSteps(prev => [...new Set([...prev, nextStepNumber])]);
+        });
+        return;
+      }
+
       setCurrentStep(nextStepNumber)
       setProgress({ ...progress, value: progress.value + 1 })
       setVisitedSteps(prev => [...new Set([...prev, nextStepNumber])])
@@ -457,128 +469,111 @@ export default function BookingPage() {
     return `$${price?.toFixed(0) ?? ''}`
   }
 
-  // Libraries for Google Maps
-  const libraries = React.useMemo<LoadScriptProps['libraries']>(() => ['places'], []);
-
-  const handleAddressChange = useCallback((value: string) => {
-    if (value && value.length > 5) {
-      // Show fields after a slight delay
-      const timer = setTimeout(() => {
-        setShowAddressFields(true);
-      }, 500);
-      return () => clearTimeout(timer);
-    }
-    return undefined;
-  }, []);
-
   const handleStepValidityChange = (isValid: boolean) => {
     setIsStepValid(isValid)
   }
 
   const CurrentStepComponent = STEP_COMPONENTS[currentStep]
 
+  // TODO: Handle step not found
   if (!CurrentStepComponent) {
     return <div>Step not found</div>
   }
 
   return (
     <div className="relative min-h-screen pb-24">
-      <LoadScript
-        googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ''}
-        libraries={libraries}
-        loadingElement={<div>Loading Maps...</div>}
-      >
-        <div className="p-6">
-          <Button variant="outline" size="default" asChild className="rounded-full px-5">
-            <Link href={ROUTES.HOME.href}>
-              Exit
-            </Link>
-          </Button>
-        </div>
-        <Form {...form}>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-            <CurrentStepComponent
-              form={form}
-              currentStep={currentStep}
-              setCurrentStep={setCurrentStep}
-              onValidityChangeAction={handleStepValidityChange}
-            />
-          </form>
-        </Form>
+      <div className="p-6">
+        <Button variant="outline" size="default" asChild className="rounded-full px-5">
+          <Link href={ROUTES.HOME.href}>
+            Exit
+          </Link>
+        </Button>
+      </div>
 
-        {/* Show bottom navigation bar on all steps */}
-        <div className="fixed inset-x-0 bottom-20 z-10 bg-white">
-          {/* Progress bar - show on all steps */}
-          <Progress
-            className="h-2 w-full rounded-none"
-            segments={progress.max}
-            value={progress.value}
+      <Form {...form}>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+          <CurrentStepComponent
+            form={form}
+            currentStep={currentStep}
+            setCurrentStep={setCurrentStep}
+            onValidityChangeAction={handleStepValidityChange}
+            isGoogleMapsLoaded={isGoogleMapsLoaded}
           />
-        </div>
+        </form>
+      </Form>
 
-        {/* Navigation and pricing */}
-        <div className="fixed inset-x-0 bottom-0 z-10 h-20 bg-white shadow-md">
-          <div className="flex size-full items-center justify-between px-6 py-4">
-            {currentStep === BookingStep.GETTING_STARTED
-              ? (
-                  <GradientButton
-                    type="button"
-                    onClick={nextStep}
-                    className="w-full"
-                  >
-                    Get started
-                  </GradientButton>
-                )
-              : (
-                  <>
-                    <div className="flex items-center gap-4">
-                      {canShowPrice() && (
-                        <div className="flex flex-col justify-center">
-                          <div className="text-lg font-medium">
-                            {formatPrice(price.initial)}
-                          </div>
-                          {price.recurring && (
-                            <div className="text-muted-foreground text-sm">
-                              {selectedFrequency !== 'one-time'
-                                ? `${formatPrice(price.recurring)} for recurring cleanings`
-                                : ''}
-                            </div>
-                          )}
+      {/* Show bottom navigation bar on all steps */}
+      <div className="fixed inset-x-0 bottom-20 z-10 bg-white">
+        {/* Progress bar - show on all steps */}
+        <Progress
+          className="h-2 w-full rounded-none"
+          segments={progress.max}
+          value={progress.value}
+        />
+      </div>
+
+      {/* Navigation and pricing */}
+      <div className="fixed inset-x-0 bottom-0 z-10 h-20 bg-white shadow-md">
+        <div className="flex size-full items-center justify-between px-6 py-4">
+          {currentStep === BookingStep.GETTING_STARTED
+            ? (
+                <GradientButton
+                  type="button"
+                  onClick={nextStep}
+                  className="w-full"
+                >
+                  Get started
+                </GradientButton>
+              )
+            : (
+                <>
+                  <div className="flex items-center gap-4">
+                    {canShowPrice() && (
+                      <div className="flex flex-col justify-center">
+                        <div className="text-lg font-medium">
+                          {formatPrice(price.initial)}
                         </div>
-                      )}
-                    </div>
+                        {price.recurring && (
+                          <div className="text-muted-foreground text-sm">
+                            {selectedFrequency !== 'one-time'
+                              ? `${formatPrice(price.recurring)} for recurring cleanings`
+                              : ''}
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
 
-                    <div className="flex items-center gap-2">
-                      {currentStep > 0 && (
-                        <Button
-                          type="button"
-                          variant="outline"
-                          onClick={prevStep}
-                        >
-                          Back
-                        </Button>
-                      )}
-                      {currentStep < Object.keys(STEP_TRANSITIONS).length
-                        ? (
-                            <Button
-                              type="button"
-                              onClick={nextStep}
-                              disabled={!isStepValid}
-                            >
-                              Next
-                            </Button>
-                          )
-                        : (
-                            <Button type="button" onClick={() => handleSubmit(onSubmit)()}>
-                              Book
-                            </Button>
-                          )}
-                    </div>
-                  </>
-                )}
-          </div>
+                  <div className="flex items-center gap-2">
+                    {currentStep > 0 && (
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={prevStep}
+                      >
+                        Back
+                      </Button>
+                    )}
+                    {currentStep < Object.keys(STEP_TRANSITIONS).length
+                      ? (
+                          <Button
+                            type="button"
+                            onClick={nextStep}
+                            disabled={!isStepValid}
+                          >
+                            Next
+                          </Button>
+                        )
+                      : (
+                          <Button type="button" onClick={() => handleSubmit(onSubmit)()}>
+                            Book
+                          </Button>
+                        )}
+                  </div>
+                </>
+              )}
         </div>
-      </LoadScript>
+      </div>
     </div>
   )
 }

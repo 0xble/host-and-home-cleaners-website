@@ -6,7 +6,7 @@ import { useEffect, useRef } from 'react'
 
 const Lottie = dynamic(() => import('lottie-react'), { ssr: false })
 
-interface LottieAnimationProps extends LottieComponentProps {
+export interface LottieAnimationProps extends LottieComponentProps {
   className?: string
   onPlay?: () => void
 }

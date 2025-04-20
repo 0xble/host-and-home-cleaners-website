@@ -10,10 +10,19 @@ import { MapWithMarker } from '../MapWithMarker'
 import { AddressAutocompleteInput } from '../AddressAutocompleteInput'
 import type { BaseStepProps } from '../../types'
 import type { Coordinates } from '../MapWithMarker'
+import { Libraries } from '@react-google-maps/api'
+import { useMemo } from 'react'
 
-export function AddressInputStep({ form, onValidityChangeAction }: BaseStepProps) {
+interface AddressInputStepProps extends BaseStepProps {
+  isGoogleMapsLoaded?: boolean;
+}
+
+export function AddressInputStep({ form, onValidityChangeAction, isGoogleMapsLoaded = false }: AddressInputStepProps) {
   const { formState: { errors }, watch, setValue, trigger } = form
   const [showAddressFields, setShowAddressFields] = useState(false)
+
+  // Libraries for Google Maps
+  const libraries = useMemo<Libraries>(() => ['places'], [])
 
   const address = watch('customer.address')
   const apt = watch('customer.apt')
@@ -42,6 +51,19 @@ export function AddressInputStep({ form, onValidityChangeAction }: BaseStepProps
       return () => clearTimeout(timer)
     }
     return undefined
+  }
+
+  if (!isGoogleMapsLoaded) {
+    return (
+      <Card className="rounded-none border-0 shadow-none">
+        <CardHeader className="pt-2">
+          <CardTitle>Loading Maps...</CardTitle>
+          <CardDescription>
+            Please wait while we load the address input tools...
+          </CardDescription>
+        </CardHeader>
+      </Card>
+    )
   }
 
   return (
