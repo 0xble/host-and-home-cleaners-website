@@ -4,9 +4,9 @@ import { useEffect } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import type { BaseStepProps } from '../../types/steps'
+import type { BaseStepProps } from '../../types'
 
-export function CustomerDetailsStep({ form, onValidityChange }: BaseStepProps) {
+export function CustomerDetailsStep({ form, onValidityChangeAction }: BaseStepProps) {
   const { formState: { errors }, watch } = form
 
   const firstName = watch('customer.firstName')
@@ -21,8 +21,8 @@ export function CustomerDetailsStep({ form, onValidityChange }: BaseStepProps) {
                    !errors.customer?.phone &&
                    !!firstName && !!lastName && !!email && !!phone
 
-    onValidityChange(isValid)
-  }, [firstName, lastName, email, phone, errors, onValidityChange])
+    onValidityChangeAction(isValid)
+  }, [firstName, lastName, email, phone, errors, onValidityChangeAction])
 
   return (
     <Card className="rounded-none border-0 shadow-none">

@@ -1,11 +1,14 @@
 'use client'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import type { BaseStepProps } from '../../types/steps'
+import type { BaseStepProps } from '../../types'
+import { useEffect } from 'react'
 
-export function TellUsAboutYourPlaceStep({ form, onValidityChange }: BaseStepProps) {
-  // This step is always valid since it's just informational
-  onValidityChange(true)
+export function TellUsAboutYourPlaceStep({ onValidityChangeAction }: BaseStepProps) {
+  useEffect(() => {
+    // This step is always valid since it's just informational
+    onValidityChangeAction(true)
+  }, [onValidityChangeAction])
 
   return (
     <Card className="max-w-4xl mx-auto rounded-none border-0 shadow-none">

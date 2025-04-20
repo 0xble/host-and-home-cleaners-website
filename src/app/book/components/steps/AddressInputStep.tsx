@@ -8,10 +8,10 @@ import { cn } from '@/lib/utils'
 import { constructFullAddress } from '../../utils'
 import { MapWithMarker } from '../MapWithMarker'
 import { AddressAutocompleteInput } from '../AddressAutocompleteInput'
-import type { BaseStepProps } from '../../types/steps'
+import type { BaseStepProps } from '../../types'
 import type { Coordinates } from '../MapWithMarker'
 
-export function AddressInputStep({ form, onValidityChange }: BaseStepProps) {
+export function AddressInputStep({ form, onValidityChangeAction }: BaseStepProps) {
   const { formState: { errors }, watch, setValue, trigger } = form
   const [showAddressFields, setShowAddressFields] = useState(false)
 
@@ -29,8 +29,8 @@ export function AddressInputStep({ form, onValidityChange }: BaseStepProps) {
                    !errors.customer?.zipCode &&
                    !!address && !!city && !!state && !!zipCode
 
-    onValidityChange(isValid)
-  }, [address, city, state, zipCode, errors, onValidityChange])
+    onValidityChangeAction(isValid)
+  }, [address, city, state, zipCode, errors, onValidityChangeAction])
 
   const handleAddressChange = (value: string) => {
     if (value && value.length > 5) {

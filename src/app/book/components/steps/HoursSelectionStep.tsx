@@ -3,11 +3,12 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form'
 import { BookingFormOption } from '@/components/BookingFormOption'
-import type { BaseStepProps } from '../../types/steps'
+import type { BaseStepProps } from '../../types'
 import type { BookingPricingParams } from '../../types'
 import { BookingHourlyPricingParamsSchema } from '../../types'
+import { useEffect } from 'react'
 
-export function HoursSelectionStep({ form, onValidityChange }: BaseStepProps) {
+export function HoursSelectionStep({ form, onValidityChangeAction }: BaseStepProps) {
   const { watch, setValue } = form
   const selectedPricingParams = watch('pricingParams')
   const selectedServiceCategory = watch('serviceCategory')
@@ -16,9 +17,11 @@ export function HoursSelectionStep({ form, onValidityChange }: BaseStepProps) {
     setValue('pricingParams', params)
   }
 
-  // This step is valid if we have selected an hourly pricing with hours
-  const isValid = selectedPricingParams?.type === 'hourly' && selectedPricingParams?.hours != null
-  onValidityChange(isValid)
+  useEffect(() => {
+    // This step is valid if we have selected an hourly pricing with hours
+    const isValid = selectedPricingParams?.type === 'hourly' && selectedPricingParams?.hours != null
+    onValidityChangeAction(isValid)
+  }, [selectedPricingParams, onValidityChangeAction])
 
   return (
     <Card className="rounded-none border-0 shadow-none">

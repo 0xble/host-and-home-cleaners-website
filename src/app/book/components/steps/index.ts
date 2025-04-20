@@ -6,8 +6,9 @@ import { ChooseYourServiceStep } from './ChooseYourServiceStep'
 import { TellUsAboutYourPlaceStep } from './TellUsAboutYourPlaceStep'
 import { SizeSelectionStep } from './SizeSelectionStep'
 import { HoursSelectionStep } from './HoursSelectionStep'
-import { BookingStep } from '../../types/steps'
-import type { BaseStepProps } from '../../types/steps'
+import { ScheduleStep } from './ScheduleStep'
+import { BookingStep } from '../../types'
+import type { BaseStepProps } from '../../types'
 import type { ComponentType } from 'react'
 
 type StepComponent = ComponentType<BaseStepProps>
@@ -21,5 +22,6 @@ export const STEP_COMPONENTS: Partial<Record<BookingStep, StepComponent>> = {
   [BookingStep.HOURS_SELECTION]: HoursSelectionStep,
   [BookingStep.CUSTOMER_DETAILS]: CustomerDetailsStep,
   [BookingStep.ADDRESS_INPUT]: AddressInputStep,
+  [BookingStep.SCHEDULE]: ScheduleStep,
   // Add other steps as they are created
 } as const

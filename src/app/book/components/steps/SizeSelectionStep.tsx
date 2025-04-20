@@ -3,20 +3,39 @@
 import Image from 'next/image'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { BookingFormOption } from '@/components/BookingFormOption'
-import type { BaseStepProps } from '../../types/steps'
-import type { BookingPricingParams } from '../../types'
+import type { BaseStepProps } from '../../types'
+import { useEffect } from 'react'
+import { PRICING_PARAMETERS } from '@/lib/constants'
 
-export function SizeSelectionStep({ form, onValidityChange }: BaseStepProps) {
-  const { watch, setValue } = form
+export function SizeSelectionStep({ form, onValidityChangeAction }: BaseStepProps) {
+  const { watch, setValue, getValues } = form
   const selectedPricingParams = watch('pricingParams')
+  const location = form.getValues('location')
 
-  const handleSelectPricingParameters = (params: BookingPricingParams) => {
-    setValue('pricingParams', params)
+  const handleSelectPricingParameters = (bedrooms: number) => {
+    const selectedService = getValues('serviceCategory')
+    if (!selectedService) return
+
+    const config = PRICING_PARAMETERS[location][selectedService]
+    if (config.type !== 'flat') return
+
+    const basePrice = config.bedrooms[bedrooms]
+    if (typeof basePrice !== 'number') return
+
+    setValue('pricingParams', {
+      type: 'flat',
+      bedrooms,
+      basePrice,
+      frequency: 'one-time',
+      service: 'standard'
+    })
   }
 
-  // This step is valid if we have selected a flat pricing with bedrooms
-  const isValid = selectedPricingParams?.type === 'flat' && selectedPricingParams?.bedrooms != null
-  onValidityChange(isValid)
+  useEffect(() => {
+    // This step is valid if we have selected a flat pricing with bedrooms
+    const isValid = selectedPricingParams?.type === 'flat' && selectedPricingParams?.bedrooms != null
+    onValidityChangeAction(isValid)
+  }, [selectedPricingParams, onValidityChangeAction])
 
   return (
     <Card className="rounded-none border-0 shadow-none">
@@ -32,7 +51,7 @@ export function SizeSelectionStep({ form, onValidityChange }: BaseStepProps) {
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
             <BookingFormOption
               isSelected={selectedPricingParams?.type === 'flat' && selectedPricingParams?.bedrooms === 1}
-              onClick={() => handleSelectPricingParameters({ type: 'flat', bedrooms: 1 })}
+              onClick={() => handleSelectPricingParameters(1)}
             >
               <div className="relative mb-4 aspect-square size-16">
                 <Image
@@ -48,7 +67,7 @@ export function SizeSelectionStep({ form, onValidityChange }: BaseStepProps) {
 
             <BookingFormOption
               isSelected={selectedPricingParams?.type === 'flat' && selectedPricingParams?.bedrooms === 2}
-              onClick={() => handleSelectPricingParameters({ type: 'flat', bedrooms: 2 })}
+              onClick={() => handleSelectPricingParameters(2)}
             >
               <div className="relative mb-4 aspect-square size-16">
                 <Image
@@ -64,7 +83,7 @@ export function SizeSelectionStep({ form, onValidityChange }: BaseStepProps) {
 
             <BookingFormOption
               isSelected={selectedPricingParams?.type === 'flat' && selectedPricingParams?.bedrooms === 3}
-              onClick={() => handleSelectPricingParameters({ type: 'flat', bedrooms: 3 })}
+              onClick={() => handleSelectPricingParameters(3)}
             >
               <div className="relative mb-4 aspect-square size-16">
                 <Image
@@ -80,7 +99,7 @@ export function SizeSelectionStep({ form, onValidityChange }: BaseStepProps) {
 
             <BookingFormOption
               isSelected={selectedPricingParams?.type === 'flat' && selectedPricingParams?.bedrooms === 4}
-              onClick={() => handleSelectPricingParameters({ type: 'flat', bedrooms: 4 })}
+              onClick={() => handleSelectPricingParameters(4)}
             >
               <div className="relative mb-4 aspect-square size-16">
                 <Image
