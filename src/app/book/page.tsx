@@ -542,6 +542,7 @@ export default function BookingPage() {
       }, 500);
       return () => clearTimeout(timer);
     }
+    return undefined;
   }, []);
 
   return (
@@ -923,6 +924,7 @@ export default function BookingPage() {
                             <FormControl>
                               <AddressAutocomplete
                                 value={field.value || ''}
+                                showAddressFields={showAddressFields}
                                 onChange={(value: string) => {
                                   field.onChange(value);
                                   handleAddressChange(value);

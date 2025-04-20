@@ -12,13 +12,13 @@ interface AddressAutocompleteProps {
   showAddressFields?: boolean;
 }
 
-export function AddressAutocomplete({
+export function AddressAutocompleteInput({
   label = 'Address',
   value,
   onChange,
   onPlaceSelected,
   className,
-  showAddressFields = true
+  showAddressFields = false
 }: AddressAutocompleteProps) {
   const [autocomplete, setAutocomplete] = useState<google.maps.places.Autocomplete | null>(null);
   const [inputValue, setInputValue] = useState(value);
@@ -27,12 +27,6 @@ export function AddressAutocomplete({
     const value = e.target.value;
     setInputValue(value);
     onChange(value);
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (!showAddressFields && e.key === 'Tab') {
-      e.preventDefault();
-    }
   };
 
   const handlePlaceSelect = () => {
@@ -83,9 +77,8 @@ export function AddressAutocomplete({
         )}
         value={inputValue}
         onChange={handleChange}
-        onKeyDown={handleKeyDown}
         label={label}
-        tabIndex={showAddressFields ? undefined : -1}
+        tabIndex={showAddressFields ? -1 : undefined}
       />
     </Autocomplete>
   );
