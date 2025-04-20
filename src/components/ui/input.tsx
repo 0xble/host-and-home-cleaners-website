@@ -17,7 +17,7 @@ type LabelInputProps = BaseInputProps & {
 type InputProps = StandardInputProps | LabelInputProps;
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, label, placeholder, ...props }, ref) => {
+  ({ className, type, label, placeholder, value = '', ...props }, ref) => {
     if (label) {
       return (
         <div className="relative">
@@ -30,6 +30,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             )}
             ref={ref}
             placeholder={label}
+            value={value}
             {...props}
           />
           <label
@@ -54,6 +55,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         )}
         ref={ref}
         placeholder={placeholder}
+        value={value}
         {...props}
       />
     )

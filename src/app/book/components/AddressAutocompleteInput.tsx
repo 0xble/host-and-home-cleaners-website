@@ -21,16 +21,12 @@ export function AddressAutocompleteInput({
   showAddressFields = true
 }: AddressAutocompleteProps) {
   const [autocomplete, setAutocomplete] = useState<google.maps.places.Autocomplete | null>(null);
-  const [inputValue, setInputValue] = useState(value);
+  const [inputValue, setInputValue] = useState(value || '');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setInputValue(value);
     onChange(value);
-
-    if (process.env.NODE_ENV === 'development') {
-      console.log('Address input changed:', value);
-    }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
