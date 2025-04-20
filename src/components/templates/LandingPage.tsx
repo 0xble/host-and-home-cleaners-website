@@ -1,4 +1,4 @@
-import type { Location } from '@/lib/constants'
+import type { Location } from '@/lib/types'
 
 import BookNowButton from '@/components/BookNowButton'
 import FindLocationInput from '@/components/FindLocationInput'
