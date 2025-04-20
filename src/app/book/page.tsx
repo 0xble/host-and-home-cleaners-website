@@ -49,7 +49,7 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { BookingArrivalWindowSchema, BookingFrequencySchema, BookingHourlyPricingParamsSchema, BookingPricingParamsSchema, BookingServiceCategorySchema } from './types'
 import { LoadScript, LoadScriptProps } from '@react-google-maps/api'
-import { AddressAutocomplete } from './components/AddressAutocomplete'
+import { AddressAutocompleteInput } from './components/AddressAutocompleteInput'
 import { MapWithMarker, type Coordinates } from './components/MapWithMarker'
 import { cn } from '@/lib/utils'
 
@@ -922,7 +922,7 @@ export default function BookingPage() {
                         render={({ field }) => (
                           <FormItem className="m-0">
                             <FormControl>
-                              <AddressAutocomplete
+                              <AddressAutocompleteInput
                                 value={field.value || ''}
                                 showAddressFields={showAddressFields}
                                 onChange={(value: string) => {

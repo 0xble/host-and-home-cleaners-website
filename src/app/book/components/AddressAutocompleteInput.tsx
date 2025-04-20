@@ -18,7 +18,7 @@ export function AddressAutocompleteInput({
   onChange,
   onPlaceSelected,
   className,
-  showAddressFields = false
+  showAddressFields = true
 }: AddressAutocompleteProps) {
   const [autocomplete, setAutocomplete] = useState<google.maps.places.Autocomplete | null>(null);
   const [inputValue, setInputValue] = useState(value);
@@ -27,6 +27,16 @@ export function AddressAutocompleteInput({
     const value = e.target.value;
     setInputValue(value);
     onChange(value);
+
+    if (process.env.NODE_ENV === 'development') {
+      console.log('Address input changed:', value);
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!showAddressFields && e.key === 'Tab') {
+      e.preventDefault();
+    }
   };
 
   const handlePlaceSelect = () => {
@@ -47,6 +57,13 @@ export function AddressAutocompleteInput({
         setInputValue(streetAddress);
         onChange(streetAddress);
         onPlaceSelected(place);
+
+        if (process.env.NODE_ENV === 'development') {
+          console.log('Place selected:', {
+            streetAddress,
+            fullPlace: place
+          });
+        }
       }
     }
   };
@@ -60,6 +77,9 @@ export function AddressAutocompleteInput({
       // Only update if the value is different and contains just a street address
       if (!value.includes(',')) {
         setInputValue(value);
+        if (process.env.NODE_ENV === 'development') {
+          console.log('Address synced from props:', value);
+        }
       }
     }
   }, [value, inputValue]);
@@ -77,8 +97,9 @@ export function AddressAutocompleteInput({
         )}
         value={inputValue}
         onChange={handleChange}
+        onKeyDown={handleKeyDown}
         label={label}
-        tabIndex={showAddressFields ? -1 : undefined}
+        tabIndex={showAddressFields ? undefined : -1}
       />
     </Autocomplete>
   );
