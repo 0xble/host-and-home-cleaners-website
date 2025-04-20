@@ -44,12 +44,14 @@ import { addDays, isBefore } from 'date-fns'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState, useCallback, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { BookingArrivalWindowSchema, BookingFrequencySchema, BookingHourlyPricingParamsSchema, BookingPricingParamsSchema, BookingServiceCategorySchema } from './types'
-import { GoogleMap, Marker, LoadScript, Autocomplete, LoadScriptProps } from '@react-google-maps/api'
-import type { onLoad } from '@sentry/nextjs'
+import { LoadScript, LoadScriptProps } from '@react-google-maps/api'
+import { AddressAutocomplete } from './components/AddressAutocomplete'
+import { MapWithMarker, type Coordinates } from './components/MapWithMarker'
+import { cn } from '@/lib/utils'
 
 enum BookingStep {
   GETTING_STARTED = 0,
@@ -113,7 +115,7 @@ export default function BookingPage() {
   const [progress, setProgress] = useState<{ value: number, max: number }>({ value: 0, max: 6 })
   const prevServiceRef = useRef<BookingServiceCategory | null>(null)
   const [visitedSteps, setVisitedSteps] = useState<number[]>([0])
-  // const [isRestoring, setIsRestoring] = useState(true)
+  const [showAddressFields, setShowAddressFields] = useState(false);
 
   // Initialize form with default values
   const form = useForm({
@@ -532,6 +534,16 @@ export default function BookingPage() {
   // Libraries for Google Maps
   const libraries = React.useMemo<LoadScriptProps['libraries']>(() => ['places'], []);
 
+  const handleAddressChange = useCallback((value: string) => {
+    if (value && value.length > 0) {
+      // Show fields after a slight delay
+      const timer = setTimeout(() => {
+        setShowAddressFields(true);
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, []);
+
   return (
     <div className="relative min-h-screen pb-24">
       <LoadScript
@@ -895,155 +907,209 @@ export default function BookingPage() {
             {step === BookingStep.ADDRESS_INPUT && (
               <Card className="rounded-none border-0 shadow-none">
                 <CardHeader className="pt-2">
-                  <CardTitle>Where are we cleaning?</CardTitle>
+                  <CardTitle>Where is the cleaning?</CardTitle>
                   <CardDescription>
                     Enter your address to help us find your home.
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6 px-6">
-                  <FormField
-                    control={form.control}
-                    name="customer.address"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Address</FormLabel>
-                        <FormControl>
-                          <SimpleAddressAutocomplete
-                            value={field.value || ''}
-                            onChange={(value) => {
-                              field.onChange(value);
-                            }}
-                            onPlaceSelected={(place) => {
-                              if (place.geometry?.location) {
-                                const lat = place.geometry.location.lat();
-                                const lng = place.geometry.location.lng();
-                                setValue('customer.coordinates', { lat, lng });
+                  <div className="max-w-xl mx-auto">
+                    <div className="border rounded-lg overflow-hidden">
+                      <FormField
+                        control={form.control}
+                        name="customer.address"
+                        render={({ field }) => (
+                          <FormItem className="m-0">
+                            <FormControl>
+                              <AddressAutocomplete
+                                value={field.value || ''}
+                                onChange={(value: string) => {
+                                  field.onChange(value);
+                                  handleAddressChange(value);
+                                }}
+                                onPlaceSelected={(place: google.maps.places.PlaceResult) => {
+                                  if (place.geometry?.location) {
+                                    const lat = place.geometry.location.lat();
+                                    const lng = place.geometry.location.lng();
+                                    setValue('customer.coordinates', { lat, lng });
 
-                                // Update city, state, zip based on selected place
-                                const addressComponents = place.address_components || [];
-                                let city = '';
-                                let state = '';
-                                let zipCode = '';
+                                    // Update city, state, zip based on selected place
+                                    const addressComponents = place.address_components || [];
+                                    let city = '';
+                                    let state = '';
+                                    let zipCode = '';
 
-                                for (const component of addressComponents) {
+                                    for (const component of addressComponents) {
+                                      const types = component.types;
+                                      if (types.includes('locality')) {
+                                        city = component.long_name;
+                                      } else if (types.includes('administrative_area_level_1')) {
+                                        state = component.short_name;
+                                      } else if (types.includes('postal_code')) {
+                                        zipCode = component.long_name;
+                                      }
+                                    }
+
+                                    setValue('customer.city', city);
+                                    setValue('customer.state', state);
+                                    setValue('customer.zipCode', zipCode);
+                                    setShowAddressFields(true); // Show fields immediately on place selection
+                                  }
+                                }}
+                              />
+                            </FormControl>
+                          </FormItem>
+                        )}
+                      />
+
+                      {/* Additional fields container with animation */}
+                      <div
+                        className={`
+                          divide-y border-t
+                          transition-all duration-1000 ease-in-out
+                          ${showAddressFields
+                            ? 'max-h-[500px] opacity-100 transform-none delay-500'
+                            : 'max-h-0 opacity-0 pointer-events-none transform translate-y-[-10px]'
+                          }
+                        `}
+                      >
+                        {/* Unit field */}
+                        <FormField
+                          control={form.control}
+                          name="customer.unit"
+                          render={({ field }) => (
+                            <FormItem className="m-0">
+                              <FormControl>
+                                <Input
+                                  label="Apt, suite, unit (if applicable)"
+                                  className={cn(
+                                    'h-14 border-0 rounded-none focus-visible:ring-0 focus-visible:ring-offset-0',
+                                    showAddressFields
+                                      ? 'opacity-100 transform-none'
+                                      : 'opacity-0 transform translate-y-[-10px]',
+                                    'transition-[opacity,transform] duration-1000 ease-in-out delay-[800ms]'
+                                  )}
+                                  {...field}
+                                />
+                              </FormControl>
+                            </FormItem>
+                          )}
+                        />
+
+                        {/* City field */}
+                        <FormField
+                          control={form.control}
+                          name="customer.city"
+                          render={({ field }) => (
+                            <FormItem className="m-0">
+                              <FormControl>
+                                <Input
+                                  label="City / town"
+                                  className={cn(
+                                    'h-14 border-0 rounded-none focus-visible:ring-0 focus-visible:ring-offset-0',
+                                    showAddressFields
+                                      ? 'opacity-100 transform-none'
+                                      : 'opacity-0 transform translate-y-[-10px]',
+                                    'transition-[opacity,transform] duration-1000 ease-in-out delay-[1200ms]'
+                                  )}
+                                  {...field}
+                                />
+                              </FormControl>
+                            </FormItem>
+                          )}
+                        />
+
+                        {/* State field */}
+                        <FormField
+                          control={form.control}
+                          name="customer.state"
+                          render={({ field }) => (
+                            <FormItem className="m-0">
+                              <FormControl>
+                                <Input
+                                  label="State / territory"
+                                  className={cn(
+                                    'h-14 border-0 rounded-none focus-visible:ring-0 focus-visible:ring-offset-0',
+                                    showAddressFields
+                                      ? 'opacity-100 transform-none'
+                                      : 'opacity-0 transform translate-y-[-10px]',
+                                    'transition-[opacity,transform] duration-1000 ease-in-out delay-[1600ms]'
+                                  )}
+                                  {...field}
+                                />
+                              </FormControl>
+                            </FormItem>
+                          )}
+                        />
+
+                        {/* ZIP field */}
+                        <FormField
+                          control={form.control}
+                          name="customer.zipCode"
+                          render={({ field }) => (
+                            <FormItem className="m-0">
+                              <FormControl>
+                                <Input
+                                  label="ZIP code"
+                                  className={cn(
+                                    'h-14 border-0 rounded-none focus-visible:ring-0 focus-visible:ring-offset-0',
+                                    showAddressFields
+                                      ? 'opacity-100 transform-none'
+                                      : 'opacity-0 transform translate-y-[-10px]',
+                                    'transition-[opacity,transform] duration-1000 ease-in-out delay-[2000ms]'
+                                  )}
+                                  {...field}
+                                />
+                              </FormControl>
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                    </div>
+
+                    {/* Map (always visible) */}
+                    <div className="w-full h-[300px] mt-6 rounded-lg overflow-hidden">
+                      <MapWithMarker
+                        coordinates={form.watch('customer.coordinates')}
+                        onPositionChange={(position: Coordinates) => {
+                          setValue('customer.coordinates', position);
+
+                          // Use reverse geocoding to update address fields
+                          const geocoder = new google.maps.Geocoder();
+                          geocoder.geocode({ location: position }, (results, status) => {
+                            if (status === 'OK' && results && results.length > 0) {
+                              const place = results[0];
+                              if (place && place.formatted_address) {
+                                setValue('customer.address', place.formatted_address);
+                              }
+
+                              // Update city, state, zip
+                              if (place && place.address_components) {
+                                let cityVal = '';
+                                let stateVal = '';
+                                let zipVal = '';
+
+                                for (const component of place.address_components) {
                                   const types = component.types;
                                   if (types.includes('locality')) {
-                                    city = component.long_name;
+                                    cityVal = component.long_name;
                                   } else if (types.includes('administrative_area_level_1')) {
-                                    state = component.short_name;
+                                    stateVal = component.short_name;
                                   } else if (types.includes('postal_code')) {
-                                    zipCode = component.long_name;
+                                    zipVal = component.long_name;
                                   }
                                 }
 
-                                setValue('customer.city', city);
-                                setValue('customer.state', state);
-                                setValue('customer.zipCode', zipCode);
+                                setValue('customer.city', cityVal);
+                                setValue('customer.state', stateVal);
+                                setValue('customer.zipCode', zipVal);
+                                setShowAddressFields(true); // Show additional fields when map marker is moved
                               }
-                            }}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="customer.unit"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Apartment/Unit (optional)</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Apt 123" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-                    <FormField
-                      control={form.control}
-                      name="customer.city"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>City</FormLabel>
-                          <FormControl>
-                            <Input placeholder="City" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="customer.state"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>State</FormLabel>
-                          <FormControl>
-                            <Input placeholder="State" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="customer.zipCode"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>ZIP Code</FormLabel>
-                          <FormControl>
-                            <Input placeholder="ZIP Code" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-
-                  <div className="w-full h-[300px] mt-4 rounded-lg overflow-hidden">
-                    <SimpleGoogleMapWithMarker
-                      coordinates={form.watch('customer.coordinates')}
-                      onPositionChange={(position) => {
-                        setValue('customer.coordinates', position);
-
-                        // Use reverse geocoding to update address fields
-                        const geocoder = new google.maps.Geocoder();
-                        geocoder.geocode({ location: position }, (results, status) => {
-                          if (status === 'OK' && results && results.length > 0) {
-                            const place = results[0];
-                            if (place && place.formatted_address) {
-                              setValue('customer.address', place.formatted_address);
                             }
-
-                            // Update city, state, zip
-                            if (place && place.address_components) {
-                              let cityVal = '';
-                              let stateVal = '';
-                              let zipVal = '';
-
-                              for (const component of place.address_components) {
-                                const types = component.types;
-                                if (types.includes('locality')) {
-                                  cityVal = component.long_name;
-                                } else if (types.includes('administrative_area_level_1')) {
-                                  stateVal = component.short_name;
-                                } else if (types.includes('postal_code')) {
-                                  zipVal = component.long_name;
-                                }
-                              }
-
-                              setValue('customer.city', cityVal);
-                              setValue('customer.state', stateVal);
-                              setValue('customer.zipCode', zipVal);
-                            }
-                          }
-                        });
-                      }}
-                    />
+                          });
+                        }}
+                      />
+                    </div>
                   </div>
                 </CardContent>
               </Card>
@@ -1161,7 +1227,7 @@ export default function BookingPage() {
                         <FormItem>
                           <FormLabel>First Name</FormLabel>
                           <FormControl>
-                            <Input placeholder="John" {...field} />
+                            <Input label="First Name" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -1174,7 +1240,7 @@ export default function BookingPage() {
                         <FormItem>
                           <FormLabel>Last Name</FormLabel>
                           <FormControl>
-                            <Input placeholder="Doe" {...field} />
+                            <Input label="Last Name" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -1190,7 +1256,7 @@ export default function BookingPage() {
                         <FormItem>
                           <FormLabel>Email</FormLabel>
                           <FormControl>
-                            <Input placeholder="john.doe@example.com" type="email" {...field} />
+                            <Input label="Email" type="email" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -1203,63 +1269,7 @@ export default function BookingPage() {
                         <FormItem>
                           <FormLabel>Phone Number</FormLabel>
                           <FormControl>
-                            <Input placeholder="(123) 456-7890" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-
-                  <FormField
-                    control={form.control}
-                    name="customer.address"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Address</FormLabel>
-                        <FormControl>
-                          <Input placeholder="123 Main St" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-                    <FormField
-                      control={form.control}
-                      name="customer.city"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>City</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Anytown" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="customer.state"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>State</FormLabel>
-                          <FormControl>
-                            <Input placeholder="CA" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="customer.zipCode"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>ZIP Code</FormLabel>
-                          <FormControl>
-                            <Input placeholder="12345" {...field} />
+                            <Input label="Phone Number" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -1343,116 +1353,4 @@ export default function BookingPage() {
       </LoadScript>
     </div>
   )
-}
-
-// Simplified components that don't include their own LoadScript
-// This prevents multiple script loads which can cause issues
-
-interface Coordinates {
-  lat: number;
-  lng: number;
-}
-
-interface SimpleAddressAutocompleteProps {
-  value: string;
-  onChange: (value: string) => void;
-  onPlaceSelected: (place: google.maps.places.PlaceResult) => void;
-}
-
-function SimpleAddressAutocomplete({ value, onChange, onPlaceSelected }: SimpleAddressAutocompleteProps) {
-  const [autocomplete, setAutocomplete] = useState<google.maps.places.Autocomplete | null>(null);
-  const [inputValue, setInputValue] = useState(value);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setInputValue(value);
-    onChange(value);
-  };
-
-  const handlePlaceSelect = () => {
-    if (autocomplete) {
-      const place = autocomplete.getPlace();
-      if (place && place.formatted_address) {
-        setInputValue(place.formatted_address);
-        onChange(place.formatted_address);
-        onPlaceSelected(place);
-      }
-    }
-  };
-
-  const handleLoad = (autocomplete: google.maps.places.Autocomplete) => {
-    setAutocomplete(autocomplete);
-  };
-
-  useEffect(() => {
-    if (value !== inputValue) {
-      setInputValue(value);
-    }
-  }, [value, inputValue]);
-
-  return (
-    <Autocomplete
-      onLoad={handleLoad}
-      onPlaceChanged={handlePlaceSelect}
-      restrictions={{ country: "us" }}
-    >
-      <Input
-        value={inputValue}
-        onChange={handleChange}
-        placeholder="Enter your address"
-        className="h-10 px-3"
-      />
-    </Autocomplete>
-  );
-}
-
-interface SimpleGoogleMapWithMarkerProps {
-  coordinates?: Coordinates;
-  onPositionChange: (position: Coordinates) => void;
-}
-
-function SimpleGoogleMapWithMarker({ coordinates, onPositionChange }: SimpleGoogleMapWithMarkerProps) {
-  const defaultPosition = { lat: 37.7749, lng: -122.4194 }; // Default to San Francisco
-
-  const [position, setPosition] = useState<Coordinates>(
-    coordinates || defaultPosition
-  );
-
-  // Update position when coordinates change from parent
-  useEffect(() => {
-    if (coordinates && (coordinates.lat !== position.lat || coordinates.lng !== position.lng)) {
-      setPosition(coordinates);
-    }
-  }, [coordinates, position]);
-
-  const handleMarkerDragEnd = (e: google.maps.MapMouseEvent) => {
-    if (e.latLng) {
-      const newPosition = {
-        lat: e.latLng.lat(),
-        lng: e.latLng.lng()
-      };
-      setPosition(newPosition);
-      onPositionChange(newPosition);
-    }
-  };
-
-  return (
-    <GoogleMap
-      mapContainerStyle={{ width: '100%', height: '100%' }}
-      center={position}
-      zoom={15}
-      options={{
-        fullscreenControl: false,
-        streetViewControl: false,
-        mapTypeControl: false,
-        zoomControl: true
-      }}
-    >
-      <Marker
-        position={position}
-        draggable={true}
-        onDragEnd={handleMarkerDragEnd}
-      />
-    </GoogleMap>
-  );
 }
