@@ -1,10 +1,10 @@
 'use client'
 
-import type { BaseStepProps } from '../../types'
+import type { BaseStepProps } from '@/app/book/types'
+import { StepLayout } from '@/app/book/components/StepLayout'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { useEffect } from 'react'
-import { StepLayout } from '../StepLayout'
 
 function formatPhoneNumber(value: string) {
   // Remove all non-numeric characters
@@ -30,10 +30,10 @@ function formatPhoneNumber(value: string) {
 }
 
 export function CustomerDetailsStep({ form, onValidityChangeAction }: BaseStepProps) {
-  const firstName = form.watch('customer.firstName')
-  const lastName = form.watch('customer.lastName')
-  const email = form.watch('customer.email')
-  const phone = form.watch('customer.phone')
+  const firstName = form.watch('customer.firstName') as string | undefined
+  const lastName = form.watch('customer.lastName') as string | undefined
+  const email = form.watch('customer.email') as string | undefined
+  const phone = form.watch('customer.phone') as string | undefined
 
   useEffect(() => {
     const isValid = Boolean(

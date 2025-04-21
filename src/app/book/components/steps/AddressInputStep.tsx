@@ -1,27 +1,27 @@
 'use client'
 
-import type { BaseStepProps } from '../../types'
-import type { Coordinates } from '../MapWithMarker'
+import type { Coordinates } from '@/app/book/components/MapWithMarker'
+import type { BaseStepProps } from '@/app/book/types'
+import { AddressAutocompleteInput } from '@/app/book/components/AddressAutocompleteInput'
+import { MapWithMarker } from '@/app/book/components/MapWithMarker'
+import { StepLayout } from '@/app/book/components/StepLayout'
+import { useStepValidation } from '@/app/book/hooks/useStepValidation'
+import { constructFullAddress, extractAddressComponents } from '@/app/book/utils'
 import { FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { cn } from '@/lib/utils'
 import { useState } from 'react'
-import { useStepValidation } from '../../hooks/useStepValidation'
-import { constructFullAddress, extractAddressComponents } from '../../utils'
-import { AddressAutocompleteInput } from '../AddressAutocompleteInput'
-import { MapWithMarker } from '../MapWithMarker'
-import { StepLayout } from '../StepLayout'
 
 export function AddressInputStep({ form, onValidityChangeAction }: BaseStepProps) {
   const { watch, setValue, trigger } = form
   const [showAddressFields, setShowAddressFields] = useState(false)
 
-  const address = watch('customer.address')
+  const address = watch('customer.address') as string | undefined
   const apt = watch('customer.apt')
-  const city = watch('customer.city')
-  const state = watch('customer.state')
-  const zipCode = watch('customer.zipCode')
-  const coordinates = watch('customer.coordinates')
+  const city = watch('customer.city') as string | undefined
+  const state = watch('customer.state') as string | undefined
+  const zipCode = watch('customer.zipCode') as string | undefined
+  const coordinates = watch('customer.coordinates') as Coordinates | undefined
 
   // Use useStepValidation for validation
   useStepValidation(form, onValidityChangeAction, {
@@ -42,19 +42,6 @@ export function AddressInputStep({ form, onValidityChangeAction }: BaseStepProps
       return () => clearTimeout(timer)
     }
     return undefined
-  }
-
-  // TODO: Handle loading state
-  // Check if Google Maps is loaded
-  if (typeof window === 'undefined' || !window.google?.maps) {
-    return (
-      <StepLayout
-        title="Loading Maps..."
-        description="Please wait while we load the address input tools..."
-      >
-        <div />
-      </StepLayout>
-    )
   }
 
   return (
@@ -96,7 +83,7 @@ export function AddressInputStep({ form, onValidityChangeAction }: BaseStepProps
                           setValue('customer.zipCode', components.zipCode)
 
                         setShowAddressFields(true)
-                        trigger('customer.zipCode')
+                        void trigger('customer.zipCode')
                       }
                     }}
                   />
@@ -225,7 +212,7 @@ export function AddressInputStep({ form, onValidityChangeAction }: BaseStepProps
 
               // Use reverse geocoding to update address fields
               const geocoder = new google.maps.Geocoder()
-              geocoder.geocode({ location: position }, (results, status) => {
+              void geocoder.geocode({ location: position }, (results, status) => {
                 if (status === 'OK' && results && results.length > 0) {
                   const place = results[0]
                   if (place && place.formatted_address) {
@@ -233,7 +220,7 @@ export function AddressInputStep({ form, onValidityChangeAction }: BaseStepProps
                   }
 
                   // Update city, state, zip
-                  if (place && place.address_components) {
+                  if (place) {
                     const components = extractAddressComponents(place.address_components)
 
                     if (components.city)

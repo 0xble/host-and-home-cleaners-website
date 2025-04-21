@@ -1,6 +1,6 @@
 'use client'
 
-import type { BaseStepProps, BookingServiceCategory } from '@/app/book/types'
+import type { BaseStepProps, BookingFormState, BookingServiceCategory } from '@/app/book/types'
 import type { LottieAnimationProps } from '@/components/LottieAnimation'
 import { StepLayout } from '@/app/book/components/StepLayout'
 import { useStepValidation } from '@/app/book/hooks/useStepValidation'
@@ -48,11 +48,11 @@ function ServiceSelectionStepComponent({ form, onValidityChangeAction }: BaseSte
   const prevServiceCategoryRef = useRef<BookingServiceCategory | null>(null)
 
   const { watch, setValue } = form
-  const selectedServiceCategory = watch('serviceCategory')
+  const selectedServiceCategory = watch('serviceCategory') as BookingFormState['serviceCategory']
 
   // Update prevServiceCategoryRef when selectedServiceCategory changes
   useEffect(() => {
-    prevServiceCategoryRef.current = selectedServiceCategory
+    prevServiceCategoryRef.current = selectedServiceCategory ?? null
   }, [selectedServiceCategory])
 
   // Validate step

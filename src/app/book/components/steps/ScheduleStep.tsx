@@ -1,18 +1,18 @@
 'use client'
 
-import type { BaseStepProps, BookingFrequency } from '../../types'
+import type { BaseStepProps, BookingFormState, BookingFrequency } from '@/app/book/types'
+import { StepLayout } from '@/app/book/components/StepLayout'
+import { useStepValidation } from '@/app/book/hooks/useStepValidation'
 import { Calendar } from '@/components/ui/calendar'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { addDays, isBefore } from 'date-fns'
-import { useStepValidation } from '../../hooks/useStepValidation'
-import { StepLayout } from '../StepLayout'
 
 export function ScheduleStep({ form, onValidityChangeAction }: BaseStepProps) {
   const { watch, setValue } = form
-  const selectedDate = watch('date')
-  const selectedServiceCategory = watch('serviceCategory')
-  const selectedPricingParams = watch('pricingParams')
+  const selectedDate = watch('date') as BookingFormState['date']
+  const selectedServiceCategory = watch('serviceCategory') as BookingFormState['serviceCategory']
+  const selectedPricingParams = watch('pricingParams') as BookingFormState['pricingParams']
 
   // Use useStepValidation for validation
   useStepValidation(form, onValidityChangeAction, {

@@ -3,6 +3,7 @@
 import type {
   BaseStepProps,
   BookingFormData,
+  BookingFormState,
 } from '@/app/book/types'
 import type { Location } from '@/lib/types'
 import type { ComponentType } from 'react'
@@ -79,30 +80,18 @@ export default function BookingPage() {
   const { watch, handleSubmit, getValues, trigger, formState: { errors } } = form
 
   // Watch form values for price calculation
-  const selectedFrequency = watch('frequency')
-  const selectedServiceCategory = watch('serviceCategory')
-  const selectedPricingParams = watch('pricingParams')
-  const selectedDate = watch('date')
-  const selectedArrivalWindow = watch('arrivalWindow')
-  const customerAddress = watch('customer.address')
-  const customerCity = watch('customer.city')
-  const customerState = watch('customer.state')
-  const customerZipCode = watch('customer.zipCode')
-  const price = watch('price')
+  const selectedFrequency = watch('frequency') as BookingFormState['frequency']
+  const selectedServiceCategory = watch('serviceCategory') as BookingFormState['serviceCategory']
+  const selectedPricingParams = watch('pricingParams') as BookingFormState['pricingParams']
+  const selectedDate = watch('date') as BookingFormState['date']
+  const selectedArrivalWindow = watch('arrivalWindow') as BookingFormState['arrivalWindow']
+  const customerAddress = watch('customer.address') as string | undefined
+  const customerCity = watch('customer.city') as string | undefined
+  const customerState = watch('customer.state') as string | undefined
+  const customerZipCode = watch('customer.zipCode') as string | undefined
+  const price = watch('price') as BookingFormState['price'] | undefined
 
   // Check if we have all required parameters to show price
-  const canShowPrice = () => {
-    if (selectedPricingParams?.type === 'flat') {
-      return selectedPricingParams.bedrooms != null
-    }
-
-    if (selectedPricingParams?.type === 'hourly') {
-      return selectedPricingParams.hours != null
-    }
-
-    return false
-  }
-
   const isCurrentStepValid = async () => {
     if (currentStep === BookingStep.GETTING_STARTED)
       return true
@@ -463,7 +452,7 @@ export default function BookingPage() {
                     : (
                         <>
                           <div className="flex items-center gap-4">
-                            {canShowPrice() && (
+                            {price && selectedFrequency && selectedServiceCategory && selectedPricingParams && (
                               <PriceDetailsDrawer
                                 price={{
                                   serviceTotal: price.serviceTotal,
@@ -543,27 +532,32 @@ export default function BookingPage() {
                             void nextStep(true)
                             break
                           case BookingStep.SIZE_SELECTION:
-                            form.setValue('pricingParams.type', 'flat')
-                            form.setValue('pricingParams.bedrooms', 2)
-                            form.setValue('price', calculatePrice(
-                              selectedServiceCategory,
-                              selectedFrequency,
-                              { type: 'flat', bedrooms: 2 },
-                              PRICING_PARAMETERS[location][selectedServiceCategory],
-                            ))
+                          case BookingStep.HOURS_SELECTION: {
+                            const pricingParams = currentStep === BookingStep.SIZE_SELECTION
+                              ? { type: 'flat' as const, bedrooms: 2 }
+                              : { type: 'hourly' as const, hours: 4 }
+
+                            form.setValue('pricingParams.type', pricingParams.type)
+                            form.setValue(`pricingParams.${pricingParams.type === 'flat' ? 'bedrooms' : 'hours'}`, pricingParams.type === 'flat' ? pricingParams.bedrooms : pricingParams.hours)
+
+                            if (selectedServiceCategory && selectedFrequency && selectedPricingParams) {
+                              form.setValue('price', calculatePrice(
+                                selectedServiceCategory,
+                                selectedFrequency,
+                                pricingParams,
+                                PRICING_PARAMETERS[location][selectedServiceCategory],
+                              ))
+                            }
+                            else {
+                              console.error('Expected parameters to be defined for price calculation', {
+                                selectedServiceCategory,
+                                selectedFrequency,
+                                selectedPricingParams,
+                              })
+                            }
                             void nextStep(true)
                             break
-                          case BookingStep.HOURS_SELECTION:
-                            form.setValue('pricingParams.type', 'hourly')
-                            form.setValue('pricingParams.hours', 4)
-                            form.setValue('price', calculatePrice(
-                              selectedServiceCategory,
-                              selectedFrequency,
-                              { type: 'hourly', hours: 4 },
-                              PRICING_PARAMETERS[location][selectedServiceCategory],
-                            ))
-                            void nextStep(true)
-                            break
+                          }
                           case BookingStep.SCHEDULE:
                             form.setValue('date', addDays(new Date(), 4))
                             form.setValue('arrivalWindow', '8:00AM - 9:00AM')
