@@ -5,12 +5,8 @@ import { StepLayout } from '../StepLayout'
 import type { BaseStepProps } from '../../types'
 import { Card, CardContent } from '@/components/ui/card'
 import { PaymentMethodCard } from '@/components/PaymentMethodCard'
-import { useToast } from '@/components/ui/use-toast'
-import { useEffect, useState } from 'react'
-import { createPaymentIntent } from '@/lib/stripe/payment'
 
 export function ConfirmationStep({ form }: BaseStepProps) {
-  const { toast } = useToast()
   const { watch } = form
   const selectedServiceCategory = watch('serviceCategory')
   const selectedFrequency = watch('frequency')
@@ -18,56 +14,6 @@ export function ConfirmationStep({ form }: BaseStepProps) {
   const selectedArrivalWindow = watch('arrivalWindow')
   const selectedPricingParams = watch('pricingParams')
   const price = watch('price')
-
-  const [clientSecret, setClientSecret] = useState<string>('')
-  const [, setIsLoading] = useState(false)
-  const [, setError] = useState<string | null>(null)
-
-  // Store the client secret in the form
-  useEffect(() => {
-    if (clientSecret) {
-      form.setValue('clientSecret', clientSecret)
-    }
-  }, [clientSecret, form])
-
-  useEffect(() => {
-    const fetchPaymentIntent = async () => {
-      if (!price?.totalInitial) return
-
-      setIsLoading(true)
-      setError(null)
-
-      try {
-        const result = await createPaymentIntent(
-          price.totalInitial,
-          {
-            service: selectedServiceCategory,
-            frequency: selectedFrequency,
-            date: selectedDate.toISOString(),
-            arrivalWindow: selectedArrivalWindow
-          }
-        )
-
-        if (!result.success || !result.clientSecret) {
-          throw new Error(result.error || 'Failed to create payment intent')
-        }
-
-        setClientSecret(result.clientSecret)
-      } catch (err) {
-        const errorMessage = err instanceof Error ? err.message : 'Failed to set up payment'
-        setError(errorMessage)
-        toast({
-          title: 'Error',
-          description: errorMessage,
-          variant: 'destructive',
-        })
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
-    fetchPaymentIntent()
-  }, [price, selectedServiceCategory, selectedFrequency, selectedDate, selectedArrivalWindow, toast])
 
   const formatServiceName = (service: string) => {
     switch (service) {
@@ -176,7 +122,7 @@ export function ConfirmationStep({ form }: BaseStepProps) {
           </CardContent>
         </Card>
 
-        <PaymentMethodCard clientSecret={clientSecret} />
+        <PaymentMethodCard />
       </div>
     </StepLayout>
   )

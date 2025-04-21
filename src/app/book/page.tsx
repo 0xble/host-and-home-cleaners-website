@@ -12,12 +12,12 @@ import {
   Form
 } from '@/components/ui/form'
 import { Progress } from '@/components/ui/progress'
-import { PRICING_PARAMETERS, DOMAIN } from '@/lib/constants'
+import { PRICING_PARAMETERS } from '@/lib/constants'
 import { ROUTES } from '@/lib/routes'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useState, useEffect, type ComponentType, useCallback } from 'react'
+import { useState, type ComponentType, useCallback, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { BookingStep } from './types'
 import { AddressInputStep } from './components/steps/AddressInputStep'
@@ -35,7 +35,6 @@ import { calculatePrice } from './utils'
 import { PriceDetailsDrawer } from '@/components/PriceDetailsDrawer'
 import { ConfirmationStep } from './components/steps/ConfirmationStep'
 import { ArrowLeft } from 'lucide-react'
-import { confirmPayment } from '@/lib/stripe/payment'
 import { toast } from '@/components/ui/use-toast'
 
 // Defines the components for each step
@@ -63,8 +62,9 @@ export default function BookingPage() {
   const [progress, setProgress] = useState<{ value: number, max: number }>({ value: 0, max: MAX_STEPS })
   const [visitedSteps, setVisitedSteps] = useState<BookingStep[]>([])
   const [isStepValid, setIsStepValid] = useState(true)
-  const [isGoogleMapsLoaded, setIsGoogleMapsLoaded] = useState(false)
-  const [isLoadingMaps, setIsLoadingMaps] = useState(false)
+  // TODO: Optimize storage
+  const [isLoadedGoogleMaps, setIsLoadedGoogleMaps] = useState(false)
+  const [isLoadingGoogleMaps, setIsLoadingGoogleMaps] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const form = useForm<BookingFormData>({
@@ -89,7 +89,6 @@ export default function BookingPage() {
   const customerState = watch('customer.state')
   const customerZipCode = watch('customer.zipCode')
   const price = watch('price')
-  const clientSecret = watch('clientSecret')
 
   // Check if we have all required parameters to show price
   const canShowPrice = () => {
@@ -289,15 +288,15 @@ export default function BookingPage() {
     const nextStepNumber = getNextStepNumber()
     if (nextStepNumber !== null) {
       // If next step is ADDRESS_INPUT and Google Maps isn't loaded yet
-      if (nextStepNumber === BookingStep.ADDRESS_INPUT && !isGoogleMapsLoaded && !isLoadingMaps) {
-        setIsLoadingMaps(true)
+      if (nextStepNumber === BookingStep.ADDRESS_INPUT && !isLoadedGoogleMaps && !isLoadingGoogleMaps) {
+        setIsLoadingGoogleMaps(true)
         try {
           await GoogleMapsLoader.getInstance().load()
-          setIsGoogleMapsLoaded(true)
+          setIsLoadedGoogleMaps(true)
         } catch (error) {
           console.error('Failed to load Google Maps:', error)
         } finally {
-          setIsLoadingMaps(false)
+          setIsLoadingGoogleMaps(false)
         }
       }
 
@@ -308,42 +307,22 @@ export default function BookingPage() {
   }
 
   const onSubmit = async (data: BookingFormData) => {
-    if (currentStep === BookingStep.CONFIRMATION) {
-      if (!data.clientSecret) {
-        console.error('No client secret available for payment')
-        return
-      }
+    setIsSubmitting(true)
 
-      setIsSubmitting(true)
+    // Payment successful, clear form and navigate to confirmation
+    toast({
+      title: 'Booking confirmed!',
+      description: 'You will receive a confirmation email shortly.',
+    })
 
-      try {
-        const result = await confirmPayment(data.clientSecret)
+    // Clear session storage on successful submission
+    sessionStorage.removeItem('bookingFormState')
 
-        if (!result.success) {
-          throw new Error(result.error || 'Payment failed')
-        }
+    console.log('Booking confirmed', data)
 
-        // Payment successful, clear form and navigate to confirmation
-        toast({
-          title: 'Booking confirmed!',
-          description: 'Your payment was successful. You will receive a confirmation email shortly.',
-        })
-
-        // Clear session storage on successful submission
-        sessionStorage.removeItem('bookingFormState')
-
-        // Navigate to payment confirmation page
-        router.push(`/payment-confirmation?payment_intent_client_secret=${data.clientSecret}`)
-      } catch (error) {
-        toast({
-          title: 'Payment failed',
-          description: error instanceof Error ? error.message : `Payment failed. Please try again or contact support@${DOMAIN}.`,
-          variant: 'destructive',
-        })
-      } finally {
-        setIsSubmitting(false)
-      }
-    }
+    // Wait for 2 seconds before navigating to confirmation
+    setTimeout(() => { router.push(ROUTES.CONFIRMATION.href) }, 2000)
+    setIsSubmitting(false)
   }
 
   // Handle browser back/forward buttons
@@ -460,7 +439,7 @@ export default function BookingPage() {
             currentStep={currentStep}
             setCurrentStep={setCurrentStep}
             onValidityChangeAction={handleStepValidityChange}
-            isGoogleMapsLoaded={isGoogleMapsLoaded}
+            isGoogleMapsLoaded={isLoadedGoogleMaps}
           />
         </form>
       </Form>
@@ -616,8 +595,9 @@ export default function BookingPage() {
               variant="light"
               onClick={handleSubmit(onSubmit)}
               className="w-full"
-              disabled={isSubmitting || !clientSecret}
+              disabled={isSubmitting}
             >
+              {/* TODO: Show a loading icon in the book button while submitting */}
               {isSubmitting ? 'Processing...' : 'Book'}
             </GradientButton>
           </div>

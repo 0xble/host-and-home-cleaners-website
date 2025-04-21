@@ -1,17 +1,18 @@
 'use client'
 
-import { Elements, PaymentElement } from '@stripe/react-stripe-js'
 import Image from 'next/image'
 import { Card, CardHeader, CardTitle, CardContent } from './ui/card'
 import { Skeleton } from './ui/skeleton'
-import { getStripe } from '@/lib/stripe'
+import { useEffect, useState } from 'react'
 
-interface PaymentMethodInputProps {
-  clientSecret: string
-}
+export function PaymentMethodCard() {
+  const [isLoading, setIsLoading] = useState(false)
 
-export function PaymentMethodCard({ clientSecret }: PaymentMethodInputProps) {
-  const stripePromise = getStripe()
+  // Load for 1 second on mount
+  useEffect(() => {
+    setIsLoading(true)
+    setTimeout(() => { setIsLoading(false) }, 1000)
+  }, [])
 
   return (
     <Card>
@@ -33,18 +34,13 @@ export function PaymentMethodCard({ clientSecret }: PaymentMethodInputProps) {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        {!clientSecret ? (
+        {!isLoading ? (
           <div className="space-y-4">
-            {/* Link payment method selector */}
             <Skeleton className="h-[40px] w-[270px]" />
-
-            {/* Card number */}
             <div className="space-y-2">
               <Skeleton className="h-5 w-28" />
               <Skeleton className="h-10 w-full rounded-xl" />
             </div>
-
-            {/* Expiration and CVC group */}
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Skeleton className="h-5 w-28" />
@@ -55,68 +51,41 @@ export function PaymentMethodCard({ clientSecret }: PaymentMethodInputProps) {
                 <Skeleton className="h-10 w-full rounded-xl" />
               </div>
             </div>
-
-            {/* Country */}
             <div className="space-y-2">
               <Skeleton className="h-5 w-28" />
               <Skeleton className="h-10 w-full rounded-xl" />
             </div>
-
-            {/* ZIP code */}
             <div className="space-y-2">
               <Skeleton className="h-5 w-28" />
               <Skeleton className="h-10 w-full rounded-xl" />
             </div>
           </div>
         ) : (
-          <Elements
-            stripe={stripePromise}
-            options={{
-              clientSecret,
-              appearance: {
-                theme: 'flat',
-                variables: {
-                  colorPrimary: '#222222',
-                  colorBackground: '#ffffff',
-                  colorText: '#222222',
-                  colorDanger: '#df1b41',
-                  fontFamily: 'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
-                  borderRadius: '8px',
-                  fontSmooth: 'auto'
-                },
-                rules: {
-                  '.Input': {
-                    border: '1px solid #9CA3AF',
-                    backgroundColor: '#ffffff',
-                    padding: '8px 12px',
-                    fontSize: 'var(--fontSizeBase)',
-                    height: '40px',
-                    boxShadow: 'none',
-                    transition: 'all 0.2s ease',
-                  },
-                  '.Input::placeholder': {
-                    color: '#717171',
-                  },
-                  '.Input:focus': {
-                    border: '1px solid #9CA3AF',
-                    boxShadow: '0 0 0 2px #0f172a, 0 0 0 4px #ffffff',
-                    outline: 'none',
-                  },
-                  '.Input:disabled': {
-                    opacity: '0.5',
-                    cursor: 'not-allowed',
-                  },
-                  '.Label': {
-                    color: '#4B4B4B',
-                    fontWeight: '500',
-                    marginBottom: '0.5rem',
-                  },
-                }
-              }
-            }}
-          >
-            <PaymentElement />
-          </Elements>
+          <div className="space-y-4">
+            <Skeleton className="h-[40px] w-[270px]" />
+            <div className="space-y-2">
+              <Skeleton className="h-5 w-28" />
+              <Skeleton className="h-10 w-full rounded-xl" />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Skeleton className="h-5 w-28" />
+                <Skeleton className="h-10 w-full rounded-xl" />
+              </div>
+              <div className="space-y-2">
+                <Skeleton className="h-5 w-28" />
+                <Skeleton className="h-10 w-full rounded-xl" />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <Skeleton className="h-5 w-28" />
+              <Skeleton className="h-10 w-full rounded-xl" />
+            </div>
+            <div className="space-y-2">
+              <Skeleton className="h-5 w-28" />
+              <Skeleton className="h-10 w-full rounded-xl" />
+            </div>
+          </div>
         )}
       </CardContent>
     </Card>

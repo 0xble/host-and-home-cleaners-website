@@ -1,10 +1,10 @@
-import type { LocationRoute, Route } from '@/lib/routes'
+import type { LocationRoute, RouteData } from '@/lib/routes'
 
 import type { MetadataRoute } from 'next'
 import { ROUTES } from '@/lib/routes'
 import { getBaseUrl } from '@/lib/utils'
 
-function isRoute(value: unknown): value is Route {
+function isRoute(value: unknown): value is RouteData {
   return typeof value === 'object' && value !== null && 'href' in value
 }
 
@@ -13,7 +13,7 @@ function isLocationRoute(value: unknown): value is LocationRoute[keyof LocationR
 }
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const routes = Object.entries(ROUTES).flatMap(([key, route]): Route[] => {
+  const routes = Object.entries(ROUTES).flatMap(([key, route]): RouteData[] => {
     if (isRoute(route)) {
       return [route]
     }
@@ -34,15 +34,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     return []
   })
 
-  const uniqueRoutes = new Map<string, Route>()
+  const uniqueRoutes = new Map<string, RouteData>()
   routes
-    .filter(page => page.priority > 0 && page.href.startsWith('/'))
+    .filter(page => page.priority && page.href.startsWith('/'))
     .forEach(page => uniqueRoutes.set(page.href, page))
 
   return Array.from(uniqueRoutes.values()).map(page => ({
     url: `${getBaseUrl()}${page.href}`,
     lastModified: new Date(),
     changeFrequency: page.changeFrequency,
-    priority: page.priority,
+    priority: page.priority ?? 0,
   }))
 }
