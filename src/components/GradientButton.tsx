@@ -3,13 +3,15 @@ import { buttonVariants } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { useEffect, useRef } from 'react'
 
-interface GradientButtonProps extends ButtonProps {
+interface GradientButtonProps extends Omit<ButtonProps, 'variant'> {
   className?: string
+  variant?: 'default' | 'light'
 }
 
 export function GradientButton({
   className,
   children,
+  variant = 'default',
   ...props
 }: GradientButtonProps) {
   const buttonRef = useRef<HTMLButtonElement>(null)
@@ -38,8 +40,8 @@ export function GradientButton({
         buttonVariants({ size: 'lg' }),
         'text-lg font-normal rounded-xl',
         'relative overflow-hidden transition-all duration-100 ease-in-out',
-        'before:absolute before:inset-0 before:z-[1] before:bg-gradient-to-br before:from-gradient-start before:via-gradient-middle before:to-gradient-end before:opacity-0 before:transition-all hover:before:opacity-100',
-        'after:absolute after:inset-0 after:z-[1] after:bg-gradient-to-br after:from-gradient-start after:via-gradient-middle after:to-gradient-end after:transition-all',
+        variant === 'light' ? 'before:absolute before:inset-0 before:z-[1] before:bg-gradient-light before:from-gradient-light-start before:via-gradient-light-middle before:to-gradient-light-end before:opacity-0 before:transition-all hover:before:opacity-100' : 'before:absolute before:inset-0 before:z-[1] before:bg-gradient-to-br before:from-gradient-start before:via-gradient-middle before:to-gradient-end before:opacity-0 before:transition-all hover:before:opacity-100',
+        variant === 'light' ? 'after:absolute after:inset-0 after:z-[1] after:bg-gradient-light before:from-gradient-light-start before:via-gradient-light-middle before:to-gradient-light-end before:transition-all' : 'after:absolute after:inset-0 after:z-[1] after:bg-gradient-to-br after:from-gradient-start after:via-gradient-middle after:to-gradient-end after:transition-all',
         'after:bg-[position:calc((100_-_var(--mouse-x,_0))_*_1%)_calc((100_-_var(--mouse-y,_0))_*_1%)]',
         '[&>span]:relative [&>span]:z-[2] text-white',
         'active:scale-[0.96]',

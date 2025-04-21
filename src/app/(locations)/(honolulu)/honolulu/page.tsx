@@ -4,7 +4,7 @@ import TrackedLink from '@/components/analytics/facebook/PixelTrackedLink'
 import CompetitorComparisonTable from '@/components/CompetitorComparisonTable'
 import LocalBusinessSchemaMarkup from '@/components/schema/LocalBusinessSchemaMarkup'
 import LocationLandingPage from '@/components/templates/LocationLandingPage'
-import { BUSINESS_NAME, EMAIL, LOCATIONS, PHONE, TAGLINE, URL } from '@/lib/constants'
+import { BUSINESS_NAME, EMAIL, LOCATIONS, PHONE, TAGLINE, DOMAIN } from '@/lib/constants'
 import { PixelEvent } from '@/lib/pixel'
 import { ROUTES } from '@/lib/routes'
 import Link from 'next/link'
@@ -22,7 +22,7 @@ export default function Honolulu() {
       <LocalBusinessSchemaMarkup
         locationName={LOCATIONS.HONOLULU.name}
         description={`${TAGLINE}. Proudly serving the Honolulu and Oahu area.`}
-        url={`https://${URL}${ROUTES.LOCATIONS.HONOLULU.href}`}
+        url={`https://${DOMAIN}${ROUTES.LOCATIONS.HONOLULU.href}`}
         telephone={PHONE.HONOLULU.formatted}
         email={EMAIL.HONOLULU}
         address={{

@@ -72,6 +72,7 @@ export const BookingFormSchema = z.object({
   }),
   pricingParams: BookingPricingParamsSchema,
   price: BookingPriceDetailsSchema,
+  clientSecret: z.string().optional(),
 })
 
 export type BookingFormData = z.infer<typeof BookingFormSchema>

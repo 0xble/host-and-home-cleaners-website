@@ -151,6 +151,11 @@ const config = {
           middle: '#D13660',
           end: '#C72D65',
         },
+        'gradient-light': {
+          start: '#EC4899',
+          middle: '#FF385C',
+          end: '#DC2626',
+        },
       },
     },
   },

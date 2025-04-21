@@ -12,7 +12,7 @@ import {
   Form
 } from '@/components/ui/form'
 import { Progress } from '@/components/ui/progress'
-import { PRICING_PARAMETERS } from '@/lib/constants'
+import { PRICING_PARAMETERS, DOMAIN } from '@/lib/constants'
 import { ROUTES } from '@/lib/routes'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
@@ -35,6 +35,8 @@ import { calculatePrice } from './utils'
 import { PriceDetailsDrawer } from '@/components/PriceDetailsDrawer'
 import { ConfirmationStep } from './components/steps/ConfirmationStep'
 import { ArrowLeft } from 'lucide-react'
+import { confirmPayment } from '@/lib/stripe/payment'
+import { toast } from '@/components/ui/use-toast'
 
 // Defines the components for each step
 type StepComponent = ComponentType<BaseStepProps>
@@ -63,6 +65,7 @@ export default function BookingPage() {
   const [isStepValid, setIsStepValid] = useState(true)
   const [isGoogleMapsLoaded, setIsGoogleMapsLoaded] = useState(false)
   const [isLoadingMaps, setIsLoadingMaps] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const form = useForm<BookingFormData>({
     resolver: zodResolver(BookingFormSchema),
@@ -86,6 +89,7 @@ export default function BookingPage() {
   const customerState = watch('customer.state')
   const customerZipCode = watch('customer.zipCode')
   const price = watch('price')
+  const clientSecret = watch('clientSecret')
 
   // Check if we have all required parameters to show price
   const canShowPrice = () => {
@@ -303,13 +307,43 @@ export default function BookingPage() {
     }
   }
 
-  const onSubmit = (data: BookingFormData) => {
-    // TODO: Implement
-    console.log('Form submitted:', data)
-    // Clear session storage on successful submission
-    sessionStorage.removeItem('bookingFormState')
-    // In a real app, we would submit this data to an API
-    alert('Booking submitted! Check console for details.')
+  const onSubmit = async (data: BookingFormData) => {
+    if (currentStep === BookingStep.CONFIRMATION) {
+      if (!data.clientSecret) {
+        console.error('No client secret available for payment')
+        return
+      }
+
+      setIsSubmitting(true)
+
+      try {
+        const result = await confirmPayment(data.clientSecret)
+
+        if (!result.success) {
+          throw new Error(result.error || 'Payment failed')
+        }
+
+        // Payment successful, clear form and navigate to confirmation
+        toast({
+          title: 'Booking confirmed!',
+          description: 'Your payment was successful. You will receive a confirmation email shortly.',
+        })
+
+        // Clear session storage on successful submission
+        sessionStorage.removeItem('bookingFormState')
+
+        // Navigate to payment confirmation page
+        router.push(`/payment-confirmation?payment_intent_client_secret=${data.clientSecret}`)
+      } catch (error) {
+        toast({
+          title: 'Payment failed',
+          description: error instanceof Error ? error.message : `Payment failed. Please try again or contact support@${DOMAIN}.`,
+          variant: 'destructive',
+        })
+      } finally {
+        setIsSubmitting(false)
+      }
+    }
   }
 
   // Handle browser back/forward buttons
@@ -575,10 +609,16 @@ export default function BookingPage() {
 
         </>
       ) : (
-        <div className="fixed inset-x-0 bottom-0 z-10 h-20 bg-white shadow-md">
+        <div className="fixed inset-x-0 bottom-0 z-10 h-20">
           <div className="flex size-full items-center justify-between px-6 py-4">
-            <GradientButton type="button" onClick={() => nextStep()} className="w-full">
-              Book
+            <GradientButton
+              type="submit"
+              variant="light"
+              onClick={handleSubmit(onSubmit)}
+              className="w-full"
+              disabled={isSubmitting || !clientSecret}
+            >
+              {isSubmitting ? 'Processing...' : 'Book'}
             </GradientButton>
           </div>
         </div>

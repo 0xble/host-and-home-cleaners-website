@@ -4,7 +4,7 @@ import { z } from 'zod'
 
 export const BUSINESS_NAME = 'Host & Home Cleaners'
 export const TAGLINE = '100% satisfaction guaranteed, or we\'ll redo it for FREE'
-export const URL = 'hostandhomecleaners.com'
+export const DOMAIN = 'hostandhomecleaners.com'
 export const PHONE = {
   MYRTLE_BEACH: {
     formatted: '+1 (843) 350-5553',
@@ -16,9 +16,9 @@ export const PHONE = {
   },
 } as const
 export const EMAIL = {
-  SUPPORT: `support@${URL}`,
-  MYRTLE_BEACH: `myrtlebeach@${URL}`,
-  HONOLULU: `honolulu@${URL}`,
+  SUPPORT: `support@${DOMAIN}`,
+  MYRTLE_BEACH: `myrtlebeach@${DOMAIN}`,
+  HONOLULU: `honolulu@${DOMAIN}`,
 } as const
 
 export const CHECKLIST_NAME = 'Host & Home 72-point Checklist™'

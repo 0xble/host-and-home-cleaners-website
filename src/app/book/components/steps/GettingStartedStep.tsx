@@ -33,9 +33,10 @@ export function GettingStartedStep({ form, onValidityChangeAction }: BaseStepPro
           </div>
           <div className="relative flex-shrink-0 size-20">
             <Image
-              src="/broom-dustpan.png"
+              src="/assets/broom-dustpan.png"
               alt="Broom and dustpan illustration"
               fill
+              sizes="80px"
               className="object-contain"
             />
           </div>
@@ -56,9 +57,10 @@ export function GettingStartedStep({ form, onValidityChangeAction }: BaseStepPro
             </div>
             <div className="relative flex-shrink-0 size-20">
               <Image
-                src="/living-room.png"
+                src="/assets/living-room.png"
                 alt="Living room illustration"
                 fill
+                sizes="80px"
                 className="object-contain"
               />
             </div>
@@ -78,9 +80,10 @@ export function GettingStartedStep({ form, onValidityChangeAction }: BaseStepPro
             </div>
             <div className="relative flex-shrink-0 size-20">
               <Image
-                src="/door.avif"
+                src="/assets/door.avif"
                 alt="Door illustration"
                 fill
+                sizes="80px"
                 className="object-contain"
               />
             </div>

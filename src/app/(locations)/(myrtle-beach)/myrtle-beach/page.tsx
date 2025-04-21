@@ -4,13 +4,13 @@ import TrackedLink from '@/components/analytics/facebook/PixelTrackedLink'
 import CompetitorComparisonTable from '@/components/CompetitorComparisonTable'
 import LocalBusinessSchemaMarkup from '@/components/schema/LocalBusinessSchemaMarkup'
 import LocationLandingPage from '@/components/templates/LocationLandingPage'
-import { BUSINESS_NAME, EMAIL, LOCATIONS, PHONE, TAGLINE, URL } from '@/lib/constants'
+import { BUSINESS_NAME, EMAIL, LOCATIONS, PHONE, TAGLINE, DOMAIN } from '@/lib/constants'
 import { PixelEvent } from '@/lib/pixel'
 import { ROUTES } from '@/lib/routes'
 import Link from 'next/link'
 
 const SPECIFIC_BUSINESS_NAME = `${BUSINESS_NAME} ${LOCATIONS.MYRTLE_BEACH.name}`
-const SPECIFIC_URL = `https://${URL}${ROUTES.LOCATIONS.MYRTLE_BEACH.href}`
+const SPECIFIC_URL = `https://${DOMAIN}${ROUTES.LOCATIONS.MYRTLE_BEACH.href}`
 
 export const metadata: Metadata = {
   title: `Professional House & Airbnb Cleaners in Myrtle Beach | ${BUSINESS_NAME}`,
