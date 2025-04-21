@@ -13,7 +13,7 @@ const BEDROOM_OPTIONS = [
   { bedrooms: 1, label: 'One Bedroom', sqft: '1,000', icon: 'one-bedroom' },
   { bedrooms: 2, label: 'Two Bedroom', sqft: '1,500', icon: 'two-bedroom' },
   { bedrooms: 3, label: 'Three Bedroom', sqft: '2,500', icon: 'three-bedroom' },
-  { bedrooms: 4, label: 'Four Bedroom', sqft: '3,500', icon: 'four-bedroom' },
+  { bedrooms: 4, label: 'Four Bedroom', sqft: '3,000', icon: 'four-bedroom' },
 ] as const
 
 export function SizeSelectionStep({ form, onValidityChangeAction }: BaseStepProps) {

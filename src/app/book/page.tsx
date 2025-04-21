@@ -449,7 +449,7 @@ export default function BookingPage() {
                 />
               </div>
               <div className="fixed inset-x-0 bottom-0 z-10 h-20 bg-white shadow-md">
-                <div className="flex size-full items-center justify-between px-6 py-4">
+                <div className="flex size-full items-center justify-between p-4">
                   {currentStep === BookingStep.GETTING_STARTED
                     ? (
                         <GradientButton
