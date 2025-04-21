@@ -5,7 +5,7 @@ import { StepLayout } from '../StepLayout'
 import type { BaseStepProps } from '../../types'
 import { Card, CardContent } from '@/components/ui/card'
 import { PaymentMethodCard } from '@/components/PaymentMethodCard'
-import { toast, useToast } from '@/components/ui/use-toast'
+import { useToast } from '@/components/ui/use-toast'
 import { useEffect, useState } from 'react'
 import { createPaymentIntent } from '@/lib/stripe/payment'
 
@@ -20,8 +20,8 @@ export function ConfirmationStep({ form }: BaseStepProps) {
   const price = watch('price')
 
   const [clientSecret, setClientSecret] = useState<string>('')
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const [, setIsLoading] = useState(false)
+  const [, setError] = useState<string | null>(null)
 
   // Store the client secret in the form
   useEffect(() => {

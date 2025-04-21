@@ -27,6 +27,8 @@ export async function confirmPayment(clientSecret: string): Promise<{
     })
 
     if (error) {
+      console.error('Error confirming payment', error)
+
       return {
         success: false,
         error: error.message || 'An error occurred with your payment'

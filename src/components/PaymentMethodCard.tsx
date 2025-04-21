@@ -19,12 +19,16 @@ export function PaymentMethodCard({ clientSecret }: PaymentMethodInputProps) {
         <CardTitle className="flex items-center justify-between">
           <span className='text-base font-medium'>Pay with</span>
           <div className="flex items-center gap-2">
-            <Image src="/icons/brands/visa.svg" alt="Visa" width={32} height={20} className="h-2 w-auto" />
-            <Image src="/icons/brands/mastercard.svg" alt="Mastercard" width={32} height={20} className="h-2 w-auto" />
-            <Image src="/icons/brands/amex.svg" alt="American Express" width={32} height={20} className="h-2 w-auto" />
-            <Image src="/icons/brands/discover.svg" alt="Discover" width={32} height={20} className="h-2 w-auto" />
-            <Image src="/icons/brands/paypal.svg" alt="PayPal" width={32} height={20} className="h-2 w-auto" />
-            <Image src="/icons/brands/google-pay.svg" alt="Google Pay" width={32} height={20} className="h-2 w-auto" />
+            {[
+              { src: '/icons/brands/visa.svg', alt: 'Visa', width: 30, height: 20 },
+              { src: '/icons/brands/mastercard.svg', alt: 'Mastercard', width: 32, height: 20 },
+              { src: '/icons/brands/amex.svg', alt: 'American Express', width: 32, height: 20 },
+              { src: '/icons/brands/discover.svg', alt: 'Discover', width: 32, height: 20 },
+              { src: '/icons/brands/paypal.svg', alt: 'PayPal', width: 32, height: 20 },
+              { src: '/icons/brands/google-pay.svg', alt: 'Google Pay', width: 32, height: 20 },
+            ].map((props) => (
+              <Image key={props.alt} {...props} className="h-[10px] w-auto" />
+            ))}
           </div>
         </CardTitle>
       </CardHeader>
