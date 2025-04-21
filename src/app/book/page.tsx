@@ -1,27 +1,32 @@
 'use client'
 
 import type { Location } from '@/lib/types'
+import type { ComponentType } from 'react'
 import type {
+  BaseStepProps,
   BookingFormData,
-  BaseStepProps
 } from './types'
-import { BookingFormSchema } from './types'
 import { GradientButton } from '@/components/GradientButton'
+import { PriceDetailsDrawer } from '@/components/PriceDetailsDrawer'
 import { Button } from '@/components/ui/button'
 import {
-  Form
+  Form,
 } from '@/components/ui/form'
 import { Progress } from '@/components/ui/progress'
+import { toast } from '@/components/ui/use-toast'
 import { PRICING_PARAMETERS } from '@/lib/constants'
+import { GoogleMapsLoader } from '@/lib/google/GoogleMapsLoader'
 import { ROUTES } from '@/lib/routes'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { addDays } from 'date-fns'
+import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useState, type ComponentType, useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { BookingStep } from './types'
 import { AddressInputStep } from './components/steps/AddressInputStep'
 import { ChooseYourServiceStep } from './components/steps/ChooseYourServiceStep'
+import { ConfirmationStep } from './components/steps/ConfirmationStep'
 import { CustomerDetailsStep } from './components/steps/CustomerDetailsStep'
 import { GettingStartedStep } from './components/steps/GettingStartedStep'
 import { HoursSelectionStep } from './components/steps/HoursSelectionStep'
@@ -29,13 +34,8 @@ import { ScheduleStep } from './components/steps/ScheduleStep'
 import { ServiceSelectionStep } from './components/steps/ServiceSelectionStep'
 import { SizeSelectionStep } from './components/steps/SizeSelectionStep'
 import { TellUsAboutYourPlaceStep } from './components/steps/TellUsAboutYourPlaceStep'
-import { GoogleMapsLoader } from '@/lib/google/GoogleMapsLoader'
-import { addDays } from 'date-fns'
+import { BookingFormSchema, BookingStep } from './types'
 import { calculatePrice } from './utils'
-import { PriceDetailsDrawer } from '@/components/PriceDetailsDrawer'
-import { ConfirmationStep } from './components/steps/ConfirmationStep'
-import { ArrowLeft } from 'lucide-react'
-import { toast } from '@/components/ui/use-toast'
 
 // Defines the components for each step
 type StepComponent = ComponentType<BaseStepProps>
@@ -73,7 +73,7 @@ export default function BookingPage() {
       location,
       frequency: 'biweekly',
     },
-    mode: 'onTouched'
+    mode: 'onTouched',
   })
 
   const { watch, handleSubmit, getValues, trigger, formState: { errors } } = form
@@ -159,10 +159,12 @@ export default function BookingPage() {
     },
     [BookingStep.CUSTOMER_DETAILS]: {
       next: () => {
-        if (!selectedServiceCategory) return null
+        if (!selectedServiceCategory)
+          return null
 
         const config = PRICING_PARAMETERS[location][selectedServiceCategory]
-        if (!config) return null
+        if (!config)
+          return null
 
         switch (config.type) {
           case 'flat':
@@ -186,10 +188,12 @@ export default function BookingPage() {
     [BookingStep.SCHEDULE]: {
       next: () => BookingStep.CONFIRMATION,
       prev: () => {
-        if (!selectedServiceCategory) return null
+        if (!selectedServiceCategory)
+          return null
 
         const config = PRICING_PARAMETERS[location][selectedServiceCategory]
-        if (!config) return null
+        if (!config)
+          return null
 
         switch (config.type) {
           case 'flat':
@@ -238,10 +242,10 @@ export default function BookingPage() {
     if (currentStep === BookingStep.CUSTOMER_DETAILS) {
       const { customer } = getValues()
       return Boolean(
-        customer?.firstName &&
-        customer?.lastName &&
-        customer?.email &&
-        customer?.phone
+        customer?.firstName
+        && customer?.lastName
+        && customer?.email
+        && customer?.phone,
       )
     }
 
@@ -250,7 +254,7 @@ export default function BookingPage() {
         'customer.address',
         'customer.city',
         'customer.state',
-        'customer.zipCode'
+        'customer.zipCode',
       ])
     }
 
@@ -260,7 +264,8 @@ export default function BookingPage() {
   const getNextStepNumber = () => {
     const transition = STEP_TRANSITIONS[currentStep]
 
-    if (!transition) return null
+    if (!transition)
+      return null
 
     return transition.next()
   }
@@ -268,7 +273,8 @@ export default function BookingPage() {
   const getPrevStepNumber = () => {
     const transition = STEP_TRANSITIONS[currentStep]
 
-    if (!transition) return null
+    if (!transition)
+      return null
 
     return transition.prev()
   }
@@ -283,7 +289,8 @@ export default function BookingPage() {
 
   const nextStep = async (override?: boolean) => {
     const isValid = override || await isCurrentStepValid()
-    if (!isValid) return
+    if (!isValid)
+      return
 
     const nextStepNumber = getNextStepNumber()
     if (nextStepNumber !== null) {
@@ -293,9 +300,11 @@ export default function BookingPage() {
         try {
           await GoogleMapsLoader.getInstance().load()
           setIsLoadedGoogleMaps(true)
-        } catch (error) {
+        }
+        catch (error) {
           console.error('Failed to load Google Maps:', error)
-        } finally {
+        }
+        finally {
           setIsLoadingGoogleMaps(false)
         }
       }
@@ -390,13 +399,13 @@ export default function BookingPage() {
     // Add a small delay to ensure state is updated
     setTimeout(() => {
       if (
-        isValid &&
-        !visitedSteps.includes(currentStep) &&
-        [
+        isValid
+        && !visitedSteps.includes(currentStep)
+        && [
           BookingStep.SERVICE_SELECTION,
           BookingStep.CUSTOMER_DETAILS,
           BookingStep.SIZE_SELECTION,
-          BookingStep.HOURS_SELECTION
+          BookingStep.HOURS_SELECTION,
         ].includes(currentStep)
       ) {
         setTimeout(() => nextStep(true), 100)
@@ -414,22 +423,24 @@ export default function BookingPage() {
   return (
     <div className="relative min-h-screen pb-24">
       <div className="p-6">
-        {currentStep !== BookingStep.CONFIRMATION ? (
-          <Button variant="outline" size="default" asChild className="rounded-full px-5">
-            <Link href={ROUTES.HOME.href}>
-              Exit
-            </Link>
-          </Button>
-        ) : (
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={prevStep}
-            className="rounded-full size-12"
-          >
-            <ArrowLeft />
-          </Button>
-        )}
+        {currentStep !== BookingStep.CONFIRMATION
+          ? (
+              <Button variant="outline" size="default" asChild className="rounded-full px-5">
+                <Link href={ROUTES.HOME.href}>
+                  Exit
+                </Link>
+              </Button>
+            )
+          : (
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={prevStep}
+                className="rounded-full size-12"
+              >
+                <ArrowLeft />
+              </Button>
+            )}
       </div>
 
       <Form {...form}>
@@ -459,56 +470,56 @@ export default function BookingPage() {
             <div className="flex size-full items-center justify-between px-6 py-4">
               {currentStep === BookingStep.GETTING_STARTED
                 ? (
-                  <GradientButton
-                    type="button"
-                    onClick={() => nextStep()}
-                    className="w-full"
-                  >
-                    Get started
-                  </GradientButton>
-                )
+                    <GradientButton
+                      type="button"
+                      onClick={() => nextStep()}
+                      className="w-full"
+                    >
+                      Get started
+                    </GradientButton>
+                  )
                 : (
-                  <>
-                    <div className="flex items-center gap-4">
-                      {canShowPrice() && (
-                        <PriceDetailsDrawer
-                          price={{
-                            serviceTotal: price.serviceTotal,
-                            discount: price.discount,
-                            recurringDiscount: price.recurringDiscount,
-                            taxes: price.taxes,
-                            totalInitial: price.totalInitial,
-                            totalRecurring: price.totalRecurring
-                          }}
-                          booking={{
-                            frequency: selectedFrequency,
-                            serviceCategory: selectedServiceCategory,
-                            pricingParams: selectedPricingParams
-                          }}
-                        />
-                      )}
-                    </div>
+                    <>
+                      <div className="flex items-center gap-4">
+                        {canShowPrice() && (
+                          <PriceDetailsDrawer
+                            price={{
+                              serviceTotal: price.serviceTotal,
+                              discount: price.discount,
+                              recurringDiscount: price.recurringDiscount,
+                              taxes: price.taxes,
+                              totalInitial: price.totalInitial,
+                              totalRecurring: price.totalRecurring,
+                            }}
+                            booking={{
+                              frequency: selectedFrequency,
+                              serviceCategory: selectedServiceCategory,
+                              pricingParams: selectedPricingParams,
+                            }}
+                          />
+                        )}
+                      </div>
 
-                    <div className="flex items-center gap-2">
-                      {currentStep > 0 && (
+                      <div className="flex items-center gap-2">
+                        {currentStep > 0 && (
+                          <Button
+                            type="button"
+                            variant="outline"
+                            onClick={prevStep}
+                          >
+                            Back
+                          </Button>
+                        )}
                         <Button
                           type="button"
-                          variant="outline"
-                          onClick={prevStep}
+                          onClick={() => nextStep()}
+                          disabled={!isStepValid}
                         >
-                          Back
+                          Next
                         </Button>
-                      )}
-                      <Button
-                        type="button"
-                        onClick={() => nextStep()}
-                        disabled={!isStepValid}
-                      >
-                        Next
-                      </Button>
-                    </div>
-                  </>
-                )}
+                      </div>
+                    </>
+                  )}
             </div>
           </div>
 
@@ -556,7 +567,7 @@ export default function BookingPage() {
                           selectedServiceCategory,
                           selectedFrequency,
                           { type: 'flat', bedrooms: 2 },
-                          PRICING_PARAMETERS[location][selectedServiceCategory]
+                          PRICING_PARAMETERS[location][selectedServiceCategory],
                         ))
                         nextStep(true)
                         break
@@ -567,8 +578,8 @@ export default function BookingPage() {
                           selectedServiceCategory,
                           selectedFrequency,
                           { type: 'hourly', hours: 4 },
-                          PRICING_PARAMETERS[location][selectedServiceCategory])
-                        )
+                          PRICING_PARAMETERS[location][selectedServiceCategory],
+                        ))
                         nextStep(true)
                         break
                       case BookingStep.SCHEDULE:

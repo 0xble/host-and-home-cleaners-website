@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 import { ContentViewTracker } from '@/components/analytics/facebook/Pixel'
-import CTASection from '@/components/templates/sections/CTASection'
-
 import Page from '@/components/templates/Page'
+
+import CTASection from '@/components/templates/sections/CTASection'
 import { BUSINESS_NAME } from '@/lib/constants'
 import Image from 'next/image'
 import { Suspense } from 'react'

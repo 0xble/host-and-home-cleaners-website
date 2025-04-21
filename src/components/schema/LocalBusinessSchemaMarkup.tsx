@@ -1,8 +1,8 @@
 import type { LocalBusiness, WithContext } from 'schema-dts'
-import { slugify } from '0xble/strings'
 import { BUSINESS_NAME } from '@/lib/constants'
-
 import { getReviews } from '@/lib/reviews'
+
+import { slugify } from '@/lib/utils'
 import Script from 'next/script'
 
 interface Address {

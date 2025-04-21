@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 
 import { ContentViewTracker } from '@/components/analytics/facebook/Pixel'
-import { BUSINESS_NAME, EMAIL, DOMAIN } from '@/lib/constants'
+import { BUSINESS_NAME, DOMAIN, EMAIL } from '@/lib/constants'
 
 export const metadata: Metadata = {
   title: 'Terms of Service',

@@ -146,7 +146,7 @@ const config = {
         'wiggle': 'wiggle 1.2s ease-in-out forwards',
       },
       gradientColorStops: {
-        gradient: {
+        'gradient': {
           start: '#D33753',
           middle: '#D13660',
           end: '#C72D65',

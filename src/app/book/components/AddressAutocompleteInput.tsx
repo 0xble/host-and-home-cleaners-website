@@ -4,12 +4,12 @@ import { Autocomplete } from '@react-google-maps/api'
 import { useEffect, useState } from 'react'
 
 interface AddressAutocompleteProps {
-  value: string;
-  onChange: (value: string) => void;
-  onPlaceSelected: (place: google.maps.places.PlaceResult) => void;
-  label?: string;
-  className?: string;
-  showAddressFields?: boolean;
+  value: string
+  onChange: (value: string) => void
+  onPlaceSelected: (place: google.maps.places.PlaceResult) => void
+  label?: string
+  className?: string
+  showAddressFields?: boolean
 }
 
 export function AddressAutocompleteInput({
@@ -18,78 +18,78 @@ export function AddressAutocompleteInput({
   onChange,
   onPlaceSelected,
   className,
-  showAddressFields = true
+  showAddressFields = true,
 }: AddressAutocompleteProps) {
-  const [autocomplete, setAutocomplete] = useState<google.maps.places.Autocomplete | null>(null);
-  const [inputValue, setInputValue] = useState(value || '');
+  const [autocomplete, setAutocomplete] = useState<google.maps.places.Autocomplete | null>(null)
+  const [inputValue, setInputValue] = useState(value || '')
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setInputValue(value);
-    onChange(value);
-  };
+    const value = e.target.value
+    setInputValue(value)
+    onChange(value)
+  }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (!showAddressFields && e.key === 'Tab') {
-      e.preventDefault();
+      e.preventDefault()
     }
-  };
+  }
 
   const handlePlaceSelect = () => {
     if (autocomplete) {
-      const place = autocomplete.getPlace();
+      const place = autocomplete.getPlace()
       if (place) {
         // Extract just the street address part
         const streetNumber = place.address_components?.find(component =>
-          component.types.includes('street_number')
-        )?.long_name || '';
+          component.types.includes('street_number'),
+        )?.long_name || ''
 
         const route = place.address_components?.find(component =>
-          component.types.includes('route')
-        )?.long_name || '';
+          component.types.includes('route'),
+        )?.long_name || ''
 
-        const streetAddress = `${streetNumber} ${route}`.trim();
+        const streetAddress = `${streetNumber} ${route}`.trim()
 
-        setInputValue(streetAddress);
-        onChange(streetAddress);
-        onPlaceSelected(place);
+        setInputValue(streetAddress)
+        onChange(streetAddress)
+        onPlaceSelected(place)
 
         if (process.env.NODE_ENV === 'development') {
           console.log('Place selected:', {
             streetAddress,
-            fullPlace: place
-          });
+            fullPlace: place,
+          })
         }
       }
     }
-  };
+  }
 
   const handleLoad = (autocomplete: google.maps.places.Autocomplete) => {
-    setAutocomplete(autocomplete);
-  };
+    setAutocomplete(autocomplete)
+  }
 
   useEffect(() => {
     if (value !== inputValue) {
       // Only update if the value is different and contains just a street address
       if (!value.includes(',')) {
-        setInputValue(value);
+        setInputValue(value)
         if (process.env.NODE_ENV === 'development') {
-          console.log('Address synced from props:', value);
+          console.log('Address synced from props:', value)
         }
       }
     }
-  }, [value, inputValue]);
+  }, [value, inputValue])
 
   return (
     <Autocomplete
       onLoad={handleLoad}
       onPlaceChanged={handlePlaceSelect}
-      restrictions={{ country: "us" }}
+      restrictions={{ country: 'us' }}
     >
       <Input
         className={cn(
           'h-14 border-0 rounded-none focus-visible:ring-0 focus-visible:ring-offset-0',
-          className
+          className,
         )}
         value={inputValue || ''}
         onChange={handleChange}
@@ -98,5 +98,5 @@ export function AddressAutocompleteInput({
         tabIndex={showAddressFields ? undefined : -1}
       />
     </Autocomplete>
-  );
+  )
 }

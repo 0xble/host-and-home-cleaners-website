@@ -1,10 +1,10 @@
 'use client'
 
-import Image from 'next/image'
-import { StepLayout } from '../StepLayout'
-import { useStepValidation } from '../../hooks/useStepValidation'
 import type { BaseStepProps } from '../../types'
 import { CardTitle } from '@/components/ui/card'
+import Image from 'next/image'
+import { useStepValidation } from '../../hooks/useStepValidation'
+import { StepLayout } from '../StepLayout'
 
 export function GettingStartedStep({ form, onValidityChangeAction }: BaseStepProps) {
   // This step is always valid because it's just informational
@@ -12,12 +12,13 @@ export function GettingStartedStep({ form, onValidityChangeAction }: BaseStepPro
 
   return (
     <StepLayout
-      title={
+      title={(
         <CardTitle className="text-4xl font-medium">
-          Need cleaning?<br />
+          Need cleaning?
+          <br />
           We're here to help
         </CardTitle>
-      }
+      )}
       className="space-y-12 px-6"
     >
       <div className="border-b border-neutral-300 pb-8">

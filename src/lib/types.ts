@@ -1,5 +1,5 @@
-import { z } from "zod"
-import { LOCATIONS } from "./constants"
+import { z } from 'zod'
+import { LOCATIONS } from './constants'
 
 export const LocationSchema = z.enum(Object.keys(LOCATIONS) as [Location, ...Location[]])
 export type Location = keyof typeof LOCATIONS

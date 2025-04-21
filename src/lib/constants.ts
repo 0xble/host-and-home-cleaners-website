@@ -5,7 +5,7 @@ import { z } from 'zod'
 export const BUSINESS_NAME = 'Host & Home Cleaners'
 export const TAGLINE = '100% satisfaction guaranteed, or we\'ll redo it for FREE'
 export const DOMAIN = 'hostandhomecleaners.com'
-export const PHONE = {
+export const PHONE: Record<Location, { formatted: string, plain: string }> = {
   MYRTLE_BEACH: {
     formatted: '+1 (843) 350-5553',
     plain: '8433505553',

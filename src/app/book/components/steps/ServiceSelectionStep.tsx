@@ -1,17 +1,16 @@
 'use client'
 
-import { memo, useRef, useEffect } from 'react'
+import type { LottieAnimationProps } from '@/components/LottieAnimation'
+import type { BaseStepProps, BookingServiceCategory } from '../../types'
 import { BookingFormOption } from '@/components/BookingFormOption'
 import LottieAnimation from '@/components/LottieAnimation'
-import type { LottieAnimationProps } from '@/components/LottieAnimation'
-import { StepLayout } from '../StepLayout'
-import { useStepValidation } from '../../hooks/useStepValidation'
-import type { BaseStepProps } from '../../types'
-import type { BookingServiceCategory } from '../../types'
 import ChecklistAnimation from '@/public/lottie/checklist.json'
 import HouseCleanAnimation from '@/public/lottie/house.json'
-import SprayAnimation from '@/public/lottie/spray.json'
 import MansionAnimation from '@/public/lottie/mansion.json'
+import SprayAnimation from '@/public/lottie/spray.json'
+import { memo, useEffect, useRef } from 'react'
+import { useStepValidation } from '../../hooks/useStepValidation'
+import { StepLayout } from '../StepLayout'
 
 const SERVICE_OPTIONS: {
   id: BookingServiceCategory
@@ -21,28 +20,28 @@ const SERVICE_OPTIONS: {
 }[] = [
   {
     id: 'default',
-    title: "Deep Clean",
-    description: "Recommended for places that haven't been professionally cleaned",
-    animation: ChecklistAnimation
+    title: 'Deep Clean',
+    description: 'Recommended for places that haven\'t been professionally cleaned',
+    animation: ChecklistAnimation,
   },
   {
     id: 'move-in-out',
-    title: "Move In/Out",
-    description: "For moving in or out of a property",
-    animation: HouseCleanAnimation
+    title: 'Move In/Out',
+    description: 'For moving in or out of a property',
+    animation: HouseCleanAnimation,
   },
   {
     id: 'custom',
-    title: "Custom Areas Only",
-    description: "For specific areas that need attention",
-    animation: SprayAnimation
+    title: 'Custom Areas Only',
+    description: 'For specific areas that need attention',
+    animation: SprayAnimation,
   },
   {
     id: 'mansion',
-    title: "Mansion",
-    description: "For large properties with 4+ bedrooms",
-    animation: MansionAnimation
-  }
+    title: 'Mansion',
+    description: 'For large properties with 4+ bedrooms',
+    animation: MansionAnimation,
+  },
 ]
 
 function ServiceSelectionStepComponent({ form, onValidityChangeAction }: BaseStepProps) {
@@ -58,7 +57,7 @@ function ServiceSelectionStepComponent({ form, onValidityChangeAction }: BaseSte
 
   // Validate step
   useStepValidation(form, onValidityChangeAction, {
-    customValidation: (formData) => formData.serviceCategory !== undefined
+    customValidation: formData => formData.serviceCategory !== undefined,
   })
 
   const handleSelectServiceCategory = (serviceCategory: BookingServiceCategory) => {
@@ -67,8 +66,8 @@ function ServiceSelectionStepComponent({ form, onValidityChangeAction }: BaseSte
 
   return (
     <StepLayout
-      title='How can we help?'
-      description='Select the type of cleaning service that best fits your needs. Each option is tailored to different cleaning requirements.'
+      title="How can we help?"
+      description="Select the type of cleaning service that best fits your needs. Each option is tailored to different cleaning requirements."
       className="max-w-4xl mx-auto rounded-none border-0 shadow-none"
     >
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">

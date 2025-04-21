@@ -107,19 +107,27 @@ export function PriceDetailsDrawer({
                   <>
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Size</span>
-                      <span>{pricingParams.bedrooms} bedroom</span>
+                      <span>
+                        {pricingParams.bedrooms}
+                        {' '}
+                        bedroom
+                      </span>
                     </div>
                   </>
                 )}
                 {pricingParams?.type === 'hourly' && (
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Hours</span>
-                    <span>{pricingParams.hours} hours</span>
+                    <span>
+                      {pricingParams.hours}
+                      {' '}
+                      hours
+                    </span>
                   </div>
                 )}
               </div>
 
-              <div className="border-b"/>
+              <div className="border-b" />
 
               {/* Price Breakdown */}
               <div className="space-y-3 font-normal">
@@ -147,7 +155,7 @@ export function PriceDetailsDrawer({
                 )}
               </div>
 
-              <div className="border-b"/>
+              <div className="border-b" />
 
               {/* Total */}
               <div className="space-y-3 font-medium">

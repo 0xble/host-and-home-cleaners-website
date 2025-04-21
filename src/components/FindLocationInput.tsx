@@ -942,7 +942,7 @@ export default function FindLocationInput({
           onSubmit={handleSubmit}
         >
           <Input
-            label='ZIP code'
+            label="ZIP code"
             className="w-[130px] text-lg font-extralight"
             type="text"
             value={search}

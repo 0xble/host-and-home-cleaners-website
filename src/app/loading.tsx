@@ -1,26 +1,26 @@
 'use client'
 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { AlertCircle } from 'lucide-react'
 import { Spinner } from '@/components/ui/spinner'
 import { secondsToMilliseconds } from 'date-fns'
+import { AlertCircle } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
 const loadingMessages = [
-  "Dusting off our virtual shelves...",
-  "Teaching our robots to fold fitted sheets...",
-  "Polishing pixels to perfection...",
-  "Organizing our digital cleaning supplies...",
-  "Convincing dust bunnies to cooperate...",
-  "Making sure every virtual corner sparkles...",
-  "Calibrating our quantum mop...",
-  "Waxing the digital floor...",
+  'Dusting off our virtual shelves...',
+  'Teaching our robots to fold fitted sheets...',
+  'Polishing pixels to perfection...',
+  'Organizing our digital cleaning supplies...',
+  'Convincing dust bunnies to cooperate...',
+  'Making sure every virtual corner sparkles...',
+  'Calibrating our quantum mop...',
+  'Waxing the digital floor...',
 ]
 
 export default function Loading() {
   const [showSupport, setShowSupport] = useState(false)
   const [messageIndex, setMessageIndex] = useState(
-    Math.floor(Math.random() * loadingMessages.length)
+    Math.floor(Math.random() * loadingMessages.length),
   )
   const [isMessageVisible, setIsMessageVisible] = useState(true)
 
@@ -72,7 +72,8 @@ export default function Loading() {
         showSupport
           ? 'opacity-100 translate-y-0'
           : 'opacity-0 translate-y-4 pointer-events-none'
-      }`}>
+      }`}
+      >
         <Alert className="max-w-md mx-auto">
           <AlertTitle className="flex items-center gap-2 mb-3">
             <AlertCircle className="h-4 w-4" />

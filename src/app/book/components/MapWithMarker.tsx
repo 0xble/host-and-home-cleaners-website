@@ -1,35 +1,35 @@
-import { GoogleMap, Marker, InfoWindow } from '@react-google-maps/api'
+import { GoogleMap, InfoWindow, Marker } from '@react-google-maps/api'
 import { useEffect, useState } from 'react'
 
 export interface Coordinates {
-  lat: number;
-  lng: number;
+  lat: number
+  lng: number
 }
 
 interface MapWithMarkerProps {
-  coordinates?: Coordinates;
-  onPositionChange: (position: Coordinates) => void;
-  address: string;
+  coordinates?: Coordinates
+  onPositionChange: (position: Coordinates) => void
+  address: string
 }
 
 export function MapWithMarker({ coordinates, address }: MapWithMarkerProps) {
-  const defaultPosition = { lat: 37.7749, lng: -122.4194 }; // Default to San Francisco
-  const [isOpen, setIsOpen] = useState(false);
+  const defaultPosition = { lat: 37.7749, lng: -122.4194 } // Default to San Francisco
+  const [isOpen, setIsOpen] = useState(false)
 
   const [position, setPosition] = useState<Coordinates>(
-    coordinates || defaultPosition
-  );
+    coordinates || defaultPosition,
+  )
 
   const handleMarkerClick = () => {
-    setIsOpen(!isOpen);
-  };
+    setIsOpen(!isOpen)
+  }
 
   // Update position when coordinates change from parent
   useEffect(() => {
     if (coordinates && (coordinates.lat !== position.lat || coordinates.lng !== position.lng)) {
-      setPosition(coordinates);
+      setPosition(coordinates)
     }
-  }, [coordinates, position]);
+  }, [coordinates, position])
 
   return (
     <GoogleMap
@@ -39,59 +39,59 @@ export function MapWithMarker({ coordinates, address }: MapWithMarkerProps) {
       options={{
         styles: [
           {
-            featureType: "all",
-            elementType: "labels.text",
+            featureType: 'all',
+            elementType: 'labels.text',
             stylers: [
               {
-                color: "#878787"
-              }
-            ]
+                color: '#878787',
+              },
+            ],
           },
           {
-            featureType: "all",
-            elementType: "labels.text.stroke",
+            featureType: 'all',
+            elementType: 'labels.text.stroke',
             stylers: [
               {
-                visibility: "off"
-              }
-            ]
+                visibility: 'off',
+              },
+            ],
           },
           {
-            featureType: "landscape",
-            elementType: "all",
+            featureType: 'landscape',
+            elementType: 'all',
             stylers: [
               {
-                color: "#f9f5ed"
-              }
-            ]
+                color: '#f9f5ed',
+              },
+            ],
           },
           {
-            featureType: "road.highway",
-            elementType: "all",
+            featureType: 'road.highway',
+            elementType: 'all',
             stylers: [
               {
-                color: "#f5f5f5"
-              }
-            ]
+                color: '#f5f5f5',
+              },
+            ],
           },
           {
-            featureType: "road.highway",
-            elementType: "geometry.stroke",
+            featureType: 'road.highway',
+            elementType: 'geometry.stroke',
             stylers: [
               {
-                color: "#c9c9c9"
-              }
-            ]
+                color: '#c9c9c9',
+              },
+            ],
           },
           {
-            featureType: "water",
-            elementType: "all",
+            featureType: 'water',
+            elementType: 'all',
             stylers: [
               {
-                color: "#aee0f4"
-              }
-            ]
-          }
+                color: '#aee0f4',
+              },
+            ],
+          },
         ],
         disableDefaultUI: true, // Removes most controls
         zoomControl: false,
@@ -100,7 +100,7 @@ export function MapWithMarker({ coordinates, address }: MapWithMarkerProps) {
         streetViewControl: false,
         rotateControl: false,
         fullscreenControl: false,
-        keyboardShortcuts: false
+        keyboardShortcuts: false,
       }}
       onClick={() => setIsOpen(false)}
     >
@@ -111,7 +111,7 @@ export function MapWithMarker({ coordinates, address }: MapWithMarkerProps) {
         icon={{
           url: '/icons/map-marker.svg',
           scaledSize: new window.google.maps.Size(60, 60),
-          anchor: new window.google.maps.Point(30, 60)
+          anchor: new window.google.maps.Point(30, 60),
         }}
       />
       {isOpen && address && (
@@ -119,7 +119,7 @@ export function MapWithMarker({ coordinates, address }: MapWithMarkerProps) {
           position={position}
           onCloseClick={() => setIsOpen(false)}
           options={{
-            pixelOffset: new window.google.maps.Size(0, -60)
+            pixelOffset: new window.google.maps.Size(0, -60),
           }}
         >
           <div className="min-w-52">
@@ -142,5 +142,5 @@ export function MapWithMarker({ coordinates, address }: MapWithMarkerProps) {
         </InfoWindow>
       )}
     </GoogleMap>
-  );
+  )
 }

@@ -1,22 +1,23 @@
-import * as React from "react"
-import { cva, type VariantProps } from "class-variance-authority"
+import type { VariantProps } from 'class-variance-authority'
+import { cn } from '@/lib/utils'
+import { cva } from 'class-variance-authority'
 
-import { cn } from "@/lib/utils"
+import * as React from 'react'
 
 const alertVariants = cva(
-  "relative w-full rounded-lg border border-zinc-200 p-4 [&>svg~*]:pl-7 [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:text-zinc-950 dark:border-zinc-800 dark:[&>svg]:text-zinc-50",
+  'relative w-full rounded-lg border border-zinc-200 p-4 [&>svg~*]:pl-7 [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:text-zinc-950 dark:border-zinc-800 dark:[&>svg]:text-zinc-50',
   {
     variants: {
       variant: {
-        default: "bg-white text-zinc-950 dark:bg-zinc-950 dark:text-zinc-50",
+        default: 'bg-white text-zinc-950 dark:bg-zinc-950 dark:text-zinc-50',
         destructive:
-          "border-red-500/50 text-red-500 dark:border-red-500 [&>svg]:text-red-500 dark:border-red-900/50 dark:text-red-900 dark:dark:border-red-900 dark:[&>svg]:text-red-900",
+          'border-red-500/50 text-red-500 dark:border-red-500 [&>svg]:text-red-500 dark:border-red-900/50 dark:text-red-900 dark:dark:border-red-900 dark:[&>svg]:text-red-900',
       },
     },
     defaultVariants: {
-      variant: "default",
+      variant: 'default',
     },
-  }
+  },
 )
 
 const Alert = React.forwardRef<
@@ -30,7 +31,7 @@ const Alert = React.forwardRef<
     {...props}
   />
 ))
-Alert.displayName = "Alert"
+Alert.displayName = 'Alert'
 
 const AlertTitle = React.forwardRef<
   HTMLParagraphElement,
@@ -38,11 +39,11 @@ const AlertTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <h4
     ref={ref}
-    className={cn("mb-1 leading-none tracking-tight", className)}
+    className={cn('mb-1 leading-none tracking-tight', className)}
     {...props}
   />
 ))
-AlertTitle.displayName = "AlertTitle"
+AlertTitle.displayName = 'AlertTitle'
 
 const AlertDescription = React.forwardRef<
   HTMLParagraphElement,
@@ -50,10 +51,10 @@ const AlertDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <p
     ref={ref}
-    className={cn("text-sm [&_p]:leading-relaxed", className)}
+    className={cn('text-sm [&_p]:leading-relaxed', className)}
     {...props}
   />
 ))
-AlertDescription.displayName = "AlertDescription"
+AlertDescription.displayName = 'AlertDescription'
 
-export { Alert, AlertTitle, AlertDescription }
+export { Alert, AlertDescription, AlertTitle }

@@ -2,8 +2,8 @@ import type { Metadata } from 'next'
 import WhoAreWeSection from '@/app/(services)/components/WhoAreWeSection'
 
 import { ContentViewTracker } from '@/components/analytics/facebook/Pixel'
-import CTASection from '@/components/templates/sections/CTASection'
 import Page from '@/components/templates/Page'
+import CTASection from '@/components/templates/sections/CTASection'
 import { BUSINESS_NAME, CHECKLIST_NAME, SERVICE_CHECKLIST } from '@/lib/constants'
 import { Suspense } from 'react'
 

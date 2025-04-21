@@ -1,5 +1,5 @@
-import { type PricingParams } from "@/lib/constants"
-import type { BookingServiceCategory, BookingFrequency, BookingPricingParams, BookingFormData } from "./types"
+import type { PricingParams } from '@/lib/constants'
+import type { BookingFormData, BookingFrequency, BookingPricingParams, BookingServiceCategory } from './types'
 
 /**
  * Constructs a formatted address string in two lines:
@@ -13,32 +13,34 @@ export function constructFullAddress({
   state,
   zipCode,
 }: {
-  address?: string;
-  apt?: string;
-  city?: string;
-  state?: string;
-  zipCode?: string;
+  address?: string
+  apt?: string
+  city?: string
+  state?: string
+  zipCode?: string
 }): string {
-  if (!address) return '';
+  if (!address)
+    return ''
 
   // First line: Street address with apt/unit
-  const streetLine = apt ? `${address}, ${apt}` : address;
+  const streetLine = apt ? `${address}, ${apt}` : address
 
   // Second line: City, State ZIP (only if we have at least city and state)
-  if (!city || !state) return streetLine;
+  if (!city || !state)
+    return streetLine
 
   const locationLine = zipCode
     ? `${city}, ${state} ${zipCode}`
-    : `${city}, ${state}`;
+    : `${city}, ${state}`
 
   // Use a special delimiter that we can split on later
-  return `${streetLine}|${locationLine}`;
+  return `${streetLine}|${locationLine}`
 }
 
 interface ExtractedAddressComponents {
-  city: string | null;
-  state: string | null;
-  zipCode: string | null;
+  city: string | null
+  state: string | null
+  zipCode: string | null
 }
 
 /**
@@ -51,22 +53,25 @@ export function extractAddressComponents(addressComponents: google.maps.Geocoder
     city: null,
     state: null,
     zipCode: null,
-  };
+  }
 
-  if (!addressComponents) return result;
+  if (!addressComponents)
+    return result
 
   for (const component of addressComponents) {
-    const types = component.types;
+    const types = component.types
     if (types.includes('locality')) {
-      result.city = component.long_name;
-    } else if (types.includes('administrative_area_level_1')) {
-      result.state = component.short_name;
-    } else if (types.includes('postal_code')) {
-      result.zipCode = component.short_name;
+      result.city = component.long_name
+    }
+    else if (types.includes('administrative_area_level_1')) {
+      result.state = component.short_name
+    }
+    else if (types.includes('postal_code')) {
+      result.zipCode = component.short_name
     }
   }
 
-  return result;
+  return result
 }
 
 export function calculatePrice(
@@ -77,19 +82,21 @@ export function calculatePrice(
   discount: number = 0,
   taxes: number = 0,
 ): BookingFormData['price'] {
-  let serviceTotal: number;
+  let serviceTotal: number
   switch (config.type) {
     case 'flat': {
-      if (params.type !== 'flat') throw new Error('Mismatch pricing types')
+      if (params.type !== 'flat')
+        throw new Error('Mismatch pricing types')
       const flatTotal = config.bedrooms[params.bedrooms]
       if (typeof flatTotal !== 'number') {
-        throw new Error(`Invalid bedrooms pricing parameter ${params.bedrooms} for ${serviceCategory}`)
+        throw new TypeError(`Invalid bedrooms pricing parameter ${params.bedrooms} for ${serviceCategory}`)
       }
       serviceTotal = flatTotal
       break
     }
     case 'hourly': {
-      if (params.type !== 'hourly') throw new Error('Mismatch pricing types')
+      if (params.type !== 'hourly')
+        throw new Error('Mismatch pricing types')
       serviceTotal = config.hourlyRate * params.hours
       break
     }
@@ -99,7 +106,7 @@ export function calculatePrice(
   }
 
   const totalInitial = serviceTotal - discount
-  const recurringDiscount = config.frequencies ?  serviceTotal * config.frequencies[frequency] : 0
+  const recurringDiscount = config.frequencies ? serviceTotal * config.frequencies[frequency] : 0
   const totalRecurring = totalInitial - recurringDiscount
 
   return {

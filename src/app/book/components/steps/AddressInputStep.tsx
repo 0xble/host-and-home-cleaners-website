@@ -1,16 +1,16 @@
 'use client'
 
-import { useState } from 'react'
-import { FormField, FormItem, FormControl, FormMessage } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { cn } from '@/lib/utils'
-import { constructFullAddress, extractAddressComponents } from '../../utils'
-import { MapWithMarker } from '../MapWithMarker'
-import { AddressAutocompleteInput } from '../AddressAutocompleteInput'
-import { StepLayout } from '../StepLayout'
-import { useStepValidation } from '../../hooks/useStepValidation'
 import type { BaseStepProps } from '../../types'
 import type { Coordinates } from '../MapWithMarker'
+import { FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import { cn } from '@/lib/utils'
+import { useState } from 'react'
+import { useStepValidation } from '../../hooks/useStepValidation'
+import { constructFullAddress, extractAddressComponents } from '../../utils'
+import { AddressAutocompleteInput } from '../AddressAutocompleteInput'
+import { MapWithMarker } from '../MapWithMarker'
+import { StepLayout } from '../StepLayout'
 
 export function AddressInputStep({ form, onValidityChangeAction }: BaseStepProps) {
   const { watch, setValue, trigger } = form
@@ -25,12 +25,12 @@ export function AddressInputStep({ form, onValidityChangeAction }: BaseStepProps
 
   // Use useStepValidation for validation
   useStepValidation(form, onValidityChangeAction, {
-    customValidation: (formData) => Boolean(
-      formData.customer?.address &&
-      formData.customer?.city &&
-      formData.customer?.state &&
-      formData.customer?.zipCode
-    )
+    customValidation: formData => Boolean(
+      formData.customer?.address
+      && formData.customer?.city
+      && formData.customer?.state
+      && formData.customer?.zipCode,
+    ),
   })
 
   const handleAddressChange = (value: string) => {
@@ -83,13 +83,17 @@ export function AddressInputStep({ form, onValidityChangeAction }: BaseStepProps
                         const lng = place.geometry.location.lng()
                         setValue('customer.coordinates', { lat, lng })
 
-                        if (!place.address_components) return
+                        if (!place.address_components)
+                          return
 
                         const components = extractAddressComponents(place.address_components)
 
-                        if (components.city) setValue('customer.city', components.city)
-                        if (components.state) setValue('customer.state', components.state)
-                        if (components.zipCode) setValue('customer.zipCode', components.zipCode)
+                        if (components.city)
+                          setValue('customer.city', components.city)
+                        if (components.state)
+                          setValue('customer.state', components.state)
+                        if (components.zipCode)
+                          setValue('customer.zipCode', components.zipCode)
 
                         setShowAddressFields(true)
                         trigger('customer.zipCode')
@@ -107,7 +111,7 @@ export function AddressInputStep({ form, onValidityChangeAction }: BaseStepProps
               'divide-y border-t transition-all duration-1000 ease-in-out',
               showAddressFields
                 ? 'max-h-[500px] opacity-100 transform-none delay-500'
-                : 'max-h-0 opacity-0 pointer-events-none transform translate-y-[-10px]'
+                : 'max-h-0 opacity-0 pointer-events-none transform translate-y-[-10px]',
             )}
           >
             {/* Apt field */}
@@ -124,7 +128,7 @@ export function AddressInputStep({ form, onValidityChangeAction }: BaseStepProps
                         showAddressFields
                           ? 'opacity-100 transform-none'
                           : 'opacity-0 transform translate-y-[-10px]',
-                        'transition-[opacity,transform] duration-1000 ease-in-out delay-[800ms]'
+                        'transition-[opacity,transform] duration-1000 ease-in-out delay-[800ms]',
                       )}
                       {...field}
                     />
@@ -147,7 +151,7 @@ export function AddressInputStep({ form, onValidityChangeAction }: BaseStepProps
                         showAddressFields
                           ? 'opacity-100 transform-none'
                           : 'opacity-0 transform translate-y-[-10px]',
-                        'transition-[opacity,transform] duration-1000 ease-in-out delay-[1200ms]'
+                        'transition-[opacity,transform] duration-1000 ease-in-out delay-[1200ms]',
                       )}
                       {...field}
                     />
@@ -170,7 +174,7 @@ export function AddressInputStep({ form, onValidityChangeAction }: BaseStepProps
                         showAddressFields
                           ? 'opacity-100 transform-none'
                           : 'opacity-0 transform translate-y-[-10px]',
-                        'transition-[opacity,transform] duration-1000 ease-in-out delay-[1600ms]'
+                        'transition-[opacity,transform] duration-1000 ease-in-out delay-[1600ms]',
                       )}
                       {...field}
                     />
@@ -193,7 +197,7 @@ export function AddressInputStep({ form, onValidityChangeAction }: BaseStepProps
                         showAddressFields
                           ? 'opacity-100 transform-none'
                           : 'opacity-0 transform translate-y-[-10px]',
-                        'transition-[opacity,transform] duration-1000 ease-in-out delay-[2000ms]'
+                        'transition-[opacity,transform] duration-1000 ease-in-out delay-[2000ms]',
                       )}
                       {...field}
                     />
@@ -232,9 +236,12 @@ export function AddressInputStep({ form, onValidityChangeAction }: BaseStepProps
                   if (place && place.address_components) {
                     const components = extractAddressComponents(place.address_components)
 
-                    if (components.city) setValue('customer.city', components.city)
-                    if (components.state) setValue('customer.state', components.state)
-                    if (components.zipCode) setValue('customer.zipCode', components.zipCode)
+                    if (components.city)
+                      setValue('customer.city', components.city)
+                    if (components.state)
+                      setValue('customer.state', components.state)
+                    if (components.zipCode)
+                      setValue('customer.zipCode', components.zipCode)
 
                     setShowAddressFields(true)
                   }

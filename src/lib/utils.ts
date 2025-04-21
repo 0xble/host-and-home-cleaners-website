@@ -1,11 +1,12 @@
+import type { Slugify } from '@/types/strings'
 import type { ClassValue } from 'clsx'
 import type { Location } from './types'
-import { clsx } from 'clsx'
 
+import { clsx } from 'clsx'
+import S from 'string'
 import { twMerge } from 'tailwind-merge'
 import { EMAIL, LOCATIONS, PHONE } from './constants'
 import { ROUTES } from './routes'
-import type { a } from 'node_modules/framer-motion/dist/types.d-B50aGbjN'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -105,6 +106,18 @@ export function formatPrice(value: number | string, options: Intl.NumberFormatOp
   return n < 0 ? `-$${formattedNumber}` : `$${formattedNumber}`
 }
 
-export const roundToEvenDown = (num: number) => {
+export function roundToEvenDown(num: number) {
   return Math.floor(num / 2) * 2
+}
+
+export function slugify(text: string): Slugify<string> {
+  return S(text).slugify().s.toLowerCase() as Slugify<string>
+}
+
+export function constantCase(text: string): string {
+  return text
+    .replace(/([a-z])([A-Z])/g, '$1_$2') // Convert camelCase to snake_case
+    .replace(/[^a-z0-9]+/gi, '_') // Replace any non-alphanumeric chars with underscore
+    .replace(/^_+|_+$/g, '') // Remove leading/trailing underscores
+    .toUpperCase() // Convert to uppercase
 }

@@ -1,13 +1,12 @@
 'use client'
 
-import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import type { BaseStepProps, BookingFrequency } from '../../types'
 import { Calendar } from '@/components/ui/calendar'
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { addDays, isBefore } from 'date-fns'
-import { StepLayout } from '../StepLayout'
 import { useStepValidation } from '../../hooks/useStepValidation'
-import type { BaseStepProps } from '../../types'
-import type { BookingFrequency } from '../../types'
+import { StepLayout } from '../StepLayout'
 
 export function ScheduleStep({ form, onValidityChangeAction }: BaseStepProps) {
   const { watch, setValue } = form
@@ -18,8 +17,8 @@ export function ScheduleStep({ form, onValidityChangeAction }: BaseStepProps) {
   // Use useStepValidation for validation
   useStepValidation(form, onValidityChangeAction, {
     fields: ['date', 'arrivalWindow'],
-    customValidation: (formData) =>
-      formData.serviceCategory === 'move-in-out' || formData.frequency !== undefined
+    customValidation: formData =>
+      formData.serviceCategory === 'move-in-out' || formData.frequency !== undefined,
   })
 
   const isDateDisabled = (date: Date) => {

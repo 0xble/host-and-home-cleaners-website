@@ -1,6 +1,6 @@
-import { useEffect } from 'react'
 import type { UseFormReturn } from 'react-hook-form'
 import type { BookingFormData } from '../types'
+import { useEffect } from 'react'
 
 interface ValidationConfig {
   fields?: (keyof BookingFormData)[]
@@ -11,7 +11,7 @@ interface ValidationConfig {
 export function useStepValidation(
   form: UseFormReturn<BookingFormData>,
   onValidityChangeAction: (isValid: boolean) => void,
-  config: ValidationConfig
+  config: ValidationConfig,
 ) {
   const { watch, formState: { errors } } = form
 
@@ -22,7 +22,8 @@ export function useStepValidation(
     }
 
     const subscription = watch((formData) => {
-      if (!formData) return
+      if (!formData)
+        return
 
       let isValid = true
 

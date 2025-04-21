@@ -1,20 +1,23 @@
-import { existsSync, readdirSync } from 'fs'
-import { resolve } from 'path'
+import type { RouteData } from '@/lib/routes'
+import { existsSync, readdirSync } from 'node:fs'
+import { resolve } from 'node:path'
 
-import { ROUTES, type RouteData } from '../routes'
+import { ROUTES } from '@/lib/routes'
+
+// @ts-expect-error Ignore type declarations
+import { describe, expect, it } from 'bun:test'
 
 describe('routes validation', () => {
-  const APP_DIR = resolve(process.cwd(), 'src/app')
-
   // Helper to check if a route exists in the app directory
   const routeExists = (route: string): boolean => {
     // Remove leading and trailing slashes
-    const cleanRoute = route.replace(/^\/|\/$/g, '')
-    if (!cleanRoute) return true // Root route always exists
+    route = route.replace(/^\/|\/$/g, '')
 
-    // Handle route groups (directories starting with parentheses)
-    const segments = cleanRoute.split('/')
-    let currentPath = APP_DIR
+    if (!route)
+      return true // Root route always exists
+
+    const segments = route.split('/')
+    let currentPath = resolve(process.cwd(), 'src/app')
 
     const findInRouteGroups = (path: string, segment: string): string | null => {
       const routeGroups = readdirSync(path)
@@ -65,13 +68,6 @@ describe('routes validation', () => {
         continue
       }
 
-      // Then check with -cleaning suffix
-      const cleaningPath = resolve(currentPath, `${segment}-cleaning`)
-      if (existsSync(cleaningPath)) {
-        currentPath = cleaningPath
-        continue
-      }
-
       // Then check in route groups
       const routeGroupPath = findInRouteGroups(currentPath, segment)
       if (routeGroupPath) {
@@ -97,14 +93,16 @@ describe('routes validation', () => {
   // Helper to validate route format
   const isValidRouteFormat = (route: string): boolean => {
     // Skip validation for external URLs
-    if (route.startsWith('http')) return true
+    if (route.startsWith('http'))
+      return true
 
     // Routes should:
     // 1. Start with /
     // 2. Not end with / (except root)
     // 3. Use kebab-case
     // 4. Not have consecutive slashes
-    if (route === '/') return true
+    if (route === '/')
+      return true
 
     const pattern = /^\/[a-z0-9-]+(?:\/[a-z0-9-]+)*$/
     return pattern.test(route)
@@ -113,7 +111,8 @@ describe('routes validation', () => {
   const validateRouteObject = (obj: Record<string, RouteData | Record<string, RouteData>>, path = '') => {
     Object.entries(obj).forEach(([key, value]) => {
       // Skip service areas validation as they're dynamically generated
-      if (key === 'SERVICE_AREAS') return
+      if (key === 'SERVICE_AREAS')
+        return
 
       if (typeof value === 'object' && value !== null && 'href' in value) {
         const { href } = value as RouteData
@@ -124,10 +123,12 @@ describe('routes validation', () => {
 
         it(`${path}${key} should exist in the app directory`, () => {
           // Skip external URLs (like login)
-          if (href.startsWith('http')) return
+          if (href.startsWith('http'))
+            return
           expect(routeExists(href)).toBe(true)
         })
-      } else if (typeof value === 'object' && value !== null) {
+      }
+      else if (typeof value === 'object' && value !== null) {
         // Recursively validate nested route objects
         validateRouteObject(value as Record<string, RouteData | Record<string, RouteData>>, `${path}${key}.`)
       }

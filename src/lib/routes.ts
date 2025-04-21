@@ -1,12 +1,11 @@
-import type { SnakeCase } from '0xble/strings'
-import { slugify } from '0xble/strings'
-
+import type { SnakeCase } from '@/types/strings'
 import { BOOKINGKOALA_URL, LOCATIONS, SERVICES } from './constants'
+import { slugify } from './utils'
 
 export interface RouteData {
   name: string
   href: string
-  priority:  1 | 0.9 | 0.8 | 0.7 | 0.6 | 0.5 | 0.4 | 0.3 | 0.2 | 0.1 | null
+  priority: 1 | 0.9 | 0.8 | 0.7 | 0.6 | 0.5 | 0.4 | 0.3 | 0.2 | 0.1 | null
   changeFrequency?:
     | 'always'
     | 'hourly'

@@ -1,11 +1,11 @@
 'use client'
 
 import type { FC } from 'react'
-import { slugify } from '0xble/strings'
 import { Button } from '@/components/ui/button'
 import { Spinner } from '@/components/ui/spinner'
 import { useToast } from '@/components/ui/use-toast'
 
+import { slugify } from '@/lib/utils'
 import { Star } from 'lucide-react'
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'

@@ -1,6 +1,6 @@
+import type { ReactNode } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
-import type { ReactNode } from 'react'
 
 interface StepLayoutProps {
   title: string | ReactNode
@@ -32,7 +32,7 @@ export function StepLayout({
           </CardDescription>
         )}
       </CardHeader>
-      <CardContent className={cn("px-6", className)}>
+      <CardContent className={cn('px-6', className)}>
         {children}
       </CardContent>
     </Card>

@@ -1,10 +1,10 @@
 'use client'
 
+import type { BaseStepProps } from '../../types'
+import { PaymentMethodCard } from '@/components/PaymentMethodCard'
+import { Card, CardContent } from '@/components/ui/card'
 import { format } from 'date-fns'
 import { StepLayout } from '../StepLayout'
-import type { BaseStepProps } from '../../types'
-import { Card, CardContent } from '@/components/ui/card'
-import { PaymentMethodCard } from '@/components/PaymentMethodCard'
 
 export function ConfirmationStep({ form }: BaseStepProps) {
   const { watch } = form
@@ -80,7 +80,7 @@ export function ConfirmationStep({ form }: BaseStepProps) {
               </div>
             </div>
 
-            <div className="border-t my-6"/>
+            <div className="border-t my-6" />
 
             <div className="space-y-3">
               <div className="flex justify-between">
@@ -94,29 +94,41 @@ export function ConfirmationStep({ form }: BaseStepProps) {
               </div>
             </div>
 
-            <div className="border-t my-6"/>
+            <div className="border-t my-6" />
 
             <div className="space-y-3">
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Service Total</span>
-                <span>${price.serviceTotal.toFixed(2)}</span>
+                <span>
+                  $
+                  {price.serviceTotal.toFixed(2)}
+                </span>
               </div>
 
               {price.recurringDiscount > 0 && (
                 <div className="flex justify-between text-green-600">
                   <span>Recurring Discount</span>
-                  <span>-${price.recurringDiscount.toFixed(2)}</span>
+                  <span>
+                    -$
+                    {price.recurringDiscount.toFixed(2)}
+                  </span>
                 </div>
               )}
 
               <div className="flex justify-between font-medium">
                 <span>Total for Initial Deep Clean</span>
-                <span>${price.totalInitial.toFixed(2)}</span>
+                <span>
+                  $
+                  {price.totalInitial.toFixed(2)}
+                </span>
               </div>
 
               <div className="flex justify-between font-medium">
                 <span>Total for Recurring Upkeep</span>
-                <span>${price.totalRecurring.toFixed(2)}</span>
+                <span>
+                  $
+                  {price.totalRecurring.toFixed(2)}
+                </span>
               </div>
             </div>
           </CardContent>

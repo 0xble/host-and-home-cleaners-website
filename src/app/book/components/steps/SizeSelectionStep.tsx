@@ -1,13 +1,13 @@
 'use client'
 
-import Image from 'next/image'
-import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form'
-import { BookingFormOption } from '@/components/BookingFormOption'
-import { StepLayout } from '../StepLayout'
-import { useStepValidation } from '../../hooks/useStepValidation'
 import type { BaseStepProps } from '../../types'
+import { BookingFormOption } from '@/components/BookingFormOption'
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { PRICING_PARAMETERS } from '@/lib/constants'
+import Image from 'next/image'
+import { useStepValidation } from '../../hooks/useStepValidation'
 import { calculatePrice } from '../../utils'
+import { StepLayout } from '../StepLayout'
 
 const BEDROOM_OPTIONS = [
   { bedrooms: 1, label: 'One Bedroom', sqft: '1,000', icon: 'one-bedroom' },
@@ -22,9 +22,9 @@ export function SizeSelectionStep({ form, onValidityChangeAction }: BaseStepProp
   // Use the useStepValidation hook for validation
   useStepValidation(form, onValidityChangeAction, {
     fields: ['pricingParams'],
-    customValidation: (formData) =>
-      formData.pricingParams?.type === 'flat' &&
-      formData.pricingParams?.bedrooms !== undefined
+    customValidation: formData =>
+      formData.pricingParams?.type === 'flat'
+      && formData.pricingParams?.bedrooms !== undefined,
   })
 
   const handleSelectBedrooms = (bedrooms: number) => {
@@ -33,7 +33,8 @@ export function SizeSelectionStep({ form, onValidityChangeAction }: BaseStepProp
     if (config.type === 'flat') {
       setValue('price', calculatePrice(serviceCategory, frequency, { type: 'flat', bedrooms }, config))
       setValue('pricingParams', { type: 'flat', bedrooms })
-    } else {
+    }
+    else {
       throw new Error('Expected flat pricing parameters')
     }
   }
@@ -66,7 +67,12 @@ export function SizeSelectionStep({ form, onValidityChangeAction }: BaseStepProp
                       />
                     </div>
                     <h3 className="text-lg font-medium">{label}</h3>
-                    <p className="mt-1 text-sm text-muted-foreground">Up to {sqft} sq ft</p>
+                    <p className="mt-1 text-sm text-muted-foreground">
+                      Up to
+                      {sqft}
+                      {' '}
+                      sq ft
+                    </p>
                   </BookingFormOption>
                 ))}
               </div>

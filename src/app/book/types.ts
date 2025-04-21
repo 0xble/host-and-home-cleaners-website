@@ -1,7 +1,7 @@
-import { z } from 'zod'
-import { UseFormReturn } from 'react-hook-form'
-import { LocationSchema } from '@/lib/types'
+import type { UseFormReturn } from 'react-hook-form'
 import { LOCATIONS } from '@/lib/constants'
+import { LocationSchema } from '@/lib/types'
+import { z } from 'zod'
 
 export const BookingServiceCategorySchema = z.enum(['default', 'move-in-out', 'custom', 'mansion'])
 export type BookingServiceCategory = z.infer<typeof BookingServiceCategorySchema>
@@ -60,10 +60,10 @@ export const BookingFormSchema = z.object({
     zipCode: z.string()
       .min(5, 'ZIP code is required')
       .refine(
-        (zip) => Object.values(LOCATIONS).some(
-          location => (location as unknown as { zipCodes: string[] }).zipCodes.includes(zip)
+        zip => Object.values(LOCATIONS).some(
+          location => (location as unknown as { zipCodes: string[] }).zipCodes.includes(zip),
         ),
-        'Sorry, looks like we\'re not in your area. Please try another ZIP code.'
+        'Sorry, looks like we\'re not in your area. Please try another ZIP code.',
       ),
     coordinates: z.object({
       lat: z.number(),

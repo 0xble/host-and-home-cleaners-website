@@ -1,12 +1,12 @@
 'use client'
 
-import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { StepLayout } from '../StepLayout'
-import { useEffect } from 'react'
 import type { BaseStepProps } from '../../types'
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import { useEffect } from 'react'
+import { StepLayout } from '../StepLayout'
 
-const formatPhoneNumber = (value: string) => {
+function formatPhoneNumber(value: string) {
   // Remove all non-numeric characters
   const cleaned = value.replace(/\D/g, '')
 
@@ -15,13 +15,17 @@ const formatPhoneNumber = (value: string) => {
 
   // Format the number as (XXX) XXX-XXXX
   const match = limited.match(/^(\d{0,3})(\d{0,3})(\d{0,4})$/)
-  if (!match) return value
+  if (!match)
+    return value
 
   const [, area, prefix, line] = match
 
-  if (!area) return ''
-  if (!prefix) return `(${area}`
-  if (!line) return `(${area}) ${prefix}`
+  if (!area)
+    return ''
+  if (!prefix)
+    return `(${area}`
+  if (!line)
+    return `(${area}) ${prefix}`
   return `(${area}) ${prefix}-${line}`
 }
 
@@ -33,10 +37,10 @@ export function CustomerDetailsStep({ form, onValidityChangeAction }: BaseStepPr
 
   useEffect(() => {
     const isValid = Boolean(
-      firstName &&
-      lastName &&
-      email &&
-      phone?.replace(/\D/g, '').length === 10 // Ensure phone has exactly 10 digits
+      firstName
+      && lastName
+      && email
+      && phone?.replace(/\D/g, '').length === 10, // Ensure phone has exactly 10 digits
     )
     onValidityChangeAction(isValid)
   }, [firstName, lastName, email, phone, onValidityChangeAction])
@@ -56,7 +60,7 @@ export function CustomerDetailsStep({ form, onValidityChangeAction }: BaseStepPr
               <FormItem>
                 <FormLabel>First Name</FormLabel>
                 <FormControl>
-                  <Input placeholder='Happy' {...field} />
+                  <Input placeholder="Happy" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -70,7 +74,7 @@ export function CustomerDetailsStep({ form, onValidityChangeAction }: BaseStepPr
               <FormItem>
                 <FormLabel>Last Name</FormLabel>
                 <FormControl>
-                  <Input placeholder='Customer' {...field} />
+                  <Input placeholder="Customer" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

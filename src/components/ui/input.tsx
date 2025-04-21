@@ -2,19 +2,19 @@ import { cn } from '@/lib/utils'
 
 import * as React from 'react'
 
-type BaseInputProps = Omit<React.ComponentProps<'input'>, 'placeholder'>;
+type BaseInputProps = Omit<React.ComponentProps<'input'>, 'placeholder'>
 
 type StandardInputProps = BaseInputProps & {
-  placeholder?: string;
-  label?: never;
-};
+  placeholder?: string
+  label?: never
+}
 
 type LabelInputProps = BaseInputProps & {
-  label: string;
-  placeholder?: never;
-};
+  label: string
+  placeholder?: never
+}
 
-type InputProps = StandardInputProps | LabelInputProps;
+type InputProps = StandardInputProps | LabelInputProps
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, type, label, placeholder, value = '', ...props }, ref) => {
@@ -38,7 +38,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
               'absolute left-3 top-1/2 -translate-y-1/2 text-neutral-600 transition-all duration-200',
               'peer-focus:-translate-y-[22px] peer-focus:text-xs peer-focus:text-neutral-600',
               'peer-[:not(:placeholder-shown)]:-translate-y-[22px] peer-[:not(:placeholder-shown)]:text-xs',
-              'dark:text-neutral-400 dark:peer-focus:text-neutral-300 dark:peer-[:not(:placeholder-shown)]:text-neutral-300'
+              'dark:text-neutral-400 dark:peer-focus:text-neutral-300 dark:peer-[:not(:placeholder-shown)]:text-neutral-300',
             )}
           >
             {label}

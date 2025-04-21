@@ -1,6 +1,6 @@
+import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { CheckCircle2 } from 'lucide-react'
-import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 
 export default function Confirmation() {

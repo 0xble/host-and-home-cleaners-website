@@ -1,10 +1,10 @@
 'use client'
 
-import Image from 'next/image'
-import { StepLayout } from '../StepLayout'
-import { useStepValidation } from '../../hooks/useStepValidation'
 import type { BaseStepProps } from '../../types'
 import { CardDescription, CardTitle } from '@/components/ui/card'
+import Image from 'next/image'
+import { useStepValidation } from '../../hooks/useStepValidation'
+import { StepLayout } from '../StepLayout'
 
 export function ChooseYourServiceStep({ form, onValidityChangeAction }: BaseStepProps) {
   // This step is always valid because it's just informational
@@ -13,11 +13,11 @@ export function ChooseYourServiceStep({ form, onValidityChangeAction }: BaseStep
   return (
     <StepLayout
       title={<CardTitle className="text-3xl font-medium">Choose your service</CardTitle>}
-      description={
+      description={(
         <CardDescription className="text-base mt-4">
           Let's start with the type of clean your space needs—a deep clean, between guests, an upcoming move, or just to bring it back to life. We'll handle the rest.
         </CardDescription>
-      }
+      )}
       label="Step 1"
       className="px-0"
     >

@@ -1,22 +1,22 @@
 'use client'
 
-import { StepLayout } from '../StepLayout'
-import { useStepValidation } from '../../hooks/useStepValidation'
 import type { BaseStepProps } from '../../types'
-import { CardTitle, CardDescription } from '@/components/ui/card'
+import { CardDescription, CardTitle } from '@/components/ui/card'
+import { useStepValidation } from '../../hooks/useStepValidation'
+import { StepLayout } from '../StepLayout'
 
 export function TellUsAboutYourPlaceStep({ form, onValidityChangeAction }: BaseStepProps) {
-    // This step is always valid because it's just informational
+  // This step is always valid because it's just informational
   useStepValidation(form, onValidityChangeAction, { alwaysValid: true })
 
   return (
     <StepLayout
       title={<CardTitle className="text-3xl font-medium">Tell us about your place</CardTitle>}
-      description={
+      description={(
         <CardDescription className="text-base mt-4">
           Next up, we'll ask for some quick details about your home—like how many bedrooms you have, and what type of cleaning you're looking for.
         </CardDescription>
-      }
+      )}
       label="Step 2"
       className="px-0"
     >

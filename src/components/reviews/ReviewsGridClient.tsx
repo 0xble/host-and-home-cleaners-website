@@ -1,19 +1,18 @@
 'use client'
 
 import type { Platform, PlatformRating, Review, ReviewsData } from '@/lib/reviews'
-import { constantCase } from '0xble/strings'
+import type { Location } from '@/lib/types'
 import { Skeleton } from '@/components/ui/skeleton'
-import { cn } from '@/lib/utils'
+import { cn, constantCase } from '@/lib/utils'
 import { tz } from '@date-fns/tz'
-import { compareDesc, formatDistanceToNow, hoursToSeconds } from 'date-fns'
 
+import { compareDesc, formatDistanceToNow, hoursToSeconds } from 'date-fns'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ChevronLeft, ChevronRight, Star } from 'lucide-react'
 import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 import { round } from 'remeda'
 import { Button } from '../ui/button'
-import type { Location } from '@/lib/types'
 
 type ValidReview = Omit<Review, 'rating' | 'text' | 'date' | 'author'> & {
   rating: number
