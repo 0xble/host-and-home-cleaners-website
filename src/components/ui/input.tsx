@@ -10,7 +10,7 @@ type StandardInputProps = BaseInputProps & {
 }
 
 type LabelInputProps = BaseInputProps & {
-  label: string
+  label: React.ReactNode
   placeholder?: never
 }
 
@@ -18,7 +18,7 @@ type InputProps = StandardInputProps | LabelInputProps
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, type, label, placeholder, value = '', ...props }, ref) => {
-    if (label) {
+    if (label != null) {
       return (
         <div className="relative">
           <input
@@ -29,15 +29,15 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
               className,
             )}
             ref={ref}
-            placeholder={label}
+            placeholder={typeof label === 'string' ? label : ' '}
             value={value}
             {...props}
           />
           <label
             className={cn(
-              'absolute left-3 top-1/2 -translate-y-1/2 text-neutral-600 transition-all duration-200',
-              'peer-focus:-translate-y-[22px] peer-focus:text-xs peer-focus:text-neutral-600',
-              'peer-[:not(:placeholder-shown)]:-translate-y-[22px] peer-[:not(:placeholder-shown)]:text-xs',
+              'absolute left-3 top-[55%] -translate-y-[55%] text-neutral-600 transition-all duration-200 flex items-center gap-1',
+              'peer-focus:-translate-y-[22px] peer-focus:text-[10px] peer-focus:text-neutral-600',
+              'peer-[:not(:placeholder-shown)]:-translate-y-[22px] peer-[:not(:placeholder-shown)]:text-[10px]',
               'dark:text-neutral-400 dark:peer-focus:text-neutral-300 dark:peer-[:not(:placeholder-shown)]:text-neutral-300',
             )}
           >

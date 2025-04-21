@@ -1,7 +1,9 @@
 'use client'
 
+import type { BaseStepProps, BookingServiceCategory } from '@/app/book/types'
 import type { LottieAnimationProps } from '@/components/LottieAnimation'
-import type { BaseStepProps, BookingServiceCategory } from '../../types'
+import { StepLayout } from '@/app/book/components/StepLayout'
+import { useStepValidation } from '@/app/book/hooks/useStepValidation'
 import { BookingFormOption } from '@/components/BookingFormOption'
 import LottieAnimation from '@/components/LottieAnimation'
 import ChecklistAnimation from '@/public/lottie/checklist.json'
@@ -9,8 +11,6 @@ import HouseCleanAnimation from '@/public/lottie/house.json'
 import MansionAnimation from '@/public/lottie/mansion.json'
 import SprayAnimation from '@/public/lottie/spray.json'
 import { memo, useEffect, useRef } from 'react'
-import { useStepValidation } from '../../hooks/useStepValidation'
-import { StepLayout } from '../StepLayout'
 
 const SERVICE_OPTIONS: {
   id: BookingServiceCategory
@@ -84,7 +84,7 @@ function ServiceSelectionStepComponent({ form, onValidityChangeAction }: BaseSte
               </div>
               <div className="size-16 flex-shrink-0">
                 <LottieAnimation
-                  className="w-full h-full"
+                  className="w-full h-full transition-transform duration-200 group-active:scale-90"
                   animationData={animation}
                   onPlay={prevServiceCategoryRef.current !== id && selectedServiceCategory === id ? () => {} : undefined}
                 />

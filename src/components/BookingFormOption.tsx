@@ -4,9 +4,9 @@ import * as React from 'react'
 interface BookingFormOptionProps {
   children: React.ReactNode
   isSelected: boolean
-  onClick: () => void
   className?: string
   isDisabled?: boolean
+  onClick: () => void
 }
 
 export function BookingFormOption({
@@ -27,19 +27,7 @@ export function BookingFormOption({
     } cursor-pointer p-4 transition-transform duration-200 active:scale-95`, className)}
       onClick={onClick}
     >
-      {/* Add group-active:scale-90 to any direct image container with a delay */}
-      {React.Children.map(children, async (child) => {
-        if (
-          React.isValidElement(child)
-          && typeof child.props.className === 'string'
-          && child.props.className.includes('relative')
-        ) {
-          return React.cloneElement(child as React.ReactElement<{ className: string }>, {
-            className: cn(child.props.className, 'transition-transform duration-200 group-active:scale-90'),
-          })
-        }
-        return child
-      })}
+      {children}
     </div>
   )
 }

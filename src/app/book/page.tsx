@@ -31,7 +31,7 @@ import { GoogleMapsLoader } from '@/lib/google/GoogleMapsLoader'
 import { ROUTES } from '@/lib/routes'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { addDays } from 'date-fns'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, Loader2 } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'
@@ -316,10 +316,8 @@ export default function BookingPage() {
     console.log('Booking confirmed', data)
 
     // Wait for 2 seconds before navigating to confirmation
-    setTimeout(() => {
-      router.push(ROUTES.CONFIRMATION.href)
-    }, 2000)
-    setIsSubmitting(false)
+    await new Promise(resolve => setTimeout(resolve, 2000))
+    router.push(ROUTES.CONFIRMATION.href)
   }
 
   // Handle browser back/forward buttons
@@ -378,7 +376,7 @@ export default function BookingPage() {
   const handleStepValidityChange = useCallback((isValid: boolean) => {
     setIsStepValid(isValid)
 
-    // Add a small delay to ensure state is updated
+    // Autoadvance to next step for certain steps
     setTimeout(() => {
       if (
         isValid
@@ -390,7 +388,7 @@ export default function BookingPage() {
           BookingStep.HOURS_SELECTION,
         ].includes(currentStep)
       ) {
-        setTimeout(() => void nextStep(true), 100)
+        setTimeout(() => void nextStep(true), 50)
       }
     }, 0)
   }, [currentStep, nextStep, visitedSteps])
@@ -583,8 +581,18 @@ export default function BookingPage() {
             </>
           )
         : (
-            <div className="fixed inset-x-0 bottom-0 z-10 h-20">
-              <div className="flex size-full items-center justify-between px-6 py-4">
+            <div className="inset-x-0 bottom-0 z-10 h-20 -mb-20 px-6">
+              <p className="text-xs">
+                By clicking the button below, you agree to our
+                {' '}
+                <Link href={ROUTES.LEGAL.TERMS_OF_SERVICE.href} className="underline" target="_blank">terms of service</Link>
+                {' '}
+                and
+                {' '}
+                <Link href={ROUTES.LEGAL.PRIVACY_POLICY.href} className="underline" target="_blank">privacy policy</Link>
+                .
+              </p>
+              <div className="flex size-full items-center justify-between py-4">
                 <GradientButton
                   type="submit"
                   variant="light"
@@ -595,8 +603,15 @@ export default function BookingPage() {
                   className="w-full"
                   disabled={isSubmitting}
                 >
-                  {/* TODO: Show a loading icon in the book button while submitting */}
-                  {isSubmitting ? 'Processing...' : 'Book'}
+                  {isSubmitting
+                    ? (
+                        <span className="flex items-center gap-2">
+                          <Loader2 className="size-4 animate-spin" />
+                        </span>
+                      )
+                    : (
+                        'Book'
+                      )}
                 </GradientButton>
               </div>
             </div>

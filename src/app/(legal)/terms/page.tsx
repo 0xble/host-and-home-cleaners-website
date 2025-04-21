@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function TermsOfService() {
   return (
-    <main className="prose mx-auto my-32 max-w-2xl prose-headings:font-serif prose-strong:font-serif">
+    <main className="prose mx-auto my-32 max-w-2xl prose-headings:font-serif prose-strong:font-serif px-6">
       <ContentViewTracker
         contentType="legal"
         contentName="Terms of Service"

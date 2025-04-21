@@ -1,13 +1,13 @@
 'use client'
 
-import type { BaseStepProps } from '../../types'
+import type { BaseStepProps } from '@/app/book/types'
+import { StepLayout } from '@/app/book/components/StepLayout'
+import { useStepValidation } from '@/app/book/hooks/useStepValidation'
+import { calculatePrice } from '@/app/book/utils'
 import { BookingFormOption } from '@/components/BookingFormOption'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { PRICING_PARAMETERS } from '@/lib/constants'
 import Image from 'next/image'
-import { useStepValidation } from '../../hooks/useStepValidation'
-import { calculatePrice } from '../../utils'
-import { StepLayout } from '../StepLayout'
 
 const BEDROOM_OPTIONS = [
   { bedrooms: 1, label: 'One Bedroom', sqft: '1,000', icon: 'one-bedroom' },
@@ -63,12 +63,13 @@ export function SizeSelectionStep({ form, onValidityChangeAction }: BaseStepProp
                         src={`/icons/sizes/${icon}.svg`}
                         alt={label}
                         fill
-                        className="transition-colors"
+                        className="transition-transform duration-200 group-active:scale-90"
                       />
                     </div>
-                    <h3 className="text-lg font-medium">{label}</h3>
+                    <h3 className="text-base font-medium">{label}</h3>
                     <p className="mt-1 text-sm text-muted-foreground">
                       Up to
+                      {' '}
                       {sqft}
                       {' '}
                       sq ft

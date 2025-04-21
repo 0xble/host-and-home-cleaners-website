@@ -34,5 +34,45 @@ export default antfu({
 
     // Disable requirement to use 'node:' protocol for Node.js built-in modules
     'unicorn/prefer-node-protocol': 'off',
+
+    'ts/no-floating-promises': [
+      'error',
+      {
+        allowForKnownSafeCalls: [],
+        allowForKnownSafePromises: [],
+        checkThenables: false,
+        ignoreIIFE: false,
+        ignoreVoid: true,
+      },
+    ],
+    'ts/require-await': 'error',
+    'ts/no-unused-vars': [
+      'warn',
+      {
+        argsIgnorePattern: '_',
+        varsIgnorePattern: '_',
+      },
+    ],
+    'ts/strict-boolean-expressions': [
+      'error',
+      {
+        /** Whether to allow `any`s in a boolean context. */
+        allowAny: true,
+        /** Whether to allow nullable `boolean`s in a boolean context. */
+        allowNullableBoolean: true,
+        /** Whether to allow nullable `enum`s in a boolean context. */
+        allowNullableEnum: true,
+        /** Whether to allow nullable `number`s in a boolean context. */
+        allowNullableNumber: false,
+        /** Whether to allow nullable `object`s, `symbol`s, and functions in a boolean context. */
+        allowNullableObject: true,
+        /** Whether to allow nullable `string`s in a boolean context. */
+        allowNullableString: true,
+        /** Whether to allow `number`s in a boolean context. */
+        allowNumber: false,
+        /** Whether to allow `string`s in a boolean context. */
+        allowString: true,
+      },
+    ],
   },
 })

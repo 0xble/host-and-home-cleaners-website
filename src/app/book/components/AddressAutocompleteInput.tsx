@@ -38,7 +38,7 @@ export function AddressAutocompleteInput({
   const handlePlaceSelect = () => {
     if (autocomplete) {
       const place = autocomplete.getPlace()
-      if (place) {
+      if (place != null) {
         // Extract just the street address part
         const streetNumber = place.address_components?.find(component =>
           component.types.includes('street_number'),
