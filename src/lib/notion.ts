@@ -46,7 +46,7 @@ export async function queryDatabase(params: QueryDatabaseParameters) {
 
   while (hasMore) {
     try {
-      const response = await fetchWithRetries(() =>
+      const response = await fetchWithRetries(async () =>
         notion.databases.query({
           ...params,
           start_cursor: startCursor,

@@ -20,7 +20,7 @@ async function getFeaturedImages(folder: string): Promise<{ name: string, image:
     // Sort by filename (numeric)
     .sort((a, b) => a.localeCompare(b, undefined, { numeric: true }))
 
-  return await Promise.all(filenames.map(async (name) => {
+  return Promise.all(filenames.map(async (name) => {
     const imageModule = await import(`/public/assets/${folder}/${name}`)
     return { name, image: imageModule.default }
   }))

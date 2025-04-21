@@ -19,7 +19,7 @@ export class GoogleMapsLoader {
       && typeof window.google.maps.places?.Autocomplete === 'function'
   }
 
-  public load(): Promise<void> {
+  public async load(): Promise<void> {
     // If script is already loaded and initialized, resolve immediately
     if (this.isFullyLoaded()) {
       return Promise.resolve()

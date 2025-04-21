@@ -259,7 +259,7 @@ export const getReviews = cache(async (location?: string): Promise<ReviewsData> 
 
     // Update cache in development mode
     if (process.env.NODE_ENV === 'development') {
-      locationsCache = { locations: locations as Location[] }
+      locationsCache = { locations }
       reviewsCache = reviewsData
       lastFetchTime = Date.now()
       console.log('Updated reviews cache')

@@ -1,10 +1,10 @@
 'use client'
 
-import type { BaseStepProps } from '../../types'
+import type { BaseStepProps } from '@/app/book/types'
+import { StepLayout } from '@/app/book/components/StepLayout'
 import { PaymentMethodCard } from '@/components/PaymentMethodCard'
 import { Card, CardContent } from '@/components/ui/card'
 import { format } from 'date-fns'
-import { StepLayout } from '../StepLayout'
 
 export function ConfirmationStep({ form }: BaseStepProps) {
   const { watch } = form

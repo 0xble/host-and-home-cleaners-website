@@ -28,7 +28,7 @@ export function BookingFormOption({
       onClick={onClick}
     >
       {/* Add group-active:scale-90 to any direct image container with a delay */}
-      {React.Children.map(children, (child) => {
+      {React.Children.map(children, async (child) => {
         if (
           React.isValidElement(child)
           && typeof child.props.className === 'string'

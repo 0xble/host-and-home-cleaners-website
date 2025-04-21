@@ -1,9 +1,9 @@
 'use client'
 
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Skeleton } from '@/components/ui/skeleton'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
-import { Skeleton } from './ui/skeleton'
 
 export function PaymentMethodCard() {
   const [isLoading, setIsLoading] = useState(false)
@@ -11,7 +11,9 @@ export function PaymentMethodCard() {
   // Load for 1 second on mount
   useEffect(() => {
     setIsLoading(true)
-    setTimeout(() => { setIsLoading(false) }, 1000)
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 1000)
   }, [])
 
   return (
@@ -19,14 +21,16 @@ export function PaymentMethodCard() {
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
           <span className="text-base font-medium">Pay with</span>
+          {/* Acceptable payment methods brand icons */}
           <div className="flex items-center gap-2">
             {[
               { src: '/icons/brands/visa.svg', alt: 'Visa', width: 30, height: 20 },
               { src: '/icons/brands/mastercard.svg', alt: 'Mastercard', width: 32, height: 20 },
               { src: '/icons/brands/amex.svg', alt: 'American Express', width: 32, height: 20 },
               { src: '/icons/brands/discover.svg', alt: 'Discover', width: 32, height: 20 },
-              { src: '/icons/brands/paypal.svg', alt: 'PayPal', width: 32, height: 20 },
-              { src: '/icons/brands/google-pay.svg', alt: 'Google Pay', width: 32, height: 20 },
+              // { src: '/icons/brands/apple-pay.svg', alt: 'Apple Pay', width: 32, height: 20 },
+              // { src: '/icons/brands/paypal.svg', alt: 'PayPal', width: 32, height: 20 },
+              // { src: '/icons/brands/google-pay.svg', alt: 'Google Pay', width: 32, height: 20 },
             ].map(props => (
               <Image key={props.alt} {...props} className="h-[10px] w-auto" />
             ))}

@@ -4,7 +4,7 @@ import type { LottieComponentProps, LottieRefCurrentProps } from 'lottie-react'
 import dynamic from 'next/dynamic'
 import { useEffect, useRef } from 'react'
 
-const Lottie = dynamic(() => import('lottie-react'), { ssr: false })
+const Lottie = dynamic(async () => import('lottie-react'), { ssr: false })
 
 export interface LottieAnimationProps extends LottieComponentProps {
   className?: string
