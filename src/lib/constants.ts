@@ -1,5 +1,5 @@
 import type { BookingFlatPricingParams, BookingFrequency, BookingServiceCategory } from '@/app/book/types'
-import type { Location, SocialLink, SocialPlatform } from './types'
+import type { Location, SocialLink, SocialPlatform } from '@/lib/types'
 import { z } from 'zod'
 
 export const BUSINESS_NAME = 'Host & Home Cleaners'

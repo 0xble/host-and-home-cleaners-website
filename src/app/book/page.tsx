@@ -377,7 +377,7 @@ export default function BookingPage() {
           BookingStep.HOURS_SELECTION,
         ].includes(currentStep)
       ) {
-        setTimeout(() => void nextStep(true), 50)
+        setTimeout(() => void nextStep(true), 100)
       }
     }, 0)
   }, [currentStep, nextStep, visitedSteps])

@@ -3,6 +3,7 @@
 import type { BaseStepProps, BookingFormState, BookingFrequency } from '@/app/book/types'
 import { StepLayout } from '@/app/book/components/StepLayout'
 import { useStepValidation } from '@/app/book/hooks/useStepValidation'
+import { Badge } from '@/components/ui/badge'
 import { Calendar } from '@/components/ui/calendar'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
@@ -118,9 +119,25 @@ export function ScheduleStep({ form, onValidityChangeAction }: BaseStepProps) {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="weekly">Weekly</SelectItem>
-                    <SelectItem value="biweekly">Bi-Weekly</SelectItem>
-                    <SelectItem value="monthly">Monthly</SelectItem>
+                    <SelectItem value="weekly">
+                      <div className="flex items-center justify-between w-full">
+                        <span>Weekly</span>
+                        <span className="ml-2 text-neutral-600">60% off</span>
+                      </div>
+                    </SelectItem>
+                    <SelectItem value="biweekly">
+                      <div className="flex items-center justify-between w-full">
+                        <span>Bi-Weekly</span>
+                        <span className="text-neutral-600 ml-2">50% off</span>
+                        <Badge variant="secondary" className="ml-4">Most popular</Badge>
+                      </div>
+                    </SelectItem>
+                    <SelectItem value="monthly">
+                      <div className="flex items-center justify-between w-full">
+                        <span>Monthly</span>
+                        <span className="ml-2 text-neutral-600">30% off</span>
+                      </div>
+                    </SelectItem>
                     <SelectItem value="one-time">One-Time</SelectItem>
                   </SelectContent>
                 </Select>
