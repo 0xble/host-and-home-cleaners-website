@@ -36,7 +36,7 @@ export function GradientButton({
       ref={buttonRef}
       className={cn(
         buttonVariants({ size: 'lg' }),
-        'text-lg font-normal',
+        'text-lg font-normal rounded-xl',
         'relative overflow-hidden transition-all duration-100 ease-in-out',
         'before:absolute before:inset-0 before:z-[1] before:bg-gradient-to-br before:from-gradient-start before:via-gradient-middle before:to-gradient-end before:opacity-0 before:transition-all hover:before:opacity-100',
         'after:absolute after:inset-0 after:z-[1] after:bg-gradient-to-br after:from-gradient-start after:via-gradient-middle after:to-gradient-end after:transition-all',

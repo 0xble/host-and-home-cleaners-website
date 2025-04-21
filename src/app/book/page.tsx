@@ -33,6 +33,8 @@ import { GoogleMapsLoader } from '@/lib/google/GoogleMapsLoader'
 import { addDays } from 'date-fns'
 import { calculatePrice } from './utils'
 import { PriceDetailsDrawer } from '@/components/PriceDetailsDrawer'
+import { ConfirmationStep } from './components/steps/ConfirmationStep'
+import { ArrowLeft } from 'lucide-react'
 
 // Defines the components for each step
 type StepComponent = ComponentType<BaseStepProps>
@@ -41,12 +43,12 @@ const STEP_COMPONENTS: Readonly<Record<BookingStep, StepComponent>> = {
   [BookingStep.CHOOSE_YOUR_SERVICE]: ChooseYourServiceStep,
   [BookingStep.SERVICE_SELECTION]: ServiceSelectionStep,
   [BookingStep.TELL_US_ABOUT_YOUR_PLACE]: TellUsAboutYourPlaceStep,
+  [BookingStep.ADDRESS_INPUT]: AddressInputStep,
   [BookingStep.SIZE_SELECTION]: SizeSelectionStep,
   [BookingStep.HOURS_SELECTION]: HoursSelectionStep,
   [BookingStep.CUSTOMER_DETAILS]: CustomerDetailsStep,
-  [BookingStep.ADDRESS_INPUT]: AddressInputStep,
   [BookingStep.SCHEDULE]: ScheduleStep,
-  // [BookingStep.CONFIRMATION]: ConfirmationStep,
+  [BookingStep.CONFIRMATION]: ConfirmationStep,
 }
 
 // Subtract 1 for hours and size selection being mutually exclusive
@@ -156,17 +158,17 @@ export default function BookingPage() {
       next: () => {
         if (!selectedServiceCategory) return null
 
-          const config = PRICING_PARAMETERS[location][selectedServiceCategory]
+        const config = PRICING_PARAMETERS[location][selectedServiceCategory]
         if (!config) return null
 
-          switch (config.type) {
-            case 'flat':
-              return BookingStep.SIZE_SELECTION
-            case 'hourly':
-              return BookingStep.HOURS_SELECTION
-            default:
-              return null
-          }
+        switch (config.type) {
+          case 'flat':
+            return BookingStep.SIZE_SELECTION
+          case 'hourly':
+            return BookingStep.HOURS_SELECTION
+          default:
+            return null
+        }
       },
       prev: () => BookingStep.ADDRESS_INPUT,
     },
@@ -179,27 +181,27 @@ export default function BookingPage() {
       prev: () => BookingStep.CUSTOMER_DETAILS,
     },
     [BookingStep.SCHEDULE]: {
-      next: () => /* BookingStep.CONFIRMATION, */ null,
+      next: () => BookingStep.CONFIRMATION,
       prev: () => {
         if (!selectedServiceCategory) return null
 
-          const config = PRICING_PARAMETERS[location][selectedServiceCategory]
+        const config = PRICING_PARAMETERS[location][selectedServiceCategory]
         if (!config) return null
 
-          switch (config.type) {
-            case 'flat':
-              return BookingStep.SIZE_SELECTION
-            case 'hourly':
-              return BookingStep.HOURS_SELECTION
-            default:
-              return null
-          }
+        switch (config.type) {
+          case 'flat':
+            return BookingStep.SIZE_SELECTION
+          case 'hourly':
+            return BookingStep.HOURS_SELECTION
+          default:
+            return null
+        }
       },
     },
-    // [BookingStep.CONFIRMATION]: {
-    //   next: () => null,
-    //   prev: () => BookingStep.SCHEDULE,
-    // },
+    [BookingStep.CONFIRMATION]: {
+      next: () => null,
+      prev: () => BookingStep.SCHEDULE,
+    },
   }
 
   // Check if current step is valid
@@ -284,14 +286,14 @@ export default function BookingPage() {
     if (nextStepNumber !== null) {
       // If next step is ADDRESS_INPUT and Google Maps isn't loaded yet
       if (nextStepNumber === BookingStep.ADDRESS_INPUT && !isGoogleMapsLoaded && !isLoadingMaps) {
-        setIsLoadingMaps(true);
+        setIsLoadingMaps(true)
         try {
-          await GoogleMapsLoader.getInstance().load();
-          setIsGoogleMapsLoaded(true);
+          await GoogleMapsLoader.getInstance().load()
+          setIsGoogleMapsLoaded(true)
         } catch (error) {
-          console.error('Failed to load Google Maps:', error);
+          console.error('Failed to load Google Maps:', error)
         } finally {
-          setIsLoadingMaps(false);
+          setIsLoadingMaps(false)
         }
       }
 
@@ -302,6 +304,7 @@ export default function BookingPage() {
   }
 
   const onSubmit = (data: BookingFormData) => {
+    // TODO: Implement
     console.log('Form submitted:', data)
     // Clear session storage on successful submission
     sessionStorage.removeItem('bookingFormState')
@@ -398,11 +401,22 @@ export default function BookingPage() {
   return (
     <div className="relative min-h-screen pb-24">
       <div className="p-6">
-        <Button variant="outline" size="default" asChild className="rounded-full px-5">
-          <Link href={ROUTES.HOME.href}>
-            Exit
-          </Link>
-        </Button>
+        {currentStep !== BookingStep.CONFIRMATION ? (
+          <Button variant="outline" size="default" asChild className="rounded-full px-5">
+            <Link href={ROUTES.HOME.href}>
+              Exit
+            </Link>
+          </Button>
+        ) : (
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={prevStep}
+            className="rounded-full size-12"
+          >
+            <ArrowLeft />
+          </Button>
+        )}
       </div>
 
       <Form {...form}>
@@ -417,154 +431,158 @@ export default function BookingPage() {
         </form>
       </Form>
 
-      {/* Progress bar above bottom navigaton */}
-      <div className="fixed inset-x-0 bottom-20 z-10 bg-white">
-        <Progress
-          className="h-2 w-full rounded-none"
-          segments={progress.max / 2}
-          value={progress.value / progress.max * 100}
-        />
-      </div>
+      {/* Navigation and pricing */}
+      {currentStep !== BookingStep.CONFIRMATION ? (
+        <>
+          {/* Progress bar above bottom navigaton */}
+          <div className="fixed inset-x-0 bottom-20 z-10 bg-white">
+            <Progress
+              className="h-2 w-full rounded-none"
+              segments={progress.max / 2}
+              value={progress.value / progress.max * 100}
+            />
+          </div>
+          <div className="fixed inset-x-0 bottom-0 z-10 h-20 bg-white shadow-md">
+            <div className="flex size-full items-center justify-between px-6 py-4">
+              {currentStep === BookingStep.GETTING_STARTED
+                ? (
+                  <GradientButton
+                    type="button"
+                    onClick={() => nextStep()}
+                    className="w-full"
+                  >
+                    Get started
+                  </GradientButton>
+                )
+                : (
+                  <>
+                    <div className="flex items-center gap-4">
+                      {canShowPrice() && (
+                        <PriceDetailsDrawer
+                          price={{
+                            serviceTotal: price.serviceTotal,
+                            discount: price.discount,
+                            recurringDiscount: price.recurringDiscount,
+                            taxes: price.taxes,
+                            totalInitial: price.totalInitial,
+                            totalRecurring: price.totalRecurring
+                          }}
+                          booking={{
+                            frequency: selectedFrequency,
+                            serviceCategory: selectedServiceCategory,
+                            pricingParams: selectedPricingParams
+                          }}
+                        />
+                      )}
+                    </div>
 
-      {/* Skip button for development */}
-      {process.env.NODE_ENV === 'development' && (
-        <div className="fixed inset-x-0 bottom-24 z-20 px-6 py-2 bg-transparent pointer-events-none">
-          <div className="flex justify-end pointer-events-auto">
-            <Button
-              variant="outline"
-              size="default"
-              className="font-mono border-2 border-dashed border-yellow-400 bg-yellow-50 hover:bg-yellow-100 text-yellow-700"
-              onClick={() => {
-                switch (currentStep) {
-                  case BookingStep.GETTING_STARTED:
-                    nextStep(true)
-                    break
-                  case BookingStep.CHOOSE_YOUR_SERVICE:
-                    nextStep(true)
-                    break
-                  case BookingStep.SERVICE_SELECTION:
-                    form.setValue('serviceCategory', 'default')
-                    nextStep(true)
-                    break
-                  case BookingStep.TELL_US_ABOUT_YOUR_PLACE:
-                    nextStep(true)
-                    break
-                  case BookingStep.CUSTOMER_DETAILS:
-                    form.setValue('customer.firstName', 'John')
-                    form.setValue('customer.lastName', 'Doe')
-                    form.setValue('customer.email', 'john.doe@example.com')
-                    form.setValue('customer.phone', '1234567890')
-                    nextStep(true)
-                    break
-                  case BookingStep.ADDRESS_INPUT:
-                    form.setValue('customer.address', '123 Main St')
-                    form.setValue('customer.city', 'Myrtle Beach')
-                    form.setValue('customer.state', 'SC')
-                    form.setValue('customer.zipCode', '29577')
-                    nextStep(true)
-                    break
-                  case BookingStep.SIZE_SELECTION:
-                    form.setValue('pricingParams.type', 'flat')
-                    form.setValue('pricingParams.bedrooms', 2)
-                    form.setValue('price', calculatePrice(
-                      selectedServiceCategory,
-                      selectedFrequency,
-                      { type: 'flat', bedrooms: 2 },
-                      PRICING_PARAMETERS[location][selectedServiceCategory]
-                    ))
-                    nextStep(true)
-                    break
-                  case BookingStep.HOURS_SELECTION:
-                    form.setValue('pricingParams.type', 'hourly')
-                    form.setValue('pricingParams.hours', 4)
-                    form.setValue('price', calculatePrice(
-                      selectedServiceCategory,
-                      selectedFrequency,
-                      { type: 'hourly', hours: 4 },
-                      PRICING_PARAMETERS[location][selectedServiceCategory])
-                    )
-                    nextStep(true)
-                    break
-                  case BookingStep.SCHEDULE:
-                    form.setValue('date', addDays(new Date(), 4))
-                    form.setValue('arrivalWindow', '8:00AM - 9:00AM')
-                    form.setValue('frequency', 'biweekly')
-                    nextStep(true)
-                    break
-                }
-              }}
-            >
-              Skip →
-            </Button>
+                    <div className="flex items-center gap-2">
+                      {currentStep > 0 && (
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={prevStep}
+                        >
+                          Back
+                        </Button>
+                      )}
+                      <Button
+                        type="button"
+                        onClick={() => nextStep()}
+                        disabled={!isStepValid}
+                      >
+                        Next
+                      </Button>
+                    </div>
+                  </>
+                )}
+            </div>
+          </div>
+
+          {/* Skip button for development */}
+          {process.env.NODE_ENV === 'development' && (
+            <div className="fixed inset-x-0 bottom-24 z-20 px-6 py-2 bg-transparent pointer-events-none">
+              <div className="flex justify-end pointer-events-auto">
+                <Button
+                  variant="outline"
+                  size="default"
+                  className="font-mono border-2 border-dashed border-yellow-400 bg-yellow-50 hover:bg-yellow-100 text-yellow-700"
+                  onClick={() => {
+                    switch (currentStep) {
+                      case BookingStep.GETTING_STARTED:
+                        nextStep(true)
+                        break
+                      case BookingStep.CHOOSE_YOUR_SERVICE:
+                        nextStep(true)
+                        break
+                      case BookingStep.SERVICE_SELECTION:
+                        form.setValue('serviceCategory', 'default')
+                        nextStep(true)
+                        break
+                      case BookingStep.TELL_US_ABOUT_YOUR_PLACE:
+                        nextStep(true)
+                        break
+                      case BookingStep.CUSTOMER_DETAILS:
+                        form.setValue('customer.firstName', 'John')
+                        form.setValue('customer.lastName', 'Doe')
+                        form.setValue('customer.email', 'john.doe@example.com')
+                        form.setValue('customer.phone', '1234567890')
+                        nextStep(true)
+                        break
+                      case BookingStep.ADDRESS_INPUT:
+                        form.setValue('customer.address', '123 Main St')
+                        form.setValue('customer.city', 'Myrtle Beach')
+                        form.setValue('customer.state', 'SC')
+                        form.setValue('customer.zipCode', '29577')
+                        nextStep(true)
+                        break
+                      case BookingStep.SIZE_SELECTION:
+                        form.setValue('pricingParams.type', 'flat')
+                        form.setValue('pricingParams.bedrooms', 2)
+                        form.setValue('price', calculatePrice(
+                          selectedServiceCategory,
+                          selectedFrequency,
+                          { type: 'flat', bedrooms: 2 },
+                          PRICING_PARAMETERS[location][selectedServiceCategory]
+                        ))
+                        nextStep(true)
+                        break
+                      case BookingStep.HOURS_SELECTION:
+                        form.setValue('pricingParams.type', 'hourly')
+                        form.setValue('pricingParams.hours', 4)
+                        form.setValue('price', calculatePrice(
+                          selectedServiceCategory,
+                          selectedFrequency,
+                          { type: 'hourly', hours: 4 },
+                          PRICING_PARAMETERS[location][selectedServiceCategory])
+                        )
+                        nextStep(true)
+                        break
+                      case BookingStep.SCHEDULE:
+                        form.setValue('date', addDays(new Date(), 4))
+                        form.setValue('arrivalWindow', '8:00AM - 9:00AM')
+                        form.setValue('frequency', 'biweekly')
+                        nextStep(true)
+                        break
+                    }
+                  }}
+                >
+                  Skip →
+                </Button>
+              </div>
+            </div>
+          )}
+
+        </>
+      ) : (
+        <div className="fixed inset-x-0 bottom-0 z-10 h-20 bg-white shadow-md">
+          <div className="flex size-full items-center justify-between px-6 py-4">
+            <GradientButton type="button" onClick={() => nextStep()} className="w-full">
+              Book
+            </GradientButton>
           </div>
         </div>
       )}
-
-      {/* Navigation and pricing */}
-      <div className="fixed inset-x-0 bottom-0 z-10 h-20 bg-white shadow-md">
-        <div className="flex size-full items-center justify-between px-6 py-4">
-          {currentStep === BookingStep.GETTING_STARTED
-            ? (
-                <GradientButton
-                  type="button"
-                  onClick={() => nextStep()}
-                  className="w-full"
-                >
-                  Get started
-                </GradientButton>
-              )
-            : (
-                <>
-                  <div className="flex items-center gap-4">
-                    {canShowPrice() && (
-                      <PriceDetailsDrawer
-                        price={{
-                          serviceTotal: price.serviceTotal,
-                          discount: price.discount,
-                          recurringDiscount: price.recurringDiscount,
-                          taxes: price.taxes,
-                          totalInitial: price.totalInitial,
-                          totalRecurring: price.totalRecurring
-                        }}
-                        booking={{
-                          frequency: selectedFrequency,
-                          serviceCategory: selectedServiceCategory,
-                          pricingParams: selectedPricingParams
-                        }}
-                      />
-                    )}
-                  </div>
-
-                  <div className="flex items-center gap-2">
-                    {currentStep > 0 && (
-                      <Button
-                        type="button"
-                        variant="outline"
-                        onClick={prevStep}
-                      >
-                        Back
-                      </Button>
-                    )}
-                    {currentStep < Object.keys(STEP_TRANSITIONS).length
-                      ? (
-                          <Button
-                            type="button"
-                            onClick={() => nextStep()}
-                            disabled={!isStepValid}
-                          >
-                            Next
-                          </Button>
-                        )
-                      : (
-                          <Button type="button" onClick={() => handleSubmit(onSubmit)()}>
-                            Book
-                          </Button>
-                        )}
-                  </div>
-                </>
-              )}
-        </div>
-      </div>
     </div>
   )
 }
