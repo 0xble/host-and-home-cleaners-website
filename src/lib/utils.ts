@@ -99,8 +99,10 @@ export function getLocationsString(
     .join(', ')
 }
 
-export const formatPrice = (price: number | null | undefined) => {
-  return `$${price?.toFixed(0) ?? ''}`
+export function formatPrice(value: number | string, options: Intl.NumberFormatOptions = {}) {
+  const n = typeof value === 'string' ? Number.parseFloat(value) : value
+  const formattedNumber = Math.abs(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2, ...options })
+  return n < 0 ? `-$${formattedNumber}` : `$${formattedNumber}`
 }
 
 export const roundToEvenDown = (num: number) => {

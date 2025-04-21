@@ -30,9 +30,9 @@ import { ServiceSelectionStep } from './components/steps/ServiceSelectionStep'
 import { SizeSelectionStep } from './components/steps/SizeSelectionStep'
 import { TellUsAboutYourPlaceStep } from './components/steps/TellUsAboutYourPlaceStep'
 import { GoogleMapsLoader } from '@/lib/google/GoogleMapsLoader'
-import { formatPrice } from '@/lib/utils'
 import { addDays } from 'date-fns'
 import { calculatePrice } from './utils'
+import { PriceDetailsDrawer } from '@/components/PriceDetailsDrawer'
 
 // Defines the components for each step
 type StepComponent = ComponentType<BaseStepProps>
@@ -488,6 +488,7 @@ export default function BookingPage() {
                   case BookingStep.SCHEDULE:
                     form.setValue('date', addDays(new Date(), 4))
                     form.setValue('arrivalWindow', '8:00AM - 9:00AM')
+                    form.setValue('frequency', 'biweekly')
                     nextStep(true)
                     break
                 }
@@ -516,18 +517,21 @@ export default function BookingPage() {
                 <>
                   <div className="flex items-center gap-4">
                     {canShowPrice() && (
-                      <div className="flex flex-col justify-center">
-                        <div className="text-lg font-medium">
-                          {formatPrice(price.initial)}
-                        </div>
-                        {price.recurring && (
-                          <div className="text-muted-foreground text-sm">
-                            {selectedFrequency !== 'one-time'
-                              ? `${formatPrice(price.recurring)} for recurring cleanings`
-                              : ''}
-                          </div>
-                        )}
-                      </div>
+                      <PriceDetailsDrawer
+                        price={{
+                          serviceTotal: price.serviceTotal,
+                          discount: price.discount,
+                          recurringDiscount: price.recurringDiscount,
+                          taxes: price.taxes,
+                          totalInitial: price.totalInitial,
+                          totalRecurring: price.totalRecurring
+                        }}
+                        booking={{
+                          frequency: selectedFrequency,
+                          serviceCategory: selectedServiceCategory,
+                          pricingParams: selectedPricingParams
+                        }}
+                      />
                     )}
                   </div>
 

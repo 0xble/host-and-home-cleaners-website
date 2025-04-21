@@ -24,7 +24,7 @@ export function BookingFormOption({
       : isSelected
         ? 'border-primary ring-primary ring-1 bg-primary-50'
         : 'border-neutral-light bg-popover hover:border-primary'
-    } cursor-pointer p-4 transition-transform duration-200 group-active:scale-95`, className)}
+    } cursor-pointer p-4 transition-transform duration-200 active:scale-95`, className)}
       onClick={onClick}
     >
       {/* Add group-active:scale-90 to any direct image container with a delay */}

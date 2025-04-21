@@ -31,6 +31,16 @@ export const BookingPricingParamsSchema = z.discriminatedUnion('type', [
 ])
 export type BookingPricingParams = z.infer<typeof BookingPricingParamsSchema>
 
+export const BookingPriceDetailsSchema = z.object({
+  serviceTotal: z.number(),
+  discount: z.number(),
+  recurringDiscount: z.number(),
+  taxes: z.number(),
+  totalInitial: z.number(),
+  totalRecurring: z.number(),
+})
+export type BookingPriceDetails = z.infer<typeof BookingPriceDetailsSchema>
+
 // Used for booking form validation
 export const BookingFormSchema = z.object({
   location: LocationSchema,
@@ -61,10 +71,7 @@ export const BookingFormSchema = z.object({
     }).optional(),
   }),
   pricingParams: BookingPricingParamsSchema,
-  price: z.object({
-    initial: z.number(),
-    recurring: z.number().nullable().optional(),
-  }),
+  price: BookingPriceDetailsSchema,
 })
 
 export type BookingFormData = z.infer<typeof BookingFormSchema>

@@ -67,7 +67,7 @@ function ServiceSelectionStepComponent({ form, onValidityChangeAction }: BaseSte
 
   return (
     <StepLayout
-      title='What are we cleaning today?'
+      title='How can we help?'
       description='Select the type of cleaning service that best fits your needs. Each option is tailored to different cleaning requirements.'
       className="max-w-4xl mx-auto rounded-none border-0 shadow-none"
     >

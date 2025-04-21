@@ -34,7 +34,7 @@ export function HoursSelectionStep({ form, onValidityChangeAction }: BaseStepPro
 
   return (
     <StepLayout
-      title="Select Service Duration"
+      title="How long do you need us for?"
       description="Choose how many hours you need for your cleaning service."
     >
       <FormField

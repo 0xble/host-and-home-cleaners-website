@@ -124,4 +124,8 @@
   .link {
     @apply text-primary hover:underline;
   }
+
+  .text-gradient {
+    @apply bg-gradient-to-r from-gradient-start via-gradient-middle to-gradient-end text-transparent bg-clip-text;
+  }
 }

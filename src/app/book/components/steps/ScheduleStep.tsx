@@ -53,7 +53,7 @@ export function ScheduleStep({ form, onValidityChangeAction }: BaseStepProps) {
 
   return (
     <StepLayout
-      title="Schedule Your Cleaning"
+      title="Schedule your cleaning"
       description="Select a date, time, and frequency for your service"
     >
       <div className="space-y-6">

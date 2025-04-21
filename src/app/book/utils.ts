@@ -68,45 +68,46 @@ export function extractAddressComponents(addressComponents: google.maps.Geocoder
 
   return result;
 }
+
 export function calculatePrice(
   serviceCategory: BookingServiceCategory,
   frequency: BookingFrequency,
   params: BookingPricingParams,
   config: PricingParams,
+  discount: number = 0,
+  taxes: number = 0,
 ): BookingFormData['price'] {
+  let serviceTotal: number;
   switch (config.type) {
     case 'flat': {
-      if (params.type === 'flat') {
-        const initial = config.bedrooms[params.bedrooms]
-        if (typeof initial !== 'number') throw new Error(`Invalid bedrooms pricing parameter ${params.bedrooms} for ${serviceCategory}`)
-        const recurring = frequency && config.frequencies && config.frequencies[frequency]
-          ? initial * (1 - config.frequencies[frequency])
-          : null
-
-        return {
-          initial,
-          recurring,
-        }
+      if (params.type !== 'flat') throw new Error('Mismatch pricing types')
+      const flatTotal = config.bedrooms[params.bedrooms]
+      if (typeof flatTotal !== 'number') {
+        throw new Error(`Invalid bedrooms pricing parameter ${params.bedrooms} for ${serviceCategory}`)
       }
-      else {
-        throw new Error('Mismatch pricing types')
-      }
+      serviceTotal = flatTotal
+      break
     }
     case 'hourly': {
-      if (params.type === 'hourly') {
-        const initial = config.hourlyRate * params.hours
-        const recurring = frequency && config.frequencies && config.frequencies[frequency]
-          ? initial * (1 - config.frequencies[frequency])
-          : null
-
-        return {
-          initial,
-          recurring,
-        }
-      }
-      else {
-        throw new Error('Mismatch pricing types')
-      }
+      if (params.type !== 'hourly') throw new Error('Mismatch pricing types')
+      serviceTotal = config.hourlyRate * params.hours
+      break
     }
+    default: {
+      throw new Error('Unsupported pricing type')
+    }
+  }
+
+  const totalInitial = serviceTotal - discount
+  const recurringDiscount = config.frequencies ?  serviceTotal * config.frequencies[frequency] : 0
+  const totalRecurring = totalInitial - recurringDiscount
+
+  return {
+    serviceTotal,
+    discount,
+    recurringDiscount,
+    totalInitial,
+    totalRecurring,
+    taxes,
   }
 }
