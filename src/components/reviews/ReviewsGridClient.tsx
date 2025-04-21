@@ -1,6 +1,5 @@
 'use client'
 
-import type { Location } from '@/lib/constants'
 import type { Platform, PlatformRating, Review, ReviewsData } from '@/lib/reviews'
 import { constantCase } from '0xble/strings'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -14,6 +13,7 @@ import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 import { round } from 'remeda'
 import { Button } from '../ui/button'
+import type { Location } from '@/lib/types'
 
 type ValidReview = Omit<Review, 'rating' | 'text' | 'date' | 'author'> & {
   rating: number
