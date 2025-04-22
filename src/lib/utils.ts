@@ -1,30 +1,28 @@
-import type { Slugify } from '@/types/strings'
+import type { Location } from '@/lib/types'
 import type { ClassValue } from 'clsx'
-import type { Location } from './types'
 
+import { EMAIL, LOCATIONS, PHONE } from '@/lib/constants'
+import { ROUTES } from '@/lib/routes'
 import { clsx } from 'clsx'
-import S from 'string'
 import { twMerge } from 'tailwind-merge'
-import { EMAIL, LOCATIONS, PHONE } from './constants'
-import { ROUTES } from './routes'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
 export function getBaseUrl() {
-  if (process.env.NEXT_PUBLIC_APP_URL) {
+  if (process.env.NEXT_PUBLIC_APP_URL != null) {
     return process.env.NEXT_PUBLIC_APP_URL
   }
 
   if (
     process.env.VERCEL_ENV === 'production'
-    && process.env.VERCEL_PROJECT_PRODUCTION_URL
+    && process.env.VERCEL_PROJECT_PRODUCTION_URL != null
   ) {
     return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
   }
 
-  if (process.env.VERCEL_URL) {
+  if (process.env.VERCEL_URL != null) {
     return `https://${process.env.VERCEL_URL}`
   }
 
@@ -36,7 +34,7 @@ export interface GetLocationOptions {
   href?: string
 }
 export function getLocation(options: GetLocationOptions): Location | undefined {
-  if (options.zipCode) {
+  if (options.zipCode != null) {
     for (const [location, locationData] of Object.entries(LOCATIONS)) {
       const zipCodes = locationData.zipCodes as readonly string[]
       if (zipCodes.includes(options.zipCode)) {
@@ -44,7 +42,7 @@ export function getLocation(options: GetLocationOptions): Location | undefined {
       }
     }
   }
-  else if (options.href) {
+  else if (options.href != null) {
     for (const [location, { href, SERVICE_AREAS }] of Object.entries(ROUTES.LOCATIONS)) {
       if ([href, ...Object.values(SERVICE_AREAS).map(({ href }) => href)].some(routeHref => options.href?.startsWith(routeHref))) {
         return location as Location
@@ -110,8 +108,11 @@ export function roundToEvenDown(num: number) {
   return Math.floor(num / 2) * 2
 }
 
-export function slugify(text: string): Slugify<string> {
-  return S(text).slugify().s.toLowerCase() as Slugify<string>
+export function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
 }
 
 export function constantCase(text: string): string {

@@ -1,6 +1,6 @@
 'use client'
 
-import type { Location } from '@/lib/constants'
+import type { Location } from '@/lib/types'
 import ReviewsGridClient from '@/components/reviews/ReviewsGridClient'
 import { TestimonialCarousel } from '@/components/TestimonialCarousel'
 import { cn } from '@/lib/utils'

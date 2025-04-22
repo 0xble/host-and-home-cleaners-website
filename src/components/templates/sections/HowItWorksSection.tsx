@@ -1,4 +1,4 @@
-import type { ImageProps } from 'next/image'
+import type { ImageProps, StaticImageData } from 'next/image'
 import { CHECKLIST_NAME } from '@/lib/constants'
 import { ROUTES } from '@/lib/routes'
 
@@ -66,7 +66,7 @@ export default function HowItWorksSection({ heading, steps }: HowItWorksSectionP
         </div>
         <div className="mt-12 grid gap-6 font-light md:grid-cols-3 lg:mt-14 lg:gap-12">
           {steps.map(async (step, index) => {
-            const imageModule = await import(`@/public/assets/how-it-works/step-${index + 1}.jpg`)
+            const imageModule = (await import(`@/public/assets/how-it-works/step-${index + 1}.jpg`)) as { default: StaticImageData }
             return (
               <HowItWorksCard
                 key={step.title}

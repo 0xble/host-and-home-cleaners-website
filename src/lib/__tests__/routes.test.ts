@@ -1,3 +1,5 @@
+/* eslint-disable ts/no-unsafe-member-access */
+/* eslint-disable ts/no-unsafe-call */
 import type { RouteData } from '@/lib/routes'
 import { existsSync, readdirSync } from 'node:fs'
 import { resolve } from 'node:path'
@@ -70,7 +72,7 @@ describe('routes validation', () => {
 
       // Then check in route groups
       const routeGroupPath = findInRouteGroups(currentPath, segment)
-      if (routeGroupPath) {
+      if (routeGroupPath != null) {
         currentPath = routeGroupPath
         continue
       }

@@ -20,13 +20,13 @@ export function StepLayout({
   return (
     <Card className="max-w-4xl mx-auto rounded-none border-0 shadow-none">
       <CardHeader className="pt-2">
-        {label && (
+        {label != null && (
           <div className="text-sm font-medium text-muted-foreground mb-2">{label}</div>
         )}
         <CardTitle>
           {title}
         </CardTitle>
-        {description && (
+        {description != null && (
           <CardDescription>
             {description}
           </CardDescription>

@@ -1,9 +1,9 @@
 import type { QueryDatabaseParameters } from '@notionhq/client/build/src/api-endpoints'
 import { LOCATIONS, REVIEWS } from '0xble/notion/types'
+import { queryDatabase } from '@/lib/notion'
 import { compareDesc, differenceInMinutes, hoursToSeconds } from 'date-fns'
-import { cache } from 'react'
 
-import { queryDatabase } from './notion'
+import { cache } from 'react'
 
 // In-memory cache for development
 let reviewsCache: ReviewsData | null = null
@@ -148,11 +148,11 @@ export const getReviews = cache(async (location?: string): Promise<ReviewsData> 
     const { locations } = await getLocations()
 
     // Create filter for location if provided
-    const filter: QueryDatabaseParameters['filter'] = location
+    const filter: QueryDatabaseParameters['filter'] = location != null
       ? {
           property: 'Location',
           relation: {
-            contains: locations.find(loc => loc.name.toLowerCase() === location.toLowerCase())?.id || '',
+            contains: locations.find(loc => loc.name.toLowerCase() === location.toLowerCase())?.id ?? '',
           },
         }
       : undefined
@@ -165,12 +165,12 @@ export const getReviews = cache(async (location?: string): Promise<ReviewsData> 
 
       // Get reviewer name from "Reviewer Name" property
       const reviewerName = props['Reviewer Name'] && 'rich_text' in props['Reviewer Name']
-        ? props['Reviewer Name'].rich_text[0]?.plain_text || 'Anonymous'
+        ? props['Reviewer Name'].rich_text[0]?.plain_text ?? 'Anonymous'
         : 'Anonymous'
 
       // Get review content from "Content" property
       const content = props.Content && 'rich_text' in props.Content
-        ? props.Content.rich_text[0]?.plain_text || ''
+        ? props.Content.rich_text[0]?.plain_text ?? ''
         : ''
 
       // Get platform from "Platform" property
@@ -179,7 +179,7 @@ export const getReviews = cache(async (location?: string): Promise<ReviewsData> 
         : null
 
       // Get date from "Date" property and format it
-      const date = props.Date && 'date' in props.Date && props.Date.date?.start
+      const date = props.Date && 'date' in props.Date && props.Date.date?.start != null
         ? new Date(props.Date.date.start)
         : new Date()
 
@@ -190,12 +190,13 @@ export const getReviews = cache(async (location?: string): Promise<ReviewsData> 
 
       // Find the matching location first
       const locationId = props.Location && 'relation' in props.Location && props.Location.relation[0]?.id
-      const location = locationId ? locations.find(location => location.id === locationId) : null
+      const location = locationId != null ? locations.find(location => location.id === locationId) : null
 
       // Get URL from "URL" property
       const url = props.URL && 'url' in props.URL && props.URL.url !== null
         ? props.URL.url
         : (() => {
+            // eslint-disable-next-line ts/switch-exhaustiveness-check
             switch (platform) {
               case 'Google':
                 return location?.googleUrl ?? null
@@ -233,8 +234,8 @@ export const getReviews = cache(async (location?: string): Promise<ReviewsData> 
     // Calculate platform ratings
     const platformCounts = {} as Record<Platform, { total: number, count: number, totalCount: number }>
     reviews.forEach((review) => {
-      if (review.platform) {
-        if (!platformCounts[review.platform]) {
+      if (review.platform != null) {
+        if (platformCounts[review.platform] == null) {
           platformCounts[review.platform] = { total: 0, count: 0, totalCount: 0 }
         }
         platformCounts[review.platform].totalCount++

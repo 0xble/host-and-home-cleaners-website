@@ -157,6 +157,12 @@ const config = {
           end: '#DC2626',
         },
       },
+      transitionDelay: {
+        800: '800ms',
+        1200: '1200ms',
+        1600: '1600ms',
+        2000: '2000ms',
+      },
     },
   },
   plugins: [require('@tailwindcss/typography'), require('tailwindcss-animate')],

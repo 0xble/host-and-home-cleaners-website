@@ -36,7 +36,7 @@ export default function PhoneLink({ className, phone, children }: PhoneLinkProps
       eventName={PixelEvent.CONTACT}
       eventParams={{ method: 'phone' }}
     >
-      {children || phone.formatted}
+      {children ?? phone.formatted}
     </TrackedLink>
   )
 }

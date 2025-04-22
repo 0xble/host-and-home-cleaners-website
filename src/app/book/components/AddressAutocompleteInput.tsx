@@ -42,11 +42,11 @@ export function AddressAutocompleteInput({
         // Extract just the street address part
         const streetNumber = place.address_components?.find(component =>
           component.types.includes('street_number'),
-        )?.long_name || ''
+        )?.long_name ?? ''
 
         const route = place.address_components?.find(component =>
           component.types.includes('route'),
-        )?.long_name || ''
+        )?.long_name ?? ''
 
         const streetAddress = `${streetNumber} ${route}`.trim()
 

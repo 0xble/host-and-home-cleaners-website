@@ -1,11 +1,15 @@
+/* eslint-disable ts/no-unsafe-argument */
+/* eslint-disable ts/strict-boolean-expressions */
+/* eslint-disable ts/no-unsafe-member-access */
+/* eslint-disable ts/no-unsafe-call */
 import type { RouteData } from '@/lib/routes'
 import fs from 'fs'
 import path from 'path'
-import { ROUTES } from '@/lib/routes'
+import sitemap from '@/app/sitemap'
 
+import { ROUTES } from '@/lib/routes'
 // @ts-expect-error Ignore type declarations
 import { expect, mock, test } from 'bun:test'
-import sitemap from '../sitemap'
 
 mock.module('@/lib/utils', () => ({
   getBaseUrl: () => 'https://example.com',
@@ -16,7 +20,7 @@ function getAllValidInternalRoutes(): RouteData[] {
   const routes: RouteData[] = []
 
   function processRoute(route: any) {
-    if (!route)
+    if (route == null)
       return
 
     if ('href' in route && route.priority !== null) {

@@ -11,11 +11,11 @@ import zillowIcon from '@/public/icons/brands/zillow.svg'
 import Image from 'next/image'
 
 const icons: { icon: StaticImageData, alt: string }[] = [
-  { icon: airbnbIcon, alt: 'Airbnb icon' },
-  { icon: zillowIcon, alt: 'Zillow icon' },
-  { icon: vrboIcon, alt: 'VRBO icon' },
-  { icon: homeawayIcon, alt: 'HomeAway icon' },
-  { icon: bookingIcon, alt: 'Booking.com icon' },
+  { icon: airbnbIcon as StaticImageData, alt: 'Airbnb icon' },
+  { icon: zillowIcon as StaticImageData, alt: 'Zillow icon' },
+  { icon: vrboIcon as StaticImageData, alt: 'VRBO icon' },
+  { icon: homeawayIcon as StaticImageData, alt: 'HomeAway icon' },
+  { icon: bookingIcon as StaticImageData, alt: 'Booking.com icon' },
 ]
 
 interface TrustSectionProps {

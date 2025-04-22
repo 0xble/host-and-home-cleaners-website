@@ -18,7 +18,7 @@ export default function GoogleAnalytics() {
     })
   }, [])
 
-  if (!gaId) {
+  if (gaId !== null) {
     return null
   }
 

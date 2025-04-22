@@ -29,9 +29,9 @@ function PostHogPageView() {
   const posthog = usePostHog()
 
   useEffect(() => {
-    if (pathname && posthog) {
+    if (pathname != null && posthog != null) {
       let url = window.origin + pathname
-      const search = searchParams.toString()
+      const search = searchParams != null ? searchParams.toString() : ''
       if (search) {
         url += `?${search}`
       }

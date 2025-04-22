@@ -21,8 +21,8 @@ export function PixelInitializer() {
       return
     }
 
-    initializePixel().then((instance) => {
-      if (instance && pathname) {
+    void initializePixel().then((instance) => {
+      if (instance != null && pathname != null) {
         instance.pageView()
       }
     })
@@ -33,6 +33,7 @@ export function PixelInitializer() {
 
 export function ContentViewTracker({ contentType, contentName, contentId }: { contentType: string, contentName: string, contentId: string }) {
   const [isMounted, setIsMounted] = useState(false)
+  // eslint-disable-next-line ts/no-unsafe-assignment
   const [pixel, setPixel] = useState<any>(null)
 
   useEffect(() => {
@@ -41,12 +42,13 @@ export function ContentViewTracker({ contentType, contentName, contentId }: { co
 
   useEffect(() => {
     if (isMounted && isBrowser) {
-      initializePixel().then(setPixel)
+      void initializePixel().then(setPixel)
     }
   }, [isMounted])
 
   useEffect(() => {
-    if (pixel && contentType && contentName && contentId && isMounted) {
+    if (pixel != null && contentType != null && contentName != null && contentId != null && isMounted) {
+      // eslint-disable-next-line ts/no-unsafe-call, ts/no-unsafe-member-access
       pixel.track(PixelEvent.VIEW_CONTENT, {
         content_type: contentType,
         content_name: contentName,

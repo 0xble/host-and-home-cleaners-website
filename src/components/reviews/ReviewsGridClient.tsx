@@ -2,17 +2,17 @@
 
 import type { Platform, PlatformRating, Review, ReviewsData } from '@/lib/reviews'
 import type { Location } from '@/lib/types'
+import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn, constantCase } from '@/lib/utils'
-import { tz } from '@date-fns/tz'
 
+import { tz } from '@date-fns/tz'
 import { compareDesc, formatDistanceToNow, hoursToSeconds } from 'date-fns'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ChevronLeft, ChevronRight, Star } from 'lucide-react'
 import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 import { round } from 'remeda'
-import { Button } from '../ui/button'
 
 type ValidReview = Omit<Review, 'rating' | 'text' | 'date' | 'author'> & {
   rating: number
@@ -53,7 +53,7 @@ function PlatformIcon({ platform, className }: { platform: Platform, className?:
 function AuthorSection({ review, url, className }: { review: ValidReview, url?: string, className?: string }) {
   const content = (
     <div className={cn('flex items-center gap-3', className)}>
-      {review.author.image
+      {review.author.image != null
         ? (
             <Image
               src={review.author.image}
@@ -90,7 +90,7 @@ function AuthorSection({ review, url, className }: { review: ValidReview, url?: 
     </div>
   )
 
-  if (!url) {
+  if (url == null) {
     return content
   }
 
@@ -173,7 +173,7 @@ function ReviewCard({ review, className }: { review: ValidReview, className?: st
             "
           </p>
 
-          {review.url && (
+          {review.url != null && (
             <a
               href={review.url}
               target="_blank"
@@ -189,7 +189,7 @@ function ReviewCard({ review, className }: { review: ValidReview, className?: st
       {review.platform && (
         <div className="mb-3 flex items-center gap-2 sm:mb-4">
           <PlatformIcon platform={review.platform} />
-          {review.url
+          {review.url != null
             ? (
                 <a
                   href={review.url}
@@ -289,19 +289,19 @@ function PlatformRatingTabs({
         ...rating,
         total_reviews: reviews.filter(
           (review: Review) => review.platform === rating.platform
-            && review.location
+            && review.location != null
             && constantCase(review.location) === location,
         ).length,
         rating: reviews
           .filter(
             (review: Review) => review.platform === rating.platform
-              && review.location
+              && review.location != null
               && constantCase(review.location) === location,
           )
           .reduce((acc: number, review: Review) => acc + (review.rating ?? 0), 0)
           / (reviews.filter(
             (review: Review) => review.platform === rating.platform
-              && review.location
+              && review.location != null
               && constantCase(review.location) === location,
           ).length || 1),
       }))
@@ -471,7 +471,7 @@ export default function ReviewsGridClient({ location }: ReviewsGridClientProps) 
         if (!response.ok) {
           throw new Error('Failed to fetch reviews')
         }
-        const reviewsData = await response.json()
+        const reviewsData = await response.json() as ReviewsData
         setData(reviewsData)
       }
       catch (error) {
@@ -479,7 +479,7 @@ export default function ReviewsGridClient({ location }: ReviewsGridClientProps) 
       }
     }
 
-    fetchReviews()
+    void fetchReviews()
   }, [])
 
   if (!data) {
@@ -507,15 +507,15 @@ export default function ReviewsGridClient({ location }: ReviewsGridClientProps) 
 
     // Check for required properties
     const hasRequiredProperties = Boolean(
-      review.author?.name
-      && review.date
-      && review.rating
-      && review.platform,
+      review.author?.name != null && review.author.name.length > 0
+      && typeof review.date === 'string'
+      && typeof review.rating === 'number'
+      && typeof review.platform === 'string' && review.platform.length > 0,
     )
 
     return hasRequiredProperties
       && (!selectedPlatform || review.platform === selectedPlatform)
-      && (!location || !review.location || constantCase(review.location) === location)
+      && (!location || review.location == null || constantCase(review.location) === location)
       && (review.rating ?? 0) >= ratingThreshold
   }).sort((a, b) => compareDesc(a.date, b.date))
 

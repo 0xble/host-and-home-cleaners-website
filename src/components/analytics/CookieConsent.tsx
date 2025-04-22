@@ -25,7 +25,7 @@ export default function CookieConsent({ variant = 'default', forceShow = false }
     }, 700)
 
     // Update Google Analytics consent
-    if (window.gtag) {
+    if (window.gtag != null) {
       console.log('Updating Google Analytics consent to granted')
       window.gtag('consent', 'update', {
         analytics_storage: 'granted',
@@ -51,7 +51,7 @@ export default function CookieConsent({ variant = 'default', forceShow = false }
     }, 700)
 
     // Update Google Analytics consent
-    if (window.gtag) {
+    if (window.gtag != null) {
       window.gtag('consent', 'update', {
         analytics_storage: 'denied',
         functionality_storage: 'denied',
@@ -83,7 +83,7 @@ export default function CookieConsent({ variant = 'default', forceShow = false }
         }, 700)
 
         // Update Google Analytics consent based on stored preference
-        if (window.gtag) {
+        if (window.gtag != null) {
           window.gtag('consent', 'update', {
             analytics_storage: hasCookieConsent ? 'granted' : 'denied',
             functionality_storage: hasCookieConsent ? 'granted' : 'denied',

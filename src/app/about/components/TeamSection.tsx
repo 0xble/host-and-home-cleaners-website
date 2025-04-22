@@ -4,7 +4,7 @@ import path from 'node:path'
 import Image from 'next/image'
 
 function getTeamImageData() {
-  const dir = path.join(process.cwd(), 'public', 'team')
+  const dir = path.join(process.cwd(), 'public', 'assets', 'team')
   const filenames = fs
     .readdirSync(dir)
     .filter(name => /\.(?:jpg|jpeg|png|gif|webp)$/i.test(name))
@@ -23,8 +23,8 @@ function getTeamImageData() {
       .replace(/\b\w/g, l => l.toUpperCase())
       // Remove leading and trailing spaces
       .trim(),
-    experience: Number.parseInt(filename.match(/\d+/)?.[0] || '0', 10),
-    image: `/team/${filename}`,
+    experience: Number.parseInt(filename.match(/\d+/)?.[0] ?? '0', 10),
+    image: `/assets/team/${filename}`,
   }))
 }
 

@@ -28,7 +28,7 @@ export default function AirbnbCleaning() {
       <section className="px-4 text-center">
         <Image
           className="mx-auto mb-24 h-[300px] w-full max-w-screen-lg md:h-[450px] lg:rounded-b"
-          src="/rental.jpg"
+          src="/assets/rental.jpg"
           alt="cleaner walking with supplies"
           style={{ objectFit: 'cover' }}
           width={724}

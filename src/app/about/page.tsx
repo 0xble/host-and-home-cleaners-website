@@ -54,7 +54,7 @@ export default function About() {
           <div className="grid w-full max-w-screen-lg grid-cols-1 gap-2 sm:grid-cols-2 md:w-1/2 md:shrink-0">
             <Image
               className="h-[200px] w-full rounded sm:h-[300px]"
-              src="/about/clean-fan.jpg"
+              src="/assets/about/clean-fan.jpg"
               alt="clean fan"
               style={{ objectFit: 'cover' }}
               width={300}
@@ -62,7 +62,7 @@ export default function About() {
             />
             <Image
               className="h-[200px] w-full rounded sm:h-[300px]"
-              src="/about/clean-kitchen.jpg"
+              src="/assets/about/clean-kitchen.jpg"
               alt="clean kitchen"
               style={{ objectFit: 'cover' }}
               width={300}
@@ -70,7 +70,7 @@ export default function About() {
             />
             <Image
               className="h-[200px] w-full rounded sm:h-[300px]"
-              src="/about/clean-microwave.jpg"
+              src="/assets/about/clean-microwave.jpg"
               alt="clean microwave"
               style={{ objectFit: 'cover' }}
               width={300}
@@ -78,7 +78,7 @@ export default function About() {
             />
             <Image
               className="h-[200px] w-full rounded sm:h-[300px]"
-              src="/about/clean-shelf.jpg"
+              src="/assets/about/clean-shelf.jpg"
               alt="clean shelf"
               style={{ objectFit: 'cover' }}
               width={300}

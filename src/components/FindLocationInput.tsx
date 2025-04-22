@@ -1,16 +1,16 @@
 'use client'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+
+import { useToast } from '@/components/ui/use-toast'
 import { PixelEvent, useEventTracking } from '@/lib/pixel'
 import { ROUTES } from '@/lib/routes'
-
 import { isZipCode } from '@/lib/schemas'
 import { cn, getLocation } from '@/lib/utils'
+
 import { useLocationStore } from '@/store/useLocationStore'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-
-import { Button } from './ui/button'
-import { Input } from './ui/input'
-import { useToast } from './ui/use-toast'
 
 interface FindLocationInputProps {
   className?: string

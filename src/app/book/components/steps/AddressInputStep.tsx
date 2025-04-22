@@ -114,7 +114,7 @@ export function AddressInputStep({ form, onValidityChangeAction }: BaseStepProps
                         showAddressFields
                           ? 'opacity-100 transform-none'
                           : 'opacity-0 transform translate-y-[-10px]',
-                        'transition-[opacity,transform] duration-1000 ease-in-out delay-[800ms]',
+                        'transition-[opacity,transform] duration-1000 ease-in-out delay-800',
                       )}
                       {...field}
                     />
@@ -137,7 +137,7 @@ export function AddressInputStep({ form, onValidityChangeAction }: BaseStepProps
                         showAddressFields
                           ? 'opacity-100 transform-none'
                           : 'opacity-0 transform translate-y-[-10px]',
-                        'transition-[opacity,transform] duration-1000 ease-in-out delay-[1200ms]',
+                        'transition-[opacity,transform] duration-1000 ease-in-out delay-1200',
                       )}
                       {...field}
                     />
@@ -160,7 +160,7 @@ export function AddressInputStep({ form, onValidityChangeAction }: BaseStepProps
                         showAddressFields
                           ? 'opacity-100 transform-none'
                           : 'opacity-0 transform translate-y-[-10px]',
-                        'transition-[opacity,transform] duration-1000 ease-in-out delay-[1600ms]',
+                        'transition-[opacity,transform] duration-1000 ease-in-out delay-1600',
                       )}
                       {...field}
                     />
@@ -183,7 +183,7 @@ export function AddressInputStep({ form, onValidityChangeAction }: BaseStepProps
                         showAddressFields
                           ? 'opacity-100 transform-none'
                           : 'opacity-0 transform translate-y-[-10px]',
-                        'transition-[opacity,transform] duration-1000 ease-in-out delay-[2000ms]',
+                        'transition-[opacity,transform] duration-1000 ease-in-out delay-2000',
                       )}
                       {...field}
                     />

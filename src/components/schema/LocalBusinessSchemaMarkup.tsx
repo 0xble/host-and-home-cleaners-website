@@ -185,7 +185,7 @@ export default async function LocalBusinessSchemaMarkup({
 
   return (
     <Script
-      id={`local-business-schema-${slugify(serviceAreaName || locationName)}`}
+      id={`local-business-schema-${slugify(serviceAreaName ?? locationName)}`}
       type="application/ld+json"
       dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
     />

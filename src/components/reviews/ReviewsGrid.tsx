@@ -1,6 +1,6 @@
-import type { Location } from '@/lib/constants'
+import type { Location } from '@/lib/types'
 
-import ReviewsGridClient from './ReviewsGridClient'
+import ReviewsGridClient from '@/components/reviews/ReviewsGridClient'
 
 interface ReviewsGridProps {
   location?: Location

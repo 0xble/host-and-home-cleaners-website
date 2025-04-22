@@ -41,7 +41,7 @@ export default function BookNowButton({
     const baseUrl = ROUTES.BOOKING.href
 
     // If there are no search params, return the base URL
-    if (!searchParams || searchParams.size === 0) {
+    if (searchParams == null || searchParams.size === 0) {
       return baseUrl
     }
 

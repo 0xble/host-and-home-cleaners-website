@@ -1,4 +1,4 @@
-import { ROUTES } from './routes'
+import { ROUTES } from '@/lib/routes'
 
 export function scrollToSection(sectionId: string) {
   const pathname = window.location.pathname

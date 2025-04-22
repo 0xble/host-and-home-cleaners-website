@@ -60,7 +60,7 @@ interface SocialIconProps {
 
 export function SocialIcon({ href, name, className }: SocialIconProps) {
   const iconConfig = SOCIAL_ICONS[name]
-  if (!iconConfig) {
+  if (iconConfig == null) {
     throw new Error(`No icon configuration found for social link: ${name}`)
   }
 

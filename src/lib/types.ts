@@ -1,5 +1,5 @@
+import { LOCATIONS } from '@/lib/constants'
 import { z } from 'zod'
-import { LOCATIONS } from './constants'
 
 export const LocationSchema = z.enum(Object.keys(LOCATIONS) as [Location, ...Location[]])
 export type Location = keyof typeof LOCATIONS
@@ -10,7 +10,7 @@ export interface Phone {
   plain: string
 }
 
-export const isLocation = (value: unknown): value is Location => LocationSchema.options.includes(value as any)
+export const isLocation = (value: unknown): value is Location => LocationSchema.options.includes(value as Location)
 
 export type ServiceAreas = (typeof LOCATIONS)[keyof typeof LOCATIONS]['serviceAreas']
 export const isServiceAreas = (value: unknown): value is ServiceAreas => Object.values(LOCATIONS).some((location: { serviceAreas: readonly string[] }) => location.serviceAreas.includes(value as string))

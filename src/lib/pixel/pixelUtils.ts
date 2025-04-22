@@ -6,23 +6,23 @@ export async function initializePixel() {
   if (!isBrowser) {
     return null
   }
-  if (pixelInstance) {
-    return pixelInstance
+  const ReactPixelModule = await import('react-facebook-pixel')
+  const ReactPixel = ReactPixelModule.default
+  if (pixelInstance != null) {
+    return pixelInstance as typeof ReactPixel
   }
-  if (!PIXEL_ID) {
+  if (PIXEL_ID == null) {
     return null
   }
 
   try {
-    const ReactPixelModule = await import('react-facebook-pixel')
-    const ReactPixel = ReactPixelModule.default
     const options = {
       autoConfig: true,
       debug: process.env.NODE_ENV !== 'production',
     }
     ReactPixel.init(PIXEL_ID, undefined, options)
     pixelInstance = ReactPixel
-    return pixelInstance
+    return pixelInstance as typeof ReactPixel
   }
   catch (error) {
     return null

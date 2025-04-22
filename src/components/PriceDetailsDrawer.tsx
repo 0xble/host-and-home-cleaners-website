@@ -42,7 +42,7 @@ export function PriceDetailsDrawer({
         return 'Bi-Weekly visits'
       case 'monthly':
         return 'Monthly visits'
-      default:
+      case 'one-time':
         return 'One-Time visit'
     }
   }

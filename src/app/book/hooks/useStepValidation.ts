@@ -1,5 +1,5 @@
+import type { BookingFormData } from '@/app/book/types'
 import type { UseFormReturn } from 'react-hook-form'
-import type { BookingFormData } from '../types'
 import { useEffect } from 'react'
 
 interface ValidationConfig {
@@ -22,7 +22,7 @@ export function useStepValidation(
     }
 
     const subscription = watch((formData) => {
-      if (!formData)
+      if (formData == null)
         return
 
       let isValid = true
@@ -33,7 +33,7 @@ export function useStepValidation(
           const value = formData[field]
           const error = errors[field]
 
-          if (error || !value) {
+          if (error != null || value == null) {
             isValid = false
             break
           }

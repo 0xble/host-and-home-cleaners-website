@@ -85,10 +85,12 @@ const RedirectingMessage: FC<RedirectingMessageProps> = ({ message = 'Thank you!
 export const StarRating: FC<StarRatingProps> = () => {
   const searchParams = useSearchParams()
   const { toast } = useToast()
-  const locationKey = searchParams.get('location') != null
+  const locationKey = searchParams != null && searchParams.get('location') != null
     ? slugify(searchParams.get('location') as string) as Location
     : null
-  const platformKey = slugify(searchParams.get('platform') ?? 'google')
+  const platformKey = slugify(searchParams != null && searchParams.get('platform') != null
+    ? searchParams.get('platform') as string
+    : 'google')
   const [rating, setRating] = useState<number>(0)
   const [hoveredRating, setHoveredRating] = useState<number>(0)
   const [isRedirecting, setIsRedirecting] = useState(false)

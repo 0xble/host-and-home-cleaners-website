@@ -1,6 +1,6 @@
 import type { SnakeCase } from '@/types/strings'
-import { BOOKINGKOALA_URL, LOCATIONS, SERVICES } from './constants'
-import { slugify } from './utils'
+import { BOOKINGKOALA_URL, LOCATIONS, SERVICES } from '@/lib/constants'
+import { slugify } from '@/lib/utils'
 
 export interface RouteData {
   name: string

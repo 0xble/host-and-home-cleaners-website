@@ -12,7 +12,7 @@ interface SpinnerProps {
 export const Spinner: FC<SpinnerProps> = ({ className, text }) => {
   return (
     <div className={cn('size-12 animate-spin rounded-full border-4 border-neutral-400 border-t-primary-600', className)} role="status">
-      {text && <span className="sr-only">{text}</span>}
+      {text != null && <span className="sr-only">{text}</span>}
     </div>
   )
 }

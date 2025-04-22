@@ -5,7 +5,7 @@ export class GoogleMapsLoader {
   private constructor() {}
 
   public static getInstance(): GoogleMapsLoader {
-    if (!GoogleMapsLoader.instance) {
+    if (GoogleMapsLoader.instance == null) {
       GoogleMapsLoader.instance = new GoogleMapsLoader()
     }
     return GoogleMapsLoader.instance
@@ -13,8 +13,8 @@ export class GoogleMapsLoader {
 
   private isFullyLoaded(): boolean {
     return typeof window !== 'undefined'
-      && window.google
-      && window.google.maps
+      && window.google != null
+      && window.google.maps != null
       && typeof window.google.maps.Map === 'function'
       && typeof window.google.maps.places?.Autocomplete === 'function'
   }
@@ -35,14 +35,17 @@ export class GoogleMapsLoader {
       try {
         // Define callback for Google Maps
         const callbackName = '__googleMapsApiOnLoadCallback';
+        // eslint-disable-next-line ts/no-unsafe-member-access
         (window as any)[callbackName] = () => {
           // Wait a small tick to ensure all components are initialized
           setTimeout(() => {
             if (this.isFullyLoaded()) {
+              // eslint-disable-next-line ts/no-unsafe-member-access
               delete (window as any)[callbackName]
               resolve()
             }
             else {
+              // eslint-disable-next-line ts/no-unsafe-member-access
               delete (window as any)[callbackName]
               this.loadPromise = null
               reject(new Error('Google Maps failed to fully initialize'))
@@ -56,6 +59,7 @@ export class GoogleMapsLoader {
         script.defer = true
 
         script.onerror = (error) => {
+          // eslint-disable-next-line ts/no-unsafe-member-access
           delete (window as any)[callbackName]
           this.loadPromise = null
           reject(error)

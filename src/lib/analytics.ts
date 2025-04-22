@@ -5,7 +5,7 @@ interface ContentParams {
 }
 
 export function trackPageView(params: ContentParams) {
-  if (typeof window !== 'undefined' && window.gtag) {
+  if (typeof window !== 'undefined' && window.gtag != null) {
     window.gtag('event', 'page_view', {
       page_title: params.content_name,
       page_location: window.location.href,
@@ -20,7 +20,7 @@ export function trackContentInteraction(
   action: string,
   params: ContentParams & Record<string, any>,
 ) {
-  if (typeof window !== 'undefined' && window.gtag) {
+  if (typeof window !== 'undefined' && window.gtag != null) {
     window.gtag('event', action, {
       ...params,
     })

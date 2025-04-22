@@ -57,7 +57,7 @@ function PricingCard({
       </TrackedLink>
       <p className="mb-4 text-start text-base">{description}</p>
       <h4 className="text-lg font-medium">
-        {includes || 'Includes'}
+        {includes ?? 'Includes'}
       </h4>
       <ul className="space-y-4 text-left text-shade">
         {features}
