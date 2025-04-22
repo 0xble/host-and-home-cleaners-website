@@ -2,13 +2,13 @@
 
 import type { BaseStepProps } from '@/app/book/types'
 import { StepLayout } from '@/app/book/components/StepLayout'
+import { GradientButton } from '@/components/GradientButton'
 import { PaymentMethodCard } from '@/components/PaymentMethodCard'
 import { Card, CardContent } from '@/components/ui/card'
+import { ROUTES } from '@/lib/routes'
 import { format } from 'date-fns'
-import { GradientButton } from '@/components/GradientButton'
 import { Loader2 } from 'lucide-react'
 import Link from 'next/link'
-import { ROUTES } from '@/lib/routes'
 
 export function ConfirmationStep({ form, isSubmitting, onSubmit }: BaseStepProps) {
   const { watch } = form

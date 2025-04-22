@@ -6,7 +6,9 @@ import type {
   BookingFormState,
 } from '@/app/book/types'
 import type { Location } from '@/lib/types'
+import type { RecordBookingPayload } from '@/lib/types/bookings'
 import type { ComponentType } from 'react'
+import { AnimatedStepTransition } from '@/app/book/components/AnimatedStepTransition'
 import { AddressInputStep } from '@/app/book/components/steps/AddressInputStep'
 import { ChooseYourServiceStep } from '@/app/book/components/steps/ChooseYourServiceStep'
 import { ConfirmationStep } from '@/app/book/components/steps/ConfirmationStep'
@@ -17,7 +19,6 @@ import { ScheduleStep } from '@/app/book/components/steps/ScheduleStep'
 import { ServiceSelectionStep } from '@/app/book/components/steps/ServiceSelectionStep'
 import { SizeSelectionStep } from '@/app/book/components/steps/SizeSelectionStep'
 import { TellUsAboutYourPlaceStep } from '@/app/book/components/steps/TellUsAboutYourPlaceStep'
-import { AnimatedStepTransition } from '@/app/book/components/AnimatedStepTransition'
 import { BookingFormSchema, BookingStep } from '@/app/book/types'
 import { calculatePrice } from '@/app/book/utils'
 import { GradientButton } from '@/components/GradientButton'
@@ -28,11 +29,12 @@ import {
 } from '@/components/ui/form'
 import { Progress } from '@/components/ui/progress'
 import { toast } from '@/components/ui/use-toast'
-import { PRICING_PARAMETERS } from '@/lib/constants'
+import { LOCATIONS, PRICING_PARAMETERS } from '@/lib/constants'
 import { GoogleMapsLoader } from '@/lib/google/GoogleMapsLoader'
 import { ROUTES } from '@/lib/routes'
+import { tz } from '@date-fns/tz'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { addDays } from 'date-fns'
+import { addDays, format, hoursToMinutes, parse } from 'date-fns'
 import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -297,20 +299,94 @@ export default function BookingPage() {
   const onSubmit = async (data: BookingFormData) => {
     setIsSubmitting(true)
 
-    // Payment successful, clear form and navigate to confirmation
-    toast({
-      title: 'Booking confirmed!',
-      description: 'You will receive a confirmation email shortly.',
-    })
+    try {
+      const response = await fetch('/api/bookings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          values: {
+            status: 'Upcoming',
+            scheduled: parse(`${data.date} ${data.arrivalWindow.split(' - ')[0]}`, 'yyyy-MM-dd h:mma', new Date(), { in: tz(LOCATIONS[location].timezone) }),
+            client: {
+              name: `${data.customer.firstName} ${data.customer.lastName}`,
+              email: data.customer.email,
+              phone: data.customer.phone,
+              source: 'Website',
+            },
+            frequency: (() => {
+              switch (data.frequency) {
+                case 'one-time':
+                  return 'One-Time'
+                case 'weekly':
+                  return 'Weekly'
+                case 'biweekly':
+                  return 'Every Other Week'
+                case 'monthly':
+                  return 'Every Month'
+                default:
+                  return undefined
+              }
+            })(),
+            service: (() => {
+              switch (data.serviceCategory) {
+                case 'default':
+                  return undefined
+                case 'move-in-out':
+                  return 'Move In/Out'
+                case 'custom':
+                  return 'Custom'
+                case 'mansion':
+                  return 'Mansion'
+                default:
+                  return data.serviceCategory
+              }
+            })(),
+            address: {
+              address: data.customer.address,
+              apt: data.customer.apt,
+              zip: data.customer.zipCode,
+            },
+            bedrooms: data.pricingParams?.type === 'flat' ? data.pricingParams.bedrooms : undefined,
+            duration: data.pricingParams?.type === 'hourly' ? hoursToMinutes(data.pricingParams.hours) : undefined,
+            totalPrice: data.price.serviceTotal,
+            finalPrice: data.price.totalInitial,
+            adjustedPrice: data.price.totalRecurring,
+            discountFromFrequency: data.price.recurringDiscount,
+            isFirstBooking: true,
+          },
+        } satisfies RecordBookingPayload),
+      })
 
-    // Clear session storage on successful submission
-    sessionStorage.removeItem('bookingFormState')
+      const result = await response.json()
 
-    console.log('Booking confirmed', data)
+      if (result.status === 'success') {
+        toast({
+          title: 'Booking confirmed!',
+          description: 'You will receive a confirmation email shortly.',
+        })
 
-    // Wait for 2 seconds before navigating to confirmation
-    await new Promise(resolve => setTimeout(resolve, 2000))
-    router.push(ROUTES.CONFIRMATION.href)
+        // Clear session storage on successful submission
+        sessionStorage.removeItem('bookingFormState')
+
+        // Wait for 2 seconds before navigating to confirmation
+        await new Promise(resolve => setTimeout(resolve, 2000))
+        router.push(ROUTES.CONFIRMATION.href)
+      }
+      else {
+        throw new Error(result.message || 'Failed to create booking')
+      }
+    }
+    catch (error) {
+      console.error('Error creating booking:', error)
+      toast({
+        title: 'Error',
+        description: error instanceof Error ? error.message : 'Failed to create booking',
+        variant: 'destructive',
+      })
+    }
+    finally {
+      setIsSubmitting(false)
+    }
   }
 
   // Handle browser back/forward buttons
@@ -399,15 +475,18 @@ export default function BookingPage() {
     return Object.values(BookingStep).reduce((acc, step) => {
       const StepComponent = STEP_COMPONENTS[step as BookingStep]
       if (step === BookingStep.CONFIRMATION) {
-        acc[step] = <StepComponent
-          {...baseStepProps}
-          isSubmitting={isSubmitting}
-          onSubmit={(e) => {
-            e.preventDefault()
-            void handleSubmit(onSubmit)(e)
-          }}
-        />
-      } else {
+        acc[step] = (
+          <StepComponent
+            {...baseStepProps}
+            isSubmitting={isSubmitting}
+            onSubmit={(e) => {
+              e.preventDefault()
+              void handleSubmit(onSubmit)(e)
+            }}
+          />
+        )
+      }
+      else {
         acc[step] = <StepComponent {...baseStepProps} />
       }
       return acc
@@ -456,153 +535,153 @@ export default function BookingPage() {
 
       {/* Navigation and pricing */}
       {currentStep !== BookingStep.CONFIRMATION && (
-            <>
-              {/* Progress bar above bottom navigaton */}
-              <div className="fixed inset-x-0 bottom-20 z-10 bg-white">
-                <Progress
-                  className="h-2 w-full rounded-none"
-                  segments={progress.max / 2}
-                  value={progress.value / progress.max * 100}
-                />
-              </div>
-              <div className="fixed inset-x-0 bottom-0 z-10 h-20 bg-white shadow-md">
-                <div className="flex size-full items-center justify-between p-4">
-                  {currentStep === BookingStep.GETTING_STARTED
-                    ? (
-                        <GradientButton
+        <>
+          {/* Progress bar above bottom navigaton */}
+          <div className="fixed inset-x-0 bottom-20 z-10 bg-white">
+            <Progress
+              className="h-2 w-full rounded-none"
+              segments={progress.max / 2}
+              value={progress.value / progress.max * 100}
+            />
+          </div>
+          <div className="fixed inset-x-0 bottom-0 z-10 h-20 bg-white shadow-md">
+            <div className="flex size-full items-center justify-between p-4">
+              {currentStep === BookingStep.GETTING_STARTED
+                ? (
+                    <GradientButton
+                      type="button"
+                      onClick={() => void nextStep()}
+                      className="w-full"
+                    >
+                      Get started
+                    </GradientButton>
+                  )
+                : (
+                    <>
+                      <div className="flex items-center gap-4">
+                        {price && selectedFrequency && selectedServiceCategory && selectedPricingParams && (
+                          <PriceDetailsDrawer
+                            price={{
+                              serviceTotal: price.serviceTotal,
+                              discount: price.discount,
+                              recurringDiscount: price.recurringDiscount,
+                              taxes: price.taxes,
+                              totalInitial: price.totalInitial,
+                              totalRecurring: price.totalRecurring,
+                            }}
+                            booking={{
+                              frequency: selectedFrequency,
+                              serviceCategory: selectedServiceCategory,
+                              pricingParams: selectedPricingParams,
+                            }}
+                          />
+                        )}
+                      </div>
+
+                      <div className="flex items-center gap-2">
+                        {currentStep > 0 && (
+                          <Button
+                            type="button"
+                            variant="outline"
+                            onClick={prevStep}
+                          >
+                            Back
+                          </Button>
+                        )}
+                        <Button
                           type="button"
                           onClick={() => void nextStep()}
-                          className="w-full"
+                          disabled={!isStepValid}
                         >
-                          Get started
-                        </GradientButton>
-                      )
-                    : (
-                        <>
-                          <div className="flex items-center gap-4">
-                            {price && selectedFrequency && selectedServiceCategory && selectedPricingParams && (
-                              <PriceDetailsDrawer
-                                price={{
-                                  serviceTotal: price.serviceTotal,
-                                  discount: price.discount,
-                                  recurringDiscount: price.recurringDiscount,
-                                  taxes: price.taxes,
-                                  totalInitial: price.totalInitial,
-                                  totalRecurring: price.totalRecurring,
-                                }}
-                                booking={{
-                                  frequency: selectedFrequency,
-                                  serviceCategory: selectedServiceCategory,
-                                  pricingParams: selectedPricingParams,
-                                }}
-                              />
-                            )}
-                          </div>
+                          {currentStep === getPrevStepNumber(BookingStep.CONFIRMATION)
+                            ? 'Review'
+                            : 'Next'}
+                        </Button>
+                      </div>
+                    </>
+                  )}
+            </div>
+          </div>
 
-                          <div className="flex items-center gap-2">
-                            {currentStep > 0 && (
-                              <Button
-                                type="button"
-                                variant="outline"
-                                onClick={prevStep}
-                              >
-                                Back
-                              </Button>
-                            )}
-                            <Button
-                              type="button"
-                              onClick={() => void nextStep()}
-                              disabled={!isStepValid}
-                            >
-                              {currentStep === getPrevStepNumber(BookingStep.CONFIRMATION)
-                                ? 'Review'
-                                : 'Next'}
-                            </Button>
-                          </div>
-                        </>
-                      )}
-                </div>
-              </div>
+          {/* Skip button for development */}
+          {process.env.NODE_ENV === 'development' && (
+            <div className="fixed inset-x-0 bottom-24 z-20 px-6 py-2 bg-transparent pointer-events-none">
+              <div className="flex justify-end pointer-events-auto">
+                <Button
+                  variant="outline"
+                  size="default"
+                  className="font-mono border-2 border-dashed border-yellow-400 bg-yellow-50 hover:bg-yellow-100 text-yellow-700"
+                  onClick={() => {
+                    switch (currentStep) {
+                      case BookingStep.GETTING_STARTED:
+                        void nextStep(true)
+                        break
+                      case BookingStep.CHOOSE_YOUR_SERVICE:
+                        void nextStep(true)
+                        break
+                      case BookingStep.SERVICE_SELECTION:
+                        form.setValue('serviceCategory', 'default')
+                        void nextStep(true)
+                        break
+                      case BookingStep.TELL_US_ABOUT_YOUR_PLACE:
+                        void nextStep(true)
+                        break
+                      case BookingStep.CUSTOMER_DETAILS:
+                        form.setValue('customer.firstName', 'John')
+                        form.setValue('customer.lastName', 'Doe')
+                        form.setValue('customer.email', 'john.doe@example.com')
+                        form.setValue('customer.phone', '1234567890')
+                        void nextStep(true)
+                        break
+                      case BookingStep.ADDRESS_INPUT:
+                        form.setValue('customer.address', '123 Main St')
+                        form.setValue('customer.city', 'Myrtle Beach')
+                        form.setValue('customer.state', 'SC')
+                        form.setValue('customer.zipCode', '29577')
+                        void nextStep(true)
+                        break
+                      case BookingStep.SIZE_SELECTION:
+                      case BookingStep.HOURS_SELECTION: {
+                        const pricingParams = currentStep === BookingStep.SIZE_SELECTION
+                          ? { type: 'flat' as const, bedrooms: 2 }
+                          : { type: 'hourly' as const, hours: 4 }
 
-              {/* Skip button for development */}
-              {process.env.NODE_ENV === 'development' && (
-                <div className="fixed inset-x-0 bottom-24 z-20 px-6 py-2 bg-transparent pointer-events-none">
-                  <div className="flex justify-end pointer-events-auto">
-                    <Button
-                      variant="outline"
-                      size="default"
-                      className="font-mono border-2 border-dashed border-yellow-400 bg-yellow-50 hover:bg-yellow-100 text-yellow-700"
-                      onClick={() => {
-                        switch (currentStep) {
-                          case BookingStep.GETTING_STARTED:
-                            void nextStep(true)
-                            break
-                          case BookingStep.CHOOSE_YOUR_SERVICE:
-                            void nextStep(true)
-                            break
-                          case BookingStep.SERVICE_SELECTION:
-                            form.setValue('serviceCategory', 'default')
-                            void nextStep(true)
-                            break
-                          case BookingStep.TELL_US_ABOUT_YOUR_PLACE:
-                            void nextStep(true)
-                            break
-                          case BookingStep.CUSTOMER_DETAILS:
-                            form.setValue('customer.firstName', 'John')
-                            form.setValue('customer.lastName', 'Doe')
-                            form.setValue('customer.email', 'john.doe@example.com')
-                            form.setValue('customer.phone', '1234567890')
-                            void nextStep(true)
-                            break
-                          case BookingStep.ADDRESS_INPUT:
-                            form.setValue('customer.address', '123 Main St')
-                            form.setValue('customer.city', 'Myrtle Beach')
-                            form.setValue('customer.state', 'SC')
-                            form.setValue('customer.zipCode', '29577')
-                            void nextStep(true)
-                            break
-                          case BookingStep.SIZE_SELECTION:
-                          case BookingStep.HOURS_SELECTION: {
-                            const pricingParams = currentStep === BookingStep.SIZE_SELECTION
-                              ? { type: 'flat' as const, bedrooms: 2 }
-                              : { type: 'hourly' as const, hours: 4 }
+                        form.setValue('pricingParams.type', pricingParams.type)
+                        form.setValue(`pricingParams.${pricingParams.type === 'flat' ? 'bedrooms' : 'hours'}`, pricingParams.type === 'flat' ? pricingParams.bedrooms : pricingParams.hours)
 
-                            form.setValue('pricingParams.type', pricingParams.type)
-                            form.setValue(`pricingParams.${pricingParams.type === 'flat' ? 'bedrooms' : 'hours'}`, pricingParams.type === 'flat' ? pricingParams.bedrooms : pricingParams.hours)
-
-                            if (selectedServiceCategory && selectedFrequency) {
-                              form.setValue('price', calculatePrice(
-                                selectedServiceCategory,
-                                selectedFrequency,
-                                pricingParams,
-                                PRICING_PARAMETERS[location][selectedServiceCategory],
-                              ))
-                            }
-                            else {
-                              console.error('Expected parameters to be defined for price calculation', {
-                                selectedServiceCategory,
-                                selectedFrequency,
-                              })
-                            }
-                            void nextStep(true)
-                            break
-                          }
-                          case BookingStep.SCHEDULE:
-                            form.setValue('date', addDays(new Date(), 4))
-                            form.setValue('arrivalWindow', '8:00AM - 9:00AM')
-                            form.setValue('frequency', 'biweekly')
-                            void nextStep(true)
-                            break
+                        if (selectedServiceCategory && selectedFrequency) {
+                          form.setValue('price', calculatePrice(
+                            selectedServiceCategory,
+                            selectedFrequency,
+                            pricingParams,
+                            PRICING_PARAMETERS[location][selectedServiceCategory],
+                          ))
                         }
-                      }}
-                    >
-                      Skip →
-                    </Button>
-                  </div>
-                </div>
-              )}
-            </>
+                        else {
+                          console.error('Expected parameters to be defined for price calculation', {
+                            selectedServiceCategory,
+                            selectedFrequency,
+                          })
+                        }
+                        void nextStep(true)
+                        break
+                      }
+                      case BookingStep.SCHEDULE:
+                        form.setValue('date', format(addDays(new Date(), 4), 'yyyy-MM-dd', { in: tz(LOCATIONS[location].timezone) }))
+                        form.setValue('arrivalWindow', '8:00AM - 9:00AM')
+                        form.setValue('frequency', 'biweekly')
+                        void nextStep(true)
+                        break
+                    }
+                  }}
+                >
+                  Skip →
+                </Button>
+              </div>
+            </div>
           )}
+        </>
+      )}
     </div>
   )
 }

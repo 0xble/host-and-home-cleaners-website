@@ -46,7 +46,7 @@ export const BookingFormSchema = z.object({
   location: LocationSchema,
   serviceCategory: BookingServiceCategorySchema,
   frequency: BookingFrequencySchema,
-  date: z.date(),
+  date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Date must be in YYYY-MM-DD format'),
   arrivalWindow: BookingArrivalWindowSchema,
   customer: z.object({
     firstName: z.string().min(1, 'First name is required'),

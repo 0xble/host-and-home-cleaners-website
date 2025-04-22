@@ -710,6 +710,7 @@ export const LOCATIONS = {
       '29554',
       '29569',
     ] as const,
+    timezone: 'America/New_York',
   },
   HONOLULU: {
     id: '5ae41ba1a59649679c18d2a77062fea8',
@@ -779,6 +780,7 @@ export const LOCATIONS = {
       '96849',
       '96850',
     ] as const,
+    timezone: 'America/Honolulu',
   },
 } as const
 
