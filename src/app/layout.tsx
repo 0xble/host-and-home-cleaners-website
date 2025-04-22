@@ -1,12 +1,12 @@
 import type { Metadata } from 'next'
-
 import CookieConsent from '@/components/analytics/CookieConsent'
 import { PixelInitializer } from '@/components/analytics/facebook/Pixel'
 import GoogleAnalytics from '@/components/analytics/google/GoogleAnalytics'
-
 import { PostHogProvider } from '@/components/analytics/posthog/PostHogProvider'
+
 import { Toaster } from '@/components/ui/toaster'
 import { getBaseUrl } from '@/lib/utils'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 import { Inter } from 'next/font/google'
 import Script from 'next/script'
 import '@/app/globals.css'
@@ -75,6 +75,7 @@ export default function RootLayout({ children }: LayoutProps) {
           <Toaster />
           <CookieConsent />
         </PostHogProvider>
+        <SpeedInsights />
       </body>
     </html>
   )
