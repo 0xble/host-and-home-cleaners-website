@@ -71,6 +71,12 @@ export const BookingFormSchema = z.object({
       lng: z.number(),
     }).optional(),
   }),
+  payment: z.object({
+    cardNumber: z.string().min(16, 'Card number is required'),
+    expiration: z.string().min(5, 'Expiration date is required'),
+    cvv: z.string().min(3, 'CVV is required'),
+    zip: z.string().min(5, 'ZIP code is required'),
+  }),
   pricingParams: BookingPricingParamsSchema,
   price: BookingPriceDetailsSchema,
 })

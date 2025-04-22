@@ -1,11 +1,11 @@
 'use client'
 
+import { StarRating } from '@/app/review/components/StarRating'
 import { ContentViewTracker } from '@/components/analytics/facebook/Pixel'
 import Brand from '@/components/Brand'
 import { Card } from '@/components/ui/card'
-import { Container } from '@/components/ui/container'
 
-import { StarRating } from './components/StarRating'
+import { Container } from '@/components/ui/container'
 
 export default function ReviewPage() {
   return (

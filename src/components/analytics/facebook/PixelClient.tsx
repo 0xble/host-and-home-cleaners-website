@@ -1,10 +1,10 @@
 'use client'
 
+import { PixelEvent } from '@/lib/pixel/pixelEvents'
+import { initializePixel } from '@/lib/pixel/pixelUtils'
+
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
-
-import { PixelEvent } from '../../../lib/pixel/pixelEvents'
-import { initializePixel } from '../../../lib/pixel/pixelUtils'
 
 const isBrowser = typeof window !== 'undefined'
 

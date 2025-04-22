@@ -20,11 +20,11 @@ function formatPhoneNumber(value: string) {
 
   const [, area, prefix, line] = match
 
-  if (!area)
+  if (area == null)
     return ''
-  if (!prefix)
+  if (prefix == null)
     return `(${area}`
-  if (!line)
+  if (line == null)
     return `(${area}) ${prefix}`
   return `(${area}) ${prefix}-${line}`
 }
@@ -37,10 +37,10 @@ export function CustomerDetailsStep({ form, onValidityChangeAction }: BaseStepPr
 
   useEffect(() => {
     const isValid = Boolean(
-      firstName
-      && lastName
-      && email
-      && phone?.replace(/\D/g, '').length === 10, // Ensure phone has exactly 10 digits
+      firstName != null
+      && lastName != null
+      && email != null
+      && phone != null && phone.replace(/\D/g, '').length === 10, // Ensure phone has exactly 10 digits
     )
     onValidityChangeAction(isValid)
   }, [firstName, lastName, email, phone, onValidityChangeAction])

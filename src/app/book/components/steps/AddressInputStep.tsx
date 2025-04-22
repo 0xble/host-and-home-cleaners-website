@@ -25,12 +25,11 @@ export function AddressInputStep({ form, onValidityChangeAction }: BaseStepProps
 
   // Use useStepValidation for validation
   useStepValidation(form, onValidityChangeAction, {
-    customValidation: formData => Boolean(
-      formData.customer?.address
-      && formData.customer?.city
-      && formData.customer?.state
-      && formData.customer?.zipCode,
-    ),
+    customValidation: formData =>
+      formData.customer?.address != null
+      && formData.customer?.city != null
+      && formData.customer?.state != null
+      && formData.customer?.zipCode != null,
   })
 
   const handleAddressChange = (value: string) => {
@@ -75,11 +74,11 @@ export function AddressInputStep({ form, onValidityChangeAction }: BaseStepProps
 
                         const components = extractAddressComponents(place.address_components)
 
-                        if (components.city)
+                        if (components.city != null)
                           setValue('customer.city', components.city)
-                        if (components.state)
+                        if (components.state != null)
                           setValue('customer.state', components.state)
-                        if (components.zipCode)
+                        if (components.zipCode != null)
                           setValue('customer.zipCode', components.zipCode)
 
                         setShowAddressFields(true)
@@ -223,11 +222,11 @@ export function AddressInputStep({ form, onValidityChangeAction }: BaseStepProps
                   if (place) {
                     const components = extractAddressComponents(place.address_components)
 
-                    if (components.city)
+                    if (components.city != null)
                       setValue('customer.city', components.city)
-                    if (components.state)
+                    if (components.state != null)
                       setValue('customer.state', components.state)
-                    if (components.zipCode)
+                    if (components.zipCode != null)
                       setValue('customer.zipCode', components.zipCode)
 
                     setShowAddressFields(true)

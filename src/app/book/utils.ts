@@ -1,5 +1,5 @@
+import type { BookingFormData, BookingFrequency, BookingPricingParams, BookingServiceCategory } from '@/app/book/types'
 import type { PricingParams } from '@/lib/constants'
-import type { BookingFormData, BookingFrequency, BookingPricingParams, BookingServiceCategory } from './types'
 
 /**
  * Constructs a formatted address string in two lines:
@@ -19,17 +19,17 @@ export function constructFullAddress({
   state?: string
   zipCode?: string
 }): string {
-  if (!address)
+  if (address == null)
     return ''
 
   // First line: Street address with apt/unit
-  const streetLine = apt ? `${address}, ${apt}` : address
+  const streetLine = apt != null ? `${address}, ${apt}` : address
 
   // Second line: City, State ZIP (only if we have at least city and state)
-  if (!city || !state)
+  if (city == null || state == null)
     return streetLine
 
-  const locationLine = zipCode
+  const locationLine = zipCode != null
     ? `${city}, ${state} ${zipCode}`
     : `${city}, ${state}`
 
@@ -55,7 +55,7 @@ export function extractAddressComponents(addressComponents: google.maps.Geocoder
     zipCode: null,
   }
 
-  if (!addressComponents)
+  if (addressComponents == null)
     return result
 
   for (const component of addressComponents) {

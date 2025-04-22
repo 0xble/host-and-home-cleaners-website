@@ -1,6 +1,14 @@
 'use client'
 
+import type { BookingFormData } from '@/app/book/types'
+import type { UseFormReturn } from 'react-hook-form'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from '@/components/ui/form'
 import {
   HoverCard,
   HoverCardContent,
@@ -12,14 +20,8 @@ import { InfoIcon, Lock, Shield } from 'lucide-react'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 
-export function PaymentMethodCard() {
+export function PaymentMethodCard({ form }: { form: UseFormReturn<BookingFormData> }) {
   const [isLoading, setIsLoading] = useState(false)
-  const [values, setValues] = useState({
-    cardNumber: '',
-    expiration: '',
-    cvv: '',
-    zip: '',
-  })
 
   // Show loading state upon mount
   useEffect(() => {
@@ -29,46 +31,38 @@ export function PaymentMethodCard() {
     }, 1200)
   }, [])
 
-  const handleChange = (field: keyof typeof values) => (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCardNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value
-
-    if (field === 'cardNumber') {
-      // Remove any non-digit characters
-      value = value.replace(/\D/g, '')
-
-      // Add spaces after every 4 digits
-      value = value.replace(/(\d{4})(?=\d)/g, '$1 ')
-
-      // Limit to 16 digits plus spaces
-      if (value.replace(/\s/g, '').length > 16) {
-        return
-      }
+    // Remove any non-digit characters
+    value = value.replace(/\D/g, '')
+    // Add spaces after every 4 digits
+    value = value.replace(/(\d{4})(?=\d)/g, '$1 ')
+    // Limit to 16 digits plus spaces
+    if (value.replace(/\s/g, '').length > 16) {
+      return e.target.value
     }
+    return value
+  }
 
-    if (field === 'expiration') {
-      // Remove any non-digit characters
-      value = value.replace(/\D/g, '')
-
-      // Format as MM/YY
-      if (value.length >= 2) {
-        const month = value.slice(0, 2)
-        const year = value.slice(2)
-
-        // Validate month (01-12)
-        if (Number.parseInt(month) > 12) {
-          return
-        }
-
-        value = month + (year ? `/${year}` : '')
+  const handleExpirationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value
+    // Remove any non-digit characters
+    value = value.replace(/\D/g, '')
+    // Format as MM/YY
+    if (value.length >= 2) {
+      const month = value.slice(0, 2)
+      const year = value.slice(2)
+      // Validate month (01-12)
+      if (Number.parseInt(month) > 12) {
+        return e.target.value
       }
-
-      // Limit to MM/YY format (5 characters)
-      if (value.length > 5) {
-        return
-      }
+      value = month + (year ? `/${year}` : '')
     }
-
-    setValues(prev => ({ ...prev, [field]: value }))
+    // Limit to MM/YY format (5 characters)
+    if (value.length > 5) {
+      return e.target.value
+    }
+    return value
   }
 
   return (
@@ -96,49 +90,83 @@ export function PaymentMethodCard() {
         {!isLoading
           ? (
               <div className="space-y-4">
-                <div className="space-y-2">
-                  <Input
-                    label={(
-                      <span className="flex items-center gap-1">
+                <FormField
+                  control={form.control}
+                  name="payment.cardNumber"
+                  render={({ field }) => (
+                    <FormItem className="space-y-2">
+                      <FormLabel className="flex items-center gap-1">
                         Card number
                         <Lock className="h-3 w-3" />
-                      </span>
-                    )}
-                    type="tel"
-                    maxLength={19}
-                    value={values.cardNumber}
-                    onChange={handleChange('cardNumber')}
-                  />
-                </div>
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          type="tel"
+                          maxLength={19}
+                          {...field}
+                          onChange={(e) => {
+                            const value = handleCardNumberChange(e)
+                            field.onChange(value)
+                          }}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Input
-                      label="MM/YY"
-                      type="tel"
-                      maxLength={5}
-                      value={values.expiration}
-                      onChange={handleChange('expiration')}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Input
-                      label="CVV"
-                      type="tel"
-                      maxLength={4}
-                      value={values.cvv}
-                      onChange={handleChange('cvv')}
-                    />
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <Input
-                    label="ZIP"
-                    type="tel"
-                    maxLength={5}
-                    value={values.zip}
-                    onChange={handleChange('zip')}
+                  <FormField
+                    control={form.control}
+                    name="payment.expiration"
+                    render={({ field }) => (
+                      <FormItem className="space-y-2">
+                        <FormLabel>MM/YY</FormLabel>
+                        <FormControl>
+                          <Input
+                            type="tel"
+                            maxLength={5}
+                            {...field}
+                            onChange={(e) => {
+                              const value = handleExpirationChange(e)
+                              field.onChange(value)
+                            }}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="payment.cvv"
+                    render={({ field }) => (
+                      <FormItem className="space-y-2">
+                        <FormLabel>CVV</FormLabel>
+                        <FormControl>
+                          <Input
+                            type="tel"
+                            maxLength={4}
+                            {...field}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
                   />
                 </div>
+                <FormField
+                  control={form.control}
+                  name="payment.zip"
+                  render={({ field }) => (
+                    <FormItem className="space-y-2">
+                      <FormLabel>ZIP</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="tel"
+                          maxLength={5}
+                          {...field}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
               </div>
             )
           : (

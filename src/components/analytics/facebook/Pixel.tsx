@@ -7,7 +7,7 @@
  */
 
 // Export all client-side implementation from the client file
-export * from './PixelClient'
+export * from '@/components/analytics/facebook/PixelClient'
 
 // Export the PixelEvent enum and PixelEventName type from the separate file
 export { PixelEvent, type PixelEventName } from '@/lib/pixel/pixelEvents'

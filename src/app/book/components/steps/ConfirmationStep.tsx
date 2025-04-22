@@ -139,7 +139,7 @@ export function ConfirmationStep({ form, isSubmitting, onSubmit }: BaseStepProps
           </CardContent>
         </Card>
 
-        <PaymentMethodCard />
+        <PaymentMethodCard form={form} />
 
         <div className="space-y-2 mt-4">
           <p className="text-xs text-center">

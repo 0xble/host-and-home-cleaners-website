@@ -1,13 +1,13 @@
 import type { Metadata } from 'next'
+import TeamSection from '@/app/about/components/TeamSection'
 import { ContentViewTracker } from '@/components/analytics/facebook/Pixel'
-import Page from '@/components/templates/Page'
 
+import Page from '@/components/templates/Page'
 import CTASection from '@/components/templates/sections/CTASection'
 import { BUSINESS_NAME } from '@/lib/constants'
 import Image from 'next/image'
-import { Suspense } from 'react'
 
-import TeamSection from './components/TeamSection'
+import { Suspense } from 'react'
 
 export const metadata: Metadata = {
   title: `About Us`,

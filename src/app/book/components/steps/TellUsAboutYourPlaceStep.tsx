@@ -1,9 +1,9 @@
 'use client'
 
-import type { BaseStepProps } from '../../types'
+import type { BaseStepProps } from '@/app/book/types'
+import { StepLayout } from '@/app/book/components/StepLayout'
+import { useStepValidation } from '@/app/book/hooks/useStepValidation'
 import { CardDescription, CardTitle } from '@/components/ui/card'
-import { useStepValidation } from '../../hooks/useStepValidation'
-import { StepLayout } from '../StepLayout'
 
 export function TellUsAboutYourPlaceStep({ form, onValidityChangeAction }: BaseStepProps) {
   // This step is always valid because it's just informational

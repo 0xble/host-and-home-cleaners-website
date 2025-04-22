@@ -1,5 +1,6 @@
 'use client'
 
+import type { NotionDateParsed, NotionTimezone } from '0xble/notion/schemas'
 import type {
   BaseStepProps,
   BookingFormData,
@@ -29,12 +30,13 @@ import {
 } from '@/components/ui/form'
 import { Progress } from '@/components/ui/progress'
 import { toast } from '@/components/ui/use-toast'
-import { LOCATIONS, PRICING_PARAMETERS } from '@/lib/constants'
+import { DOMAIN, LOCATIONS, PRICING_PARAMETERS } from '@/lib/constants'
 import { GoogleMapsLoader } from '@/lib/google/GoogleMapsLoader'
 import { ROUTES } from '@/lib/routes'
 import { tz } from '@date-fns/tz'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { addDays, format, hoursToMinutes, parse } from 'date-fns'
+import axios from 'axios'
+import { addDays, addHours, format, hoursToMinutes, parse } from 'date-fns'
 import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -94,6 +96,7 @@ export default function BookingPage() {
   const customerState = watch('customer.state') as string | undefined
   const customerZipCode = watch('customer.zipCode') as string | undefined
   const price = watch('price') as BookingFormState['price'] | undefined
+  const payment = watch('payment') as BookingFormState['payment'] | undefined
 
   // Check if we have all required parameters to show price
   const isCurrentStepValid = async () => {
@@ -299,19 +302,37 @@ export default function BookingPage() {
   const onSubmit = async (data: BookingFormData) => {
     setIsSubmitting(true)
 
+    const getScheduled = ({ date, arrivalWindow, hours }: { date: string, arrivalWindow: string, hours?: number }): string | NotionDateParsed => {
+      const timezone = LOCATIONS[location].timezone as NotionTimezone
+      const start = parse(`${date} ${arrivalWindow.split(' - ')[0]}`, 'yyyy-MM-dd h:mma', new Date(), { in: tz(timezone) })
+      if (hours == null) {
+        return start.toISOString()
+      }
+      else {
+        return {
+          start,
+          end: addHours(start, hours),
+          timezone,
+        }
+      }
+    }
+
     try {
-      const response = await fetch('/api/bookings', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
+      const { data: result } = await axios.post<{ status: string, message?: string }>('/api/bookings', {
+        payload: {
           values: {
+            location: LOCATIONS[location].name,
             status: 'Upcoming',
-            scheduled: parse(`${data.date} ${data.arrivalWindow.split(' - ')[0]}`, 'yyyy-MM-dd h:mma', new Date(), { in: tz(LOCATIONS[location].timezone) }),
+            scheduled: getScheduled({
+              date: data.date,
+              arrivalWindow: data.arrivalWindow,
+              hours: data.pricingParams.type === 'hourly' ? data.pricingParams.hours : undefined,
+            }),
             client: {
               name: `${data.customer.firstName} ${data.customer.lastName}`,
               email: data.customer.email,
               phone: data.customer.phone,
-              source: 'Website',
+              // source: 'Website',
             },
             frequency: (() => {
               switch (data.frequency) {
@@ -342,9 +363,12 @@ export default function BookingPage() {
               }
             })(),
             address: {
-              address: data.customer.address,
+              street: data.customer.address,
               apt: data.customer.apt,
+              city: data.customer.city,
+              state: data.customer.state,
               zip: data.customer.zipCode,
+              coordinates: data.customer.coordinates,
             },
             bedrooms: data.pricingParams?.type === 'flat' ? data.pricingParams.bedrooms : undefined,
             duration: data.pricingParams?.type === 'hourly' ? hoursToMinutes(data.pricingParams.hours) : undefined,
@@ -354,10 +378,9 @@ export default function BookingPage() {
             discountFromFrequency: data.price.recurringDiscount,
             isFirstBooking: true,
           },
-        } satisfies RecordBookingPayload),
+        } satisfies RecordBookingPayload,
+        data: payment,
       })
-
-      const result = await response.json()
 
       if (result.status === 'success') {
         toast({
@@ -368,19 +391,18 @@ export default function BookingPage() {
         // Clear session storage on successful submission
         sessionStorage.removeItem('bookingFormState')
 
-        // Wait for 2 seconds before navigating to confirmation
-        await new Promise(resolve => setTimeout(resolve, 2000))
         router.push(ROUTES.CONFIRMATION.href)
       }
       else {
-        throw new Error(result.message || 'Failed to create booking')
+        throw new Error(result.message ?? 'Failed to create booking')
       }
     }
     catch (error) {
       console.error('Error creating booking:', error)
+
       toast({
-        title: 'Error',
-        description: error instanceof Error ? error.message : 'Failed to create booking',
+        title: 'Sorry, something went wrong 🙁',
+        description: error instanceof Error ? error.message : `Please try again or contact us at support@${DOMAIN} to book your cleaning.`,
         variant: 'destructive',
       })
     }
@@ -533,6 +555,91 @@ export default function BookingPage() {
         </form>
       </Form>
 
+      {/* Skip button for development */}
+      {process.env.NODE_ENV === 'development' && (
+        <div className="fixed inset-x-0 bottom-24 z-20 px-6 py-2 bg-transparent pointer-events-none">
+          <div className="flex justify-end pointer-events-auto">
+            <Button
+              variant="outline"
+              size="default"
+              className="font-mono border-2 border-dashed border-yellow-400 bg-yellow-50 hover:bg-yellow-100 text-yellow-700"
+              onClick={() => {
+                switch (currentStep) {
+                  case BookingStep.GETTING_STARTED:
+                    void nextStep(true)
+                    break
+                  case BookingStep.CHOOSE_YOUR_SERVICE:
+                    void nextStep(true)
+                    break
+                  case BookingStep.SERVICE_SELECTION:
+                    form.setValue('serviceCategory', 'default')
+                    void nextStep(true)
+                    break
+                  case BookingStep.TELL_US_ABOUT_YOUR_PLACE:
+                    void nextStep(true)
+                    break
+                  case BookingStep.CUSTOMER_DETAILS:
+                    form.setValue('customer.firstName', 'John')
+                    form.setValue('customer.lastName', 'Doe')
+                    form.setValue('customer.email', 'john.doe@example.com')
+                    form.setValue('customer.phone', '1234567890')
+                    void nextStep(true)
+                    break
+                  case BookingStep.ADDRESS_INPUT:
+                    form.setValue('customer.address', '123 Main St')
+                    form.setValue('customer.city', 'Myrtle Beach')
+                    form.setValue('customer.state', 'SC')
+                    form.setValue('customer.zipCode', '29577')
+                    void nextStep(true)
+                    break
+                  case BookingStep.SIZE_SELECTION:
+                  case BookingStep.HOURS_SELECTION: {
+                    const pricingParams = currentStep === BookingStep.SIZE_SELECTION
+                      ? { type: 'flat' as const, bedrooms: 2 }
+                      : { type: 'hourly' as const, hours: 4 }
+
+                    form.setValue('pricingParams.type', pricingParams.type)
+                    form.setValue(`pricingParams.${pricingParams.type === 'flat' ? 'bedrooms' : 'hours'}`, pricingParams.type === 'flat' ? pricingParams.bedrooms : pricingParams.hours)
+
+                    if (selectedServiceCategory && selectedFrequency) {
+                      form.setValue('price', calculatePrice(
+                        selectedServiceCategory,
+                        selectedFrequency,
+                        pricingParams,
+                        PRICING_PARAMETERS[location][selectedServiceCategory],
+                      ))
+                    }
+                    else {
+                      console.error('Expected parameters to be defined for price calculation', {
+                        selectedServiceCategory,
+                        selectedFrequency,
+                      })
+                    }
+                    void nextStep(true)
+                    break
+                  }
+                  case BookingStep.SCHEDULE:
+                    form.setValue('date', format(addDays(new Date(), 4), 'yyyy-MM-dd', { in: tz(LOCATIONS[location].timezone) }))
+                    form.setValue('arrivalWindow', '8:00AM - 9:00AM')
+                    form.setValue('frequency', 'biweekly')
+                    void nextStep(true)
+                    break
+                  case BookingStep.CONFIRMATION:
+                    form.setValue('payment.cardNumber', '4242424242424242')
+                    form.setValue('payment.expiration', '12/2025')
+                    form.setValue('payment.cvv', '123')
+                    form.setValue('payment.zip', '12345')
+                    void handleSubmit(onSubmit)
+                    break
+                }
+              }}
+            >
+              Skip →
+            </Button>
+          </div>
+        </div>
+      )}
+
       {/* Navigation and pricing */}
       {currentStep !== BookingStep.CONFIRMATION && (
         <>
@@ -602,84 +709,6 @@ export default function BookingPage() {
                   )}
             </div>
           </div>
-
-          {/* Skip button for development */}
-          {process.env.NODE_ENV === 'development' && (
-            <div className="fixed inset-x-0 bottom-24 z-20 px-6 py-2 bg-transparent pointer-events-none">
-              <div className="flex justify-end pointer-events-auto">
-                <Button
-                  variant="outline"
-                  size="default"
-                  className="font-mono border-2 border-dashed border-yellow-400 bg-yellow-50 hover:bg-yellow-100 text-yellow-700"
-                  onClick={() => {
-                    switch (currentStep) {
-                      case BookingStep.GETTING_STARTED:
-                        void nextStep(true)
-                        break
-                      case BookingStep.CHOOSE_YOUR_SERVICE:
-                        void nextStep(true)
-                        break
-                      case BookingStep.SERVICE_SELECTION:
-                        form.setValue('serviceCategory', 'default')
-                        void nextStep(true)
-                        break
-                      case BookingStep.TELL_US_ABOUT_YOUR_PLACE:
-                        void nextStep(true)
-                        break
-                      case BookingStep.CUSTOMER_DETAILS:
-                        form.setValue('customer.firstName', 'John')
-                        form.setValue('customer.lastName', 'Doe')
-                        form.setValue('customer.email', 'john.doe@example.com')
-                        form.setValue('customer.phone', '1234567890')
-                        void nextStep(true)
-                        break
-                      case BookingStep.ADDRESS_INPUT:
-                        form.setValue('customer.address', '123 Main St')
-                        form.setValue('customer.city', 'Myrtle Beach')
-                        form.setValue('customer.state', 'SC')
-                        form.setValue('customer.zipCode', '29577')
-                        void nextStep(true)
-                        break
-                      case BookingStep.SIZE_SELECTION:
-                      case BookingStep.HOURS_SELECTION: {
-                        const pricingParams = currentStep === BookingStep.SIZE_SELECTION
-                          ? { type: 'flat' as const, bedrooms: 2 }
-                          : { type: 'hourly' as const, hours: 4 }
-
-                        form.setValue('pricingParams.type', pricingParams.type)
-                        form.setValue(`pricingParams.${pricingParams.type === 'flat' ? 'bedrooms' : 'hours'}`, pricingParams.type === 'flat' ? pricingParams.bedrooms : pricingParams.hours)
-
-                        if (selectedServiceCategory && selectedFrequency) {
-                          form.setValue('price', calculatePrice(
-                            selectedServiceCategory,
-                            selectedFrequency,
-                            pricingParams,
-                            PRICING_PARAMETERS[location][selectedServiceCategory],
-                          ))
-                        }
-                        else {
-                          console.error('Expected parameters to be defined for price calculation', {
-                            selectedServiceCategory,
-                            selectedFrequency,
-                          })
-                        }
-                        void nextStep(true)
-                        break
-                      }
-                      case BookingStep.SCHEDULE:
-                        form.setValue('date', format(addDays(new Date(), 4), 'yyyy-MM-dd', { in: tz(LOCATIONS[location].timezone) }))
-                        form.setValue('arrivalWindow', '8:00AM - 9:00AM')
-                        form.setValue('frequency', 'biweekly')
-                        void nextStep(true)
-                        break
-                    }
-                  }}
-                >
-                  Skip →
-                </Button>
-              </div>
-            </div>
-          )}
         </>
       )}
     </div>

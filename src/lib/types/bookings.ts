@@ -1,17 +1,15 @@
-import { NotionDatabasePageSchema } from '0xble/notion/schemas'
+import { NotionDateParsedSchema } from '0xble/notion/schemas'
 import { NotionBookingsFrequencyOptionSchema, NotionBookingsPaymentMethodOptionSchema, NotionBookingsServiceOptionSchema, NotionBookingsStatusOptionSchema, NotionBookingsTagsOptionSchema, NotionClientsSourceOptionSchema, NotionClientsStatusOptionSchema } from '0xble/notion/types'
 import { unique } from 'remeda'
 import { z } from 'zod'
 
 export const RecordBookingPayloadSchema = z.object({
-  page: NotionDatabasePageSchema.optional(),
   pageId: z.string().optional(),
   upsert: z.boolean().optional(),
-  notifyToAddToBookingKoala: z.boolean().optional(),
   values: z.object({
     id: z.coerce.number().int().optional(),
     status: NotionBookingsStatusOptionSchema.optional(),
-    scheduled: z.date().optional(),
+    scheduled: z.union([z.string(), NotionDateParsedSchema]).optional(),
     client: z
       .object({
         id: z.coerce.number().int().optional(),
@@ -67,20 +65,7 @@ export const RecordBookingPayloadSchema = z.object({
       })
       .optional(),
     paymentMethod: NotionBookingsPaymentMethodOptionSchema.optional(),
-    bedrooms: z.coerce
-      .string()
-      .transform((value) => {
-        const match = value.match(/(\d+)/)
-        return match ? Number(match[1]) : undefined
-      })
-      .optional(),
-    bathrooms: z.coerce
-      .string()
-      .transform((value) => {
-        const match = value.match(/(\d+(?:\.\d+)?)/)
-        return match ? Number(match[1]) : undefined
-      })
-      .optional(),
+    bedrooms: z.coerce.number().optional(),
     sqFt: z.string().optional(),
     duration: z.union([
       z.coerce.number().optional(),
@@ -132,16 +117,19 @@ export const RecordBookingPayloadSchema = z.object({
     discountCode: z.string().optional(),
     clockedOut: z.coerce.date().optional(),
     zip: z.string().optional(),
-    location: z.union([
-      z.string(),
-      NotionDatabasePageSchema,
-    ]).optional(),
+    location: z.string(),
     address: z.object({
       id: z.string().optional(),
-      page: NotionDatabasePageSchema.optional(),
       address: z.string().optional(),
+      street: z.string().optional(),
       apt: z.string().optional(),
+      city: z.string().optional(),
+      state: z.string().optional(),
       zip: z.string().optional(),
+      coordinates: z.object({
+        lat: z.number(),
+        lng: z.number(),
+      }).optional(),
     }).optional(),
     extras: z.object({
       value: z.array(z.string()).transform(
@@ -168,4 +156,4 @@ export const RecordBookingPayloadSchema = z.object({
   }),
 })
 
-export type RecordBookingPayload = z.infer<typeof RecordBookingPayloadSchema>
+export type RecordBookingPayload = z.input<typeof RecordBookingPayloadSchema>

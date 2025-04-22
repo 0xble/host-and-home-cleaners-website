@@ -9,7 +9,7 @@ import { Toaster } from '@/components/ui/toaster'
 import { getBaseUrl } from '@/lib/utils'
 import { Inter } from 'next/font/google'
 import Script from 'next/script'
-import './globals.css'
+import '@/app/globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -68,8 +68,8 @@ export default function RootLayout({ children }: LayoutProps) {
           <Script src="https://tally.so/widgets/embed.js" strategy="lazyOnload" />
 
           {/* Analytics */}
-          {process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID && <GoogleAnalytics />}
-          {process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID && <PixelInitializer />}
+          {process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID !== undefined && process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID !== '' && <GoogleAnalytics />}
+          {process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID !== undefined && process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID !== '' && <PixelInitializer />}
 
           {/* UI Components */}
           <Toaster />

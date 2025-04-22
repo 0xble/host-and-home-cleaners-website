@@ -1,11 +1,11 @@
 'use client'
 
-import type { PixelEventName } from './pixelEvents'
-import { usePathname } from 'next/navigation'
+import type { PixelEventName } from '@/lib/pixel/pixelEvents'
+import { PixelEvent } from '@/lib/pixel/pixelEvents'
 
+import { initializePixel } from '@/lib/pixel/pixelUtils'
+import { usePathname } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'
-import { PixelEvent } from './pixelEvents'
-import { initializePixel } from './pixelUtils'
 
 const isBrowser = typeof window !== 'undefined'
 

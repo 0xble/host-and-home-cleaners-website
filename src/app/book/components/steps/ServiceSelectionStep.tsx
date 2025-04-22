@@ -39,7 +39,7 @@ const SERVICE_OPTIONS: {
   {
     id: 'mansion',
     title: 'Mansion',
-    description: 'For large properties with 4+ bedrooms',
+    description: 'For large properties with 4+ bedrooms or >3,000 sq. ft',
     animation: MansionAnimation,
   },
 ]

@@ -1,12 +1,12 @@
 'use client'
 
-import type { BaseStepProps } from '../../types'
+import type { BaseStepProps } from '@/app/book/types'
+import { StepLayout } from '@/app/book/components/StepLayout'
+import { useStepValidation } from '@/app/book/hooks/useStepValidation'
+import { calculatePrice } from '@/app/book/utils'
 import { BookingFormOption } from '@/components/BookingFormOption'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { PRICING_PARAMETERS } from '@/lib/constants'
-import { useStepValidation } from '../../hooks/useStepValidation'
-import { calculatePrice } from '../../utils'
-import { StepLayout } from '../StepLayout'
 
 const HOURS_OPTIONS = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12] as const
 
