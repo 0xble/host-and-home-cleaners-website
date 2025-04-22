@@ -39,43 +39,6 @@ function splitIntoColumns<T>(items: T[], numColumns: number): T[][] {
   return columns
 }
 
-interface NavbarLinkProps {
-  href: string
-  children: React.ReactNode
-  className?: string
-  onClick?: () => void
-}
-
-function NavbarLink({
-  href,
-  children,
-  className,
-  onClick,
-  ...props
-}: NavbarLinkProps) {
-  const pathname = usePathname()
-  const isActive = pathname === href
-
-  return (
-    <TrackedLink
-      href={href}
-      className={cn(
-        'block rounded py-2 pl-3 pr-4',
-        isActive
-          ? 'text-white bg-primary lg:bg-transparent lg:text-primary'
-          : 'text-shade hover:bg-gray-100',
-        className,
-      )}
-      eventName={href === ROUTES.BOOKING.href ? PixelEvent.INITIATE_CHECKOUT : 'NavClick'}
-      eventParams={href === ROUTES.BOOKING.href ? {} : { path: href }}
-      onClick={onClick}
-      {...props}
-    >
-      {children}
-    </TrackedLink>
-  )
-}
-
 interface NavbarProps {
   location: Location | null
   phone: Phone | null
@@ -87,6 +50,40 @@ export default function Navbar({
 }: NavbarProps) {
   const pathname = usePathname()
   const [isOpen, setIsOpen] = useState(false)
+
+  interface NavbarLinkProps {
+    href: string
+    children: React.ReactNode
+    className?: string
+  }
+
+  function NavbarLink({
+    href,
+    children,
+    className,
+    ...props
+  }: NavbarLinkProps) {
+    const isActive = pathname === href
+
+    return (
+      <TrackedLink
+        href={href}
+        className={cn(
+          'block rounded py-2 pl-3 pr-4',
+          isActive
+            ? 'text-white bg-primary-700 lg:bg-transparent lg:text-primary-700'
+            : 'text-gray-900 hover:bg-gray-100',
+          className,
+        )}
+        eventName={href === ROUTES.BOOKING.href ? PixelEvent.INITIATE_CHECKOUT : 'NavClick'}
+        eventParams={href === ROUTES.BOOKING.href ? {} : { path: href }}
+        onClick={() => setIsOpen(false)}
+        {...props}
+      >
+        {children}
+      </TrackedLink>
+    )
+  }
 
   // Used to set the fixed height of the navbar and spacer div.
   const FIXED_HEIGHT = pathname === ROUTES.HOME.href ? 'h-[64px] xs:h-[76px] sm:h-[86px]' : 'h-[96px] sm:h-[86px]'
