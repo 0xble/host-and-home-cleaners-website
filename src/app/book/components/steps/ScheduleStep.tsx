@@ -72,7 +72,7 @@ export function ScheduleStep({ form, location, onValidityChangeAction }: BaseSte
                     ? parse(selectedDate, 'yyyy-MM-dd', new Date(), { in: tz(LOCATIONS[location].timezone) })
                     : undefined
                 }
-                onSelect={date => date && field.onChange(date)}
+                onSelect={date => date && field.onChange(date.toISOString())}
                 disabled={isDateDisabled}
               />
               <FormMessage />
