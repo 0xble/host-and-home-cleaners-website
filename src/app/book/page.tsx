@@ -17,6 +17,7 @@ import { ScheduleStep } from '@/app/book/components/steps/ScheduleStep'
 import { ServiceSelectionStep } from '@/app/book/components/steps/ServiceSelectionStep'
 import { SizeSelectionStep } from '@/app/book/components/steps/SizeSelectionStep'
 import { TellUsAboutYourPlaceStep } from '@/app/book/components/steps/TellUsAboutYourPlaceStep'
+import { AnimatedStepTransition } from '@/app/book/components/AnimatedStepTransition'
 import { BookingFormSchema, BookingStep } from '@/app/book/types'
 import { calculatePrice } from '@/app/book/utils'
 import { GradientButton } from '@/components/GradientButton'
@@ -32,10 +33,10 @@ import { GoogleMapsLoader } from '@/lib/google/GoogleMapsLoader'
 import { ROUTES } from '@/lib/routes'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { addDays } from 'date-fns'
-import { ArrowLeft, Loader2 } from 'lucide-react'
+import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 // Defines the components for each step
@@ -60,6 +61,7 @@ export default function BookingPage() {
   const router = useRouter()
   const [location] = useState<Location>('MYRTLE_BEACH')
   const [currentStep, setCurrentStep] = useState<BookingStep>(BookingStep.GETTING_STARTED)
+  const [transitionDirection, setTransitionDirection] = useState<'forward' | 'backward'>('forward')
   const [progress, setProgress] = useState<{ value: number, max: number }>({ value: 0, max: MAX_STEPS })
   const [visitedSteps, setVisitedSteps] = useState<BookingStep[]>([])
   const [isStepValid, setIsStepValid] = useState(true)
@@ -244,19 +246,20 @@ export default function BookingPage() {
   }
 
   // Check if current step is valid
-  const getNextStepNumber = () => {
-    const transition = STEP_TRANSITIONS[currentStep]
+  const getNextStepNumber = (step: BookingStep) => {
+    const transition = STEP_TRANSITIONS[step]
     return transition.next()
   }
 
-  const getPrevStepNumber = () => {
-    const transition = STEP_TRANSITIONS[currentStep]
+  const getPrevStepNumber = (step: BookingStep) => {
+    const transition = STEP_TRANSITIONS[step]
     return transition.prev()
   }
 
   const prevStep = () => {
-    const prevStepNumber = getPrevStepNumber()
+    const prevStepNumber = getPrevStepNumber(currentStep)
     if (prevStepNumber !== null) {
+      setTransitionDirection('backward')
       setCurrentStep(prevStepNumber)
       setProgress({ ...progress, value: progress.value - 1 })
     }
@@ -267,7 +270,7 @@ export default function BookingPage() {
     if (!isValid)
       return
 
-    const nextStepNumber = getNextStepNumber()
+    const nextStepNumber = getNextStepNumber(currentStep)
     if (nextStepNumber !== null) {
       // If next step is ADDRESS_INPUT and Google Maps isn't loaded yet
       if (nextStepNumber === BookingStep.ADDRESS_INPUT && !isLoadedGoogleMaps && !isLoadingGoogleMaps) {
@@ -284,6 +287,7 @@ export default function BookingPage() {
         }
       }
 
+      setTransitionDirection('forward')
       setVisitedSteps(prev => [...new Set([...prev, currentStep])])
       setProgress({ ...progress, value: progress.value + 1 })
       setCurrentStep(nextStepNumber)
@@ -345,7 +349,7 @@ export default function BookingPage() {
         else if (event.key === ']' || event.key === 'ArrowRight') {
           event.preventDefault()
           void (async () => {
-            const nextStepNumber = getNextStepNumber()
+            const nextStepNumber = getNextStepNumber(currentStep)
             if (
               nextStepNumber !== null
               && await isCurrentStepValid()
@@ -382,10 +386,36 @@ export default function BookingPage() {
     }, 0)
   }, [currentStep, nextStep, visitedSteps])
 
-  const CurrentStepComponent = STEP_COMPONENTS[currentStep]
+  // Create step components map for the transition layout
+  const stepComponentsMap = useMemo(() => {
+    const baseStepProps = {
+      form,
+      currentStep,
+      setCurrentStep,
+      onValidityChangeAction: handleStepValidityChange,
+      isGoogleMapsLoaded: isLoadedGoogleMaps,
+    }
+
+    return Object.values(BookingStep).reduce((acc, step) => {
+      const StepComponent = STEP_COMPONENTS[step as BookingStep]
+      if (step === BookingStep.CONFIRMATION) {
+        acc[step] = <StepComponent
+          {...baseStepProps}
+          isSubmitting={isSubmitting}
+          onSubmit={(e) => {
+            e.preventDefault()
+            void handleSubmit(onSubmit)(e)
+          }}
+        />
+      } else {
+        acc[step] = <StepComponent {...baseStepProps} />
+      }
+      return acc
+    }, {} as Record<BookingStep | string, React.ReactNode>)
+  }, [currentStep, form, handleStepValidityChange, isLoadedGoogleMaps, isSubmitting, handleSubmit, onSubmit])
 
   return (
-    <div className="relative min-h-screen pb-24">
+    <div className="relative min-h-screen">
       <div className="p-6">
         {currentStep !== BookingStep.CONFIRMATION
           ? (
@@ -409,25 +439,23 @@ export default function BookingPage() {
 
       <Form {...form}>
         <form
+          className="space-y-8"
           onSubmit={(e) => {
             e.preventDefault()
             void handleSubmit(onSubmit)(e)
           }}
-          className="space-y-8"
         >
-          <CurrentStepComponent
-            form={form}
+          <AnimatedStepTransition
+            direction={transitionDirection}
             currentStep={currentStep}
-            setCurrentStep={setCurrentStep}
-            onValidityChangeAction={handleStepValidityChange}
-            isGoogleMapsLoaded={isLoadedGoogleMaps}
-          />
+          >
+            {stepComponentsMap[currentStep]}
+          </AnimatedStepTransition>
         </form>
       </Form>
 
       {/* Navigation and pricing */}
-      {currentStep !== BookingStep.CONFIRMATION
-        ? (
+      {currentStep !== BookingStep.CONFIRMATION && (
             <>
               {/* Progress bar above bottom navigaton */}
               <div className="fixed inset-x-0 bottom-20 z-10 bg-white">
@@ -486,7 +514,9 @@ export default function BookingPage() {
                               onClick={() => void nextStep()}
                               disabled={!isStepValid}
                             >
-                              Next
+                              {currentStep === getPrevStepNumber(BookingStep.CONFIRMATION)
+                                ? 'Review'
+                                : 'Next'}
                             </Button>
                           </div>
                         </>
@@ -540,7 +570,7 @@ export default function BookingPage() {
                             form.setValue('pricingParams.type', pricingParams.type)
                             form.setValue(`pricingParams.${pricingParams.type === 'flat' ? 'bedrooms' : 'hours'}`, pricingParams.type === 'flat' ? pricingParams.bedrooms : pricingParams.hours)
 
-                            if (selectedServiceCategory && selectedFrequency && selectedPricingParams) {
+                            if (selectedServiceCategory && selectedFrequency) {
                               form.setValue('price', calculatePrice(
                                 selectedServiceCategory,
                                 selectedFrequency,
@@ -552,7 +582,6 @@ export default function BookingPage() {
                               console.error('Expected parameters to be defined for price calculation', {
                                 selectedServiceCategory,
                                 selectedFrequency,
-                                selectedPricingParams,
                               })
                             }
                             void nextStep(true)
@@ -573,42 +602,6 @@ export default function BookingPage() {
                 </div>
               )}
             </>
-          )
-        : (
-            <div className="inset-x-0 bottom-0 z-10 h-20 -mb-20 px-6">
-              <p className="text-xs">
-                By clicking the button below, you agree to our
-                {' '}
-                <Link href={ROUTES.LEGAL.TERMS_OF_SERVICE.href} className="underline" target="_blank">terms of service</Link>
-                {' '}
-                and
-                {' '}
-                <Link href={ROUTES.LEGAL.PRIVACY_POLICY.href} className="underline" target="_blank">privacy policy</Link>
-                .
-              </p>
-              <div className="flex size-full items-center justify-between py-4">
-                <GradientButton
-                  type="submit"
-                  variant="light"
-                  onClick={(e) => {
-                    e.preventDefault()
-                    void handleSubmit(onSubmit)(e)
-                  }}
-                  className="w-full"
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting
-                    ? (
-                        <span className="flex items-center gap-2">
-                          <Loader2 className="size-4 animate-spin" />
-                        </span>
-                      )
-                    : (
-                        'Book'
-                      )}
-                </GradientButton>
-              </div>
-            </div>
           )}
     </div>
   )

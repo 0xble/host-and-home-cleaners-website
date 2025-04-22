@@ -95,5 +95,7 @@ export interface BaseStepProps {
   currentStep: BookingStep
   setCurrentStep: (step: BookingStep) => void
   onValidityChangeAction: (isValid: boolean) => void
+  onSubmit?: (e: React.MouseEvent<HTMLButtonElement>) => void
   isGoogleMapsLoaded?: boolean
+  isSubmitting?: boolean
 }

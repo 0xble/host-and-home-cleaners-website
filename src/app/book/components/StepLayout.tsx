@@ -32,7 +32,7 @@ export function StepLayout({
           </CardDescription>
         )}
       </CardHeader>
-      <CardContent className={cn('px-6', className)}>
+      <CardContent className={cn('px-6 mb-24', className)}>
         {children}
       </CardContent>
     </Card>

@@ -5,8 +5,12 @@ import { StepLayout } from '@/app/book/components/StepLayout'
 import { PaymentMethodCard } from '@/components/PaymentMethodCard'
 import { Card, CardContent } from '@/components/ui/card'
 import { format } from 'date-fns'
+import { GradientButton } from '@/components/GradientButton'
+import { Loader2 } from 'lucide-react'
+import Link from 'next/link'
+import { ROUTES } from '@/lib/routes'
 
-export function ConfirmationStep({ form }: BaseStepProps) {
+export function ConfirmationStep({ form, isSubmitting, onSubmit }: BaseStepProps) {
   const { watch } = form
   const selectedServiceCategory = watch('serviceCategory')
   const selectedFrequency = watch('frequency')
@@ -59,6 +63,7 @@ export function ConfirmationStep({ form }: BaseStepProps) {
     <StepLayout
       title="Confirm your booking"
       description="Review your booking details and complete payment"
+      className="mb-4"
     >
       <div className="grid gap-6">
         <Card>
@@ -135,6 +140,36 @@ export function ConfirmationStep({ form }: BaseStepProps) {
         </Card>
 
         <PaymentMethodCard />
+
+        <div className="space-y-2">
+          <p className="text-xs text-center">
+            By clicking the button below, you agree to our
+            {' '}
+            <Link href={ROUTES.LEGAL.TERMS_OF_SERVICE.href} className="underline" target="_blank">terms of service</Link>
+            {' '}
+            and
+            {' '}
+            <Link href={ROUTES.LEGAL.PRIVACY_POLICY.href} className="underline" target="_blank">privacy policy</Link>
+            .
+          </p>
+          <GradientButton
+            type="submit"
+            variant="light"
+            onClick={onSubmit}
+            className="w-full"
+            disabled={isSubmitting}
+          >
+            {isSubmitting
+              ? (
+                  <span className="flex items-center gap-2">
+                    <Loader2 className="size-4 animate-spin" />
+                  </span>
+                )
+              : (
+                  'Book'
+                )}
+          </GradientButton>
+        </div>
       </div>
     </StepLayout>
   )
