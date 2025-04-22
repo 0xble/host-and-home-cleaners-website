@@ -1,3 +1,4 @@
+import type { Location } from '@/lib/types'
 import type { UseFormReturn } from 'react-hook-form'
 import { LOCATIONS } from '@/lib/constants'
 import { LocationSchema } from '@/lib/types'
@@ -93,9 +94,9 @@ export enum BookingStep {
 export interface BaseStepProps {
   form: UseFormReturn<BookingFormData>
   currentStep: BookingStep
+  location: Location
   setCurrentStep: (step: BookingStep) => void
   onValidityChangeAction: (isValid: boolean) => void
   onSubmit?: (e: React.MouseEvent<HTMLButtonElement>) => void
-  isGoogleMapsLoaded?: boolean
   isSubmitting?: boolean
 }

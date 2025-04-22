@@ -467,9 +467,9 @@ export default function BookingPage() {
     const baseStepProps = {
       form,
       currentStep,
+      location,
       setCurrentStep,
       onValidityChangeAction: handleStepValidityChange,
-      isGoogleMapsLoaded: isLoadedGoogleMaps,
     }
 
     return Object.values(BookingStep).reduce((acc, step) => {

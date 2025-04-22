@@ -36,7 +36,6 @@ export default antfu({
     // Disable requirement to use 'node:' protocol for Node.js built-in modules
     'unicorn/prefer-node-protocol': 'off',
   },
-
   // TypeScript-specific rules in a separate override
   overrides: {
     files: ['**/*.ts', '**/*.tsx', '**/*.mts', '**/*.cts'],

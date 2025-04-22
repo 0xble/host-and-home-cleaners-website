@@ -7,9 +7,11 @@ import { Badge } from '@/components/ui/badge'
 import { Calendar } from '@/components/ui/calendar'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { addDays, isBefore } from 'date-fns'
+import { LOCATIONS } from '@/lib/constants'
+import { tz } from '@date-fns/tz'
+import { addDays, isBefore, parse } from 'date-fns'
 
-export function ScheduleStep({ form, onValidityChangeAction }: BaseStepProps) {
+export function ScheduleStep({ form, location, onValidityChangeAction }: BaseStepProps) {
   const { watch, setValue } = form
   const selectedDate = watch('date') as BookingFormState['date']
   const selectedServiceCategory = watch('serviceCategory') as BookingFormState['serviceCategory']
@@ -65,7 +67,11 @@ export function ScheduleStep({ form, onValidityChangeAction }: BaseStepProps) {
               <Calendar
                 className="mx-auto rounded-md border"
                 mode="single"
-                selected={selectedDate || undefined}
+                selected={
+                  selectedDate != null
+                    ? parse(selectedDate, 'yyyy-MM-dd', new Date(), { in: tz(LOCATIONS[location].timezone) })
+                    : undefined
+                }
                 onSelect={date => date && field.onChange(date)}
                 disabled={isDateDisabled}
               />
@@ -74,7 +80,7 @@ export function ScheduleStep({ form, onValidityChangeAction }: BaseStepProps) {
           )}
         />
 
-        {selectedDate && (
+        {selectedDate != null && (
           <FormField
             control={form.control}
             name="arrivalWindow"
