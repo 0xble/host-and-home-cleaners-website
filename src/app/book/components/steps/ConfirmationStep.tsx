@@ -141,7 +141,7 @@ export function ConfirmationStep({ form, isSubmitting, onSubmit }: BaseStepProps
 
         <PaymentMethodCard />
 
-        <div className="space-y-2">
+        <div className="space-y-2 mt-4">
           <p className="text-xs text-center">
             By clicking the button below, you agree to our
             {' '}
