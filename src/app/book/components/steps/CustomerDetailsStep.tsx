@@ -6,29 +6,6 @@ import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/comp
 import { Input } from '@/components/ui/input'
 import { useEffect } from 'react'
 
-function formatPhoneNumber(value: string) {
-  // Remove all non-numeric characters
-  const cleaned = value.replace(/\D/g, '')
-
-  // Limit to 10 digits
-  const limited = cleaned.slice(0, 10)
-
-  // Format the number as (XXX) XXX-XXXX
-  const match = limited.match(/^(\d{0,3})(\d{0,3})(\d{0,4})$/)
-  if (!match)
-    return value
-
-  const [, area, prefix, line] = match
-
-  if (area == null)
-    return ''
-  if (prefix == null)
-    return `(${area}`
-  if (line == null)
-    return `(${area}) ${prefix}`
-  return `(${area}) ${prefix}-${line}`
-}
-
 export function CustomerDetailsStep({ form, onValidityChangeAction }: BaseStepProps) {
   const firstName = form.watch('customer.firstName') as string | undefined
   const lastName = form.watch('customer.lastName') as string | undefined
@@ -99,19 +76,14 @@ export function CustomerDetailsStep({ form, onValidityChangeAction }: BaseStepPr
         <FormField
           control={form.control}
           name="customer.phone"
-          render={({ field: { onChange, ...field } }) => (
+          render={({ field }) => (
             <FormItem>
               <FormLabel>Phone Number</FormLabel>
               <FormControl>
                 <Input
                   type="tel"
-                  placeholder="(123) 456-7890"
-                  maxLength={14} // (XXX) XXX-XXXX = 14 characters
-                  onChange={(e) => {
-                    const formatted = formatPhoneNumber(e.target.value)
-                    e.target.value = formatted
-                    onChange(e)
-                  }}
+                  placeholder="(123)456-7890"
+                  maxLength={10}
                   {...field}
                 />
               </FormControl>

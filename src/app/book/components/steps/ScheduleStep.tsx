@@ -9,7 +9,7 @@ import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/comp
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { LOCATIONS } from '@/lib/constants'
 import { tz } from '@date-fns/tz'
-import { addDays, isBefore, parse } from 'date-fns'
+import { addDays, format, isBefore, parse } from 'date-fns'
 
 export function ScheduleStep({ form, location, onValidityChangeAction }: BaseStepProps) {
   const { watch, setValue } = form
@@ -69,10 +69,10 @@ export function ScheduleStep({ form, location, onValidityChangeAction }: BaseSte
                 mode="single"
                 selected={
                   selectedDate != null
-                    ? parse(selectedDate, 'yyyy-MM-dd', new Date(), { in: tz(LOCATIONS[location].timezone) })
+                    ? parse(selectedDate, 'yyyy-MM-dd', new Date())
                     : undefined
                 }
-                onSelect={date => date && field.onChange(date.toISOString())}
+                onSelect={date => date && field.onChange(format(date, 'yyyy-MM-dd', { in: tz(LOCATIONS[location].timezone) }))}
                 disabled={isDateDisabled}
               />
               <FormMessage />
