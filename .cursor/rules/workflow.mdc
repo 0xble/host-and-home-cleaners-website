@@ -1,0 +1,13 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Workflow Tracker
+
+This file tracks the current workflow state and dynamic rules for the Host and Home Cleaners Website project.
+
+## Current State
+- **Mode**: TBD
+- **Last Action**: TBD
+- **Notes**: TBD
