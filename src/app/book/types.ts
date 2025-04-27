@@ -4,7 +4,7 @@ import { LOCATIONS } from '@/lib/constants'
 import { LocationSchema } from '@/lib/types'
 import { z } from 'zod'
 
-export const BookingServiceCategorySchema = z.enum(['default', 'move-in-out', 'custom', 'mansion'])
+export const BookingServiceCategorySchema = z.enum(['deep-clean', 'move-in-out', 'custom', 'mansion'])
 export type BookingServiceCategory = z.infer<typeof BookingServiceCategorySchema>
 
 export const BookingFrequencySchema = z.enum(['one-time', 'weekly', 'biweekly', 'monthly'])

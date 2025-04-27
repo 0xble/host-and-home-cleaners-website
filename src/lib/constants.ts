@@ -838,7 +838,7 @@ export type PricingParams = z.infer<typeof PricingParamsSchema>
 
 export const PRICING_PARAMETERS: Readonly<Record<Location, Record<BookingServiceCategory, PricingParams>>> = {
   MYRTLE_BEACH: {
-    'default': {
+    'deep-clean': {
       type: 'flat',
       bedrooms: {
         1: 149,
@@ -884,7 +884,7 @@ export const PRICING_PARAMETERS: Readonly<Record<Location, Record<BookingService
     },
   },
   HONOLULU: {
-    'default': {
+    'deep-clean': {
       type: 'flat',
       bedrooms: {
         1: 169,
