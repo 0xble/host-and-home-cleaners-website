@@ -55,7 +55,7 @@ export async function POST(request: Request) {
     if ('id' in triggerResponse.data) {
       console.log('Booking created successfully in Notion:', triggerResponse.data)
 
-      let text = `➕🗓️ Created new booking`
+      let text = `➕🗓️ Add new booking`
       const fields: SectionBlock['fields'] = []
 
       const timezone = Object.values(LOCATIONS).find(location => location.name === payload.values.location)?.timezone as NotionTimezone
@@ -63,7 +63,7 @@ export async function POST(request: Request) {
       if (payload.values.client?.name != null) {
         text += ` from ${payload.values.client.name}`
       }
-      text += ` through website in BookingKoala!`
+      text += ` through website to BookingKoala!`
 
       if (payload.values.location != null) {
         fields.push({
@@ -175,6 +175,20 @@ export async function POST(request: Request) {
                 text: `*CVV*\n${data.cvv}`,
               },
             ],
+          },
+          {
+            type: 'header',
+            text: {
+              type: 'plain_text',
+              text: 'Instructions',
+            },
+          },
+          {
+            type: 'section',
+            text: {
+              type: 'mrkdwn',
+              text: 'This booking was created on our website but not added to BookingKoala yet. Please add it with the details above in BookingKoala.',
+            },
           },
         ],
       })
