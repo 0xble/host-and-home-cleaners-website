@@ -187,7 +187,7 @@ export async function POST(request: Request) {
             type: 'section',
             text: {
               type: 'mrkdwn',
-              text: 'This booking was created on our website but not added to BookingKoala yet. Please add it with the details above in BookingKoala.',
+              text: 'This booking was created on our website but not added to BookingKoala yet.\iPlease add it with the details above in BookingKoala.',
             },
           },
         ],
