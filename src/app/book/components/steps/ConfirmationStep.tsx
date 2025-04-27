@@ -21,7 +21,7 @@ export function ConfirmationStep({ form, isSubmitting, onSubmit }: BaseStepProps
 
   const formatServiceName = (service: string) => {
     switch (service) {
-      case 'default':
+      case 'deep-clean':
         return 'Deep clean'
       case 'move-in-out':
         return 'Move In/Out'

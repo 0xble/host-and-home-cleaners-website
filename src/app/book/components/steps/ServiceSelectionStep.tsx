@@ -19,7 +19,7 @@ const SERVICE_OPTIONS: {
   animation: LottieAnimationProps['animationData']
 }[] = [
   {
-    id: 'default',
+    id: 'deep-clean',
     title: 'Deep Clean',
     description: 'Recommended for places that haven\'t been professionally cleaned',
     animation: ChecklistAnimation,

@@ -21,7 +21,7 @@ export function ChooseYourServiceStep({ form, onValidityChangeAction }: BaseStep
       label="Step 1"
       className="px-0"
     >
-      <div className="relative w-full max-w-3xl mx-auto rounded-lg overflow-hidden pb-[75%]">
+      <div className="relative w-full max-w-3xl mx-auto rounded-lg overflow-hidden pb-[75%] sm:pb-[50%]">
         <Image
           src="/assets/cleaner.png"
           alt="House cleaner"

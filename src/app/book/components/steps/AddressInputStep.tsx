@@ -46,9 +46,9 @@ export function AddressInputStep({ form, onValidityChangeAction }: BaseStepProps
   return (
     <StepLayout
       title="Where is the cleaning?"
-      description="Enter your address to help us find you."
+      description="Enter your address where the cleaning will take place."
     >
-      <div className="max-w-xl mx-auto">
+      <div className="max-w-xl mx-auto sm:max-w-full">
         <div className="border rounded-lg overflow-hidden">
           <FormField
             control={form.control}
@@ -178,6 +178,7 @@ export function AddressInputStep({ form, onValidityChangeAction }: BaseStepProps
                   <FormControl>
                     <Input
                       placeholder="ZIP code"
+                      maxLength={5}
                       className={cn(
                         'h-14 border-0 rounded-none focus-visible:ring-0 focus-visible:ring-offset-0',
                         showAddressFields
@@ -196,7 +197,7 @@ export function AddressInputStep({ form, onValidityChangeAction }: BaseStepProps
         </div>
 
         {/* Map */}
-        <div className="w-full h-[300px] mt-6 rounded-lg overflow-hidden">
+        <div className="w-full h-[300px] mt-6 rounded-lg overflow-hidden sm:h-[60vh]">
           <MapWithMarker
             coordinates={coordinates}
             address={constructFullAddress({

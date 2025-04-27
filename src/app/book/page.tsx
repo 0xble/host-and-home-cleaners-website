@@ -350,7 +350,7 @@ export default function BookingPage() {
             })(),
             service: (() => {
               switch (data.serviceCategory) {
-                case 'default':
+                case 'deep-clean':
                   return undefined
                 case 'move-in-out':
                   return 'Move In/Out'
@@ -572,7 +572,7 @@ export default function BookingPage() {
                     void nextStep(true)
                     break
                   case BookingStep.SERVICE_SELECTION:
-                    form.setValue('serviceCategory', 'default')
+                    form.setValue('serviceCategory', 'deep-clean')
                     void nextStep(true)
                     break
                   case BookingStep.TELL_US_ABOUT_YOUR_PLACE:

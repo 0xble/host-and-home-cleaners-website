@@ -20,9 +20,9 @@ export function TellUsAboutYourPlaceStep({ form, onValidityChangeAction }: BaseS
       label="Step 2"
       className="px-0"
     >
-      <div className="relative w-full max-w-3xl mx-auto rounded-lg overflow-hidden pb-[75%]">
+      <div className="relative w-full max-w-3xl mx-auto rounded-lg overflow-hidden pb-[90%] sm:pb-[52%]">
         <video
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-contain"
           autoPlay
           playsInline
           preload="auto"
