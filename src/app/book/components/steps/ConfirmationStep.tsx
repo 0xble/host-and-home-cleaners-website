@@ -122,13 +122,13 @@ export function ConfirmationStep({ form, isSubmitting, onSubmit }: BaseStepProps
                   )}
                 </>
               )}
-              {price.recurringDiscount !== 0 && (
+              {price.recurringDiscount != null && price.recurringDiscount !== 0 && (
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Recurring Discount</span>
                   <span className="text-success">{formatPrice(-Math.abs(price.recurringDiscount))}</span>
                 </div>
               )}
-              {price.taxes !== 0 && (
+              {price.taxes != null && price.taxes !== 0 && (
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Taxes</span>
                   <span className="text-success">{formatPrice(price.taxes)}</span>
@@ -141,15 +141,28 @@ export function ConfirmationStep({ form, isSubmitting, onSubmit }: BaseStepProps
             {/* Total */}
             <div className="space-y-3 font-medium">
               <div className="flex justify-between">
-                <span className="">Total for Initial Deep Clean</span>
+                <span className="">{(() => {
+                  if (selectedFrequency === 'one-time') {
+                    return 'Total'
+                  } else {
+                    if (selectedServiceCategory === 'deep-clean') {
+                      return 'Total for Initial Deep Clean'
+                    } else {
+                      return 'Total for Initial'
+                    }
+                  }
+                })()}
+                </span>
                 <span>
                   <span className="text-lg">{formatPrice(price.totalInitial)}</span>
                 </span>
               </div>
-              <div className="flex justify-between pb-2">
-                <span className="">Total for Recurring Upkeep</span>
-                <span className="text-lg">{formatPrice(price.totalRecurring)}</span>
-              </div>
+              {price.totalRecurring != null && price.totalRecurring !== 0 && (
+                <div className="flex justify-between pb-2">
+                  <span className="">Total for Recurring Upkeep</span>
+                  <span className="text-lg">{formatPrice(price.totalRecurring)}</span>
+                </div>
+              )}
             </div>
           </CardContent>
         </Card>

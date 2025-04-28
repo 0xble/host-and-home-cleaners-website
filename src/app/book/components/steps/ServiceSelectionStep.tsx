@@ -6,6 +6,7 @@ import { StepLayout } from '@/app/book/components/StepLayout'
 import { useStepValidation } from '@/app/book/hooks/useStepValidation'
 import { BookingFormOption } from '@/components/BookingFormOption'
 import LottieAnimation from '@/components/LottieAnimation'
+import { PRICING_PARAMETERS } from '@/lib/constants'
 import ChecklistAnimation from '@/public/lottie/checklist.json'
 import HouseCleanAnimation from '@/public/lottie/house.json'
 import MansionAnimation from '@/public/lottie/mansion.json'
@@ -44,7 +45,7 @@ const SERVICE_OPTIONS: {
   },
 ]
 
-function ServiceSelectionStepComponent({ form, onValidityChangeAction }: BaseStepProps) {
+function ServiceSelectionStepComponent({ form, location, onValidityChangeAction }: BaseStepProps) {
   const prevServiceCategoryRef = useRef<BookingServiceCategory | null>(null)
 
   const { watch, setValue } = form
@@ -62,6 +63,10 @@ function ServiceSelectionStepComponent({ form, onValidityChangeAction }: BaseSte
 
   const handleSelectServiceCategory = (serviceCategory: BookingServiceCategory) => {
     setValue('serviceCategory', serviceCategory)
+    const { frequencies } = PRICING_PARAMETERS[location][serviceCategory]
+    if (frequencies == null) {
+      setValue('frequency', 'one-time')
+    }
   }
 
   return (

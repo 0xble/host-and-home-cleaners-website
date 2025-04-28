@@ -66,11 +66,11 @@ export type BookingPricingParams = z.infer<typeof BookingPricingParamsSchema>
 
 export const BookingPriceDetailsSchema = z.object({
   serviceTotal: z.number(),
-  recurringDiscount: z.number(),
-  taxes: z.number(),
   totalInitial: z.number(),
-  totalRecurring: z.number(),
-  coupon: BookingCouponSchema.optional(),
+  totalRecurring: z.number().nullable(),
+  recurringDiscount: z.number().nullable(),
+  coupon: BookingCouponSchema.nullable(),
+  taxes: z.number().nullable(),
 })
 export type BookingPriceDetails = z.infer<typeof BookingPriceDetailsSchema>
 
@@ -133,8 +133,8 @@ export interface BaseStepProps {
   form: UseFormReturn<BookingFormData>
   currentStep: BookingStep
   location: Location
+  isSubmitting?: boolean
+  onSubmit?: (e: React.MouseEvent<HTMLButtonElement>) => void
   setCurrentStep: (step: BookingStep) => void
   onValidityChangeAction: (isValid: boolean) => void
-  onSubmit?: (e: React.MouseEvent<HTMLButtonElement>) => void
-  isSubmitting?: boolean
 }

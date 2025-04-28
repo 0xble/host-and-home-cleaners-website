@@ -383,8 +383,7 @@ export default function BookingPage() {
             duration: data.pricingParams?.type === 'hourly' ? hoursToMinutes(data.pricingParams.hours) : undefined,
             totalPrice: data.price.serviceTotal,
             finalPrice: data.price.totalInitial,
-            adjustedPrice: data.price.totalRecurring,
-            discountFromFrequency: data.price.recurringDiscount,
+            discountFromFrequency: data.price.recurringDiscount ?? undefined,
             isFirstBooking: true,
           },
         } satisfies RecordBookingPayload,
@@ -484,7 +483,6 @@ export default function BookingPage() {
         && !visitedSteps.includes(currentStep)
         && [
           BookingStep.SERVICE_SELECTION,
-          BookingStep.CUSTOMER_DETAILS,
           BookingStep.SIZE_SELECTION,
           BookingStep.HOURS_SELECTION,
         ].includes(currentStep)
