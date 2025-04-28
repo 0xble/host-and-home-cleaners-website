@@ -8,7 +8,7 @@ import { PaymentMethodCard } from '@/components/PaymentMethodCard'
 import { Card, CardContent } from '@/components/ui/card'
 import { ROUTES } from '@/lib/routes'
 import { cn, formatPrice } from '@/lib/utils'
-import { format } from 'date-fns'
+import { format, parse } from 'date-fns'
 import { Loader2 } from 'lucide-react'
 import Link from 'next/link'
 import { BEDROOMS } from '@/lib/constants'
@@ -98,7 +98,7 @@ export function ConfirmationStep({ form, isSubmitting, onSubmit }: BaseStepProps
             <div className="space-y-3">
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Date</span>
-                <span>{format(selectedDate, 'EEEE, MMMM d')}</span>
+                <span>{format(parse(selectedDate, 'yyyy-MM-dd', new Date()), 'EEEE, MMMM d')}</span>
               </div>
 
               <div className="flex justify-between">
