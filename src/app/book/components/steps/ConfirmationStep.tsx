@@ -56,7 +56,7 @@ export function ConfirmationStep({ form, isSubmitting, onSubmit }: BaseStepProps
     if (selectedPricingParams?.type === 'flat') {
       const bedrooms = selectedPricingParams.bedrooms
       const config = BEDROOMS.get(bedrooms)
-      return `${bedrooms} bedrooms, <${config?.maxSqFt} sq ft`
+      return `${bedrooms} bedrooms, up to ${config?.maxSqFt} sq ft`
     }
     if (selectedPricingParams?.type === 'hourly') {
       return `${selectedPricingParams.hours} hours`
