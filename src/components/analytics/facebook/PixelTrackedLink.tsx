@@ -15,6 +15,8 @@ interface TrackedLinkProps {
   preventNavigation?: boolean
   isExternal?: boolean
   onClick?: (_e: React.MouseEvent) => void
+  target?: string
+  rel?: string
 }
 
 // Default empty object for event params to avoid infinite render loop
@@ -49,6 +51,8 @@ export default function TrackedLink({
   preventNavigation = false,
   isExternal = false,
   onClick,
+  target,
+  rel,
 }: TrackedLinkProps) {
   const trackEvent = useEventTracking()
 
@@ -70,7 +74,13 @@ export default function TrackedLink({
   // Use regular anchor tag for external links
   if (isExternal) {
     return (
-      <a href={href} className={className} onClick={handleClick}>
+      <a
+        href={href}
+        className={className}
+        onClick={handleClick}
+        target={target}
+        rel={rel}
+      >
         {children}
       </a>
     )

@@ -12,6 +12,10 @@ import HouseCleanAnimation from '@/public/lottie/house.json'
 import MansionAnimation from '@/public/lottie/mansion.json'
 import SprayAnimation from '@/public/lottie/spray.json'
 import { memo, useEffect, useRef } from 'react'
+import TrackedLink from '@/components/analytics/facebook/PixelTrackedLink'
+import { PixelEvent } from '@/lib/pixel'
+import { ROUTES } from '@/lib/routes'
+import { ClipboardList } from 'lucide-react'
 
 const SERVICE_OPTIONS: {
   id: BookingServiceCategory
@@ -75,6 +79,19 @@ function ServiceSelectionStepComponent({ form, location, onValidityChangeAction 
       description="Select the type of cleaning service that best fits your needs. Each option is tailored to different cleaning requirements."
       className="max-w-4xl mx-auto rounded-none border-0 shadow-none"
     >
+      <div className="mb-4 flex justify-end">
+        <TrackedLink
+          href={ROUTES.CHECKLIST.href}
+          eventName={PixelEvent.VIEW_CONTENT}
+          className="inline-flex items-center text-xs text-muted-foreground hover:text-primary underline underline-offset-2 transition-colors"
+          isExternal
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <ClipboardList className="h-4 w-4 mr-1 text-muted-foreground" aria-hidden="true" />
+          View what's included in each option
+        </TrackedLink>
+      </div>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {SERVICE_OPTIONS.map(({ id, title, description, animation }) => (
           <BookingFormOption
