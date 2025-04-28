@@ -1,4 +1,5 @@
 import type { BookingFrequency, BookingPriceDetails, BookingPricingParams, BookingServiceCategory } from '@/app/book/types'
+import { calculateDiscount } from '@/app/book/utils'
 import { Button } from '@/components/ui/button'
 import {
   Drawer,
@@ -25,7 +26,7 @@ export function PriceDetailsDrawer({
     totalRecurring,
     serviceTotal,
     taxes,
-    discount,
+    coupon,
     recurringDiscount,
   },
   booking: {
@@ -34,6 +35,8 @@ export function PriceDetailsDrawer({
     pricingParams,
   },
 }: PriceDetailsDrawerProps) {
+  const discount = coupon ? calculateDiscount({ serviceTotal, ...coupon.discount }) : 0
+
   const getFrequencyLabel = (freq: BookingFrequency) => {
     switch (freq) {
       case 'weekly':
@@ -49,7 +52,7 @@ export function PriceDetailsDrawer({
 
   const getServiceLabel = (service: BookingServiceCategory) => {
     switch (service) {
-      case 'default':
+      case 'deep-clean':
         return 'Deep clean'
       case 'move-in-out':
         return 'Move-In/Out clean'
@@ -69,16 +72,22 @@ export function PriceDetailsDrawer({
         >
           <div className="flex w-full items-center justify-between gap-2">
             <div className="flex flex-col justify-center text-left">
-              <div>
-                <span className="text-lg font-medium">{formatPrice(totalInitial)}</span>
+              <div className="text-lg">
+                {discount > 0 && (
+                  <>
+                    <span className="line-through text-muted-foreground">{formatPrice(totalInitial)}</span>
+                    {' '}
+                  </>
+                )}
+                <span className="text-lg font-medium">{formatPrice(totalInitial - discount)}</span>
                 <span className="text-sm font-normal">{frequency !== 'one-time' && ' first'}</span>
                 <InfoIcon className="size-5 text-muted-foreground opacity-50 transition-opacity group-hover:opacity-100 inline-block ml-2 -mt-1" />
               </div>
               {totalRecurring && frequency !== 'one-time' && (
-                <div>
-                  <span className="line-through text-muted-foreground text-base">{formatPrice(totalInitial)}</span>
+                <div className="text-base">
+                  <span className="line-through text-muted-foreground">{formatPrice(totalInitial)}</span>
                   {' '}
-                  <span className="text-success text-base">{formatPrice(totalRecurring)}</span>
+                  <span className="text-success">{formatPrice(totalRecurring)}</span>
                   <span className="text-sm font-normal"> recurring</span>
                 </div>
               )}
@@ -136,10 +145,15 @@ export function PriceDetailsDrawer({
                   <span>{formatPrice(serviceTotal)}</span>
                 </div>
                 {discount > 0 && (
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Discounts</span>
-                    <span className="text-success">{formatPrice(-Math.abs(discount))}</span>
-                  </div>
+                  <>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Discount</span>
+                      <span className="text-success">{formatPrice(-Math.abs(discount))}</span>
+                    </div>
+                    {coupon?.description != null && (
+                      <div className="font-light text-xs text-muted-foreground text-right w-full pb-1">{coupon.description}</div>
+                    )}
+                  </>
                 )}
                 {recurringDiscount > 0 && (
                   <div className="flex justify-between">

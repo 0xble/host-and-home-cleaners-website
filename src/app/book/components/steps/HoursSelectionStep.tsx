@@ -22,10 +22,10 @@ export function HoursSelectionStep({ form, onValidityChangeAction }: BaseStepPro
   })
 
   const handleSelectHours = (hours: number) => {
-    const { location, serviceCategory, frequency } = getValues()
+    const { location, serviceCategory, frequency, price: { coupon } } = getValues()
     const config = PRICING_PARAMETERS[location][serviceCategory]
     if (config.type === 'hourly') {
-      setValue('price', calculatePrice(serviceCategory, frequency, { type: 'hourly', hours }, config))
+      setValue('price', calculatePrice({ serviceCategory, frequency, params: { type: 'hourly', hours }, config, coupon }))
       setValue('pricingParams', { type: 'hourly', hours })
     }
     else {
@@ -45,7 +45,7 @@ export function HoursSelectionStep({ form, onValidityChangeAction }: BaseStepPro
           <FormItem>
             <FormLabel>Number of Hours</FormLabel>
             <FormControl>
-              <div className="grid grid-cols-2 gap-4 pt-2 sm:grid-cols-4">
+              <div className="grid grid-cols-2 gap-4 pt-2">
                 {HOURS_OPTIONS.map(value => (
                   <BookingFormOption
                     key={`${value} hours`}

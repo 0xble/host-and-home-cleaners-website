@@ -20,7 +20,7 @@ import { ScheduleStep } from '@/app/book/components/steps/ScheduleStep'
 import { ServiceSelectionStep } from '@/app/book/components/steps/ServiceSelectionStep'
 import { SizeSelectionStep } from '@/app/book/components/steps/SizeSelectionStep'
 import { TellUsAboutYourPlaceStep } from '@/app/book/components/steps/TellUsAboutYourPlaceStep'
-import { BookingFormSchema, BookingStep } from '@/app/book/types'
+import { BookingFormSchema, BookingStep, COUPONS } from '@/app/book/types'
 import { calculatePrice } from '@/app/book/utils'
 import { GradientButton } from '@/components/GradientButton'
 import { PriceDetailsDrawer } from '@/components/PriceDetailsDrawer'
@@ -74,11 +74,20 @@ export default function BookingPage() {
   const [isLoadingGoogleMaps, setIsLoadingGoogleMaps] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
+  const coupon = COUPONS.SPRING10 // TODO: Allow input of coupon code
+
   const form = useForm<BookingFormData>({
     resolver: zodResolver(BookingFormSchema),
     defaultValues: {
       location,
       frequency: 'biweekly',
+      price: {
+        totalInitial: 0,
+        totalRecurring: 0,
+        serviceTotal: 0,
+        taxes: 0,
+        coupon,
+      },
     },
     mode: 'onTouched',
   })
@@ -386,6 +395,7 @@ export default function BookingPage() {
         toast({
           title: 'Booking confirmed!',
           description: 'You will receive a confirmation email shortly.',
+          variant: 'success',
         })
 
         // Clear session storage on successful submission
@@ -602,12 +612,13 @@ export default function BookingPage() {
                     form.setValue(`pricingParams.${pricingParams.type === 'flat' ? 'bedrooms' : 'hours'}`, pricingParams.type === 'flat' ? pricingParams.bedrooms : pricingParams.hours)
 
                     if (selectedServiceCategory && selectedFrequency) {
-                      form.setValue('price', calculatePrice(
-                        selectedServiceCategory,
-                        selectedFrequency,
-                        pricingParams,
-                        PRICING_PARAMETERS[location][selectedServiceCategory],
-                      ))
+                      form.setValue('price', calculatePrice({
+                        serviceCategory: selectedServiceCategory,
+                        frequency: selectedFrequency,
+                        params: pricingParams,
+                        config: PRICING_PARAMETERS[location][selectedServiceCategory],
+                        coupon,
+                      }))
                     }
                     else {
                       console.error('Expected parameters to be defined for price calculation', {
@@ -626,7 +637,7 @@ export default function BookingPage() {
                     break
                   case BookingStep.CONFIRMATION:
                     form.setValue('payment.cardNumber', '4242424242424242')
-                    form.setValue('payment.expiration', '12/2025')
+                    form.setValue('payment.expiration', '12/25')
                     form.setValue('payment.cvv', '123')
                     form.setValue('payment.zip', '12345')
                     void handleSubmit(onSubmit)
@@ -670,11 +681,11 @@ export default function BookingPage() {
                           <PriceDetailsDrawer
                             price={{
                               serviceTotal: price.serviceTotal,
-                              discount: price.discount,
                               recurringDiscount: price.recurringDiscount,
                               taxes: price.taxes,
                               totalInitial: price.totalInitial,
                               totalRecurring: price.totalRecurring,
+                              coupon,
                             }}
                             booking={{
                               frequency: selectedFrequency,

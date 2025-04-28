@@ -2,10 +2,12 @@
 
 import type { BaseStepProps } from '@/app/book/types'
 import { StepLayout } from '@/app/book/components/StepLayout'
+import { calculateDiscount } from '@/app/book/utils'
 import { GradientButton } from '@/components/GradientButton'
 import { PaymentMethodCard } from '@/components/PaymentMethodCard'
 import { Card, CardContent } from '@/components/ui/card'
 import { ROUTES } from '@/lib/routes'
+import { cn, formatPrice } from '@/lib/utils'
 import { format } from 'date-fns'
 import { Loader2 } from 'lucide-react'
 import Link from 'next/link'
@@ -59,6 +61,9 @@ export function ConfirmationStep({ form, isSubmitting, onSubmit }: BaseStepProps
     return ''
   }
 
+  const coupon = price.coupon
+  const discount = coupon ? calculateDiscount({ serviceTotal: price.serviceTotal, ...coupon.discount }) : 0
+
   return (
     <StepLayout
       title="Confirm your booking"
@@ -85,7 +90,7 @@ export function ConfirmationStep({ form, isSubmitting, onSubmit }: BaseStepProps
               </div>
             </div>
 
-            <div className="border-t my-6" />
+            <div className="border-b my-6" />
 
             <div className="space-y-3">
               <div className="flex justify-between">
@@ -99,41 +104,51 @@ export function ConfirmationStep({ form, isSubmitting, onSubmit }: BaseStepProps
               </div>
             </div>
 
-            <div className="border-t my-6" />
+            <div className="border-b my-6" />
 
-            <div className="space-y-3">
+            <div className="space-y-3 font-normal">
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Service Total</span>
-                <span>
-                  $
-                  {price.serviceTotal.toFixed(2)}
-                </span>
+                <span className={cn(discount !== 0 && 'line-through')}>{formatPrice(price.serviceTotal)}</span>
               </div>
-
-              {price.recurringDiscount > 0 && (
-                <div className="flex justify-between text-green-600">
-                  <span>Recurring Discount</span>
-                  <span>
-                    -$
-                    {price.recurringDiscount.toFixed(2)}
-                  </span>
+              {discount !== 0 && (
+                <>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Discount</span>
+                    <span className="text-success">{formatPrice(-Math.abs(discount))}</span>
+                  </div>
+                  {coupon?.description != null && (
+                    <div className="font-light text-xs text-muted-foreground text-right w-full">{coupon.description}</div>
+                  )}
+                </>
+              )}
+              {price.recurringDiscount !== 0 && (
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Recurring Discount</span>
+                  <span className="text-success">{formatPrice(-Math.abs(price.recurringDiscount))}</span>
                 </div>
               )}
+              {price.taxes !== 0 && (
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Taxes</span>
+                  <span className="text-success">{formatPrice(price.taxes)}</span>
+                </div>
+              )}
+            </div>
 
-              <div className="flex justify-between font-medium">
-                <span>Total for Initial Deep Clean</span>
+            <div className="border-b my-6" />
+
+            {/* Total */}
+            <div className="space-y-3 font-medium">
+              <div className="flex justify-between">
+                <span className="">Total for Initial Deep Clean</span>
                 <span>
-                  $
-                  {price.totalInitial.toFixed(2)}
+                  <span className="text-lg">{formatPrice(price.totalInitial)}</span>
                 </span>
               </div>
-
-              <div className="flex justify-between font-medium">
-                <span>Total for Recurring Upkeep</span>
-                <span>
-                  $
-                  {price.totalRecurring.toFixed(2)}
-                </span>
+              <div className="flex justify-between pb-2">
+                <span className="">Total for Recurring Upkeep</span>
+                <span className="text-lg">{formatPrice(price.totalRecurring)}</span>
               </div>
             </div>
           </CardContent>

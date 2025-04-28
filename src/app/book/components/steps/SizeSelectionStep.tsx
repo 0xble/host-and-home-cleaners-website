@@ -28,10 +28,10 @@ export function SizeSelectionStep({ form, onValidityChangeAction }: BaseStepProp
   })
 
   const handleSelectBedrooms = (bedrooms: number) => {
-    const { location, serviceCategory, frequency } = getValues()
+    const { location, serviceCategory, frequency, price: { coupon } } = getValues()
     const config = PRICING_PARAMETERS[location][serviceCategory]
     if (config.type === 'flat') {
-      setValue('price', calculatePrice(serviceCategory, frequency, { type: 'flat', bedrooms }, config))
+      setValue('price', calculatePrice({ serviceCategory, frequency, params: { type: 'flat', bedrooms }, config, coupon }))
       setValue('pricingParams', { type: 'flat', bedrooms })
     }
     else {

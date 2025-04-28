@@ -1,4 +1,4 @@
-import type { BookingFormData, BookingFrequency, BookingPricingParams, BookingServiceCategory } from '@/app/book/types'
+import type { BookingCoupon, BookingDiscount, BookingFormData, BookingFrequency, BookingPricingParams, BookingServiceCategory } from '@/app/book/types'
 import type { PricingParams } from '@/lib/constants'
 
 /**
@@ -74,14 +74,31 @@ export function extractAddressComponents(addressComponents: google.maps.Geocoder
   return result
 }
 
-export function calculatePrice(
-  serviceCategory: BookingServiceCategory,
-  frequency: BookingFrequency,
-  params: BookingPricingParams,
-  config: PricingParams,
-  discount: number = 0,
-  taxes: number = 0,
-): BookingFormData['price'] {
+export function calculateDiscount({ type, value, serviceTotal }: BookingDiscount & { serviceTotal: number }): number {
+  if (type === 'percentage')
+    return serviceTotal * value
+  if (type === 'fixed')
+    return value
+  return 0
+}
+
+export interface CalculatePriceParams {
+  serviceCategory: BookingServiceCategory
+  frequency: BookingFrequency
+  params: BookingPricingParams
+  config: PricingParams
+  coupon?: BookingCoupon
+  taxes?: number
+}
+
+export function calculatePrice({
+  serviceCategory,
+  frequency,
+  params,
+  config,
+  coupon,
+  taxes = 0,
+}: CalculatePriceParams): BookingFormData['price'] {
   let serviceTotal: number
   switch (config.type) {
     case 'flat': {
@@ -105,13 +122,14 @@ export function calculatePrice(
     }
   }
 
+  const discount = coupon ? calculateDiscount({ serviceTotal, ...coupon.discount }) : 0
   const totalInitial = serviceTotal - discount
   const recurringDiscount = config.frequencies ? serviceTotal * config.frequencies[frequency] : 0
   const totalRecurring = totalInitial - recurringDiscount
 
   return {
     serviceTotal,
-    discount,
+    coupon,
     recurringDiscount,
     totalInitial,
     totalRecurring,

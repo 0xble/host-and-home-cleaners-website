@@ -837,14 +837,14 @@ export const PricingParamsSchema = z.discriminatedUnion('type', [
 export type PricingParams = z.infer<typeof PricingParamsSchema>
 
 export const PRICING_PARAMETERS: Readonly<Record<Location, Record<BookingServiceCategory, PricingParams>>> = {
-  MYRTLE_BEACH: {
+  HONOLULU: {
     'deep-clean': {
       type: 'flat',
       bedrooms: {
-        1: 149,
-        2: 179,
-        3: 209,
-        4: 239,
+        1: 263.33,
+        2: 374.44,
+        3: 474.44,
+        4: 707.78,
       },
       frequencies: {
         'one-time': 0,
@@ -856,15 +856,15 @@ export const PRICING_PARAMETERS: Readonly<Record<Location, Record<BookingService
     'move-in-out': {
       type: 'flat',
       bedrooms: {
-        1: 229,
-        2: 269,
-        3: 309,
-        4: 349,
+        1: 326.67,
+        2: 486.11,
+        3: 637.78,
+        4: 873.33,
       },
     },
     'custom': {
       type: 'hourly',
-      hourlyRate: 65,
+      hourlyRate: 75,
       frequencies: {
         'one-time': 0,
         'weekly': 0.2,
@@ -883,14 +883,14 @@ export const PRICING_PARAMETERS: Readonly<Record<Location, Record<BookingService
       },
     },
   },
-  HONOLULU: {
+  MYRTLE_BEACH: {
     'deep-clean': {
       type: 'flat',
       bedrooms: {
-        1: 169,
-        2: 199,
-        3: 239,
-        4: 279,
+        1: 217,
+        2: 267,
+        3: 327,
+        4: 482,
       },
       frequencies: {
         'one-time': 0,
@@ -902,10 +902,10 @@ export const PRICING_PARAMETERS: Readonly<Record<Location, Record<BookingService
     'move-in-out': {
       type: 'flat',
       bedrooms: {
-        1: 259,
-        2: 299,
-        3: 339,
-        4: 379,
+        1: 242.5,
+        2: 324,
+        3: 432,
+        4: 562,
       },
     },
     'custom': {
@@ -920,7 +920,7 @@ export const PRICING_PARAMETERS: Readonly<Record<Location, Record<BookingService
     },
     'mansion': {
       type: 'hourly',
-      hourlyRate: 85,
+      hourlyRate: 75,
       frequencies: {
         'one-time': 0,
         'weekly': 0.2,

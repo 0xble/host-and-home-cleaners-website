@@ -2,7 +2,39 @@ import type { Location } from '@/lib/types'
 import type { UseFormReturn } from 'react-hook-form'
 import { LOCATIONS } from '@/lib/constants'
 import { LocationSchema } from '@/lib/types'
+import { tz } from '@date-fns/tz'
+import { addMonths, format, startOfMonth } from 'date-fns'
 import { z } from 'zod'
+
+export const BookingCouponCodeSchema = z.enum(['SPRING10'])
+export type BookingCouponCode = z.infer<typeof BookingCouponCodeSchema>
+
+export const BookingDiscountSchema = z.object({
+  type: z.enum(['percentage', 'fixed']),
+  value: z.number(),
+})
+export type BookingDiscount = z.infer<typeof BookingDiscountSchema>
+
+export const BookingCouponSchema = z.object({
+  discount: BookingDiscountSchema,
+  description: z.string().optional(),
+})
+export type BookingCoupon = z.infer<typeof BookingCouponSchema>
+
+export const COUPONS: Record<BookingCouponCode, BookingCoupon> = {
+  SPRING10: {
+    discount: {
+      type: 'percentage',
+      value: 0.1,
+    },
+    description: (() => {
+      const now = new Date()
+      const nextMonth = addMonths(now, 1)
+      const firstOfNextMonth = startOfMonth(nextMonth, { in: tz('America/Los_Angeles') })
+      return `Saving 10% off for our Spring Cleaning Sale! Until ${format(firstOfNextMonth, 'MMMM do', { in: tz('America/Los_Angeles') })}.`
+    })(),
+  },
+}
 
 export const BookingServiceCategorySchema = z.enum(['deep-clean', 'move-in-out', 'custom', 'mansion'])
 export type BookingServiceCategory = z.infer<typeof BookingServiceCategorySchema>
@@ -34,11 +66,11 @@ export type BookingPricingParams = z.infer<typeof BookingPricingParamsSchema>
 
 export const BookingPriceDetailsSchema = z.object({
   serviceTotal: z.number(),
-  discount: z.number(),
   recurringDiscount: z.number(),
   taxes: z.number(),
   totalInitial: z.number(),
   totalRecurring: z.number(),
+  coupon: BookingCouponSchema.optional(),
 })
 export type BookingPriceDetails = z.infer<typeof BookingPriceDetailsSchema>
 
