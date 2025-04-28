@@ -81,7 +81,7 @@ export function PriceDetailsDrawer({
                 )}
                 <span className="text-lg font-medium">{formatPrice(totalInitial)}</span>
                 <span className="text-sm font-normal">{frequency !== 'one-time' && ' first'}</span>
-                <InfoIcon className="size-5 text-muted-foreground opacity-50 transition-opacity group-hover:opacity-100 inline-block ml-2 -mt-1" />
+                <InfoIcon className="size-5 text-muted-foreground opacity-50 transition-opacity group-hover:opacity-100 inline-block ml-1 -mt-1" />
               </div>
               {totalRecurring != null && frequency !== 'one-time' && (
                 <div className="text-base">
