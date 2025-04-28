@@ -125,7 +125,7 @@ export function calculatePrice({
   const discount = coupon ? calculateDiscount({ serviceTotal, ...coupon.discount }) : 0
   const totalInitial = serviceTotal - discount
   const recurringDiscount = frequency !== 'one-time' ? config.frequencies ? serviceTotal * config.frequencies[frequency] : 0 : null
-  const totalRecurring = frequency !== 'one-time' && recurringDiscount != null ? totalInitial - recurringDiscount : null
+  const totalRecurring = frequency !== 'one-time' && recurringDiscount != null ? serviceTotal - recurringDiscount : null
 
   return {
     serviceTotal,
