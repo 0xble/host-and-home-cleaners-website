@@ -183,6 +183,26 @@ export default function BookingPage() {
     customerZipCode,
   ])
 
+  // Update price when service category, pricing params, or frequency changes
+  useEffect(() => {
+    if (selectedServiceCategory != null && selectedPricingParams != null && selectedFrequency != null) {
+      const config = PRICING_PARAMETERS[location][selectedServiceCategory]
+      const price = calculatePrice({
+        serviceCategory: selectedServiceCategory,
+        frequency: selectedFrequency,
+        params: selectedPricingParams,
+        config,
+        coupon,
+      })
+      form.setValue('price', price)
+      console.log('Updated price:', price)
+    }
+  }, [
+    selectedServiceCategory,
+    selectedPricingParams,
+    selectedFrequency,
+  ])
+
   // Debug log for form errors
   useEffect(() => {
     if (process.env.NODE_ENV === 'development') {
@@ -216,8 +236,8 @@ export default function BookingPage() {
         if (!selectedServiceCategory)
           return null
 
-        const config = PRICING_PARAMETERS[location][selectedServiceCategory]
-        switch (config.type) {
+        const { type } = PRICING_PARAMETERS[location][selectedServiceCategory]
+        switch (type) {
           case 'flat':
             return BookingStep.SIZE_SELECTION
           case 'hourly':
@@ -242,8 +262,8 @@ export default function BookingPage() {
         if (!selectedServiceCategory)
           return null
 
-        const config = PRICING_PARAMETERS[location][selectedServiceCategory]
-        switch (config.type) {
+        const { type } = PRICING_PARAMETERS[location][selectedServiceCategory]
+        switch (type) {
           case 'flat':
             return BookingStep.SIZE_SELECTION
           case 'hourly':
@@ -610,22 +630,6 @@ export default function BookingPage() {
 
                     form.setValue('pricingParams.type', pricingParams.type)
                     form.setValue(`pricingParams.${pricingParams.type === 'flat' ? 'bedrooms' : 'hours'}`, pricingParams.type === 'flat' ? pricingParams.bedrooms : pricingParams.hours)
-
-                    if (selectedServiceCategory && selectedFrequency) {
-                      form.setValue('price', calculatePrice({
-                        serviceCategory: selectedServiceCategory,
-                        frequency: selectedFrequency,
-                        params: pricingParams,
-                        config: PRICING_PARAMETERS[location][selectedServiceCategory],
-                        coupon,
-                      }))
-                    }
-                    else {
-                      console.error('Expected parameters to be defined for price calculation', {
-                        selectedServiceCategory,
-                        selectedFrequency,
-                      })
-                    }
                     void nextStep(true)
                     break
                   }

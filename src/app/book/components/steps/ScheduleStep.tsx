@@ -7,13 +7,12 @@ import { Badge } from '@/components/ui/badge'
 import { Calendar } from '@/components/ui/calendar'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { LOCATIONS, PRICING_PARAMETERS } from '@/lib/constants'
+import { LOCATIONS } from '@/lib/constants'
 import { tz } from '@date-fns/tz'
 import { addDays, format, isBefore, parse } from 'date-fns'
-import { calculatePrice } from '../../utils'
 
 export function ScheduleStep({ form, location, onValidityChangeAction }: BaseStepProps) {
-  const { watch, setValue, getValues } = form
+  const { watch, setValue } = form
   const selectedDate = watch('date') as BookingFormState['date']
   const selectedServiceCategory = watch('serviceCategory') as BookingFormState['serviceCategory']
   const selectedPricingParams = watch('pricingParams') as BookingFormState['pricingParams']
@@ -48,11 +47,6 @@ export function ScheduleStep({ form, location, onValidityChangeAction }: BaseSte
   // Update price when frequency changes
   const handleFrequencyChange = (value: BookingFrequency) => {
     setValue('frequency', value)
-    const { location, serviceCategory, pricingParams, frequency, price: { coupon } } = getValues()
-    if (serviceCategory && pricingParams) {
-      const config = PRICING_PARAMETERS[location][serviceCategory]
-      setValue('price', calculatePrice({ serviceCategory, frequency, params: pricingParams, config, coupon }))
-    }
   }
 
   return (
