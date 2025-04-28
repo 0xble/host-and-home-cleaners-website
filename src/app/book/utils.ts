@@ -87,7 +87,7 @@ export interface CalculatePriceParams {
   frequency: BookingFrequency
   params: BookingPricingParams
   config: PricingParams
-  coupon?: BookingCoupon
+  coupon?: BookingCoupon | null
   taxes?: number
 }
 

@@ -141,17 +141,20 @@ export function ConfirmationStep({ form, isSubmitting, onSubmit }: BaseStepProps
             {/* Total */}
             <div className="space-y-3 font-medium">
               <div className="flex justify-between">
-                <span className="">{(() => {
-                  if (selectedFrequency === 'one-time') {
-                    return 'Total'
-                  } else {
-                    if (selectedServiceCategory === 'deep-clean') {
-                      return 'Total for Initial Deep Clean'
-                    } else {
-                      return 'Total for Initial'
+                <span className="">
+                  {(() => {
+                    if (selectedFrequency === 'one-time') {
+                      return 'Total'
                     }
-                  }
-                })()}
+                    else {
+                      if (selectedServiceCategory === 'deep-clean') {
+                        return 'Total for Initial Deep Clean'
+                      }
+                      else {
+                        return 'Total for Initial'
+                      }
+                    }
+                  })()}
                 </span>
                 <span>
                   <span className="text-lg">{formatPrice(price.totalInitial)}</span>
