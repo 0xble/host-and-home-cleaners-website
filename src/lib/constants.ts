@@ -678,6 +678,19 @@ export const SERVICE_CHECKLIST: Record<string, ServiceInclusions> = {
   },
 }
 
+export interface Bedroom {
+  label: string
+  maxSqFt: string
+  icon: string
+}
+
+export const BEDROOMS: ReadonlyMap<number, Bedroom> = new Map([
+  [1, { label: 'One Bedroom', maxSqFt: '1,000', icon: 'one-bedroom' }],
+  [2, { label: 'Two Bedroom', maxSqFt: '1,500', icon: 'two-bedroom' }],
+  [3, { label: 'Three Bedroom', maxSqFt: '2,500', icon: 'three-bedroom' }],
+  [4, { label: 'Four Bedroom', maxSqFt: '3,000', icon: 'four-bedroom' }],
+])
+
 export const LOCATIONS = {
   MYRTLE_BEACH: {
     id: 'c202ac2d56404655ba4620ec3e1dcf62',

@@ -6,15 +6,8 @@ import { useStepValidation } from '@/app/book/hooks/useStepValidation'
 import { calculatePrice } from '@/app/book/utils'
 import { BookingFormOption } from '@/components/BookingFormOption'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { PRICING_PARAMETERS } from '@/lib/constants'
+import { BEDROOMS, PRICING_PARAMETERS } from '@/lib/constants'
 import Image from 'next/image'
-
-const BEDROOM_OPTIONS = [
-  { bedrooms: 1, label: 'One Bedroom', sqft: '1,000', icon: 'one-bedroom' },
-  { bedrooms: 2, label: 'Two Bedroom', sqft: '1,500', icon: 'two-bedroom' },
-  { bedrooms: 3, label: 'Three Bedroom', sqft: '2,500', icon: 'three-bedroom' },
-  { bedrooms: 4, label: 'Four Bedroom', sqft: '3,000', icon: 'four-bedroom' },
-] as const
 
 export function SizeSelectionStep({ form, onValidityChangeAction }: BaseStepProps) {
   const { setValue, getValues } = form
@@ -52,7 +45,7 @@ export function SizeSelectionStep({ form, onValidityChangeAction }: BaseStepProp
             <FormLabel>Number of Bedrooms</FormLabel>
             <FormControl>
               <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-                {BEDROOM_OPTIONS.map(({ bedrooms, label, sqft, icon }) => (
+                {Array.from(BEDROOMS.entries()).map(([bedrooms, { label, maxSqFt, icon }]) => (
                   <BookingFormOption
                     key={bedrooms}
                     isSelected={field.value === bedrooms}
@@ -70,7 +63,7 @@ export function SizeSelectionStep({ form, onValidityChangeAction }: BaseStepProp
                     <p className="mt-1 text-sm text-muted-foreground">
                       Up to
                       {' '}
-                      {sqft}
+                      {maxSqFt}
                       {' '}
                       sq ft
                     </p>

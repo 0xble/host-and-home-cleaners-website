@@ -11,6 +11,7 @@ import { cn, formatPrice } from '@/lib/utils'
 import { format } from 'date-fns'
 import { Loader2 } from 'lucide-react'
 import Link from 'next/link'
+import { BEDROOMS } from '@/lib/constants'
 
 export function ConfirmationStep({ form, isSubmitting, onSubmit }: BaseStepProps) {
   const { watch } = form
@@ -53,7 +54,9 @@ export function ConfirmationStep({ form, isSubmitting, onSubmit }: BaseStepProps
 
   const formatSize = () => {
     if (selectedPricingParams?.type === 'flat') {
-      return `${selectedPricingParams.bedrooms} bedroom`
+      const bedrooms = selectedPricingParams.bedrooms
+      const config = BEDROOMS.get(bedrooms)
+      return `${bedrooms} bedrooms, <${config?.maxSqFt} sq ft`
     }
     if (selectedPricingParams?.type === 'hourly') {
       return `${selectedPricingParams.hours} hours`
@@ -85,7 +88,7 @@ export function ConfirmationStep({ form, isSubmitting, onSubmit }: BaseStepProps
               </div>
 
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Size</span>
+                <span className="text-muted-foreground">{selectedPricingParams?.type === 'flat' ? 'Size' : 'Hours'}</span>
                 <span>{formatSize()}</span>
               </div>
             </div>
