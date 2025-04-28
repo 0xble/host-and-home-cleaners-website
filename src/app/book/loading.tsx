@@ -7,7 +7,7 @@ import Link from 'next/link'
 export default function BookingLoading() {
   return (
     <div className="relative min-h-screen pb-24">
-      <div className="p-6">
+      <div className="p-6 flex justify-end">
         <Button variant="outline" size="default" asChild className="rounded-full px-5">
           <Link href={ROUTES.HOME.href}>
             Exit

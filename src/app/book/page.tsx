@@ -525,26 +525,28 @@ export default function BookingPage() {
 
   return (
     <div className="relative min-h-screen">
-      <div className="p-6">
-        {currentStep !== BookingStep.CONFIRMATION
-          ? (
-              <Button variant="outline" size="default" asChild className="rounded-full px-5">
-                <Link href={ROUTES.HOME.href}>
-                  Exit
-                </Link>
-              </Button>
-            )
-          : (
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={prevStep}
-                className="rounded-full size-12"
-              >
-                <ArrowLeft />
-              </Button>
-            )}
-      </div>
+      {currentStep !== BookingStep.CONFIRMATION
+        ? (
+          <div className="p-6 flex justify-end">
+            <Button variant="outline" size="default" asChild className="rounded-full px-5">
+              <Link href={ROUTES.HOME.href}>
+                Exit
+              </Link>
+            </Button>
+            </div>
+          )
+        : (
+          <div className="p-6 flex">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={prevStep}
+              className="rounded-full size-12"
+            >
+              <ArrowLeft />
+            </Button>
+          </div>
+        )}
 
       <Form {...form}>
         <form
