@@ -669,7 +669,7 @@ export default function BookingPage() {
                     <GradientButton
                       type="button"
                       onClick={() => void nextStep()}
-                      className="w-full"
+                      className="w-full sm:max-w-xs sm:ml-auto"
                     >
                       Get started
                     </GradientButton>

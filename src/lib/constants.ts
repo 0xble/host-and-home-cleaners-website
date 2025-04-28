@@ -877,7 +877,7 @@ export const PRICING_PARAMETERS: Readonly<Record<Location, Record<BookingService
     },
     'custom': {
       type: 'hourly',
-      hourlyRate: 75,
+      hourlyRate: 82,
       frequencies: {
         'one-time': 0,
         'weekly': 0.2,
@@ -887,7 +887,7 @@ export const PRICING_PARAMETERS: Readonly<Record<Location, Record<BookingService
     },
     'mansion': {
       type: 'hourly',
-      hourlyRate: 75,
+      hourlyRate: 82,
       frequencies: {
         'one-time': 0,
         'weekly': 0.2,
@@ -923,7 +923,7 @@ export const PRICING_PARAMETERS: Readonly<Record<Location, Record<BookingService
     },
     'custom': {
       type: 'hourly',
-      hourlyRate: 75,
+      hourlyRate: 61,
       frequencies: {
         'one-time': 0,
         'weekly': 0.2,
@@ -933,7 +933,7 @@ export const PRICING_PARAMETERS: Readonly<Record<Location, Record<BookingService
     },
     'mansion': {
       type: 'hourly',
-      hourlyRate: 75,
+      hourlyRate: 61,
       frequencies: {
         'one-time': 0,
         'weekly': 0.2,
