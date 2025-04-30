@@ -72,23 +72,23 @@ export function PriceDetailsDrawer({
         >
           <div className="flex w-full items-center justify-between gap-2">
             <div className="flex flex-col justify-center text-left">
-              <div className="text-lg">
+              <div>
                 {discount != null && discount > 0 && (
                   <>
-                    <span className="line-through text-muted-foreground">{formatPrice(serviceTotal)}</span>
+                    <span className="text-sm sm:text-base line-through text-muted-foreground">{formatPrice(serviceTotal)}</span>
                     {' '}
                   </>
                 )}
-                <span className="text-lg font-medium">{formatPrice(totalInitial)}</span>
-                <span className="text-sm font-normal">{frequency !== 'one-time' && ' first'}</span>
+                <span className="sm:text-lg text-base font-medium">{formatPrice(totalInitial)}</span>
+                <span className="sm:text-sm text-xs font-normal">{frequency !== 'one-time' && ' first'}</span>
                 <InfoIcon className="size-5 text-muted-foreground opacity-50 transition-opacity group-hover:opacity-100 inline-block ml-1 -mt-1" />
               </div>
               {totalRecurring != null && frequency !== 'one-time' && (
-                <div className="text-base">
-                  <span className="line-through text-muted-foreground">{formatPrice(serviceTotal)}</span>
+                <div>
+                  <span className="text-sm sm:text-base line-through text-muted-foreground">{formatPrice(serviceTotal)}</span>
                   {' '}
-                  <span className="text-success">{formatPrice(totalRecurring)}</span>
-                  <span className="text-sm font-normal"> recurring</span>
+                  <span className="sm:text-lg text-base font-medium text-success">{formatPrice(totalRecurring)}</span>
+                  <span className="sm:text-sm text-xs font-normal"> recurring</span>
                 </div>
               )}
             </div>
