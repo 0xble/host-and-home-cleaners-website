@@ -90,7 +90,7 @@ export default function LocationLandingPage({
         copy={{
           heroHeading: customHeroHeading,
           heroDescription: customHeroDescription,
-          heroActions: <CTAButtons className="mt-12 lg:mt-8" phone={PHONE[locationKey]} />,
+          heroActions: <CTAButtons className="mt-12 lg:mt-8" phone={PHONE[locationKey]} location={locationKey} />,
           reviewsHeading: customReviewsHeading,
           howItWorksHeading: customHowItWorksHeading,
           howItWorksSteps: customHowItWorksSteps,
