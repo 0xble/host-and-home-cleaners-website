@@ -101,7 +101,9 @@ export default function CookieConsent({ variant = 'default', forceShow = false }
       }
     }
     catch (error) {
-      console.error('Failed to update cookie consent: ', error)
+      if (process.env.NODE_ENV !== 'production') {
+        console.error('Failed to update cookie consent: ', error)
+      }
     }
   }, [forceShow])
 
