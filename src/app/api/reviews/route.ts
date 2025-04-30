@@ -1,6 +1,9 @@
+import { getLogger } from '@/lib/logger'
 import { getReviews } from '@/lib/reviews'
 
 import { NextResponse } from 'next/server'
+
+const logger = getLogger('api-reviews')
 
 // Revalidate every 30 minutes (1800 seconds)
 export const revalidate = 1800
@@ -33,7 +36,7 @@ export async function GET() {
           constructor: 'Unknown',
         }
 
-    console.error('Detailed error in reviews API:', errorDetails)
+    logger.error('Detailed error in reviews API:', errorDetails)
 
     return NextResponse.json(
       {

@@ -1,4 +1,5 @@
 import { Input } from '@/components/ui/input'
+import { getLogger } from '@/lib/logger'
 import { cn } from '@/lib/utils'
 import { Autocomplete } from '@react-google-maps/api'
 import { useEffect, useState } from 'react'
@@ -11,6 +12,8 @@ interface AddressAutocompleteProps {
   className?: string
   showAddressFields?: boolean
 }
+
+const logger = getLogger('address-autocomplete')
 
 export function AddressAutocompleteInput({
   label = 'Address',
@@ -54,12 +57,10 @@ export function AddressAutocompleteInput({
         onChange(streetAddress)
         onPlaceSelected(place)
 
-        if (process.env.NODE_ENV !== 'production') {
-          console.log('Place selected:', {
-            streetAddress,
-            fullPlace: place,
-          })
-        }
+        logger.debug('Place selected:', {
+          streetAddress,
+          fullPlace: place,
+        })
       }
     }
   }
@@ -73,9 +74,7 @@ export function AddressAutocompleteInput({
       // Only update if the value is different and contains just a street address
       if (!value.includes(',')) {
         setInputValue(value)
-        if (process.env.NODE_ENV !== 'production') {
-          console.log('Address synced from props:', value)
-        }
+        logger.debug('Address synced from props:', value)
       }
     }
   }, [value, inputValue])

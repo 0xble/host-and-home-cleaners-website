@@ -4,6 +4,7 @@ import type { SectionBlock } from '@slack/web-api'
 import { formatAddress } from '0xble/address'
 import { BookingFormSchema } from '@/app/book/types'
 import { LOCATIONS } from '@/lib/constants'
+import { getLogger } from '@/lib/logger'
 import { RecordBookingPayloadSchema } from '@/lib/types/bookings'
 import { formatPrice, slugify } from '@/lib/utils'
 import { tz } from '@date-fns/tz'
@@ -12,6 +13,8 @@ import axios from 'axios'
 import { differenceInHours, format } from 'date-fns'
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
+
+const logger = getLogger('api-bookings')
 
 interface TriggerSuccessResponse {
   id: string
@@ -53,9 +56,7 @@ export async function POST(request: Request) {
     )
 
     if ('id' in triggerResponse.data) {
-      if (process.env.NODE_ENV !== 'production') {
-        console.log('Booking created successfully in Notion:', triggerResponse.data)
-      }
+      logger.info('Booking created successfully in Notion:', triggerResponse.data)
 
       let text = `➕🗓️ Add new booking`
       const fields: SectionBlock['fields'] = []
@@ -196,9 +197,7 @@ export async function POST(request: Request) {
       })
 
       if (slackResponse.ok) {
-        if (process.env.NODE_ENV !== 'production') {
-          console.log('Notified to add the booking in Slack', slackResponse)
-        }
+        logger.info('Notified to add the booking in Slack', slackResponse)
 
         return NextResponse.json({
           status: 'success',
@@ -221,7 +220,7 @@ export async function POST(request: Request) {
     }, { status: 400 })
   }
   catch (error) {
-    console.error('Error creating booking:', error)
+    logger.error('Error creating booking:', error)
 
     // Handle axios errors specifically
     if (axios.isAxiosError<ApiErrorResponse>(error)) {

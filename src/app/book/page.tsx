@@ -33,6 +33,7 @@ import { Progress } from '@/components/ui/progress'
 import { toast } from '@/components/ui/use-toast'
 import { DOMAIN, LOCATIONS } from '@/lib/constants'
 import { GoogleMapsLoader } from '@/lib/google/GoogleMapsLoader'
+import { getLogger } from '@/lib/logger'
 import { ROUTES } from '@/lib/routes'
 import { tz } from '@date-fns/tz'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -43,6 +44,8 @@ import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
+
+const logger = getLogger('booking-page')
 
 // Defines the components for each step
 type StepComponent = ComponentType<BaseStepProps>
@@ -164,7 +167,7 @@ export default function BookingPage() {
     useEffect(() => {
       // Log form values if development mode
       if (process.env.NODE_ENV !== 'production') {
-        console.log('Updated form values', getValues())
+        logger.debug('Updated form values', getValues())
       }
 
       const validateStep = async () => {
@@ -201,7 +204,7 @@ export default function BookingPage() {
       })
       form.setValue('price', price)
       if (process.env.NODE_ENV !== 'production') {
-        console.log('Updated price:', price)
+        logger.debug('Updated price:', price)
       }
     }
   }, [
@@ -213,7 +216,7 @@ export default function BookingPage() {
   // Debug log for form errors
   useEffect(() => {
     if (process.env.NODE_ENV !== 'production') {
-      console.log('Form errors:', errors)
+      logger.debug('Form errors:', errors)
     }
   }, [errors])
 
@@ -327,7 +330,7 @@ export default function BookingPage() {
           setIsLoadedGoogleMaps(true)
         }
         catch (error) {
-          console.error('Failed to load Google Maps:', error)
+          logger.error('Failed to load Google Maps:', error)
         }
         finally {
           setIsLoadingGoogleMaps(false)
@@ -443,7 +446,7 @@ export default function BookingPage() {
       }
     }
     catch (error) {
-      console.error('Error creating booking:', error)
+      logger.error('Error creating booking:', error)
 
       toast({
         title: 'Sorry, something went wrong 🙁',

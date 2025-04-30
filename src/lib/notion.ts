@@ -1,10 +1,13 @@
 import type { PageObjectResponse, QueryDatabaseParameters } from '@notionhq/client/build/src/api-endpoints'
+import { getLogger } from '@/lib/logger'
 import { APIResponseError, Client } from '@notionhq/client'
 import { RateLimit } from 'async-sema'
 
 const notion = new Client({
   auth: process.env.NOTION_API_KEY,
 })
+
+const logger = getLogger('notion')
 
 // Notion has a rate limit of 2700 requests per 15 minutes = 3 requests per second
 const rateLimiter = RateLimit(3, { timeUnit: 1000 })
@@ -24,7 +27,7 @@ async function fetchWithRetries<T>(
         // Handle rate limiting and server errors
         if ([429, 500, 502, 503, 504].includes(error.status)) {
           const waitTime = error.status === 429 ? 120 : Math.min(2 ** (retries + 4), 120) // Max 2 minutes
-          console.warn(`Notion API error (${error.status}), retrying in ${waitTime}s...`)
+          logger.warn(`Notion API error (${error.status}), retrying in ${waitTime}s...`)
           await new Promise(resolve => setTimeout(resolve, waitTime * 1000))
           retries++
           if (retries > maxRetries) {
@@ -61,7 +64,7 @@ export async function queryDatabase(params: QueryDatabaseParameters) {
       startCursor = response.next_cursor ?? undefined
     }
     catch (error) {
-      console.error('Error querying Notion database:', error)
+      logger.error('Error querying Notion database:', error)
       throw error
     }
   }

@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Spinner } from '@/components/ui/spinner'
 import { useToast } from '@/components/ui/use-toast'
 
+import { getLogger } from '@/lib/logger'
 import { slugify } from '@/lib/utils'
 import { Star } from 'lucide-react'
 import { useSearchParams } from 'next/navigation'
@@ -82,6 +83,8 @@ const RedirectingMessage: FC<RedirectingMessageProps> = ({ message = 'Thank you!
   </div>
 )
 
+const logger = getLogger('star-rating')
+
 export const StarRating: FC<StarRatingProps> = () => {
   const searchParams = useSearchParams()
   const { toast } = useToast()
@@ -104,7 +107,7 @@ export const StarRating: FC<StarRatingProps> = () => {
       return platformUrls[loc] || REVIEW_URLS.google[loc]
     }
     else {
-      console.error(`No URL found for platform "${platformKey}", defaulting to Google...`)
+      logger.error(`No URL found for platform "${platformKey}", defaulting to Google...`)
       return REVIEW_URLS.google[loc]
     }
   }
