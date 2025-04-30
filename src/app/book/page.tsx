@@ -636,6 +636,7 @@ export default function BookingPage() {
                     form.setValue('customer.city', 'Myrtle Beach')
                     form.setValue('customer.state', 'SC')
                     form.setValue('customer.zipCode', '29577')
+                    form.setValue('location', 'MYRTLE_BEACH')
                     void nextStep(true)
                     break
                   case BookingStep.SIZE_SELECTION:
