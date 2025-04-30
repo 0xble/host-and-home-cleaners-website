@@ -1,7 +1,8 @@
 'use client'
 
-import TrackedLink from '@/components/analytics/facebook/PixelTrackedLink'
+import type { Location } from '@/lib/types'
 
+import TrackedLink from '@/components/analytics/facebook/PixelTrackedLink'
 import { PixelEvent } from '@/lib/pixel'
 import { ROUTES } from '@/lib/routes'
 import { cn } from '@/lib/utils'
@@ -10,6 +11,7 @@ import { useSearchParams } from 'next/navigation'
 interface BookNowButtonProps {
   className?: string
   preventNavigation?: boolean
+  location: Location | null
   size?: 'sm' | 'md' | 'lg'
 }
 
@@ -21,6 +23,7 @@ export default function BookNowButton({
   className,
   preventNavigation = false,
   size = 'md',
+  location,
 }: BookNowButtonProps) {
   // Get search params to forward them to BookingKoala
   const searchParams = useSearchParams()
@@ -40,28 +43,31 @@ export default function BookNowButton({
     // Start with the base booking URL
     const baseUrl = ROUTES.BOOKING.href
 
-    // If there are no search params, return the base URL
-    if (searchParams == null || searchParams.size === 0) {
+    // Initialize query parameters array
+    const queryParams: string[] = []
+
+    // Add location if provided
+    if (location) {
+      queryParams.push(`location=${location.toLowerCase()}`)
+    }
+
+    // Add existing search params
+    if (searchParams != null) {
+      searchParams.forEach((value, key) => {
+        // Skip location if we already added it
+        if (key !== 'location') {
+          queryParams.push(`${key}=${encodeURIComponent(value)}`)
+        }
+      })
+    }
+
+    // If there are no query params, return the base URL
+    if (queryParams.length === 0) {
       return baseUrl
     }
 
-    // Check if the base URL already has query parameters
-    const hasQueryParams = baseUrl.includes('?')
-
-    // Start building the query string
-    let queryString = hasQueryParams ? '&' : '?'
-
-    // Add all search params to the query string
-    searchParams.forEach((value, key) => {
-      // We want to include all parameters, but UTM params are particularly important
-      queryString += `${key}=${encodeURIComponent(value)}&`
-    })
-
-    // Remove the trailing ampersand
-    queryString = queryString.slice(0, -1)
-
-    // Return the full URL
-    return `${baseUrl}${queryString}`
+    // Join all query parameters and return the full URL
+    return `${baseUrl}?${queryParams.join('&')}`
   }
 
   return (

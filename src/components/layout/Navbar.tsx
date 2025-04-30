@@ -103,6 +103,7 @@ export default function Navbar({
             <BookNowButton
               className="z-50 rounded-lg px-2 py-3 text-xs xs:p-3 xs:text-sm lg:text-base"
               size="sm"
+              location={location}
             />
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
               <SheetTrigger asChild>
@@ -359,6 +360,7 @@ export default function Navbar({
                       <BookNowButton
                         className="z-50 rounded-lg border-b border-neutral-400 px-5 py-3 text-sm"
                         size="sm"
+                        location={location}
                       />
                     </div>
                   </div>

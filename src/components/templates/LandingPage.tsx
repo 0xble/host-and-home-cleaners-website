@@ -75,6 +75,7 @@ function createDefaultSections(heroHeading: React.ReactNode, heroDescription: st
               <BookNowButton
                 className="hidden sm:inline-flex lg:mr-3"
                 size="lg"
+                location={location}
               />
               <Suspense>
                 <FindLocationInput />

@@ -19,9 +19,9 @@ export interface CTASectionProps {
 export default function CTASection(props: CTASectionProps) {
   const { heading, body, showImage = true } = props
   const { location: cachedLocation } = useLocationStore()
-  const location = props.location !== 'CACHED'
-    ? props.location
-    : cachedLocation
+  const location = props.location === 'CACHED'
+    ? cachedLocation
+    : props.location
   return (
     <section className={`mx-auto max-w-screen-xl items-center gap-8 px-4 py-8 sm:py-16 md:grid lg:px-6 xl:gap-16 ${showImage ? 'md:grid-cols-2' : 'md:grid-cols-1'}`}>
       {showImage && (
@@ -43,6 +43,7 @@ export default function CTASection(props: CTASectionProps) {
                   <BookNowButton
                     className="lg:mr-3"
                     size="lg"
+                    location={location}
                   />
                   <Suspense>
                     <FindLocationInput className={cn('hidden sm:flex', !showImage ? 'w-auto' : '')} />
@@ -50,7 +51,11 @@ export default function CTASection(props: CTASectionProps) {
                 </div>
               )
             : (
-                <CTAButtons className={cn('mt-12 lg:mt-8', !showImage ? 'flex justify-center' : '')} phone={getPhone(location)} />
+                <CTAButtons
+                  className={cn('mt-12 lg:mt-8', !showImage ? 'flex justify-center' : '')}
+                  phone={getPhone(location)}
+                  location={location}
+                />
               )
         }
       </div>

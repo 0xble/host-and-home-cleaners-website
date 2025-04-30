@@ -1,6 +1,6 @@
 'use client'
 
-import type { Phone } from '@/lib/types'
+import type { Location, Phone } from '@/lib/types'
 
 import TrackedLink from '@/components/analytics/facebook/PixelTrackedLink'
 import BookNowButton from '@/components/BookNowButton'
@@ -12,14 +12,16 @@ interface CTAButtonsProps {
   className?: string
   phone?: Phone
   preventNavigation?: boolean
+  location: Location | null
 }
 
-export default function CTAButtons({ className, phone, preventNavigation = false }: CTAButtonsProps) {
+export default function CTAButtons({ className, phone, preventNavigation = false, location }: CTAButtonsProps) {
   return (
     <div className={cn('lg:flex-row flex items-center gap-6', className)}>
       <BookNowButton
         className="text-sm xs:p-4 xs:text-base lg:mr-3"
         preventNavigation={preventNavigation}
+        location={location}
       />
 
       {phone && (
