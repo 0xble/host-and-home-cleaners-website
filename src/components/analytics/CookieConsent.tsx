@@ -26,7 +26,9 @@ export default function CookieConsent({ variant = 'default', forceShow = false }
 
     // Update Google Analytics consent
     if (window.gtag != null) {
-      console.log('Updating Google Analytics consent to granted')
+      if (process.env.NODE_ENV !== 'production') {
+        console.log('Updating Google Analytics consent to granted')
+      }
       window.gtag('consent', 'update', {
         analytics_storage: 'granted',
         functionality_storage: 'granted',
@@ -38,7 +40,9 @@ export default function CookieConsent({ variant = 'default', forceShow = false }
       })
     }
     else {
-      console.warn('Google Analytics gtag function not found')
+      if (process.env.NODE_ENV !== 'production') {
+        console.warn('Google Analytics gtag function not found')
+      }
     }
   }
 
@@ -96,8 +100,8 @@ export default function CookieConsent({ variant = 'default', forceShow = false }
         }
       }
     }
-    catch (e) {
-      // console.log("Error: ", e);
+    catch (error) {
+      console.error('Failed to update cookie consent: ', error)
     }
   }, [forceShow])
 
