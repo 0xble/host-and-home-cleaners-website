@@ -6,12 +6,12 @@ import { calculateDiscount } from '@/app/book/utils'
 import { GradientButton } from '@/components/GradientButton'
 import { PaymentMethodCard } from '@/components/PaymentMethodCard'
 import { Card, CardContent } from '@/components/ui/card'
+import { BEDROOMS } from '@/lib/constants'
 import { ROUTES } from '@/lib/routes'
 import { cn, formatPrice } from '@/lib/utils'
 import { format, parse } from 'date-fns'
 import { Loader2 } from 'lucide-react'
 import Link from 'next/link'
-import { BEDROOMS } from '@/lib/constants'
 
 export function ConfirmationStep({ form, isSubmitting, onSubmit }: BaseStepProps) {
   const { watch } = form
