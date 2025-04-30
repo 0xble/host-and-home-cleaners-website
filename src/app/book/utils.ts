@@ -1,5 +1,5 @@
-import type { BookingCoupon, BookingDiscount, BookingFormData, BookingFrequency, BookingPricingParams, BookingServiceCategory } from '@/app/book/types'
-import type { PricingParams } from '@/lib/constants'
+import type { BookingCoupon, BookingDiscount, BookingFormData, BookingFrequency, BookingPricingParams, BookingServiceCategory, PricingParams } from '@/app/book/types'
+import type { Location } from '@/lib/types'
 
 /**
  * Constructs a formatted address string in two lines:
@@ -83,6 +83,7 @@ export function calculateDiscount({ type, value, serviceTotal }: BookingDiscount
 }
 
 export interface CalculatePriceParams {
+  location: Location
   serviceCategory: BookingServiceCategory
   frequency: BookingFrequency
   params: BookingPricingParams
@@ -92,6 +93,7 @@ export interface CalculatePriceParams {
 }
 
 export function calculatePrice({
+  location,
   serviceCategory,
   frequency,
   params,
@@ -104,7 +106,7 @@ export function calculatePrice({
     case 'flat': {
       if (params.type !== 'flat')
         throw new Error('Mismatch pricing types')
-      const flatTotal = config.bedrooms[params.bedrooms]
+      const flatTotal = config.bedrooms[location][params.bedrooms]
       if (typeof flatTotal !== 'number') {
         throw new TypeError(`Invalid bedrooms pricing parameter ${params.bedrooms} for ${serviceCategory}`)
       }
@@ -114,7 +116,7 @@ export function calculatePrice({
     case 'hourly': {
       if (params.type !== 'hourly')
         throw new Error('Mismatch pricing types')
-      serviceTotal = config.hourlyRate * params.hours
+      serviceTotal = config.hourlyRate[location] * params.hours
       break
     }
     default: {

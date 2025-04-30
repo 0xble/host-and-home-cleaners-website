@@ -96,7 +96,7 @@ export const BookingFormSchema = z.object({
         zip => Object.values(LOCATIONS).some(
           location => (location as unknown as { zipCodes: string[] }).zipCodes.includes(zip),
         ),
-        'Sorry, looks like we\'re not in your area. Please try another ZIP code.',
+        'It looks like you may be outside of our service area? 😢 Please check to make sure the ZIP code is correct!',
       ),
     coordinates: z.object({
       lat: z.number(),
@@ -132,9 +132,26 @@ export enum BookingStep {
 export interface BaseStepProps {
   form: UseFormReturn<BookingFormData>
   currentStep: BookingStep
-  location: Location
+  location: Location | undefined
   isSubmitting?: boolean
   onSubmit?: (e: React.MouseEvent<HTMLButtonElement>) => void
   setCurrentStep: (step: BookingStep) => void
   onValidityChangeAction: (isValid: boolean) => void
 }
+
+export const PricingParamsBaseSchema = z.object({
+  type: z.string(),
+  frequencies: z.custom<{ [_frequency in BookingFrequency]: number }>().optional(),
+})
+
+export const PricingParamsSchema = z.discriminatedUnion('type', [
+  PricingParamsBaseSchema.extend({
+    type: z.literal('flat'),
+    bedrooms: z.custom<{ [_location in Location]: { [_bedrooms in BookingFlatPricingParams['bedrooms']]: number } }>(),
+  }),
+  PricingParamsBaseSchema.extend({
+    type: z.literal('hourly'),
+    hourlyRate: z.custom<{ [_location in Location]: number }>(),
+  }),
+])
+export type PricingParams = z.infer<typeof PricingParamsSchema>
