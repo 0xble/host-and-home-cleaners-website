@@ -2,6 +2,7 @@
 
 import type { BaseStepProps, BookingFormState, BookingFrequency } from '@/app/book/types'
 import { StepLayout } from '@/app/book/components/StepLayout'
+import { PRICING_PARAMETERS } from '@/app/book/constants'
 import { useStepValidation } from '@/app/book/hooks/useStepValidation'
 import { Badge } from '@/components/ui/badge'
 import { Calendar } from '@/components/ui/calendar'
@@ -10,12 +11,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { LOCATIONS } from '@/lib/constants'
 import { tz } from '@date-fns/tz'
 import { addDays, format, isBefore, parse } from 'date-fns'
+import { round } from 'remeda'
 
-export function ScheduleStep({ form, location, onValidityChangeAction }: BaseStepProps) {
-  const { watch, setValue } = form
+export function ScheduleStep({ form, onValidityChangeAction }: BaseStepProps) {
+  const { watch, setValue, getValues } = form
   const selectedDate = watch('date') as BookingFormState['date']
   const selectedServiceCategory = watch('serviceCategory') as BookingFormState['serviceCategory']
-  const selectedPricingParams = watch('pricingParams') as BookingFormState['pricingParams']
 
   // Use useStepValidation for validation
   useStepValidation(form, onValidityChangeAction, {
@@ -68,7 +69,13 @@ export function ScheduleStep({ form, location, onValidityChangeAction }: BaseSte
                     ? parse(selectedDate, 'yyyy-MM-dd', new Date())
                     : undefined
                 }
-                onSelect={date => date && field.onChange(format(date, 'yyyy-MM-dd', { in: tz(LOCATIONS[location].timezone) }))}
+                onSelect={(date) => {
+                  if (!date)
+                    return
+
+                  const { location } = getValues()
+                  field.onChange(format(date, 'yyyy-MM-dd', { in: tz(LOCATIONS[location].timezone) }))
+                }}
                 disabled={isDateDisabled}
               />
               <FormMessage />
@@ -104,7 +111,7 @@ export function ScheduleStep({ form, location, onValidityChangeAction }: BaseSte
           />
         )}
 
-        {(selectedServiceCategory && selectedPricingParams && selectedServiceCategory !== 'move-in-out') && (
+        {selectedServiceCategory && PRICING_PARAMETERS[selectedServiceCategory]?.frequencies && (
           <FormField
             control={form.control}
             name="frequency"
@@ -121,26 +128,24 @@ export function ScheduleStep({ form, location, onValidityChangeAction }: BaseSte
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="weekly">
-                      <div className="flex items-center justify-between w-full">
-                        <span>Weekly</span>
-                        <span className="ml-2 text-neutral-600">60% off</span>
-                      </div>
-                    </SelectItem>
-                    <SelectItem value="biweekly">
-                      <div className="flex items-center justify-between w-full">
-                        <span>Bi-Weekly</span>
-                        <span className="text-neutral-600 ml-2">50% off</span>
-                        <Badge variant="secondary" className="ml-4">Most popular</Badge>
-                      </div>
-                    </SelectItem>
-                    <SelectItem value="monthly">
-                      <div className="flex items-center justify-between w-full">
-                        <span>Monthly</span>
-                        <span className="ml-2 text-neutral-600">30% off</span>
-                      </div>
-                    </SelectItem>
-                    <SelectItem value="one-time">One-Time</SelectItem>
+                    {Object.entries(PRICING_PARAMETERS[selectedServiceCategory].frequencies!)
+                      .sort(([, discountA], [, discountB]) => discountB - discountA) // Sort by discount in descending order
+                      .map(([frequency, discount]) => (
+                        <SelectItem key={frequency} value={frequency}>
+                          <div className="flex items-center justify-between w-full">
+                            <span>{frequency === 'biweekly' ? 'Bi-Weekly' : frequency.charAt(0).toUpperCase() + frequency.slice(1)}</span>
+                            {frequency !== 'one-time' && (
+                              <span className="ml-2 text-neutral-600">
+                                {round(discount * 100, 2)}
+                                % off
+                              </span>
+                            )}
+                            {frequency === 'biweekly' && (
+                              <Badge variant="secondary" className="ml-4">Most popular</Badge>
+                            )}
+                          </div>
+                        </SelectItem>
+                      ))}
                   </SelectContent>
                 </Select>
                 <FormMessage />
