@@ -45,6 +45,7 @@ export default function Home() {
               <BookNowButton
                 className="hidden sm:inline-flex lg:mr-3"
                 size="lg"
+                location={null}
               />
               <Suspense>
                 <FindLocationInput />

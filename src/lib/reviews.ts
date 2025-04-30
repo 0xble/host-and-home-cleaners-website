@@ -87,7 +87,7 @@ async function fetchLocationsPagesNotion() {
 // Cache the getLocations function
 export const getLocations = cache(async (): Promise<LocationData> => {
   // Use cache in development mode
-  if (process.env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV !== 'production') {
     const now = Date.now()
     if (locationsCache && differenceInMinutes(now, lastFetchTime) < CACHE_DURATION_MIN) {
       console.log('Using cached locations data')
@@ -122,7 +122,7 @@ export const getLocations = cache(async (): Promise<LocationData> => {
   const locationsData = { locations }
 
   // Update cache in development mode
-  if (process.env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV !== 'production') {
     locationsCache = locationsData
     lastFetchTime = Date.now()
     console.log('Updated locations cache')
@@ -135,7 +135,7 @@ export const getLocations = cache(async (): Promise<LocationData> => {
 export const getReviews = cache(async (location?: string): Promise<ReviewsData> => {
   try {
     // Use cache in development mode
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.NODE_ENV !== 'production') {
       const now = Date.now()
       if (reviewsCache && differenceInMinutes(now, lastFetchTime) < CACHE_DURATION_MIN) {
         console.log('Using cached reviews data')
@@ -259,7 +259,7 @@ export const getReviews = cache(async (location?: string): Promise<ReviewsData> 
     }
 
     // Update cache in development mode
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.NODE_ENV !== 'production') {
       locationsCache = { locations }
       reviewsCache = reviewsData
       lastFetchTime = Date.now()

@@ -53,7 +53,9 @@ export async function POST(request: Request) {
     )
 
     if ('id' in triggerResponse.data) {
-      console.log('Booking created successfully in Notion:', triggerResponse.data)
+      if (process.env.NODE_ENV !== 'production') {
+        console.log('Booking created successfully in Notion:', triggerResponse.data)
+      }
 
       let text = `➕🗓️ Add new booking`
       const fields: SectionBlock['fields'] = []
@@ -145,7 +147,7 @@ export async function POST(request: Request) {
 
       // Notify to add the booking manually to BookingKoala
       const slackResponse = await new WebClient(process.env.SLACK_BOT_TOKEN).chat.postMessage({
-        channel: process.env.NODE_ENV === 'development' ? `#test` : `#${slugify(payload.values.location)}-important`,
+        channel: process.env.NODE_ENV !== 'production' ? `#test` : `#${slugify(payload.values.location)}-important`,
         blocks: [
           {
             type: 'section',
@@ -194,7 +196,9 @@ export async function POST(request: Request) {
       })
 
       if (slackResponse.ok) {
-        console.log('Notified to add the booking in Slack', slackResponse)
+        if (process.env.NODE_ENV !== 'production') {
+          console.log('Notified to add the booking in Slack', slackResponse)
+        }
 
         return NextResponse.json({
           status: 'success',
