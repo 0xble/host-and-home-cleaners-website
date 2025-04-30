@@ -2,10 +2,11 @@
 
 import type { BaseStepProps } from '@/app/book/types'
 import { StepLayout } from '@/app/book/components/StepLayout'
+import { PRICING_PARAMETERS } from '@/app/book/constants'
 import { useStepValidation } from '@/app/book/hooks/useStepValidation'
 import { BookingFormOption } from '@/components/BookingFormOption'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { BEDROOMS, PRICING_PARAMETERS } from '@/lib/constants'
+import { BEDROOMS } from '@/lib/constants'
 import Image from 'next/image'
 
 export function SizeSelectionStep({ form, onValidityChangeAction }: BaseStepProps) {
@@ -20,8 +21,8 @@ export function SizeSelectionStep({ form, onValidityChangeAction }: BaseStepProp
   })
 
   const handleSelectBedrooms = (bedrooms: number) => {
-    const { location, serviceCategory } = getValues()
-    const { type } = PRICING_PARAMETERS[location][serviceCategory]
+    const { serviceCategory } = getValues()
+    const { type } = PRICING_PARAMETERS[serviceCategory]
     if (type === 'flat') {
       setValue('pricingParams', { type: 'flat', bedrooms })
     }

@@ -54,7 +54,7 @@ export function AddressAutocompleteInput({
         onChange(streetAddress)
         onPlaceSelected(place)
 
-        if (process.env.NODE_ENV === 'development') {
+        if (process.env.NODE_ENV !== 'production') {
           console.log('Place selected:', {
             streetAddress,
             fullPlace: place,
@@ -73,7 +73,7 @@ export function AddressAutocompleteInput({
       // Only update if the value is different and contains just a street address
       if (!value.includes(',')) {
         setInputValue(value)
-        if (process.env.NODE_ENV === 'development') {
+        if (process.env.NODE_ENV !== 'production') {
           console.log('Address synced from props:', value)
         }
       }

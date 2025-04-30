@@ -2,10 +2,10 @@
 
 import type { BaseStepProps } from '@/app/book/types'
 import { StepLayout } from '@/app/book/components/StepLayout'
+import { PRICING_PARAMETERS } from '@/app/book/constants'
 import { useStepValidation } from '@/app/book/hooks/useStepValidation'
 import { BookingFormOption } from '@/components/BookingFormOption'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { PRICING_PARAMETERS } from '@/lib/constants'
 
 const HOURS_OPTIONS = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12] as const
 
@@ -21,8 +21,8 @@ export function HoursSelectionStep({ form, onValidityChangeAction }: BaseStepPro
   })
 
   const handleSelectHours = (hours: number) => {
-    const { location, serviceCategory } = getValues()
-    const { type } = PRICING_PARAMETERS[location][serviceCategory]
+    const { serviceCategory } = getValues()
+    const { type } = PRICING_PARAMETERS[serviceCategory]
     if (type === 'hourly') {
       setValue('pricingParams', { type: 'hourly', hours })
     }

@@ -20,6 +20,7 @@ import { ScheduleStep } from '@/app/book/components/steps/ScheduleStep'
 import { ServiceSelectionStep } from '@/app/book/components/steps/ServiceSelectionStep'
 import { SizeSelectionStep } from '@/app/book/components/steps/SizeSelectionStep'
 import { TellUsAboutYourPlaceStep } from '@/app/book/components/steps/TellUsAboutYourPlaceStep'
+import { PRICING_PARAMETERS } from '@/app/book/constants'
 import { BookingFormSchema, BookingStep, COUPONS } from '@/app/book/types'
 import { calculatePrice } from '@/app/book/utils'
 import { GradientButton } from '@/components/GradientButton'
@@ -30,7 +31,7 @@ import {
 } from '@/components/ui/form'
 import { Progress } from '@/components/ui/progress'
 import { toast } from '@/components/ui/use-toast'
-import { DOMAIN, LOCATIONS, PRICING_PARAMETERS } from '@/lib/constants'
+import { DOMAIN, LOCATIONS } from '@/lib/constants'
 import { GoogleMapsLoader } from '@/lib/google/GoogleMapsLoader'
 import { ROUTES } from '@/lib/routes'
 import { tz } from '@date-fns/tz'
@@ -39,7 +40,7 @@ import axios from 'axios'
 import { addDays, addHours, format, hoursToMinutes, parse } from 'date-fns'
 import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
@@ -62,8 +63,8 @@ const STEP_COMPONENTS: Readonly<Record<BookingStep, StepComponent>> = {
 const MAX_STEPS = (Object.keys(STEP_COMPONENTS).length - 1) - 1
 
 export default function BookingPage() {
+  const searchParams = useSearchParams()
   const router = useRouter()
-  const [location] = useState<Location>('MYRTLE_BEACH')
   const [currentStep, setCurrentStep] = useState<BookingStep>(BookingStep.GETTING_STARTED)
   const [transitionDirection, setTransitionDirection] = useState<'forward' | 'backward'>('forward')
   const [progress, setProgress] = useState<{ value: number, max: number }>({ value: 0, max: MAX_STEPS })
@@ -79,7 +80,7 @@ export default function BookingPage() {
   const form = useForm<BookingFormData>({
     resolver: zodResolver(BookingFormSchema),
     defaultValues: {
-      location,
+      location: searchParams?.get('location')?.toUpperCase() as Location,
       frequency: 'biweekly',
       price: {
         totalInitial: 0,
@@ -95,6 +96,7 @@ export default function BookingPage() {
   const { watch, handleSubmit, getValues, trigger, formState: { errors } } = form
 
   // Watch form values for price calculation
+  const location = watch('location') as Location | undefined
   const selectedFrequency = watch('frequency') as BookingFormState['frequency']
   const selectedServiceCategory = watch('serviceCategory') as BookingFormState['serviceCategory']
   const selectedPricingParams = watch('pricingParams') as BookingFormState['pricingParams']
@@ -158,36 +160,39 @@ export default function BookingPage() {
   }
 
   // Save form state when values change
-  useEffect(() => {
-    // Log form values if development mode
-    if (process.env.NODE_ENV === 'development') {
-      console.log('Updated form values', getValues())
-    }
+  if (process.env.NODE_ENV !== 'production') {
+    useEffect(() => {
+      // Log form values if development mode
+      if (process.env.NODE_ENV !== 'production') {
+        console.log('Updated form values', getValues())
+      }
 
-    const validateStep = async () => {
-      const isValid = await isCurrentStepValid()
-      setIsStepValid(isValid)
-    }
-    void validateStep()
-  }, [
-    currentStep,
-    selectedServiceCategory,
-    selectedPricingParams,
-    selectedDate,
-    selectedFrequency,
-    selectedArrivalWindow,
-    visitedSteps,
-    customerAddress,
-    customerCity,
-    customerState,
-    customerZipCode,
-  ])
+      const validateStep = async () => {
+        const isValid = await isCurrentStepValid()
+        setIsStepValid(isValid)
+      }
+      void validateStep()
+    }, [
+      currentStep,
+      selectedServiceCategory,
+      selectedPricingParams,
+      selectedDate,
+      selectedFrequency,
+      selectedArrivalWindow,
+      visitedSteps,
+      customerAddress,
+      customerCity,
+      customerState,
+      customerZipCode,
+    ])
+  }
 
   // Update price when service category, pricing params, or frequency changes
   useEffect(() => {
-    if (selectedServiceCategory != null && selectedPricingParams != null && selectedFrequency != null) {
-      const config = PRICING_PARAMETERS[location][selectedServiceCategory]
+    if (location != null && selectedServiceCategory != null && selectedPricingParams != null && selectedFrequency != null) {
+      const config = PRICING_PARAMETERS[selectedServiceCategory]
       const price = calculatePrice({
+        location,
         serviceCategory: selectedServiceCategory,
         frequency: selectedFrequency,
         params: selectedPricingParams,
@@ -195,7 +200,9 @@ export default function BookingPage() {
         coupon,
       })
       form.setValue('price', price)
-      console.log('Updated price:', price)
+      if (process.env.NODE_ENV !== 'production') {
+        console.log('Updated price:', price)
+      }
     }
   }, [
     selectedServiceCategory,
@@ -205,7 +212,7 @@ export default function BookingPage() {
 
   // Debug log for form errors
   useEffect(() => {
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.NODE_ENV !== 'production') {
       console.log('Form errors:', errors)
     }
   }, [errors])
@@ -233,10 +240,13 @@ export default function BookingPage() {
     },
     [BookingStep.CUSTOMER_DETAILS]: {
       next: () => {
+        if (location == null)
+          throw new Error('Location is expected to be defined at this point')
+
         if (!selectedServiceCategory)
           return null
 
-        const { type } = PRICING_PARAMETERS[location][selectedServiceCategory]
+        const { type } = PRICING_PARAMETERS[selectedServiceCategory]
         switch (type) {
           case 'flat':
             return BookingStep.SIZE_SELECTION
@@ -259,10 +269,13 @@ export default function BookingPage() {
     [BookingStep.SCHEDULE]: {
       next: () => BookingStep.CONFIRMATION,
       prev: () => {
+        if (location == null)
+          throw new Error('Location is expected to be defined at this point')
+
         if (!selectedServiceCategory)
           return null
 
-        const { type } = PRICING_PARAMETERS[location][selectedServiceCategory]
+        const { type } = PRICING_PARAMETERS[selectedServiceCategory]
         switch (type) {
           case 'flat':
             return BookingStep.SIZE_SELECTION
@@ -330,6 +343,9 @@ export default function BookingPage() {
 
   const onSubmit = async (data: BookingFormData) => {
     setIsSubmitting(true)
+
+    if (location == null)
+      throw new Error('Location is expected to be defined at this point')
 
     const getScheduled = ({ date, arrivalWindow, hours }: { date: string, arrivalWindow: string, hours?: number }): string | NotionDateParsed => {
       const timezone = LOCATIONS[location].timezone as NotionTimezone
@@ -547,26 +563,26 @@ export default function BookingPage() {
     <div className="relative min-h-screen">
       {currentStep !== BookingStep.CONFIRMATION
         ? (
-          <div className="p-6 flex justify-end">
-            <Button variant="outline" size="default" asChild className="rounded-full px-5">
-              <Link href={ROUTES.HOME.href}>
-                Exit
-              </Link>
-            </Button>
+            <div className="p-6 flex justify-end">
+              <Button variant="outline" size="default" asChild className="rounded-full px-5">
+                <Link href={ROUTES.HOME.href}>
+                  Exit
+                </Link>
+              </Button>
             </div>
           )
         : (
-          <div className="p-6 flex">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={prevStep}
-              className="rounded-full size-12"
-            >
-              <ArrowLeft />
-            </Button>
-          </div>
-        )}
+            <div className="p-6 flex">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={prevStep}
+                className="rounded-full size-12"
+              >
+                <ArrowLeft />
+              </Button>
+            </div>
+          )}
 
       <Form {...form}>
         <form
@@ -586,7 +602,7 @@ export default function BookingPage() {
       </Form>
 
       {/* Skip button for development */}
-      {process.env.NODE_ENV === 'development' && (
+      {process.env.NODE_ENV !== 'production' && (
         <div className="fixed inset-x-0 bottom-24 z-20 px-6 py-2 bg-transparent pointer-events-none">
           <div className="flex justify-end pointer-events-auto">
             <Button
@@ -633,12 +649,16 @@ export default function BookingPage() {
                     void nextStep(true)
                     break
                   }
-                  case BookingStep.SCHEDULE:
+                  case BookingStep.SCHEDULE: {
+                    if (location == null)
+                      throw new Error('Location is expected to be defined at this point')
+
                     form.setValue('date', format(addDays(new Date(), 4), 'yyyy-MM-dd', { in: tz(LOCATIONS[location].timezone) }))
                     form.setValue('arrivalWindow', '8:00AM - 9:00AM')
                     form.setValue('frequency', 'biweekly')
                     void nextStep(true)
                     break
+                  }
                   case BookingStep.CONFIRMATION:
                     form.setValue('payment.cardNumber', '4242424242424242')
                     form.setValue('payment.expiration', '12/25')

@@ -9,8 +9,8 @@ import { useStepValidation } from '@/app/book/hooks/useStepValidation'
 import { constructFullAddress, extractAddressComponents } from '@/app/book/utils'
 import { FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { cn } from '@/lib/utils'
-import { useState } from 'react'
+import { cn, getLocation } from '@/lib/utils'
+import { useEffect, useState } from 'react'
 
 export function AddressInputStep({ form, onValidityChangeAction }: BaseStepProps) {
   const { watch, setValue, trigger } = form
@@ -23,17 +23,39 @@ export function AddressInputStep({ form, onValidityChangeAction }: BaseStepProps
   const zipCode = watch('customer.zipCode') as string | undefined
   const coordinates = watch('customer.coordinates') as Coordinates | undefined
 
+  // Watch zip code changes to update location
+  useEffect(() => {
+    if (zipCode == null)
+      return
+
+    const detectedLocation = getLocation({ zipCode })
+    if (detectedLocation) {
+      setValue('location', detectedLocation, { shouldValidate: false })
+    }
+  }, [zipCode, setValue])
+
   // Use useStepValidation for validation
   useStepValidation(form, onValidityChangeAction, {
-    customValidation: formData =>
-      formData.customer?.address != null
-      && formData.customer?.city != null
-      && formData.customer?.state != null
-      && formData.customer?.zipCode != null,
+    customValidation: (formData) => {
+      if (formData.customer?.address == null || formData.customer?.city == null || formData.customer?.state == null || formData.customer?.zipCode == null) {
+        return false
+      }
+
+      // Check if the zip code is in our service area
+      const detectedLocation = getLocation({ zipCode: formData.customer.zipCode })
+      if (!detectedLocation) {
+        return false
+      }
+
+      return true
+    },
   })
 
-  const handleAddressChange = (value: string) => {
-    if (value && value.length > 5) {
+  const handleAddressChange = (value: string | undefined) => {
+    if (value == null)
+      return undefined
+
+    if (value.length > 5) {
       // Show fields after a slight delay
       const timer = setTimeout(() => {
         setShowAddressFields(true)
@@ -78,11 +100,12 @@ export function AddressInputStep({ form, onValidityChangeAction }: BaseStepProps
                           setValue('customer.city', components.city)
                         if (components.state != null)
                           setValue('customer.state', components.state)
-                        if (components.zipCode != null)
+                        if (components.zipCode != null) {
                           setValue('customer.zipCode', components.zipCode)
+                          void trigger('customer.zipCode')
+                        }
 
                         setShowAddressFields(true)
-                        void trigger('customer.zipCode')
                       }
                     }}
                   />
@@ -187,6 +210,10 @@ export function AddressInputStep({ form, onValidityChangeAction }: BaseStepProps
                         'transition-[opacity,transform] duration-1000 ease-in-out delay-2000',
                       )}
                       {...field}
+                      onChange={(e) => {
+                        field.onChange(e)
+                        void trigger('customer.zipCode')
+                      }}
                     />
                   </FormControl>
                   <FormMessage className="px-4 pb-2" />
@@ -227,8 +254,10 @@ export function AddressInputStep({ form, onValidityChangeAction }: BaseStepProps
                       setValue('customer.city', components.city)
                     if (components.state != null)
                       setValue('customer.state', components.state)
-                    if (components.zipCode != null)
+                    if (components.zipCode != null) {
                       setValue('customer.zipCode', components.zipCode)
+                      void trigger('customer.zipCode')
+                    }
 
                     setShowAddressFields(true)
                   }

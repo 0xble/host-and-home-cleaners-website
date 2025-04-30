@@ -3,19 +3,19 @@
 import type { BaseStepProps, BookingFormState, BookingServiceCategory } from '@/app/book/types'
 import type { LottieAnimationProps } from '@/components/LottieAnimation'
 import { StepLayout } from '@/app/book/components/StepLayout'
+import { PRICING_PARAMETERS } from '@/app/book/constants'
 import { useStepValidation } from '@/app/book/hooks/useStepValidation'
+import TrackedLink from '@/components/analytics/facebook/PixelTrackedLink'
 import { BookingFormOption } from '@/components/BookingFormOption'
 import LottieAnimation from '@/components/LottieAnimation'
-import { PRICING_PARAMETERS } from '@/lib/constants'
+import { PixelEvent } from '@/lib/pixel'
+import { ROUTES } from '@/lib/routes'
 import ChecklistAnimation from '@/public/lottie/checklist.json'
 import HouseCleanAnimation from '@/public/lottie/house.json'
 import MansionAnimation from '@/public/lottie/mansion.json'
 import SprayAnimation from '@/public/lottie/spray.json'
-import { memo, useEffect, useRef } from 'react'
-import TrackedLink from '@/components/analytics/facebook/PixelTrackedLink'
-import { PixelEvent } from '@/lib/pixel'
-import { ROUTES } from '@/lib/routes'
 import { ClipboardList } from 'lucide-react'
+import { memo, useEffect, useRef } from 'react'
 
 const SERVICE_OPTIONS: {
   id: BookingServiceCategory
@@ -49,7 +49,7 @@ const SERVICE_OPTIONS: {
   },
 ]
 
-function ServiceSelectionStepComponent({ form, location, onValidityChangeAction }: BaseStepProps) {
+function ServiceSelectionStepComponent({ form, onValidityChangeAction }: BaseStepProps) {
   const prevServiceCategoryRef = useRef<BookingServiceCategory | null>(null)
 
   const { watch, setValue } = form
@@ -67,7 +67,7 @@ function ServiceSelectionStepComponent({ form, location, onValidityChangeAction 
 
   const handleSelectServiceCategory = (serviceCategory: BookingServiceCategory) => {
     setValue('serviceCategory', serviceCategory)
-    const { frequencies } = PRICING_PARAMETERS[location][serviceCategory]
+    const { frequencies } = PRICING_PARAMETERS[serviceCategory]
     if (frequencies == null) {
       setValue('frequency', 'one-time')
     }
