@@ -815,7 +815,7 @@ export const LOCATIONS = {
       '96862',
       '96863',
     ] as const,
-    timezone: 'America/Honolulu',
+    timezone: 'Pacific/Honolulu',
   },
 } as const
 
