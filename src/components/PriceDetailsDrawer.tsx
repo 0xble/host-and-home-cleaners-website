@@ -174,7 +174,16 @@ export function PriceDetailsDrawer({
               {/* Total */}
               <div className="space-y-3 font-medium">
                 <div className="flex justify-between">
-                  <span className="">Total for Initial Deep Clean</span>
+                  <span className="">
+                    {(() => {
+                      if (serviceCategory === 'deep-clean') {
+                        return 'Total for Initial Deep Clean'
+                      }
+                      else {
+                        return 'Total for Initial'
+                      }
+                    })()}
+                  </span>
                   <span>
                     <span className="">{formatPrice(totalInitial)}</span>
                   </span>
