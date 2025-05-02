@@ -99,7 +99,7 @@ export default function BookingPage() {
   const { watch, handleSubmit, getValues, trigger, formState: { errors } } = form
 
   // Watch form values for price calculation
-  const location = watch('location') as Location | undefined
+  const selectedLocation = watch('location') as Location | undefined
   const selectedFrequency = watch('frequency') as BookingFormState['frequency']
   const selectedServiceCategory = watch('serviceCategory') as BookingFormState['serviceCategory']
   const selectedPricingParams = watch('pricingParams') as BookingFormState['pricingParams']
@@ -192,14 +192,12 @@ export default function BookingPage() {
 
   // Update price when service category, pricing params, or frequency changes
   useEffect(() => {
-    if (location != null && selectedServiceCategory != null && selectedPricingParams != null && selectedFrequency != null) {
-      const config = PRICING_PARAMETERS[selectedServiceCategory]
+    if (selectedLocation != null && selectedServiceCategory != null && selectedPricingParams != null && selectedFrequency != null) {
       const price = calculatePrice({
-        location,
+        location: selectedLocation,
         serviceCategory: selectedServiceCategory,
         frequency: selectedFrequency,
         params: selectedPricingParams,
-        config,
         coupon,
       })
       form.setValue('price', price)
@@ -211,6 +209,8 @@ export default function BookingPage() {
     selectedServiceCategory,
     selectedPricingParams,
     selectedFrequency,
+    selectedLocation,
+    coupon,
   ])
 
   // Debug log for form errors
@@ -243,7 +243,7 @@ export default function BookingPage() {
     },
     [BookingStep.CUSTOMER_DETAILS]: {
       next: () => {
-        if (location == null)
+        if (selectedLocation == null)
           throw new Error('Location is expected to be defined at this point')
 
         if (!selectedServiceCategory)
@@ -272,7 +272,7 @@ export default function BookingPage() {
     [BookingStep.SCHEDULE]: {
       next: () => BookingStep.CONFIRMATION,
       prev: () => {
-        if (location == null)
+        if (selectedLocation == null)
           throw new Error('Location is expected to be defined at this point')
 
         if (!selectedServiceCategory)
@@ -347,11 +347,11 @@ export default function BookingPage() {
   const onSubmit = async (data: BookingFormData) => {
     setIsSubmitting(true)
 
-    if (location == null)
+    if (selectedLocation == null)
       throw new Error('Location is expected to be defined at this point')
 
     const getScheduled = ({ date, arrivalWindow, hours }: { date: string, arrivalWindow: string, hours?: number }): string | NotionDateParsed => {
-      const timezone = LOCATIONS[location].timezone as NotionTimezone
+      const timezone = LOCATIONS[selectedLocation].timezone as NotionTimezone
       const start = parse(`${date} ${arrivalWindow.split(' - ')[0]}`, 'yyyy-MM-dd h:mma', new Date(), { in: tz(timezone) })
       if (hours == null) {
         return start.toISOString()
@@ -369,7 +369,7 @@ export default function BookingPage() {
       const { data: result } = await axios.post<{ status: string, message?: string }>('/api/bookings', {
         payload: {
           values: {
-            location: LOCATIONS[location].name,
+            location: LOCATIONS[selectedLocation].name,
             status: 'Upcoming',
             scheduled: getScheduled({
               date: data.date,
@@ -536,7 +536,7 @@ export default function BookingPage() {
     const baseStepProps = {
       form,
       currentStep,
-      location,
+      location: selectedLocation,
       setCurrentStep,
       onValidityChangeAction: handleStepValidityChange,
     }
@@ -654,10 +654,10 @@ export default function BookingPage() {
                     break
                   }
                   case BookingStep.SCHEDULE: {
-                    if (location == null)
+                    if (selectedLocation == null)
                       throw new Error('Location is expected to be defined at this point')
 
-                    form.setValue('date', format(addDays(new Date(), 4), 'yyyy-MM-dd', { in: tz(LOCATIONS[location].timezone) }))
+                    form.setValue('date', format(addDays(new Date(), 4), 'yyyy-MM-dd', { in: tz(LOCATIONS[selectedLocation].timezone) }))
                     form.setValue('arrivalWindow', '8:00AM - 9:00AM')
                     form.setValue('frequency', 'biweekly')
                     void nextStep(true)
