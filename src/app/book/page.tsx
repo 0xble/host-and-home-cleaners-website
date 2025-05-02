@@ -658,7 +658,7 @@ export default function BookingPage() {
                       throw new Error('Location is expected to be defined at this point')
 
                     form.setValue('date', format(addDays(new Date(), 4), 'yyyy-MM-dd', { in: tz(LOCATIONS[selectedLocation].timezone) }))
-                    form.setValue('arrivalWindow', '8:00AM - 9:00AM')
+                    form.setValue('arrivalWindow', '9:00AM - 10:00AM')
                     form.setValue('frequency', 'biweekly')
                     void nextStep(true)
                     break

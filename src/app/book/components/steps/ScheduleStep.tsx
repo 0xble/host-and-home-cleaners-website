@@ -1,6 +1,6 @@
 'use client'
 
-import type { BaseStepProps, BookingFormState, BookingFrequency } from '@/app/book/types'
+import { BookingArrivalWindowSchema, type BaseStepProps, type BookingFormState, type BookingFrequency } from '@/app/book/types'
 import { StepLayout } from '@/app/book/components/StepLayout'
 import { PRICING_PARAMETERS } from '@/app/book/constants'
 import { useStepValidation } from '@/app/book/hooks/useStepValidation'
@@ -100,9 +100,11 @@ export function ScheduleStep({ form, onValidityChangeAction }: BaseStepProps) {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="9:00AM - 10:00AM">9:00AM - 10:00AM</SelectItem>
-                    <SelectItem value="1:00PM - 2:00PM">1:00PM - 2:00PM</SelectItem>
-                    <SelectItem value="3:00PM - 4:00PM">3:00PM - 4:00PM</SelectItem>
+                    {BookingArrivalWindowSchema.options.map((window) => (
+                      <SelectItem key={window} value={window}>
+                        {window}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
                 <FormMessage />

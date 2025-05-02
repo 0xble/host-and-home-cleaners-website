@@ -42,7 +42,7 @@ export type BookingServiceCategory = z.infer<typeof BookingServiceCategorySchema
 export const BookingFrequencySchema = z.enum(['one-time', 'weekly', 'biweekly', 'monthly'])
 export type BookingFrequency = z.infer<typeof BookingFrequencySchema>
 
-export const BookingArrivalWindowSchema = z.enum(['8:00AM - 9:00AM', '12:00PM - 1:00PM', '3:00PM - 4:00PM'])
+export const BookingArrivalWindowSchema = z.enum(['9:00AM - 10:00AM', '1:00PM - 2:00PM', '3:00PM - 4:00PM'])
 export type BookingArrivalWindow = z.infer<typeof BookingArrivalWindowSchema>
 
 export const BookingFlatPricingParamsSchema = z.object({
