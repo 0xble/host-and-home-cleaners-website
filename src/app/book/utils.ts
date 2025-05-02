@@ -1,5 +1,6 @@
-import type { BookingCoupon, BookingDiscount, BookingFormData, BookingFrequency, BookingPricingParams, BookingServiceCategory, PricingParams } from '@/app/book/types'
+import type { BookingCoupon, BookingDiscount, BookingFormData, BookingFrequency, BookingPricingParams, BookingServiceCategory } from '@/app/book/types'
 import type { Location } from '@/lib/types'
+import { PRICING_PARAMETERS } from '@/app/book/constants'
 
 /**
  * Constructs a formatted address string in two lines:
@@ -87,7 +88,6 @@ export interface CalculatePriceParams {
   serviceCategory: BookingServiceCategory
   frequency: BookingFrequency
   params: BookingPricingParams
-  config: PricingParams
   coupon?: BookingCoupon | null
   taxes?: number
 }
@@ -97,10 +97,10 @@ export function calculatePrice({
   serviceCategory,
   frequency,
   params,
-  config,
   coupon,
   taxes = 0,
 }: CalculatePriceParams): BookingFormData['price'] {
+  const config = PRICING_PARAMETERS[serviceCategory]
   let serviceTotal: number
   switch (config.type) {
     case 'flat': {
