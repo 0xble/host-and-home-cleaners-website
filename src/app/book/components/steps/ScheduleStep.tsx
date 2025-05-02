@@ -100,8 +100,8 @@ export function ScheduleStep({ form, onValidityChangeAction }: BaseStepProps) {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="8:00AM - 9:00AM">8:00AM - 9:00AM</SelectItem>
-                    <SelectItem value="12:00PM - 1:00PM">12:00PM - 1:00PM</SelectItem>
+                    <SelectItem value="9:00AM - 10:00AM">9:00AM - 10:00AM</SelectItem>
+                    <SelectItem value="1:00PM - 2:00PM">1:00PM - 2:00PM</SelectItem>
                     <SelectItem value="3:00PM - 4:00PM">3:00PM - 4:00PM</SelectItem>
                   </SelectContent>
                 </Select>
