@@ -144,14 +144,20 @@ export const PricingParamsBaseSchema = z.object({
   frequencies: z.custom<{ [_frequency in BookingFrequency]: number }>().optional(),
 })
 
+export const FlatPricingParamsSchema = PricingParamsBaseSchema.extend({
+  type: z.literal('flat'),
+  bedrooms: z.custom<{ [_location in Location]: { [_bedrooms in BookingFlatPricingParams['bedrooms']]: number } }>(),
+})
+export type FlatPricingParams = z.infer<typeof FlatPricingParamsSchema>
+
+export const HourlyPricingParamsSchema = PricingParamsBaseSchema.extend({
+  type: z.literal('hourly'),
+  hourlyRate: z.custom<{ [_location in Location]: number }>(),
+})
+export type HourlyPricingParams = z.infer<typeof HourlyPricingParamsSchema>
+
 export const PricingParamsSchema = z.discriminatedUnion('type', [
-  PricingParamsBaseSchema.extend({
-    type: z.literal('flat'),
-    bedrooms: z.custom<{ [_location in Location]: { [_bedrooms in BookingFlatPricingParams['bedrooms']]: number } }>(),
-  }),
-  PricingParamsBaseSchema.extend({
-    type: z.literal('hourly'),
-    hourlyRate: z.custom<{ [_location in Location]: number }>(),
-  }),
+  FlatPricingParamsSchema,
+  HourlyPricingParamsSchema,
 ])
 export type PricingParams = z.infer<typeof PricingParamsSchema>
