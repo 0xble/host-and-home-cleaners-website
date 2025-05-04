@@ -1,13 +1,13 @@
 import type { Metadata } from 'next'
+import WhoAreWeSection from '@/app/(services)/components/WhoAreWeSection'
+import { ContentViewTracker } from '@/components/analytics/facebook/Pixel'
+import Page from '@/components/templates/Page'
+
+import CTASection from '@/components/templates/sections/CTASection'
+import { BUSINESS_NAME, SERVICES } from '@/lib/constants'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Suspense } from 'react'
-
-import CTASection from '@/components/CTASection'
-import Page from '@/components/Page'
-import WhoAreWeSection from '@/components/WhoAreWeSection'
-import { BUSINESS_NAME, SERVICES } from '@/lib/constants'
-import { ContentViewTracker } from '@/lib/pixel'
 
 const title = `${BUSINESS_NAME} ${SERVICES.MOVE_IN_OUT}`
 
@@ -18,30 +18,30 @@ export const metadata: Metadata = {
 
 export default function MoveCleaning() {
   return (
-    <Page location='CACHED' className='mx-4 pb-24'>
+    <Page location="CACHED" className="mx-4 pb-24">
       <ContentViewTracker
-        contentType='service'
+        contentType="service"
         contentName={title}
         contentId={`service-${SERVICES.MOVE_IN_OUT.toLowerCase().replace(/\s+/g, '-')}`}
       />
-      <section className='px-4 text-center'>
+      <section className="px-4 text-center">
         <Image
-          className='mx-auto mb-24 h-[300px] w-full max-w-screen-lg md:h-[450px] lg:rounded-b'
-          src='/home1.jpeg'
-          alt='cleaner preparing for move out'
+          className="mx-auto mb-24 h-[300px] w-full max-w-screen-lg md:h-[450px] lg:rounded-b"
+          src="/assets/home1.jpeg"
+          alt="cleaner preparing for move out"
           style={{ objectFit: 'cover' }}
           width={1280}
           height={850}
         />
-        <h1 className='mb-8 text-4xl sm:text-[45px]'>
+        <h1 className="mb-8 text-4xl sm:text-[45px]">
           Move In / Move Out Cleaning Services
         </h1>
-        <p className='mx-auto mb-20'>
+        <p className="mx-auto mb-20">
           Recommended for a thorough cleaning of spaces before moving in or out.
         </p>
       </section>
 
-      <section className='prose mx-auto mb-24 max-w-screen-md'>
+      <section className="prose mx-auto mb-24 max-w-screen-md">
         <p>
           At
           {' '}
@@ -53,8 +53,10 @@ export default function MoveCleaning() {
 
         <h2>What's Included in Move-In/Move-Out Cleaning?</h2>
         <p>
-          Our move-in/move-out cleaning service provides comprehensive cleaning of all areas, including deep cleaning of appliances, thorough bathroom cleaning, window cleaning, and more. We ensure every surface is spotless and ready for the next occupants. For a complete list of inclusions, please refer to our{' '}
-          <Link href='/checklist' className='link'>comprehensive cleaning checklist</Link>.
+          Our move-in/move-out cleaning service provides comprehensive cleaning of all areas, including deep cleaning of appliances, thorough bathroom cleaning, window cleaning, and more. We ensure every surface is spotless and ready for the next occupants. For a complete list of inclusions, please refer to our
+          {' '}
+          <Link href="/checklist" className="link">comprehensive cleaning checklist</Link>
+          .
         </p>
 
         <h2>Move-In Cleaning</h2>
@@ -89,29 +91,32 @@ export default function MoveCleaning() {
 
         <h2>Additional Services Available</h2>
         <p>
-          Need regular maintenance? We also offer{' '}
-          <Link href='/standard-cleaning' className='text-primary hover:underline'>
+          Need regular maintenance? We also offer
+          {' '}
+          <Link href="/standard-cleaning" className="link">
             standard cleaning
           </Link>
-          ,{' '}
-          <Link href='/deep-cleaning' className='text-primary hover:underline'>
+          ,
+          {' '}
+          <Link href="/deep-cleaning" className="link">
             deep cleaning
           </Link>
-          , and{' '}
-          <Link href='/vacation-rental-cleaning' className='text-primary hover:underline'>
+          , and
+          {' '}
+          <Link href="/vacation-rental-cleaning" className="link">
             vacation rental cleaning
           </Link>
           .
         </p>
       </section>
 
-      <WhoAreWeSection className='mb-16' />
+      <WhoAreWeSection className="mb-16" />
 
       <Suspense>
         <CTASection
-          heading='Got A Move Coming Up?'
+          heading="Got A Move Coming Up?"
           body={`Book your move-in/move-out cleaning service with ${BUSINESS_NAME} today and experience the difference of professional cleaning. Our team is ready to transform your property into a spotless sanctuary.`}
-          location='CACHED'
+          location="CACHED"
           showImage={false}
         />
       </Suspense>

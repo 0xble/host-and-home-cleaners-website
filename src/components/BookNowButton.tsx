@@ -1,14 +1,17 @@
 'use client'
 
-import { useSearchParams } from 'next/navigation'
-import { cn } from '@/lib/utils'
-import TrackedLink from '@/components/TrackedLink'
+import type { Location } from '@/lib/types'
+
+import TrackedLink from '@/components/analytics/facebook/PixelTrackedLink'
 import { PixelEvent } from '@/lib/pixel'
 import { ROUTES } from '@/lib/routes'
+import { cn } from '@/lib/utils'
+import { useSearchParams } from 'next/navigation'
 
-type BookNowButtonProps = {
+interface BookNowButtonProps {
   className?: string
   preventNavigation?: boolean
+  location: Location | null
   size?: 'sm' | 'md' | 'lg'
 }
 
@@ -19,49 +22,53 @@ type BookNowButtonProps = {
 export default function BookNowButton({
   className,
   preventNavigation = false,
-  size = 'md'
+  size = 'md',
+  location,
 }: BookNowButtonProps) {
   // Get search params to forward them to BookingKoala
   const searchParams = useSearchParams()
 
   // Base styles for the button
-  const baseStyles = 'inline-flex items-center justify-center rounded-xl bg-primary-700 text-center font-medium text-white hover:bg-primary-800 focus:ring-4 focus:ring-primary-300'
+  const baseStyles = 'inline-flex items-center justify-center rounded-xl bg-primary text-center font-medium text-white hover:bg-primary-800 focus:ring-4 focus:ring-primary-300'
 
   // Size-specific styles
   const sizeStyles = {
     sm: 'px-2 py-3 text-sm',
     md: 'px-4 py-3 text-base',
-    lg: 'px-6 py-4 text-xl'
+    lg: 'px-6 py-4 text-xl',
   }
 
   // Create booking URL that forwards all search params
   const constructBookingUrl = () => {
     // Start with the base booking URL
-    const baseUrl = ROUTES.BOOKING.href;
+    const baseUrl = ROUTES.BOOKING.href
 
-    // If there are no search params, return the base URL
-    if (!searchParams || searchParams.size === 0) {
-      return baseUrl;
+    // Initialize query parameters array
+    const queryParams: string[] = []
+
+    // Add location if provided
+    if (location) {
+      queryParams.push(`location=${location.toLowerCase()}`)
     }
 
-    // Check if the base URL already has query parameters
-    const hasQueryParams = baseUrl.includes('?');
+    // Add existing search params
+    if (searchParams != null) {
+      searchParams.forEach((value, key) => {
+        // Skip location if we already added it
+        if (key !== 'location') {
+          queryParams.push(`${key}=${encodeURIComponent(value)}`)
+        }
+      })
+    }
 
-    // Start building the query string
-    let queryString = hasQueryParams ? '&' : '?';
+    // If there are no query params, return the base URL
+    if (queryParams.length === 0) {
+      return baseUrl
+    }
 
-    // Add all search params to the query string
-    searchParams.forEach((value, key) => {
-      // We want to include all parameters, but UTM params are particularly important
-      queryString += `${key}=${encodeURIComponent(value)}&`;
-    });
-
-    // Remove the trailing ampersand
-    queryString = queryString.slice(0, -1);
-
-    // Return the full URL
-    return `${baseUrl}${queryString}`;
-  };
+    // Join all query parameters and return the full URL
+    return `${baseUrl}?${queryParams.join('&')}`
+  }
 
   return (
     <TrackedLink

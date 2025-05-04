@@ -1,21 +1,20 @@
 'use client'
 
-import AutoScroll from 'embla-carousel-auto-scroll'
-import useEmblaCarousel, {
-  type UseEmblaCarouselType,
-} from 'embla-carousel-react'
-import { ArrowLeft, ArrowRight } from 'lucide-react'
-import * as React from 'react'
-
+import type { UseEmblaCarouselType } from 'embla-carousel-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
+import AutoScroll from 'embla-carousel-auto-scroll'
+import useEmblaCarousel from 'embla-carousel-react'
+
+import { ArrowLeft, ArrowRight } from 'lucide-react'
+import * as React from 'react'
 
 type CarouselApi = UseEmblaCarouselType[1]
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>
 type CarouselOptions = UseCarouselParameters[0]
 type CarouselPlugin = UseCarouselParameters[1]
 
-type CarouselProps = {
+interface CarouselProps {
   opts?: CarouselOptions
   plugins?: CarouselPlugin
   orientation?: 'horizontal' | 'vertical'
@@ -92,7 +91,8 @@ const Carousel = React.forwardRef<
         if (event.key === 'ArrowLeft') {
           event.preventDefault()
           scrollPrev()
-        } else if (event.key === 'ArrowRight') {
+        }
+        else if (event.key === 'ArrowRight') {
           event.preventDefault()
           scrollNext()
         }
@@ -124,7 +124,6 @@ const Carousel = React.forwardRef<
 
     return (
       <CarouselContext.Provider
-        // eslint-disable-next-line react/no-unstable-context-value
         value={{
           carouselRef,
           api,
@@ -141,8 +140,8 @@ const Carousel = React.forwardRef<
           ref={ref}
           onKeyDownCapture={handleKeyDown}
           className={cn('relative', className)}
-          role='region'
-          aria-roledescription='carousel'
+          role="region"
+          aria-roledescription="carousel"
           {...props}
         >
           {children}
@@ -160,7 +159,7 @@ const CarouselContent = React.forwardRef<
   const { carouselRef, orientation } = useCarousel()
 
   return (
-    <div ref={carouselRef} className='overflow-hidden'>
+    <div ref={carouselRef} className="overflow-hidden">
       <div
         ref={ref}
         className={cn(
@@ -184,8 +183,8 @@ const CarouselItem = React.forwardRef<
   return (
     <div
       ref={ref}
-      role='group'
-      aria-roledescription='slide'
+      role="group"
+      aria-roledescription="slide"
       className={cn(
         'min-w-0 shrink-0 grow-0 basis-full',
         orientation === 'horizontal' ? 'pl-4' : 'pt-4',
@@ -219,8 +218,8 @@ const CarouselPrevious = React.forwardRef<
       onClick={scrollPrev}
       {...props}
     >
-      <ArrowLeft className='size-4' />
-      <span className='sr-only'>Previous slide</span>
+      <ArrowLeft className="size-4" />
+      <span className="sr-only">Previous slide</span>
     </Button>
   )
 })
@@ -248,8 +247,8 @@ const CarouselNext = React.forwardRef<
       onClick={scrollNext}
       {...props}
     >
-      <ArrowRight className='size-4' />
-      <span className='sr-only'>Next slide</span>
+      <ArrowRight className="size-4" />
+      <span className="sr-only">Next slide</span>
     </Button>
   )
 })

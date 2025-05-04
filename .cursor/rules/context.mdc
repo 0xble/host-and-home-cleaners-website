@@ -1,7 +1,9 @@
 ---
-description: 
-globs: 
+description:
+globs:
 alwaysApply: true
 ---
-- When creating new components, put them in components/ folder directly NOT components/ui/. Only components from shadcn/ui.
+- This is a Next.js app router project
+- When creating new components, put them in components/ folder directly NOT components/ui/. Only components from shadcn/ui. Install usinv bunx --bun shadcn@latest [COMPONENT]
 - Naming convention for component files is pascal case.
+- Use only Tailwind for styling, no inline CSS or other styling libraries

@@ -1,24 +1,27 @@
 'use client'
 
+import type { PixelEventName } from '@/lib/pixel/pixelEvents'
+import { PixelEvent } from '@/lib/pixel/pixelEvents'
+
+import { initializePixel } from '@/lib/pixel/pixelUtils'
 import { usePathname } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'
-
-import { PixelEvent, type PixelEventName } from './pixelEvents'
-import { initializePixel } from './pixelUtils'
 
 const isBrowser = typeof window !== 'undefined'
 
 export function useEventTracking() {
+  // eslint-disable-next-line ts/no-unsafe-assignment
   const [pixel, setPixel] = useState<any>(null)
 
   useEffect(() => {
     if (isBrowser) {
-      initializePixel().then(setPixel)
+      void initializePixel().then(setPixel as (pixel: any) => void)
     }
   }, [])
 
   const trackEvent = useCallback((eventName: string | PixelEventName, params = {}) => {
-    if (pixel) {
+    if (pixel != null) {
+      // eslint-disable-next-line ts/no-unsafe-call, ts/no-unsafe-member-access
       pixel.track(eventName, params)
     }
   }, [pixel])
@@ -27,16 +30,18 @@ export function useEventTracking() {
 }
 
 export function useContentViewTracking(contentType: string, contentName: string, contentId: string) {
+  // eslint-disable-next-line ts/no-unsafe-assignment
   const [pixel, setPixel] = useState<any>(null)
 
   useEffect(() => {
     if (isBrowser) {
-      initializePixel().then(setPixel)
+      void initializePixel().then(setPixel as (pixel: any) => void)
     }
   }, [])
 
   useEffect(() => {
-    if (pixel && contentType && contentName) {
+    if (pixel != null && contentType != null && contentName != null) {
+      // eslint-disable-next-line ts/no-unsafe-call, ts/no-unsafe-member-access
       pixel.track(PixelEvent.VIEW_CONTENT, {
         content_type: contentType,
         content_name: contentName,
@@ -48,16 +53,18 @@ export function useContentViewTracking(contentType: string, contentName: string,
 
 export function usePageViewTracking() {
   const pathname = usePathname()
+  // eslint-disable-next-line ts/no-unsafe-assignment
   const [pixel, setPixel] = useState<any>(null)
 
   useEffect(() => {
     if (isBrowser) {
-      initializePixel().then(setPixel)
+      void initializePixel().then(setPixel as (pixel: any) => void)
     }
   }, [])
 
   useEffect(() => {
-    if (pathname && pixel) {
+    if (pathname != null && pixel != null) {
+      // eslint-disable-next-line ts/no-unsafe-call, ts/no-unsafe-member-access
       pixel.pageView()
     }
   }, [pathname, pixel])

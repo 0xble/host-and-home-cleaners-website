@@ -1,12 +1,12 @@
-import { slugify, type SnakeCase } from '0xble/strings'
+import type { SnakeCase } from '@/types/strings'
+import { BOOKINGKOALA_URL, LOCATIONS, SERVICES } from '@/lib/constants'
+import { slugify } from '@/lib/utils'
 
-import { BOOKINGKOALA_URL, LOCATIONS, SERVICES } from './constants'
-
-export type Route = {
+export interface RouteData {
   name: string
   href: string
-  priority: 0 | 0.1 | 0.2 | 0.3 | 0.4 | 0.5 | 0.6 | 0.7 | 0.8 | 0.9 | 1
-  changeFrequency:
+  priority: 1 | 0.9 | 0.8 | 0.7 | 0.6 | 0.5 | 0.4 | 0.3 | 0.2 | 0.1 | null
+  changeFrequency?:
     | 'always'
     | 'hourly'
     | 'daily'
@@ -16,10 +16,10 @@ export type Route = {
     | 'never'
 }
 
-export type ServiceRoute = { [_ in keyof typeof SERVICES]: Route }
+export type ServiceRoute = { [_ in keyof typeof SERVICES]: RouteData }
 export type LocationRoute = {
-  [location in keyof typeof LOCATIONS]: Route & {
-    SERVICE_AREAS: { [_ in Uppercase<SnakeCase<(typeof LOCATIONS)[location]['serviceAreas'][number]>>]: Route }
+  [location in keyof typeof LOCATIONS]: RouteData & {
+    SERVICE_AREAS: { [_ in Uppercase<SnakeCase<(typeof LOCATIONS)[location]['serviceAreas'][number]>>]: RouteData }
   }
 }
 
@@ -50,21 +50,19 @@ export const ROUTES = {
   },
   BOOKING: {
     name: 'Booking',
-    href: `${BOOKINGKOALA_URL}/booknow/home_cleaning?form_id=1&coupon=SPRING10`,
+    href: `/book`,
     priority: 0.8,
     changeFrequency: 'weekly',
   },
   LOGIN: {
     name: 'Login',
     href: `${BOOKINGKOALA_URL}/login`,
-    priority: 0,
-    changeFrequency: 'never',
+    priority: null,
   },
   REVIEW: {
     name: 'Review',
     href: '/review',
-    priority: 0,
-    changeFrequency: 'never',
+    priority: null,
   },
   SERVICES: Object.entries(SERVICES).reduce((acc, [service, name]) => {
     return {
@@ -91,7 +89,7 @@ export const ROUTES = {
             ...acc,
             [slugify(area).toUpperCase()]: {
               name: area,
-              href: `/${slugify(area)}`,
+              href: `/${slugify(name)}/${slugify(area)}`,
               priority: 1,
               changeFrequency: 'weekly',
             },
@@ -114,4 +112,11 @@ export const ROUTES = {
       changeFrequency: 'monthly',
     },
   },
-} as const
+  CONFIRMATION: {
+    name: 'Thank You',
+    href: '/book/confirmation',
+    priority: null,
+  },
+} as const satisfies Record<string, RouteData | Record<string, RouteData>>
+
+export type Route = keyof typeof ROUTES

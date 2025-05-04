@@ -1,9 +1,9 @@
 'use client'
 
+import type { ToastActionElement, ToastProps } from '@/components/ui/toast'
+
 // Inspired by react-hot-toast library
 import * as React from 'react'
-
-import type { ToastActionElement, ToastProps } from '@/components/ui/toast'
 
 const TOAST_LIMIT = 1
 const TOAST_REMOVE_DELAY = 1000000
@@ -49,13 +49,13 @@ type Action =
     toastId?: ToasterToast['id']
   }
 
-type State = {
+interface State {
   toasts: ToasterToast[]
 }
 
 const toastTimeouts = new Map<string, ReturnType<typeof setTimeout>>()
 
-const addToRemoveQueue = (toastId: string) => {
+function addToRemoveQueue(toastId: string) {
   if (toastTimeouts.has(toastId)) {
     return
   }
@@ -71,7 +71,7 @@ const addToRemoveQueue = (toastId: string) => {
   toastTimeouts.set(toastId, timeout)
 }
 
-export const reducer = (state: State, action: Action): State => {
+export function reducer(state: State, action: Action): State {
   switch (action.type) {
     case 'ADD_TOAST':
       return {
@@ -92,9 +92,10 @@ export const reducer = (state: State, action: Action): State => {
 
       // ! Side effects ! - This could be extracted into a dismissToast() action,
       // but I'll keep it here for simplicity
-      if (toastId) {
+      if (toastId != null) {
         addToRemoveQueue(toastId)
-      } else {
+      }
+      else {
         state.toasts.forEach((toast) => {
           addToRemoveQueue(toast.id)
         })
@@ -126,7 +127,6 @@ export const reducer = (state: State, action: Action): State => {
   }
 }
 
-// eslint-disable-next-line no-unused-vars
 const listeners: Array<(state: State) => void> = []
 
 let memoryState: State = { toasts: [] }

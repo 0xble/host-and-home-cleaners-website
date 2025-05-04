@@ -3,21 +3,84 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --background: 0 0% 100%; /* #FFFFFF */
+    --foreground: 0 0% 13%; /* #222222 */
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 13%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 13%;
+
+    --primary: 351 100% 61%; /* #FF385C */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 0 0% 92%; /* #EBEBEB */
+    --secondary-foreground: 0 0% 13%;
+
+    --muted: 0 0% 97%; /* #F7F7F7 */
+    --muted-foreground: 0 0% 44%; /* #717171 */
+
+    --accent: 342 57% 51%; /* #D03660 */
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 11 81% 42%; /* #C13515 */
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 0 0% 87%; /* #DDDDDD */
+    --input: 0 0% 87%; /* #DDDDDD */
+    --ring: 351 100% 61%; /* #FF385C */
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 0 0% 13%; /* #222222 */
+    --foreground: 0 0% 100%;
+
+    --card: 0 0% 13%;
+    --card-foreground: 0 0% 100%;
+
+    --popover: 0 0% 13%;
+    --popover-foreground: 0 0% 100%;
+
+    --primary: 351 100% 61%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 0 0% 92%;
+    --secondary-foreground: 0 0% 13%;
+
+    --muted: 0 0% 27%;
+    --muted-foreground: 0 0% 63%;
+
+    --accent: 342 57% 51%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 11 81% 42%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 0 0% 13%;
+    --input: 0 0% 13%;
+    --ring: 351 100% 61%;
+  }
+
   h1 {
-    @apply text-5xl font-thin;
+    @apply text-5xl font-thin text-shade;
   }
 
   h2 {
-    @apply sm:text-5xl font-thin text-4xl;
+    @apply sm:text-5xl font-thin text-4xl text-shade;
   }
 
   h3 {
-    @apply text-xl font-light;
+    @apply text-xl font-light text-shade;
   }
+
   p,
   ol,
   ul {
-    @apply text-lg font-light text-gray-500;
+    @apply text-lg font-light text-neutral;
   }
 
   b {
@@ -29,24 +92,40 @@
   }
 
   mark {
-    @apply bg-primary-400;
+    @apply bg-accent-light;
   }
 
   .prose h2 {
-    @apply text-gray-800;
+    @apply font-extralight text-shade;
   }
 
   .prose h3 {
-    @apply text-xl font-light text-gray-800;
+    @apply text-xl font-light text-shade;
   }
 
   .prose strong {
-    @apply font-normal text-gray-900;
+    @apply font-normal text-shade;
+  }
+
+  .prose a {
+    @apply link;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
   }
 }
 
 @layer components {
   .link {
-    @apply text-primary-600 hover:underline;
+    @apply text-primary hover:underline;
+  }
+
+  .text-gradient {
+    @apply bg-gradient-to-r from-gradient-start via-gradient-middle to-gradient-end text-transparent bg-clip-text;
   }
 }

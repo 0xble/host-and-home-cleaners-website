@@ -1,18 +1,18 @@
-import fs from 'node:fs'
-import path from 'node:path'
-
 import type { StaticImport } from 'next/dist/shared/lib/get-img-props'
-import Image from 'next/image'
+import fs from 'node:fs'
 
+import path from 'node:path'
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
 } from '@/components/ui/carousel'
-import { cn } from '@/lib/utils'
 
-const getFeaturedImages = async (folder: string): Promise<{ name: string, image: StaticImport }[]> => {
-  const dir = path.join(process.cwd(), 'public', folder)
+import { cn } from '@/lib/utils'
+import Image from 'next/image'
+
+async function getFeaturedImages(folder: string): Promise<{ name: string, image: StaticImport }[]> {
+  const dir = path.join(process.cwd(), 'public', 'assets', 'featured', folder)
   const filenames = fs
     .readdirSync(dir)
     // Filter filenames to include only common image formats (jpg, jpeg, png, gif, webp).
@@ -20,13 +20,15 @@ const getFeaturedImages = async (folder: string): Promise<{ name: string, image:
     // Sort by filename (numeric)
     .sort((a, b) => a.localeCompare(b, undefined, { numeric: true }))
 
-  return await Promise.all(filenames.map(async (name) => {
-    const imageModule = await import(`/public/${folder}/${name}`)
+  return Promise.all(filenames.map(async (name) => {
+    // eslint-disable-next-line ts/no-unsafe-assignment
+    const imageModule = await import(`/public/assets/featured/${folder}/${name}`)
+    // eslint-disable-next-line ts/no-unsafe-assignment, ts/no-unsafe-member-access
     return { name, image: imageModule.default }
   }))
 }
 
-type FeaturedCarouselProps = {
+interface FeaturedCarouselProps {
   folder: string
   className?: string
 }
@@ -45,10 +47,10 @@ export default async function FeaturedCarousel({
           <CarouselItem key={name}>
             <Image
               key={name}
-              className='h-[450px] rounded-lg object-cover'
+              className="h-[450px] rounded-lg object-cover"
               src={image}
               alt={`${folder} cleaning service image`}
-              placeholder='blur'
+              placeholder="blur"
             />
           </CarouselItem>
         )))}

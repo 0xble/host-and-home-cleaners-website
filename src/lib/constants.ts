@@ -1,9 +1,9 @@
-import type { SocialLink, SocialPlatform } from './types'
+import type { Location, SocialLink, SocialPlatform } from '@/lib/types'
 
 export const BUSINESS_NAME = 'Host & Home Cleaners'
 export const TAGLINE = '100% satisfaction guaranteed, or we\'ll redo it for FREE'
-export const URL = 'hostandhomecleaners.com'
-export const PHONE = {
+export const DOMAIN = 'hostandhomecleaners.com'
+export const PHONE: Record<Location, { formatted: string, plain: string }> = {
   MYRTLE_BEACH: {
     formatted: '+1 (843) 350-5553',
     plain: '8433505553',
@@ -14,9 +14,9 @@ export const PHONE = {
   },
 } as const
 export const EMAIL = {
-  SUPPORT: `support@${URL}`,
-  MYRTLE_BEACH: `myrtlebeach@${URL}`,
-  HONOLULU: `honolulu@${URL}`,
+  SUPPORT: `support@${DOMAIN}`,
+  MYRTLE_BEACH: `myrtlebeach@${DOMAIN}`,
+  HONOLULU: `honolulu@${DOMAIN}`,
 } as const
 
 export const CHECKLIST_NAME = 'Host & Home 72-point Checklist™'
@@ -31,12 +31,12 @@ export const SERVICES = {
 
 export type ServiceKey = keyof typeof SERVICES
 
-export type ServiceInclusion = {
+export interface ServiceInclusion {
   name: string
   services: Record<ServiceKey, boolean>
 }
 
-export type ServiceInclusions = {
+export interface ServiceInclusions {
   title: string
   inclusions: ServiceInclusion[]
 }
@@ -676,6 +676,19 @@ export const SERVICE_CHECKLIST: Record<string, ServiceInclusions> = {
   },
 }
 
+export interface Bedroom {
+  label: string
+  maxSqFt: string
+  icon: string
+}
+
+export const BEDROOMS: ReadonlyMap<number, Bedroom> = new Map([
+  [1, { label: 'One Bedroom', maxSqFt: '1,000', icon: 'one-bedroom' }],
+  [2, { label: 'Two Bedroom', maxSqFt: '1,500', icon: 'two-bedroom' }],
+  [3, { label: 'Three Bedroom', maxSqFt: '2,500', icon: 'three-bedroom' }],
+  [4, { label: 'Four Bedroom', maxSqFt: '3,000', icon: 'four-bedroom' }],
+])
+
 export const LOCATIONS = {
   MYRTLE_BEACH: {
     id: 'c202ac2d56404655ba4620ec3e1dcf62',
@@ -707,7 +720,10 @@ export const LOCATIONS = {
       '29440',
       '29554',
       '29569',
+      '29511',
+      '29544',
     ] as const,
+    timezone: 'America/New_York',
   },
   HONOLULU: {
     id: '5ae41ba1a59649679c18d2a77062fea8',
@@ -734,6 +750,26 @@ export const LOCATIONS = {
       'Waialae',
     ] as const,
     zipCodes: [
+      '96371',
+      '96477',
+      '96701',
+      '96706',
+      '96707',
+      '96712',
+      '96717',
+      '96730',
+      '96731',
+      '96734',
+      '96744',
+      '96759',
+      '96762',
+      '96782',
+      '96786',
+      '96789',
+      '96791',
+      '96792',
+      '96795',
+      '96797',
       '96801',
       '96802',
       '96803',
@@ -776,12 +812,12 @@ export const LOCATIONS = {
       '96848',
       '96849',
       '96850',
+      '96862',
+      '96863',
     ] as const,
+    timezone: 'Pacific/Honolulu',
   },
 } as const
-
-export type LocationKey = keyof typeof LOCATIONS
-export type Location = typeof LOCATIONS[LocationKey]
 
 export const SOCIAL_LINKS: Record<SocialPlatform, SocialLink> = {
   Facebook: {

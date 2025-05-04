@@ -1,9 +1,9 @@
+import type { Location } from '@/lib/types'
 import { create } from 'zustand'
+
 import { persist } from 'zustand/middleware'
 
-import type { Location } from '@/lib/types'
-
-export type LocationState = {
+export interface LocationState {
   location: Location | null
   setLocation: (_location: LocationState['location']) => void
 }

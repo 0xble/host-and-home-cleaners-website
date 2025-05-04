@@ -1,13 +1,13 @@
 import type { Metadata } from 'next'
+import WhoAreWeSection from '@/app/(services)/components/WhoAreWeSection'
+import { ContentViewTracker } from '@/components/analytics/facebook/Pixel'
+import Page from '@/components/templates/Page'
+
+import CTASection from '@/components/templates/sections/CTASection'
+import { BUSINESS_NAME, SERVICES } from '@/lib/constants'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Suspense } from 'react'
-
-import CTASection from '@/components/CTASection'
-import Page from '@/components/Page'
-import WhoAreWeSection from '@/components/WhoAreWeSection'
-import { BUSINESS_NAME, SERVICES } from '@/lib/constants'
-import { ContentViewTracker } from '@/lib/pixel'
 
 const title = `${BUSINESS_NAME} ${SERVICES.VACATION_RENTAL}`
 
@@ -19,31 +19,31 @@ export const metadata: Metadata = {
 
 export default function AirbnbCleaning() {
   return (
-    <Page location='CACHED' className='mx-4 pb-24'>
+    <Page location="CACHED" className="mx-4 pb-24">
       <ContentViewTracker
-        contentType='service'
+        contentType="service"
         contentName={title}
         contentId={`service-${SERVICES.VACATION_RENTAL.toLowerCase().replace(/\s+/g, '-')}`}
       />
-      <section className='px-4 text-center'>
+      <section className="px-4 text-center">
         <Image
-          className='mx-auto mb-24 h-[300px] w-full max-w-screen-lg md:h-[450px] lg:rounded-b'
-          src='/rental.jpg'
-          alt='cleaner walking with supplies'
+          className="mx-auto mb-24 h-[300px] w-full max-w-screen-lg md:h-[450px] lg:rounded-b"
+          src="/assets/rental.jpg"
+          alt="cleaner walking with supplies"
           style={{ objectFit: 'cover' }}
           width={724}
           height={483}
         />
-        <h1 className='mb-8 text-4xl sm:text-[45px]'>
+        <h1 className="mb-8 text-4xl sm:text-[45px]">
           Vacation Rental Cleaning Services
         </h1>
-        <p className='mx-auto mb-20'>
+        <p className="mx-auto mb-20">
           Expert Airbnb/VRBO cleaning services: We ensure your property is
           guest-ready. Giving you peace of mind in everything we do.
         </p>
       </section>
 
-      <section className='prose mx-auto mb-24 max-w-screen-md'>
+      <section className="prose mx-auto mb-24 max-w-screen-md">
         <p>
           At
           {' '}
@@ -56,8 +56,10 @@ export default function AirbnbCleaning() {
 
         <h2>What's Included in Our Vacation Rental Cleaning Service?</h2>
         <p>
-          Our vacation rental cleaning service includes comprehensive cleaning of all areas, including thorough bathroom cleaning, kitchen cleaning, linen changes, and more. We ensure your property is guest-ready with attention to detail in every room. For a complete list of inclusions, please refer to our{' '}
-          <Link href='/checklist' className='link'>comprehensive cleaning checklist</Link>.
+          Our vacation rental cleaning service includes comprehensive cleaning of all areas, including thorough bathroom cleaning, kitchen cleaning, linen changes, and more. We ensure your property is guest-ready with attention to detail in every room. For a complete list of inclusions, please refer to our
+          {' '}
+          <Link href="/checklist" className="link">comprehensive cleaning checklist</Link>
+          .
         </p>
 
         <h2>Why Choose Our Vacation Rental Cleaning Services?</h2>
@@ -105,29 +107,32 @@ export default function AirbnbCleaning() {
           specialized services for other needs:
         </p>
         <p>
-          Need regular maintenance? We also offer{' '}
-          <Link href='/standard-cleaning' className='text-primary hover:underline'>
+          Need regular maintenance? We also offer
+          {' '}
+          <Link href="/standard-cleaning" className="link">
             standard cleaning
           </Link>
-          ,{' '}
-          <Link href='/deep-cleaning' className='text-primary hover:underline'>
+          ,
+          {' '}
+          <Link href="/deep-cleaning" className="link">
             deep cleaning
           </Link>
-          , and{' '}
-          <Link href='/move-in-out-cleaning' className='text-primary hover:underline'>
+          , and
+          {' '}
+          <Link href="/move-in-out-cleaning" className="link">
             move-in/out cleaning
           </Link>
           .
         </p>
       </section>
 
-      <WhoAreWeSection className='mb-16' />
+      <WhoAreWeSection className="mb-16" />
 
       <Suspense>
         <CTASection
-          heading='Have a Vacation Rental?'
-          body='Partner with us to ensure your property is always ready for the next guest. We handle scheduling, cleaning, and restocking for total peace of mind. Contact us!'
-          location='MYRTLE_BEACH'
+          heading="Have a Vacation Rental?"
+          body="Partner with us to ensure your property is always ready for the next guest. We handle scheduling, cleaning, and restocking for total peace of mind. Contact us!"
+          location="MYRTLE_BEACH"
           showImage={false}
         />
       </Suspense>

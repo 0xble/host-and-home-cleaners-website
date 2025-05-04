@@ -1,10 +1,10 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
-
 import CompetitorComparisonTable from '@/components/CompetitorComparisonTable'
-import LocationLandingPage from '@/components/LocationLandingPage'
+
+import LocationLandingPage from '@/components/templates/LocationLandingPage'
 import { BUSINESS_NAME, LOCATIONS, PHONE, TAGLINE } from '@/lib/constants'
 import { ROUTES } from '@/lib/routes'
+import Link from 'next/link'
 
 const SPECIFIC_BUSINESS_NAME = `${BUSINESS_NAME} ${LOCATIONS.MYRTLE_BEACH.name}`
 
@@ -16,11 +16,11 @@ export const metadata: Metadata = {
 export default function SurfsideBeach() {
   return (
     <LocationLandingPage
-      locationKey='MYRTLE_BEACH'
+      locationKey="MYRTLE_BEACH"
       location={LOCATIONS.MYRTLE_BEACH}
-      reviewsBadgeId='ba527c37-e33e-46d1-8a33-08aed36ffd09'
-      googleMapsEmbedUrl='https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d106194.64630830522!2d-78.8788075!3d33.7197455!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x432592cd81e1d561%3A0x2bb5e85088c224ee!2sPristine%20Maid%20Cleaning!5e0!3m2!1sen!2sus!4v1709048737136!5m2!1sen!2sus'
-      photosFolder='myrtle-beach'
+      reviewsBadgeId="ba527c37-e33e-46d1-8a33-08aed36ffd09"
+      googleMapsEmbedUrl="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d106194.64630830522!2d-78.8788075!3d33.7197455!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x432592cd81e1d561%3A0x2bb5e85088c224ee!2sPristine%20Maid%20Cleaning!5e0!3m2!1sen!2sus!4v1709048737136!5m2!1sen!2sus"
+      photosFolder="myrtle-beach"
       pricing={{ standard: 129, deep: 169, moveInOut: 189, vacationRental: 129 }}
       copy={{
         customHeroHeading: (
@@ -82,10 +82,10 @@ export default function SurfsideBeach() {
         customPricingSectionHeading: 'Services for Every Need',
         customPricingSectionDescription: (
           <>
-            <p className='mb-4 text-left'>
+            <p className="mb-4 text-left">
               From weekly home maintenance to vacation rental turnovers, we've got your Surfside Beach property covered! Our services are designed to handle the unique challenges of beach living - sand control, humidity management, and salt air protection. We specialize in both residential cleaning and vacation property care.
             </p>
-            <p className='text-left'>
+            <p className="text-left">
               Our team understands the high standards expected in "The Family Beach" and delivers consistently exceptional results. Whether it's a post-beach day refresh or a deep cleaning service, we ensure your space stays as inviting as Surfside itself.
             </p>
           </>
@@ -97,7 +97,7 @@ export default function SurfsideBeach() {
             question: 'Why choose us for your Surfside Beach home?',
             answer: (
               <>
-                <p className='mb-6'>
+                <p className="mb-6">
                   As cleaning specialists serving Surfside Beach, our team at
                   {' '}
                   {SPECIFIC_BUSINESS_NAME}
@@ -159,7 +159,7 @@ export default function SurfsideBeach() {
           {
             question: 'How do you ensure consistent quality?',
             answer: (
-              <p className='mb-2'>
+              <p className="mb-2">
                 Quality is our priority at
                 {' '}
                 {SPECIFIC_BUSINESS_NAME}
@@ -175,7 +175,7 @@ export default function SurfsideBeach() {
             {' '}
             <Link
               href={ROUTES.BOOKING.href}
-              className='link'
+              className="link"
             >
               free estimate
             </Link>
@@ -184,7 +184,7 @@ export default function SurfsideBeach() {
             {' '}
             <a
               href={`tel:+${PHONE.MYRTLE_BEACH.plain}`}
-              className='link'
+              className="link"
             >
               call our Surfside team
             </a>

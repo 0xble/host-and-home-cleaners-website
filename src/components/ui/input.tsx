@@ -1,19 +1,61 @@
-import * as React from 'react'
-
 import { cn } from '@/lib/utils'
 
-export type InputProps = {} & React.InputHTMLAttributes<HTMLInputElement>
+import * as React from 'react'
+
+type BaseInputProps = Omit<React.ComponentProps<'input'>, 'placeholder'>
+
+type StandardInputProps = BaseInputProps & {
+  placeholder?: string
+  label?: never
+}
+
+type LabelInputProps = BaseInputProps & {
+  label: React.ReactNode
+  placeholder?: never
+}
+
+type InputProps = StandardInputProps | LabelInputProps
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, ...props }, ref) => {
+  ({ className, type, label, placeholder, value = '', ...props }, ref) => {
+    if (label != null) {
+      return (
+        <div className="relative">
+          <input
+            type={type}
+            className={cn(
+              'flex h-10 w-full rounded-md border border-neutral-400 bg-white px-3 py-2 text-base ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-neutral-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-shade focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm dark:border-neutral-900 dark:bg-shade dark:ring-offset-shade dark:placeholder:text-neutral-400 dark:focus-visible:ring-neutral-300',
+              'peer pt-4 placeholder:opacity-0',
+              className,
+            )}
+            ref={ref}
+            placeholder={typeof label === 'string' ? label : ' '}
+            value={value}
+            {...props}
+          />
+          <label
+            className={cn(
+              'absolute left-3 top-[55%] -translate-y-[55%] text-neutral-600 transition-all duration-200 flex items-center gap-1',
+              'peer-focus:-translate-y-[22px] peer-focus:text-[10px] peer-focus:text-neutral-600',
+              'peer-[:not(:placeholder-shown)]:-translate-y-[22px] peer-[:not(:placeholder-shown)]:text-[10px]',
+              'dark:text-neutral-400 dark:peer-focus:text-neutral-300 dark:peer-[:not(:placeholder-shown)]:text-neutral-300',
+            )}
+          >
+            {label}
+          </label>
+        </div>
+      )
+    }
     return (
       <input
         type={type}
         className={cn(
-          'flex h-10 w-full rounded-md border border-zinc-200 bg-white px-3 py-2 text-sm ring-offset-primary file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-zinc-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
+          'flex h-10 w-full rounded-md border border-neutral-400 bg-white px-3 py-2 text-base ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-shade placeholder:text-neutral-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-shade focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm dark:border-shade dark:bg-shade dark:ring-offset-shade dark:file:text-neutral-50 dark:placeholder:text-neutral-400 dark:focus-visible:ring-neutral-300',
           className,
         )}
         ref={ref}
+        placeholder={placeholder}
+        value={value}
         {...props}
       />
     )

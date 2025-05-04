@@ -1,12 +1,12 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
+import TrackedLink from '@/components/analytics/facebook/PixelTrackedLink'
 
 import CompetitorComparisonTable from '@/components/CompetitorComparisonTable'
-import LocationLandingPage from '@/components/LocationLandingPage'
-import TrackedLink from '@/components/TrackedLink'
+import LocationLandingPage from '@/components/templates/LocationLandingPage'
 import { BUSINESS_NAME, LOCATIONS, PHONE, TAGLINE } from '@/lib/constants'
 import { PixelEvent } from '@/lib/pixel'
 import { ROUTES } from '@/lib/routes'
+import Link from 'next/link'
 
 const SPECIFIC_BUSINESS_NAME = `${BUSINESS_NAME} ${LOCATIONS.HONOLULU.name}`
 
@@ -18,11 +18,11 @@ export const metadata: Metadata = {
 export default function AlaMoana() {
   return (
     <LocationLandingPage
-      locationKey='HONOLULU'
+      locationKey="HONOLULU"
       location={LOCATIONS.HONOLULU}
-      reviewsBadgeId='142009ae-6f8c-4599-9c7e-9d370298abc9'
-      googleMapsEmbedUrl='https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d237770.1723966727!2d-157.869932!3d21.3836454!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c4ce057e4bdff0b%3A0xa78d25a714d5f0ae!2sHost%20%26%20Home%20Cleaners%20Honolulu!5e0!3m2!1sen!2sus!4v1729395012053!5m2!1sen!2sus'
-      photosFolder='honolulu'
+      reviewsBadgeId="142009ae-6f8c-4599-9c7e-9d370298abc9"
+      googleMapsEmbedUrl="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d237770.1723966727!2d-157.869932!3d21.3836454!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c4ce057e4bdff0b%3A0xa78d25a714d5f0ae!2sHost%20%26%20Home%20Cleaners%20Honolulu!5e0!3m2!1sen!2sus!4v1729395012053!5m2!1sen!2sus"
+      photosFolder="honolulu"
       pricing={{ standard: 232, deep: 304, moveInOut: 340, vacationRental: 232 }}
       copy={{
         customHeroHeading: (
@@ -84,10 +84,10 @@ export default function AlaMoana() {
         customPricingSectionHeading: 'Our Services',
         customPricingSectionDescription: (
           <>
-            <p className='mb-4 text-left'>
+            <p className="mb-4 text-left">
               Experience comprehensive cleaning solutions designed for Ala Moana's modern lifestyle! From regular maintenance to deep cleaning services, we handle everything with meticulous attention to detail. Our specialized services address all your cleaning needs - from spotless floors to sparkling appliances and fixtures.
             </p>
-            <p className='text-left'>
+            <p className="text-left">
               Whether you need recurring cleaning for your home, Airbnb turnover service, or move-in/move-out cleaning, our expert team ensures your space maintains the highest standards of cleanliness and presentation.
             </p>
           </>
@@ -99,7 +99,7 @@ export default function AlaMoana() {
             question: 'What makes your service perfect for Ala Moana properties?',
             answer: (
               <>
-                <p className='mb-6'>
+                <p className="mb-6">
                   As cleaning specialists in Ala Moana, our team at
                   {' '}
                   {SPECIFIC_BUSINESS_NAME}
@@ -161,7 +161,7 @@ export default function AlaMoana() {
           {
             question: 'How do you ensure quality?',
             answer: (
-              <p className='mb-2'>
+              <p className="mb-2">
                 Quality is our priority at
                 {' '}
                 {SPECIFIC_BUSINESS_NAME}
@@ -177,7 +177,7 @@ export default function AlaMoana() {
             {' '}
             <Link
               href={ROUTES.BOOKING.href}
-              className='link'
+              className="link"
             >
               custom quote
             </Link>
@@ -186,7 +186,7 @@ export default function AlaMoana() {
             {' '}
             <TrackedLink
               href={`tel:+${PHONE.HONOLULU.plain}`}
-              className='link'
+              className="link"
               isExternal
               eventName={PixelEvent.CONTACT}
               eventParams={{ method: 'phone' }}

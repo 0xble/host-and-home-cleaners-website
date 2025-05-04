@@ -1,12 +1,12 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
+import TrackedLink from '@/components/analytics/facebook/PixelTrackedLink'
 
 import CompetitorComparisonTable from '@/components/CompetitorComparisonTable'
-import LocationLandingPage from '@/components/LocationLandingPage'
-import TrackedLink from '@/components/TrackedLink'
+import LocationLandingPage from '@/components/templates/LocationLandingPage'
 import { BUSINESS_NAME, LOCATIONS, PHONE, TAGLINE } from '@/lib/constants'
 import { PixelEvent } from '@/lib/pixel'
 import { ROUTES } from '@/lib/routes'
+import Link from 'next/link'
 
 const SPECIFIC_BUSINESS_NAME = `${BUSINESS_NAME} ${LOCATIONS.MYRTLE_BEACH.name}`
 
@@ -18,11 +18,11 @@ export const metadata: Metadata = {
 export default function Conway() {
   return (
     <LocationLandingPage
-      locationKey='MYRTLE_BEACH'
+      locationKey="MYRTLE_BEACH"
       location={LOCATIONS.MYRTLE_BEACH}
-      reviewsBadgeId='ba527c37-e33e-46d1-8a33-08aed36ffd09'
-      googleMapsEmbedUrl='https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d106194.64630830522!2d-78.8788075!3d33.7197455!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x432592cd81e1d561%3A0x2bb5e85088c224ee!2sPristine%20Maid%20Cleaning!5e0!3m2!1sen!2sus!4v1709048737136!5m2!1sen!2sus'
-      photosFolder='myrtle-beach'
+      reviewsBadgeId="ba527c37-e33e-46d1-8a33-08aed36ffd09"
+      googleMapsEmbedUrl="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d106194.64630830522!2d-78.8788075!3d33.7197455!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x432592cd81e1d561%3A0x2bb5e85088c224ee!2sPristine%20Maid%20Cleaning!5e0!3m2!1sen!2sus!4v1709048737136!5m2!1sen!2sus"
+      photosFolder="myrtle-beach"
       pricing={{ standard: 129, deep: 169, moveInOut: 189, vacationRental: 129 }}
       copy={{
         customHeroHeading: (
@@ -84,10 +84,10 @@ export default function Conway() {
         customPricingSectionHeading: 'Bookings',
         customPricingSectionDescription: (
           <>
-            <p className='mb-4 text-left'>
+            <p className="mb-4 text-left">
               We have it all! From meticulous oven scrubbing, comprehensive bathroom sanitation to full-scale kitchen deep cleans — our expert team delivers top-tier residential cleaning services. Specializing in end-of-lease cleanings, short-term accommodation refreshes, and detailed spring cleanings, we cater to all your cleaning needs in Conway.
             </p>
-            <p className='text-left'>
+            <p className="text-left">
               Our tailored move-in and move-out cleaning solutions guarantee a flawless handover, while our intensive refrigerator cleaning services render your appliance spotlessly clean.
             </p>
           </>
@@ -99,7 +99,7 @@ export default function Conway() {
             question: 'What sets you apart from the others?',
             answer: (
               <>
-                <p className='mb-6'>
+                <p className="mb-6">
                   When it comes to selecting a cleaning company in Conway, our team at
                   {' '}
                   {SPECIFIC_BUSINESS_NAME}
@@ -122,7 +122,7 @@ export default function Conway() {
             question: 'Do you carry insurance and bonding to protect customers?',
             answer: (
               <>
-                <p className='mb-2'>
+                <p className="mb-2">
                   Absolutely!
                   {' '}
                   {SPECIFIC_BUSINESS_NAME}
@@ -154,7 +154,7 @@ export default function Conway() {
           {
             question: 'Are cleaning services available on weekends or holidays?',
             answer: (
-              <p className='mb-2'>
+              <p className="mb-2">
                 Yes, to accommodate your schedule, we provide cleaning services on weekends and selected holidays. Please note that these slots carry an additional surcharge and we advise early booking to ensure availability.
               </p>
             ),
@@ -178,7 +178,7 @@ export default function Conway() {
           {
             question: 'How will you make sure I\'m satisfied with the cleaning?',
             answer: (
-              <p className='mb-2'>
+              <p className="mb-2">
                 Your satisfaction is paramount at
                 {' '}
                 {SPECIFIC_BUSINESS_NAME}
@@ -194,7 +194,7 @@ export default function Conway() {
             {' '}
             <Link
               href={ROUTES.BOOKING.href}
-              className='link'
+              className="link"
             >
               instant quote online
             </Link>
@@ -203,7 +203,7 @@ export default function Conway() {
             {' '}
             <TrackedLink
               href={`tel:+${PHONE.MYRTLE_BEACH.plain}`}
-              className='link'
+              className="link"
               isExternal
               eventName={PixelEvent.CONTACT}
               eventParams={{ method: 'phone' }}

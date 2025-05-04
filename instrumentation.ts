@@ -10,7 +10,7 @@ export async function register() {
   }
 }
 
-export const onRequestError = (error: Error, request?: Request) => {
+export function onRequestError(error: Error, request?: Request) {
   Sentry.captureException(error, {
     extra: {
       url: request?.url,

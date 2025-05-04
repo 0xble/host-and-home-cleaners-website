@@ -1,11 +1,11 @@
 'use client'
 
-import TrackedLink from '@/components/TrackedLink'
-import { PixelEvent } from '@/lib/pixel'
 import type { Phone } from '@/lib/types'
+import TrackedLink from '@/components/analytics/facebook/PixelTrackedLink'
+import { PixelEvent } from '@/lib/pixel'
 import { cn } from '@/lib/utils'
 
-type PhoneLinkProps = {
+interface PhoneLinkProps {
   className?: string
   phone: Phone
   children?: React.ReactNode
@@ -28,7 +28,7 @@ export default function PhoneLink({ className, phone, children }: PhoneLinkProps
   return (
     <TrackedLink
       className={cn(
-        'text-base font-extralight hover:text-primary-700 lg:text-lg whitespace-nowrap',
+        'text-base font-extralight hover:text-primary lg:text-lg whitespace-nowrap',
         className,
       )}
       href={`tel:+${phone.plain}`}
@@ -36,7 +36,7 @@ export default function PhoneLink({ className, phone, children }: PhoneLinkProps
       eventName={PixelEvent.CONTACT}
       eventParams={{ method: 'phone' }}
     >
-      {children || phone.formatted}
+      {children ?? phone.formatted}
     </TrackedLink>
   )
 }

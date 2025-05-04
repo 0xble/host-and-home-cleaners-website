@@ -1,12 +1,12 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
+import TrackedLink from '@/components/analytics/facebook/PixelTrackedLink'
 
 import CompetitorComparisonTable from '@/components/CompetitorComparisonTable'
-import LocationLandingPage from '@/components/LocationLandingPage'
-import TrackedLink from '@/components/TrackedLink'
+import LocationLandingPage from '@/components/templates/LocationLandingPage'
 import { BUSINESS_NAME, LOCATIONS, PHONE, TAGLINE } from '@/lib/constants'
 import { PixelEvent } from '@/lib/pixel'
 import { ROUTES } from '@/lib/routes'
+import Link from 'next/link'
 
 const SPECIFIC_BUSINESS_NAME = `${BUSINESS_NAME} ${LOCATIONS.MYRTLE_BEACH.name}`
 
@@ -18,11 +18,11 @@ export const metadata: Metadata = {
 export default function NorthMyrtleBeach() {
   return (
     <LocationLandingPage
-      locationKey='MYRTLE_BEACH'
+      locationKey="MYRTLE_BEACH"
       location={LOCATIONS.MYRTLE_BEACH}
-      reviewsBadgeId='ba527c37-e33e-46d1-8a33-08aed36ffd09'
-      googleMapsEmbedUrl='https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d106194.64630830522!2d-78.8788075!3d33.7197455!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x432592cd81e1d561%3A0x2bb5e85088c224ee!2sPristine%20Maid%20Cleaning!5e0!3m2!1sen!2sus!4v1709048737136!5m2!1sen!2sus'
-      photosFolder='myrtle-beach'
+      reviewsBadgeId="ba527c37-e33e-46d1-8a33-08aed36ffd09"
+      googleMapsEmbedUrl="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d106194.64630830522!2d-78.8788075!3d33.7197455!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x432592cd81e1d561%3A0x2bb5e85088c224ee!2sPristine%20Maid%20Cleaning!5e0!3m2!1sen!2sus!4v1709048737136!5m2!1sen!2sus"
+      photosFolder="myrtle-beach"
       pricing={{ standard: 129, deep: 169, moveInOut: 189, vacationRental: 129 }}
       copy={{
         customHeroHeading: (
@@ -82,10 +82,10 @@ export default function NorthMyrtleBeach() {
         customPricingSectionHeading: 'Cleaning Solutions',
         customPricingSectionDescription: (
           <>
-            <p className='mb-4 text-left'>
+            <p className="mb-4 text-left">
               Transform your space with our comprehensive cleaning solutions! Our expert team specializes in everything from thorough kitchen and bathroom sanitization to complete home refreshes. Whether you need regular maintenance cleaning, vacation rental turnovers, or deep cleaning services, we deliver exceptional results every time.
             </p>
-            <p className='text-left'>
+            <p className="text-left">
               From move-in/move-out services to detailed appliance cleaning, we ensure every corner of your home receives the attention it deserves. Experience the perfect blend of thoroughness and efficiency with our professional cleaning team.
             </p>
           </>
@@ -97,7 +97,7 @@ export default function NorthMyrtleBeach() {
             question: 'What sets you apart from the others?',
             answer: (
               <>
-                <p className='mb-6'>
+                <p className="mb-6">
                   When it comes to selecting a cleaning company in Myrtle
                   Beach, our team at
                   {' '}
@@ -125,7 +125,7 @@ export default function NorthMyrtleBeach() {
             'Do you carry insurance and bonding to protect customers?',
             answer: (
               <>
-                <p className='mb-2'>
+                <p className="mb-2">
                   Absolutely!
                   {' '}
                   {SPECIFIC_BUSINESS_NAME}
@@ -173,7 +173,7 @@ export default function NorthMyrtleBeach() {
             question:
             'Are cleaning services available on weekends or holidays?',
             answer: (
-              <p className='mb-2'>
+              <p className="mb-2">
                 Yes, to accommodate your schedule, we provide cleaning
                 services on weekends and selected holidays. Please note
                 that these slots carry an additional surcharge and we
@@ -210,7 +210,7 @@ export default function NorthMyrtleBeach() {
             question:
             'How will you make sure I\'m satisfied with the cleaning?',
             answer: (
-              <p className='mb-2'>
+              <p className="mb-2">
                 Your satisfaction is paramount at
                 {' '}
                 {SPECIFIC_BUSINESS_NAME}
@@ -230,7 +230,7 @@ export default function NorthMyrtleBeach() {
             {' '}
             <Link
               href={ROUTES.BOOKING.href}
-              className='link'
+              className="link"
             >
               personalized quote
             </Link>
@@ -239,7 +239,7 @@ export default function NorthMyrtleBeach() {
             {' '}
             <TrackedLink
               href={`tel:+${PHONE.MYRTLE_BEACH.plain}`}
-              className='link'
+              className="link"
               isExternal
               eventName={PixelEvent.CONTACT}
               eventParams={{ method: 'phone' }}

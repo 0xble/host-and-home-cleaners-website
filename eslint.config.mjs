@@ -1,63 +1,76 @@
 import antfu from '@antfu/eslint-config'
-import nextPlugin from '@next/eslint-plugin-next'
-import jsxA11y from 'eslint-plugin-jsx-a11y'
-import simpleImportSort from 'eslint-plugin-simple-import-sort'
-import tailwind from 'eslint-plugin-tailwindcss'
 
-export default antfu(
-  {
-    react: true,
-    typescript: true,
-    lessOpinionated: true,
-    isInEditor: false,
-    stylistic: {
-      semi: false,
-    },
-    formatters: {
-      css: true,
-    },
-    ignores: ['next-env.d.ts'],
-    files: ['**/*.{js,jsx,ts,tsx}'],
+export default antfu({
+  ignores: ['**/*.md'],
+  formatters: true,
+  typescript: {
+    tsconfigPath: 'tsconfig.json',
   },
-  ...tailwind.configs['flat/recommended'],
-  jsxA11y.flatConfigs.recommended,
-  {
-    plugins: {
-      '@next/next': nextPlugin,
-    },
-    rules: {
-      ...nextPlugin.configs.recommended.rules,
-      ...nextPlugin.configs['core-web-vitals'].rules,
-    },
+  rules: {
+    // Allow using `process.env` directly without global declaration
+    'node/prefer-global/process': 'off',
+
+    // Allow using window.alert, window.confirm, window.prompt
+    'no-alert': 'off',
+
+    // Allow using console.log
+    'no-console': 'off',
+
+    // Prevent accidental fall-through in switch statements
+    'no-fallthrough': 'error',
+
+    // Prevent imports that reach up to parent directories using '../'
+    'import/no-relative-parent-imports': 'error',
+
+    // Prevent relative imports from packages in node_modules
+    'import/no-relative-packages': 'error',
+
+    // Prevent all relative imports
+    'no-restricted-imports': ['error', {
+      patterns: [{
+        group: ['./*', '../*', '../../*', '../../../*', '../../../../*'],
+        message: 'Please use absolute imports instead of relative imports',
+      }],
+    }],
+
+    // Disable requirement to use 'node:' protocol for Node.js built-in modules
+    'unicorn/prefer-node-protocol': 'off',
   },
-  {
-    plugins: {
-      'simple-import-sort': simpleImportSort,
-    },
+  // TypeScript-specific rules in a separate override
+  overrides: {
+    files: ['**/*.ts', '**/*.tsx', '**/*.mts', '**/*.cts'],
     rules: {
-      'simple-import-sort/imports': 'error',
-      'simple-import-sort/exports': 'error',
-      'no-console': 'off',
-    },
-  },
-  {
-    rules: {
-      'style/jsx-quotes': ['error', 'prefer-single'], // Use single quotes for JSX
-      'import/order': 'off', // Avoid conflicts with `simple-import-sort` plugin
-      'sort-imports': 'off', // Avoid conflicts with `simple-import-sort` plugin
-      'unused-imports/no-unused-vars': 'off', // Prefer `no-unused-vars` rule
-      // Disallow unused variables, but ignore if they start with underscore
-      'no-unused-vars': [
+      'ts/no-floating-promises': [
         'error',
+        {
+          allowForKnownSafeCalls: [],
+          allowForKnownSafePromises: [],
+          checkThenables: false,
+          ignoreIIFE: false,
+          ignoreVoid: true,
+        },
+      ],
+      'ts/require-await': 'error',
+      'ts/no-unused-vars': [
+        'warn',
         {
           argsIgnorePattern: '_',
           varsIgnorePattern: '_',
         },
       ],
-      'style/brace-style': ['error', '1tbs'], // Use the default brace style
-      'ts/consistent-type-definitions': ['error', 'type'], // Use `type` instead of `interface`
-      'react/prefer-destructuring-assignment': 'off', // Vscode doesn't support automatically destructuring, it's a pain to add a new variable
-      'node/prefer-global/process': 'off', // Allow using `process.env`
+      'ts/strict-boolean-expressions': [
+        'error',
+        {
+          allowAny: true,
+          allowNullableBoolean: true,
+          allowNullableEnum: true,
+          allowNullableNumber: false,
+          allowNullableObject: true,
+          allowNullableString: true,
+          allowNumber: false,
+          allowString: true,
+        },
+      ],
     },
   },
-)
+})

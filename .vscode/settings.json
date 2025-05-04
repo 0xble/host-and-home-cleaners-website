@@ -17,16 +17,28 @@
   ],
   "typescript.preferences.preferTypeOnlyAutoImports": true, // Prefer type-only imports
 
-  // Disable the default formatter, use ESLint instead
+  // Disable the default formatter, use eslint instead
   "prettier.enable": false,
-  "editor.formatOnSave": false,
 
-  // Auto fix with ESLint on save
+  // Auto fix
   "editor.codeActionsOnSave": {
-    "source.addMissingImports": "explicit",
     "source.fixAll.eslint": "explicit",
     "source.organizeImports": "never"
   },
+
+  // Silent the stylistic rules in you IDE, but still auto fix them
+  "eslint.rules.customizations": [
+    { "rule": "style/*", "severity": "off", "fixable": true },
+    { "rule": "format/*", "severity": "off", "fixable": true },
+    { "rule": "*-indent", "severity": "off", "fixable": true },
+    { "rule": "*-spacing", "severity": "off", "fixable": true },
+    { "rule": "*-spaces", "severity": "off", "fixable": true },
+    { "rule": "*-order", "severity": "off", "fixable": true },
+    { "rule": "*-dangle", "severity": "off", "fixable": true },
+    { "rule": "*-newline", "severity": "off", "fixable": true },
+    { "rule": "*quotes", "severity": "off", "fixable": true },
+    { "rule": "*semi", "severity": "off", "fixable": true }
+  ],
 
   // Enable eslint for all supported languages
   "eslint.validate": [
@@ -34,9 +46,11 @@
     "javascriptreact",
     "typescript",
     "typescriptreact",
+    "vue",
     "html",
     "markdown",
     "json",
+    "json5",
     "jsonc",
     "yaml",
     "toml",
@@ -44,11 +58,11 @@
     "gql",
     "graphql",
     "astro",
+    "svelte",
     "css",
     "less",
     "scss",
     "pcss",
-    "postcss",
-    "github-actions-workflow"
+    "postcss"
   ]
 }
