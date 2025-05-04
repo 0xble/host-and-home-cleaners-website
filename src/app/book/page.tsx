@@ -5,6 +5,7 @@ import type {
   BaseStepProps,
   BookingFormData,
   BookingFormState,
+  BookingPricingParams,
 } from '@/app/book/types'
 import type { Location } from '@/lib/types'
 import type { RecordBookingPayload } from '@/lib/types/bookings'
@@ -193,16 +194,25 @@ export default function BookingPage() {
   // Update price when service category, pricing params, or frequency changes
   useEffect(() => {
     if (selectedLocation != null && selectedServiceCategory != null && selectedPricingParams != null && selectedFrequency != null) {
-      const price = calculatePrice({
-        location: selectedLocation,
-        serviceCategory: selectedServiceCategory,
-        frequency: selectedFrequency,
-        params: selectedPricingParams,
-        coupon,
-      })
-      form.setValue('price', price)
-      if (process.env.NODE_ENV !== 'production') {
-        logger.debug('Updated price:', price)
+      // If changing service category to a different type, reset pricing params
+      const config = PRICING_PARAMETERS[selectedServiceCategory]
+      if (selectedPricingParams.type !== config.type) {
+        logger.debug('Resetting pricing params for service category change')
+        // Clear pricing params
+        form.setValue('pricingParams', undefined as unknown as BookingPricingParams)
+      }
+      else {
+        const price = calculatePrice({
+          location: selectedLocation,
+          serviceCategory: selectedServiceCategory,
+          frequency: selectedFrequency,
+          params: selectedPricingParams,
+          coupon,
+        })
+        form.setValue('price', price)
+        if (process.env.NODE_ENV !== 'production') {
+          logger.debug('Updated price:', price)
+        }
       }
     }
   }, [
