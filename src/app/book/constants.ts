@@ -5,10 +5,10 @@ export const PRICING_PARAMETERS: Readonly<Record<BookingServiceCategory, Pricing
     type: 'flat',
     bedrooms: {
       MYRTLE_BEACH: {
-        1: 217,
-        2: 267,
-        3: 327,
-        4: 482,
+        1: 241,
+        2: 296,
+        3: 441,
+        4: 603,
       },
       HONOLULU: {
         1: 263.33,
@@ -28,10 +28,10 @@ export const PRICING_PARAMETERS: Readonly<Record<BookingServiceCategory, Pricing
     type: 'flat',
     bedrooms: {
       MYRTLE_BEACH: {
-        1: 242.5,
-        2: 324,
-        3: 432,
-        4: 562,
+        1: 267,
+        2: 360,
+        3: 484,
+        4: 691,
       },
       HONOLULU: {
         1: 326.67,
