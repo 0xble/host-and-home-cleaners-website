@@ -35,26 +35,24 @@ export default function MyrtleBeach() {
         }}
       />
       <LocationLandingPage
-        locationKey="MYRTLE_BEACH"
-        location={LOCATIONS.MYRTLE_BEACH}
-        reviewsBadgeId="ba527c37-e33e-46d1-8a33-08aed36ffd09"
+        location="MYRTLE_BEACH"
         googleMapsEmbedUrl="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d106194.64630830522!2d-78.8788075!3d33.7197455!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x432592cd81e1d561%3A0x2bb5e85088c224ee!2sPristine%20Maid%20Cleaning!5e0!3m2!1sen!2sus!4v1709048737136!5m2!1sen!2sus"
         photosFolder="myrtle-beach"
         pricing={{ standard: 129, deep: 169, moveInOut: 189, vacationRental: 129 }}
         copy={{
-          customHeroHeading: (
+          heroHeading: (
             <>
               Myrtle Beach&apos;s #1 Local
               <br />
               Home & Vacation Rental Cleaning Service
             </>
           ),
-          customHeroDescription: 'High-quality residential cleaning services, fast turnaround, at affordable prices — this is why home owners, Airbnb short-term vacation rentals, and realtors all go with us!',
-          customReviewsHeading: 'Hear From Your Neighbors!',
-          customLocationsSectionHeading: 'We\'re In Your Neighborhood!',
-          customLocationsSectionDescription: 'Proudly serving all areas of Myrtle Beach and the Grand Strand!',
-          customHowItWorksHeading: 'So, What Does It Look Like?',
-          customHowItWorksSteps: [
+          heroDescription: 'High-quality residential cleaning services, fast turnaround, at affordable prices — this is why home owners, Airbnb short-term vacation rentals, and realtors all go with us!',
+          reviewsHeading: 'Hear From Your Neighbors!',
+          locationsSectionHeading: 'We\'re In Your Neighborhood!',
+          locationsSectionDescription: 'Proudly serving all areas of Myrtle Beach and the Grand Strand!',
+          howItWorksHeading: 'So, What Does It Look Like?',
+          howItWorksSteps: [
             {
               title: 'Schedule your cleaning session',
               description: (
@@ -104,8 +102,8 @@ export default function MyrtleBeach() {
               ),
             },
           ],
-          customPricingSectionHeading: 'Bookings',
-          customPricingSectionDescription: (
+          pricingHeading: 'Bookings',
+          pricingDescription: (
             <>
               <p className="mb-4 text-left">
                 We have it all! From meticulous oven scrubbing, comprehensive
@@ -121,9 +119,9 @@ export default function MyrtleBeach() {
               </p>
             </>
           ),
-          customFAQHeading: 'FAQs',
-          customFAQDescription: 'Explore our frequently asked questions. Should you have any inquiries not covered here, please feel free to contact us via phone, chat, or email at any time.',
-          customFAQs: [
+          faqHeading: 'FAQs',
+          faqDescription: 'Explore our frequently asked questions. Should you have any inquiries not covered here, please feel free to contact us via phone, chat, or email at any time.',
+          faqs: [
             {
               question: 'What sets you apart from the others?',
               answer: (
@@ -254,8 +252,8 @@ export default function MyrtleBeach() {
               ),
             },
           ],
-          customCTAHeading: 'Ready to get a price and reserve a time in 60 seconds?',
-          customCTABody: (
+          ctaHeading: 'Ready to get a price and reserve a time in 60 seconds?',
+          ctaBody: (
             <>
               Get an
               {' '}

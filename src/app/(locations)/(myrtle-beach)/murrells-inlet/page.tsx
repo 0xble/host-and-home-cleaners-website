@@ -16,26 +16,24 @@ export const metadata: Metadata = {
 export default function MurrellsInlet() {
   return (
     <LocationLandingPage
-      locationKey="MYRTLE_BEACH"
-      location={LOCATIONS.MYRTLE_BEACH}
-      reviewsBadgeId="ba527c37-e33e-46d1-8a33-08aed36ffd09"
+      location="MYRTLE_BEACH"
       googleMapsEmbedUrl="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d106194.64630830522!2d-78.8788075!3d33.7197455!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x432592cd81e1d561%3A0x2bb5e85088c224ee!2sPristine%20Maid%20Cleaning!5e0!3m2!1sen!2sus!4v1709048737136!5m2!1sen!2sus"
       photosFolder="myrtle-beach"
       pricing={{ standard: 129, deep: 169, moveInOut: 189, vacationRental: 129 }}
       copy={{
-        customHeroHeading: (
+        heroHeading: (
           <>
             Murrells Inlet&apos;s Premier
             <br />
             Property Cleaning Service
           </>
         ),
-        customHeroDescription: 'Elevate your coastal living experience with our premium cleaning services. From residential properties to vacation homes, we understand the unique needs of Murrells Inlet residents and visitors.',
-        customReviewsHeading: 'Local Neighborhood Stories',
-        customLocationsSectionHeading: 'Serving Our Coastal Community',
-        customLocationsSectionDescription: 'Delivering exceptional cleaning services throughout Murrells Inlet and neighboring seaside communities!',
-        customHowItWorksHeading: 'Your Path to a Pristine Space',
-        customHowItWorksSteps: [
+        heroDescription: 'Elevate your coastal living experience with our premium cleaning services. From residential properties to vacation homes, we understand the unique needs of Murrells Inlet residents and visitors.',
+        reviewsHeading: 'Local Neighborhood Stories',
+        locationsSectionHeading: 'Serving Our Coastal Community',
+        locationsSectionDescription: 'Delivering exceptional cleaning services throughout Murrells Inlet and neighboring seaside communities!',
+        howItWorksHeading: 'Your Path to a Pristine Space',
+        howItWorksSteps: [
           {
             title: 'Simple Scheduling',
             description: (
@@ -79,8 +77,8 @@ export default function MurrellsInlet() {
             ),
           },
         ],
-        customPricingSectionHeading: 'Tailored Services',
-        customPricingSectionDescription: (
+        pricingHeading: 'Tailored Services',
+        pricingDescription: (
           <>
             <p className="mb-4 text-left">
               Experience the perfect clean for your coastal lifestyle! Our comprehensive services address the unique challenges of seaside living - from salt air effects to sand management. We specialize in vacation rental turnovers, residential deep cleans, and move-in/move-out services tailored to Murrells Inlet properties.
@@ -90,9 +88,9 @@ export default function MurrellsInlet() {
             </p>
           </>
         ),
-        customFAQHeading: 'Frequently Asked Questions',
-        customFAQDescription: 'Find answers to frequently asked questions below. Have a specific concern? Our local team is always here to help via phone, email, or chat.',
-        customFAQs: [
+        faqHeading: 'Frequently Asked Questions',
+        faqDescription: 'Find answers to frequently asked questions below. Have a specific concern? Our local team is always here to help via phone, email, or chat.',
+        faqs: [
           {
             question: 'What makes your service ideal for Murrells Inlet homes?',
             answer: (
@@ -177,8 +175,8 @@ export default function MurrellsInlet() {
             ),
           },
         ],
-        customCTAHeading: 'Experience the Difference',
-        customCTABody: (
+        ctaHeading: 'Experience the Difference',
+        ctaBody: (
           <>
             Get your
             {' '}

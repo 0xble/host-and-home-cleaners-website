@@ -506,7 +506,8 @@ export default function ReviewsGridClient({ location }: ReviewsGridClientProps) 
   }
 
   const reviews = data.reviews.filter((review): review is ValidReview => {
-    const ratingThreshold = columnCount === 1 ? 5 : 4
+    const RATING_THRESHOLD = columnCount === 1 ? 5 : 4
+    const EXCLUDED_WORDS = ['contractor', 'employee', 'agency']
 
     // Check for required properties
     const hasRequiredProperties = Boolean(
@@ -519,7 +520,10 @@ export default function ReviewsGridClient({ location }: ReviewsGridClientProps) 
     return hasRequiredProperties
       && (!selectedPlatform || review.platform === selectedPlatform)
       && (!location || review.location == null || constantCase(review.location) === location)
-      && (review.rating ?? 0) >= ratingThreshold
+      // Only show reviews with a rating greater than or equal to the threshold
+      && (review.rating ?? 0) >= RATING_THRESHOLD
+      // Exclude reviews containing any excluded word (case-insensitive)
+      && !EXCLUDED_WORDS.some((word): boolean => review.text && new RegExp(`\\b${word}\\b`, 'i').test(review.text))
   }).sort((a, b) => compareDesc(a.date, b.date))
 
   const hasMoreReviews = reviews.length > visibleReviews

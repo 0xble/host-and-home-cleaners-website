@@ -16,26 +16,24 @@ export const metadata: Metadata = {
 export default function SurfsideBeach() {
   return (
     <LocationLandingPage
-      locationKey="MYRTLE_BEACH"
-      location={LOCATIONS.MYRTLE_BEACH}
-      reviewsBadgeId="ba527c37-e33e-46d1-8a33-08aed36ffd09"
+      location="MYRTLE_BEACH"
       googleMapsEmbedUrl="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d106194.64630830522!2d-78.8788075!3d33.7197455!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x432592cd81e1d561%3A0x2bb5e85088c224ee!2sPristine%20Maid%20Cleaning!5e0!3m2!1sen!2sus!4v1709048737136!5m2!1sen!2sus"
       photosFolder="myrtle-beach"
       pricing={{ standard: 129, deep: 169, moveInOut: 189, vacationRental: 129 }}
       copy={{
-        customHeroHeading: (
+        heroHeading: (
           <>
             Surfside Beach&apos;s Beloved
             <br />
             Home & Vacation Rental Cleaners
           </>
         ),
-        customHeroDescription: 'Keep your beach home pristine with our professional cleaning services. Whether you\'re a local family, vacation homeowner, or rental property manager in "The Family Beach," we deliver the quality clean you expect.',
-        customReviewsHeading: 'What Your Neighbors Say',
-        customLocationsSectionHeading: 'Proudly Serving Surfside Beach',
-        customLocationsSectionDescription: 'Bringing top-quality cleaning services to Surfside Beach and the surrounding South Strand communities!',
-        customHowItWorksHeading: 'Easy as a Beach Day',
-        customHowItWorksSteps: [
+        heroDescription: 'Keep your beach home pristine with our professional cleaning services. Whether you\'re a local family, vacation homeowner, or rental property manager in "The Family Beach," we deliver the quality clean you expect.',
+        reviewsHeading: 'What Your Neighbors Say',
+        locationsSectionHeading: 'Proudly Serving Surfside Beach',
+        locationsSectionDescription: 'Bringing top-quality cleaning services to Surfside Beach and the surrounding South Strand communities!',
+        howItWorksHeading: 'Easy as a Beach Day',
+        howItWorksSteps: [
           {
             title: 'Book in Minutes',
             description: (
@@ -79,8 +77,8 @@ export default function SurfsideBeach() {
             ),
           },
         ],
-        customPricingSectionHeading: 'Services for Every Need',
-        customPricingSectionDescription: (
+        pricingHeading: 'Services for Every Need',
+        pricingDescription: (
           <>
             <p className="mb-4 text-left">
               From weekly home maintenance to vacation rental turnovers, we've got your Surfside Beach property covered! Our services are designed to handle the unique challenges of beach living - sand control, humidity management, and salt air protection. We specialize in both residential cleaning and vacation property care.
@@ -90,9 +88,9 @@ export default function SurfsideBeach() {
             </p>
           </>
         ),
-        customFAQHeading: 'Frequently Asked Questions',
-        customFAQDescription: 'Find answers to common questions below. Need more information? Our friendly local team is always ready to help!',
-        customFAQs: [
+        faqHeading: 'Frequently Asked Questions',
+        faqDescription: 'Find answers to common questions below. Need more information? Our friendly local team is always ready to help!',
+        faqs: [
           {
             question: 'Why choose us for your Surfside Beach home?',
             answer: (
@@ -168,8 +166,8 @@ export default function SurfsideBeach() {
             ),
           },
         ],
-        customCTAHeading: 'Save 15% on Your First Clean!',
-        customCTABody: (
+        ctaHeading: 'Save 15% on Your First Clean!',
+        ctaBody: (
           <>
             Get your
             {' '}

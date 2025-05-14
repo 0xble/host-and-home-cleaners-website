@@ -59,8 +59,8 @@ export async function queryDatabase(params: QueryDatabaseParameters) {
       const validPages = response.results.filter((page): page is PageObjectResponse => 'properties' in page)
       pages.push(...validPages)
 
-      // Only continue fetching if page_size is not specified
-      hasMore = params.page_size != null && response.has_more
+      // Always continue fetching if response.has_more is true
+      hasMore = response.has_more
       startCursor = response.next_cursor ?? undefined
     }
     catch (error) {

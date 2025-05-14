@@ -91,7 +91,7 @@ export function TestimonialCarousel({ className }: TestimonialCarouselProps) {
       >
         <CarouselContent>
           <CarouselItem className="flex flex-col items-center md:flex-row md:items-start">
-            <TestimonialVideo src="/testimony1.mp4" />
+            <TestimonialVideo src="/videos/testimony1.mp4" />
             <TestimonialFigure
               heading="Reduce stress, save time"
               text={`As a busy mom of two, ${BUSINESS_NAME} has been a total lifesaver for me... I love not having to worry about the cleaning so I can focus more on other things.`}
@@ -100,7 +100,7 @@ export function TestimonialCarousel({ className }: TestimonialCarouselProps) {
             />
           </CarouselItem>
           <CarouselItem className="flex flex-col items-center md:flex-row md:items-start">
-            <TestimonialVideo src="/testimony2.mp4" />
+            <TestimonialVideo src="/videos/testimony2.mp4" />
             <TestimonialFigure
               heading="Complete peace of mind"
               text={`I haven't gotten a single negative review since I started using ${BUSINESS_NAME}. They give me complete peace of mind!`}
@@ -109,7 +109,7 @@ export function TestimonialCarousel({ className }: TestimonialCarouselProps) {
             />
           </CarouselItem>
           <CarouselItem className="flex flex-col items-center md:flex-row md:items-start">
-            <TestimonialVideo src="/testimony3.mp4" />
+            <TestimonialVideo src="/videos/testimony3.mp4" />
             <TestimonialFigure
               heading="Sparkling clean after every visit"
               text='"Their team is incredibly thorough and punctual, we love working with them. My place is always left sparkling clean after every visit, and their attention to detail is just incredible."'

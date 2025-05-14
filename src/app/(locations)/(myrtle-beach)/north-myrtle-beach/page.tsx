@@ -18,24 +18,22 @@ export const metadata: Metadata = {
 export default function NorthMyrtleBeach() {
   return (
     <LocationLandingPage
-      locationKey="MYRTLE_BEACH"
-      location={LOCATIONS.MYRTLE_BEACH}
-      reviewsBadgeId="ba527c37-e33e-46d1-8a33-08aed36ffd09"
+      location="MYRTLE_BEACH"
       googleMapsEmbedUrl="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d106194.64630830522!2d-78.8788075!3d33.7197455!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x432592cd81e1d561%3A0x2bb5e85088c224ee!2sPristine%20Maid%20Cleaning!5e0!3m2!1sen!2sus!4v1709048737136!5m2!1sen!2sus"
       photosFolder="myrtle-beach"
       pricing={{ standard: 129, deep: 169, moveInOut: 189, vacationRental: 129 }}
       copy={{
-        customHeroHeading: (
+        heroHeading: (
           <>
             North Myrtle Beach&apos;s Trusted Choice
           </>
         ),
-        customHeroDescription: 'Discover the difference professional cleaning makes - where meticulous attention to detail meets unmatched reliability. Trusted by homeowners, vacation rental managers, and real estate professionals across North Myrtle Beach.',
-        customReviewsHeading: 'Hear From Your Neighbors!',
-        customLocationsSectionHeading: 'Areas We Service',
-        customLocationsSectionDescription: 'Bringing exceptional cleaning services to North Myrtle Beach and all surrounding coastal communities!',
-        customHowItWorksHeading: 'Getting Started is Easy',
-        customHowItWorksSteps: [
+        heroDescription: 'Discover the difference professional cleaning makes - where meticulous attention to detail meets unmatched reliability. Trusted by homeowners, vacation rental managers, and real estate professionals across North Myrtle Beach.',
+        reviewsHeading: 'Hear From Your Neighbors!',
+        locationsSectionHeading: 'Areas We Service',
+        locationsSectionDescription: 'Bringing exceptional cleaning services to North Myrtle Beach and all surrounding coastal communities!',
+        howItWorksHeading: 'Getting Started is Easy',
+        howItWorksSteps: [
           {
             title: 'Quick & Easy Booking',
             description: (
@@ -79,8 +77,8 @@ export default function NorthMyrtleBeach() {
             ),
           },
         ],
-        customPricingSectionHeading: 'Cleaning Solutions',
-        customPricingSectionDescription: (
+        pricingHeading: 'Cleaning Solutions',
+        pricingDescription: (
           <>
             <p className="mb-4 text-left">
               Transform your space with our comprehensive cleaning solutions! Our expert team specializes in everything from thorough kitchen and bathroom sanitization to complete home refreshes. Whether you need regular maintenance cleaning, vacation rental turnovers, or deep cleaning services, we deliver exceptional results every time.
@@ -90,9 +88,9 @@ export default function NorthMyrtleBeach() {
             </p>
           </>
         ),
-        customFAQHeading: 'FAQs',
-        customFAQDescription: 'Browse through our most common questions below. Need more information? Our friendly team is ready to help via phone, email, or chat 24/7.',
-        customFAQs: [
+        faqHeading: 'FAQs',
+        faqDescription: 'Browse through our most common questions below. Need more information? Our friendly team is ready to help via phone, email, or chat 24/7.',
+        faqs: [
           {
             question: 'What sets you apart from the others?',
             answer: (
@@ -223,8 +221,8 @@ export default function NorthMyrtleBeach() {
             ),
           },
         ],
-        customCTAHeading: 'Ready for a Spotless Home?',
-        customCTABody: (
+        ctaHeading: 'Ready for a Spotless Home?',
+        ctaBody: (
           <>
             Get your
             {' '}

@@ -190,6 +190,27 @@ export default function Footer({ location }: FooterProps) {
                       </ul>
                     </>
                   )
+                case 'YORK':
+                  return (
+                    <>
+                      <h4 className="mb-6 text-sm uppercase text-shade">
+                        Contacts
+                      </h4>
+                      <ul className="mb-8 text-gray-700">
+                        <li className="mb-4">
+                          <PhoneLink className="text-lg" phone={PHONE.YORK} />
+                        </li>
+                        <li className="mb-4">
+                          <a
+                            className="text-lg font-extralight hover:text-primary max-xs:text-sm"
+                            href={`mailto:${EMAIL.YORK}`}
+                          >
+                            {EMAIL.YORK}
+                          </a>
+                        </li>
+                      </ul>
+                    </>
+                  )
               }
             })()}
 
@@ -235,6 +256,14 @@ export default function Footer({ location }: FooterProps) {
                     title="Locations"
                     links={Object.values(ROUTES.LOCATIONS.HONOLULU.SERVICE_AREAS)}
                     columns={2}
+                  />
+                )
+              case 'YORK':
+                return (
+                  <FooterColumn
+                    title="Locations"
+                    links={Object.values(ROUTES.LOCATIONS.YORK.SERVICE_AREAS)}
+                    columns={1}
                   />
                 )
               case null:

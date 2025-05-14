@@ -16,6 +16,13 @@ export const PRICING_PARAMETERS: Readonly<Record<BookingServiceCategory, Pricing
         3: 474.44,
         4: 707.78,
       },
+      // TODO: Update with real York pricing
+      YORK: {
+        1: 217,
+        2: 267,
+        3: 327,
+        4: 482,
+      },
     },
     frequencies: {
       'one-time': 0,
@@ -39,6 +46,13 @@ export const PRICING_PARAMETERS: Readonly<Record<BookingServiceCategory, Pricing
         3: 637.78,
         4: 873.33,
       },
+      // TODO: Update with real York pricing
+      YORK: {
+        1: 242.5,
+        2: 324,
+        3: 432,
+        4: 562,
+      },
     },
   },
   'custom': {
@@ -46,6 +60,7 @@ export const PRICING_PARAMETERS: Readonly<Record<BookingServiceCategory, Pricing
     hourlyRate: {
       MYRTLE_BEACH: 61,
       HONOLULU: 82,
+      YORK: 61, // TODO: Update with real York hourly rate
     },
     frequencies: {
       'one-time': 0,
@@ -59,6 +74,7 @@ export const PRICING_PARAMETERS: Readonly<Record<BookingServiceCategory, Pricing
     hourlyRate: {
       MYRTLE_BEACH: 61,
       HONOLULU: 82,
+      YORK: 61, // TODO: Update with real York hourly rate
     },
     frequencies: {
       'one-time': 0,

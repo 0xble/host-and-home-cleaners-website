@@ -9,24 +9,22 @@ import FAQSection from '@/components/templates/sections/FAQSection'
 import HeroSection from '@/components/templates/sections/HeroSection'
 import HowItWorksSection from '@/components/templates/sections/HowItWorksSection'
 import PricingSection from '@/components/templates/sections/PricingSection'
-// import ReviewsFloatingBadge from '@/components/ReviewsFloatingBadge'
 import TrustSection from '@/components/templates/sections/TrustSection'
 import { Suspense } from 'react'
 
-interface Step {
+export interface Step {
   title: string
   description: React.ReactNode
 }
 
-interface Section {
+export interface Section {
   id: string
   component: React.ReactNode
   position?: number
 }
 
-interface LandingPageProps {
+export interface LandingPageProps {
   location: Location | null
-  reviewsBadgeId: string
   photosFolder: string
   pricing: {
     standard: number
@@ -59,9 +57,10 @@ interface LandingPageProps {
     ctaBody: React.ReactNode
   }
   sections?: Section[]
+  reviewsLocationOverride?: Location | null
 }
 
-function createDefaultSections(heroHeading: React.ReactNode, heroDescription: string, heroActions: React.ReactElement | undefined, reviewsHeading: string, howItWorksHeading: string, howItWorksSteps: Step[], pricingHeading: string, pricing: LandingPageProps['pricing'], pricingDescription: React.ReactNode, faqHeading: string, faqDescription: string, faqs: LandingPageProps['copy']['faqs'], ctaHeading: string, ctaBody: React.ReactNode, location: Location | null, photosFolder: string): Section[] {
+function createDefaultSections(heroHeading: React.ReactNode, heroDescription: string, heroActions: React.ReactElement | undefined, reviewsHeading: string, howItWorksHeading: string, howItWorksSteps: Step[], pricingHeading: string, pricing: LandingPageProps['pricing'], pricingDescription: React.ReactNode, faqHeading: string, faqDescription: string, faqs: LandingPageProps['copy']['faqs'], ctaHeading: string, ctaBody: React.ReactNode, location: Location | null, photosFolder: string, reviewsLocationOverride?: Location | null): Section[] {
   return [
     {
       id: 'hero',
@@ -94,7 +93,7 @@ function createDefaultSections(heroHeading: React.ReactNode, heroDescription: st
       component: (
         <ReviewsSection
           heading={reviewsHeading}
-          location={location}
+          location={reviewsLocationOverride !== undefined ? reviewsLocationOverride : location}
           className="mt-12"
         />
       ),
@@ -143,11 +142,8 @@ function createDefaultSections(heroHeading: React.ReactNode, heroDescription: st
   ]
 }
 
-const emptySections: Section[] = []
-
 export default function LandingPage({
   location,
-  // reviewsBadgeId,
   photosFolder,
   pricing,
   copy: {
@@ -165,7 +161,8 @@ export default function LandingPage({
     ctaHeading,
     ctaBody,
   },
-  sections = emptySections,
+  sections = [],
+  reviewsLocationOverride,
 }: LandingPageProps) {
   // Create default sections
   const defaultSections = createDefaultSections(
@@ -185,6 +182,7 @@ export default function LandingPage({
     ctaBody,
     location,
     photosFolder,
+    reviewsLocationOverride,
   )
 
   // Merge custom sections with default sections and use index as position if not defined
@@ -197,9 +195,6 @@ export default function LandingPage({
 
   return (
     <>
-      {/* <Suspense>
-        <ReviewsFloatingBadge id={reviewsBadgeId} />
-      </Suspense> */}
       <Page location={location} className="mb-24 flex min-h-screen flex-col gap-12 lg:mb-32 lg:gap-12">
         {allSections.map(section => (
           <div key={section.id} id={section.id} className="scroll-mt-20">

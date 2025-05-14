@@ -27,7 +27,6 @@ export default function Home() {
       </Suspense> */}
       <LandingPage
         location={null}
-        reviewsBadgeId="ba527c37-e33e-46d1-8a33-08aed36ffd09"
         photosFolder="home"
         pricing={{ standard: 129, deep: 169, moveInOut: 189, vacationRental: 129 }}
         copy={{
