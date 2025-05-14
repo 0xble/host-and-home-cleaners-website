@@ -18,26 +18,24 @@ export const metadata: Metadata = {
 export default function AlaMoana() {
   return (
     <LocationLandingPage
-      locationKey="HONOLULU"
-      location={LOCATIONS.HONOLULU}
-      reviewsBadgeId="142009ae-6f8c-4599-9c7e-9d370298abc9"
+      location="HONOLULU"
       googleMapsEmbedUrl="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d237770.1723966727!2d-157.869932!3d21.3836454!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c4ce057e4bdff0b%3A0xa78d25a714d5f0ae!2sHost%20%26%20Home%20Cleaners%20Honolulu!5e0!3m2!1sen!2sus!4v1729395012053!5m2!1sen!2sus"
       photosFolder="honolulu"
       pricing={{ standard: 232, deep: 304, moveInOut: 340, vacationRental: 232 }}
       copy={{
-        customHeroHeading: (
+        heroHeading: (
           <>
             Ala Moana&apos;s Local Experts
             <br />
             House & Rental Cleaners
           </>
         ),
-        customHeroDescription: 'Professional cleaning services for Ala Moana\'s homes and vacation rentals. We deliver exceptional quality that this premier residential district deserves.',
-        customReviewsHeading: 'What Our Clients Say',
-        customLocationsSectionHeading: 'Serving All of Ala Moana',
-        customLocationsSectionDescription: 'Providing premium cleaning services throughout the Ala Moana district, from Piikoi Street to Ward Avenue!',
-        customHowItWorksHeading: 'Your Path to Clean',
-        customHowItWorksSteps: [
+        heroDescription: 'Professional cleaning services for Ala Moana\'s homes and vacation rentals. We deliver exceptional quality that this premier residential district deserves.',
+        reviewsHeading: 'What Our Clients Say',
+        locationsSectionHeading: 'Serving All of Ala Moana',
+        locationsSectionDescription: 'Providing premium cleaning services throughout the Ala Moana district, from Piikoi Street to Ward Avenue!',
+        howItWorksHeading: 'Your Path to Clean',
+        howItWorksSteps: [
           {
             title: 'Simple Scheduling',
             description: (
@@ -81,8 +79,8 @@ export default function AlaMoana() {
             ),
           },
         ],
-        customPricingSectionHeading: 'Our Services',
-        customPricingSectionDescription: (
+        pricingHeading: 'Our Services',
+        pricingDescription: (
           <>
             <p className="mb-4 text-left">
               Experience comprehensive cleaning solutions designed for Ala Moana's modern lifestyle! From regular maintenance to deep cleaning services, we handle everything with meticulous attention to detail. Our specialized services address all your cleaning needs - from spotless floors to sparkling appliances and fixtures.
@@ -92,9 +90,9 @@ export default function AlaMoana() {
             </p>
           </>
         ),
-        customFAQHeading: 'Frequently Asked Questions',
-        customFAQDescription: 'Find answers to frequently asked questions below. Our local team is always available to address any specific concerns.',
-        customFAQs: [
+        faqHeading: 'Frequently Asked Questions',
+        faqDescription: 'Find answers to frequently asked questions below. Our local team is always available to address any specific concerns.',
+        faqs: [
           {
             question: 'What makes your service perfect for Ala Moana properties?',
             answer: (
@@ -170,8 +168,8 @@ export default function AlaMoana() {
             ),
           },
         ],
-        customCTAHeading: 'Reserve Your Spot in 60 Seconds',
-        customCTABody: (
+        ctaHeading: 'Reserve Your Spot in 60 Seconds',
+        ctaBody: (
           <>
             Get your
             {' '}

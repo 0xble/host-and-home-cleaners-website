@@ -18,24 +18,22 @@ export const metadata: Metadata = {
 export default function Waikiki() {
   return (
     <LocationLandingPage
-      locationKey="HONOLULU"
-      location={LOCATIONS.HONOLULU}
-      reviewsBadgeId="142009ae-6f8c-4599-9c7e-9d370298abc9"
+      location="HONOLULU"
       googleMapsEmbedUrl="https://www.google.com/maps/embed?pb=!1m14!1m8!1d237770.1723966727!2d-157.869932!3d21.3836454!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c4ce057e4bdff0b%3A0xa78d25a714d5f0ae!2sHost%20%26%20Home%20Cleaners%20Honolulu!5e0!3m2!1sen!2sus!4v1729395012053!5m2!1sen!2sus"
       photosFolder="honolulu"
       pricing={{ standard: 232, deep: 304, moveInOut: 340, vacationRental: 232 }}
       copy={{
-        customHeroHeading: (
+        heroHeading: (
           <>
             Waikiki&apos;s House & Vacation Rental Cleaning Pros
           </>
         ),
-        customHeroDescription: 'Experience world-class cleaning services for your Waikiki property. From luxury condos to vacation rentals, we deliver the exceptional quality that this world-famous destination demands.',
-        customReviewsHeading: 'Client Experiences',
-        customLocationsSectionHeading: 'Serving All of Waikiki',
-        customLocationsSectionDescription: 'Providing top-tier cleaning services throughout Waikiki, from Kalakaua Avenue to Kapahulu!',
-        customHowItWorksHeading: 'Simple Steps to Pristine',
-        customHowItWorksSteps: [
+        heroDescription: 'Experience world-class cleaning services for your Waikiki property. From luxury condos to vacation rentals, we deliver the exceptional quality that this world-famous destination demands.',
+        reviewsHeading: 'Client Experiences',
+        locationsSectionHeading: 'Serving All of Waikiki',
+        locationsSectionDescription: 'Providing top-tier cleaning services throughout Waikiki, from Kalakaua Avenue to Kapahulu!',
+        howItWorksHeading: 'Simple Steps to Pristine',
+        howItWorksSteps: [
           {
             title: 'Easy Booking',
             description: (
@@ -79,8 +77,8 @@ export default function Waikiki() {
             ),
           },
         ],
-        customPricingSectionHeading: 'Our Services',
-        customPricingSectionDescription: (
+        pricingHeading: 'Our Services',
+        pricingDescription: (
           <>
             <p className="mb-4 text-left">
               Discover our comprehensive cleaning solutions tailored for Waikiki properties! From daily housekeeping to deep cleaning services, we handle everything with the attention to detail that luxury properties demand. Our specialized services address the unique challenges of oceanfront living - salt air, humidity, and sand management.
@@ -90,9 +88,9 @@ export default function Waikiki() {
             </p>
           </>
         ),
-        customFAQHeading: 'FAQs',
-        customFAQDescription: 'Find answers to frequently asked questions below. Our local team is always available to address any specific concerns.',
-        customFAQs: [
+        faqHeading: 'FAQs',
+        faqDescription: 'Find answers to frequently asked questions below. Our local team is always available to address any specific concerns.',
+        faqs: [
           {
             question: 'What makes your service ideal for Waikiki properties?',
             answer: (
@@ -168,8 +166,8 @@ export default function Waikiki() {
             ),
           },
         ],
-        customCTAHeading: 'Ready For A Quote?',
-        customCTABody: (
+        ctaHeading: 'Ready For A Quote?',
+        ctaBody: (
           <>
             Transform your Waikiki property with just a few clicks! Get your
             {' '}

@@ -34,14 +34,12 @@ export default function Honolulu() {
         }}
       />
       <LocationLandingPage
-        locationKey="HONOLULU"
-        location={LOCATIONS.HONOLULU}
-        reviewsBadgeId="142009ae-6f8c-4599-9c7e-9d370298abc9"
+        location="HONOLULU"
         googleMapsEmbedUrl="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d237770.1723966727!2d-157.869932!3d21.3836454!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c4ce057e4bdff0b%3A0xa78d25a714d5f0ae!2sHost%20%26%20Home%20Cleaners%20Honolulu!5e0!3m2!1sen!2sus!4v1729395012053!5m2!1sen!2sus"
         photosFolder="honolulu"
         pricing={{ standard: 232, deep: 304, moveInOut: 340, vacationRental: 232 }}
         copy={{
-          customHeroHeading: (
+          heroHeading: (
             <>
               #1 Top-Rated & Trusted Cleaners
               <br />
@@ -50,12 +48,12 @@ export default function Honolulu() {
               {`${LOCATIONS.HONOLULU.name}, ${LOCATIONS.HONOLULU.stateAbbrev}`}
             </>
           ),
-          customHeroDescription: 'Experience top-rated residential cleaning services in Honolulu, HI. Fast, reliable, and affordable — the preferred choice for Airbnb/VRBO hosts, homeowners, property managers, and realtors!',
-          customReviewsHeading: 'Hear From Your Neighbors',
-          customLocationsSectionHeading: 'We\'re Here to Serve You!',
-          customLocationsSectionDescription: 'Proudly serving all areas of beautiful Oahu and Honolulu!',
-          customHowItWorksHeading: 'So, What Will Happen?',
-          customHowItWorksSteps: [
+          heroDescription: 'Experience top-rated residential cleaning services in Honolulu, HI. Fast, reliable, and affordable — the preferred choice for Airbnb/VRBO hosts, homeowners, property managers, and realtors!',
+          reviewsHeading: 'Hear From Your Neighbors',
+          locationsSectionHeading: 'We\'re Here to Serve You!',
+          locationsSectionDescription: 'Proudly serving all areas of beautiful Oahu and Honolulu!',
+          howItWorksHeading: 'So, What Will Happen?',
+          howItWorksSteps: [
             {
               title: 'Set Up Your Cleaning Appointment',
               description: (
@@ -100,8 +98,8 @@ export default function Honolulu() {
               ),
             },
           ],
-          customPricingSectionHeading: 'Our Services',
-          customPricingSectionDescription: (
+          pricingHeading: 'Our Services',
+          pricingDescription: (
             <>
               <p className="mb-4 text-left">
                 Discover our comprehensive cleaning services! From detailed oven cleaning to thorough bathroom sanitation and complete kitchen deep cleans, our skilled team provides exceptional residential cleaning solutions. We specialize in end-of-tenancy cleanings, short-term rental turnovers, and meticulous spring cleanings to meet all your cleaning needs.
@@ -111,9 +109,9 @@ export default function Honolulu() {
               </p>
             </>
           ),
-          customFAQHeading: 'FAQ',
-          customFAQDescription: 'Browse through our common questions. If you have any queries not addressed here, don\'t hesitate to reach out to us by phone, chat, or email at any time.',
-          customFAQs: [
+          faqHeading: 'FAQ',
+          faqDescription: 'Browse through our common questions. If you have any queries not addressed here, don\'t hesitate to reach out to us by phone, chat, or email at any time.',
+          faqs: [
             {
               question: 'What makes you different from the competition?',
               answer: (
@@ -234,8 +232,8 @@ export default function Honolulu() {
               ),
             },
           ],
-          customCTAHeading: 'Get a quote and booking in just 60 seconds!',
-          customCTABody: (
+          ctaHeading: 'Get a quote and booking in just 60 seconds!',
+          ctaBody: (
             <>
               Get your
               {' '}

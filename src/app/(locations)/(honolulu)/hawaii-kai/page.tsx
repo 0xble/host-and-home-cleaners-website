@@ -18,26 +18,24 @@ export const metadata: Metadata = {
 export default function HawaiiKai() {
   return (
     <LocationLandingPage
-      locationKey="HONOLULU"
-      location={LOCATIONS.HONOLULU}
-      reviewsBadgeId="142009ae-6f8c-4599-9c7e-9d370298abc9"
+      location="HONOLULU"
       googleMapsEmbedUrl="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d237770.1723966727!2d-157.869932!3d21.3836454!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c4ce057e4bdff0b%3A0xa78d25a714d5f0ae!2sHost%20%26%20Home%20Cleaners%20Honolulu!5e0!3m2!1sen!2sus!4v1729395012053!5m2!1sen!2sus"
       photosFolder="honolulu"
       pricing={{ standard: 232, deep: 304, moveInOut: 340, vacationRental: 232 }}
       copy={{
-        customHeroHeading: (
+        heroHeading: (
           <>
             Professional House Cleaning
             <br />
             in Hawaii Kai
           </>
         ),
-        customHeroDescription: 'Professional cleaning services tailored for Hawaii Kai\'s residential community. From family homes to vacation rentals, we deliver exceptional quality that preserves and enhances your property\'s appeal.',
-        customReviewsHeading: 'Client Experiences',
-        customLocationsSectionHeading: 'Serving All of Hawaii Kai',
-        customLocationsSectionDescription: 'Providing premium cleaning services throughout Hawaii Kai, from Portlock to Kalama Valley!',
-        customHowItWorksHeading: 'Premium Clean Experience',
-        customHowItWorksSteps: [
+        heroDescription: 'Professional cleaning services tailored for Hawaii Kai\'s residential community. From family homes to vacation rentals, we deliver exceptional quality that preserves and enhances your property\'s appeal.',
+        reviewsHeading: 'Client Experiences',
+        locationsSectionHeading: 'Serving All of Hawaii Kai',
+        locationsSectionDescription: 'Providing premium cleaning services throughout Hawaii Kai, from Portlock to Kalama Valley!',
+        howItWorksHeading: 'Premium Clean Experience',
+        howItWorksSteps: [
           {
             title: 'Personalized Booking',
             description: (
@@ -81,8 +79,8 @@ export default function HawaiiKai() {
             ),
           },
         ],
-        customPricingSectionHeading: 'Our Services',
-        customPricingSectionDescription: (
+        pricingHeading: 'Our Services',
+        pricingDescription: (
           <>
             <p className="mb-4 text-left">
               Experience cleaning services designed for Hawaii Kai's diverse community! We understand the unique needs of both residential homes and vacation rentals. Our comprehensive services address everything from regular maintenance to detailed deep cleaning.
@@ -92,9 +90,9 @@ export default function HawaiiKai() {
             </p>
           </>
         ),
-        customFAQHeading: 'Frequently Asked Questions',
-        customFAQDescription: 'Find answers to frequently asked questions below. Our local team is always available to address any specific concerns.',
-        customFAQs: [
+        faqHeading: 'Frequently Asked Questions',
+        faqDescription: 'Find answers to frequently asked questions below. Our local team is always available to address any specific concerns.',
+        faqs: [
           {
             question: 'What makes your service ideal for Hawaii Kai homes?',
             answer: (
@@ -170,8 +168,8 @@ export default function HawaiiKai() {
             ),
           },
         ],
-        customCTAHeading: 'Experience Premium Clean Living',
-        customCTABody: (
+        ctaHeading: 'Experience Premium Clean Living',
+        ctaBody: (
           <>
             Get your
             {' '}

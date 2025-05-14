@@ -523,7 +523,7 @@ export default function ReviewsGridClient({ location }: ReviewsGridClientProps) 
       // Only show reviews with a rating greater than or equal to the threshold
       && (review.rating ?? 0) >= RATING_THRESHOLD
       // Exclude reviews containing any excluded word (case-insensitive)
-      && !EXCLUDED_WORDS.some((word): boolean => review.text && new RegExp(`\\b${word}\\b`, 'i').test(review.text))
+      && !EXCLUDED_WORDS.some(word => review.text && new RegExp(`\\b${word}\\b`, 'i').test(review.text))
   }).sort((a, b) => compareDesc(a.date, b.date))
 
   const hasMoreReviews = reviews.length > visibleReviews

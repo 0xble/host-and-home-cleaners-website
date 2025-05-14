@@ -16,26 +16,24 @@ export const metadata: Metadata = {
 export default function Kakaako() {
   return (
     <LocationLandingPage
-      locationKey="HONOLULU"
-      location={LOCATIONS.HONOLULU}
-      reviewsBadgeId="142009ae-6f8c-4599-9c7e-9d370298abc9"
+      location="HONOLULU"
       googleMapsEmbedUrl="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d237770.1723966727!2d-157.869932!3d21.3836454!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c4ce057e4bdff0b%3A0xa78d25a714d5f0ae!2sHost%20%26%20Home%20Cleaners%20Honolulu!5e0!3m2!1sen!2sus!4v1729395012053!5m2!1sen!2sus"
       photosFolder="honolulu"
       pricing={{ standard: 232, deep: 304, moveInOut: 340, vacationRental: 232 }}
       copy={{
-        customHeroHeading: (
+        heroHeading: (
           <>
             Kaka&apos;ako&apos;s Known
             <br />
             Professional Cleaners
           </>
         ),
-        customHeroDescription: 'Professional cleaning services designed for Kaka\'ako\'s residential and vacation rental properties. We deliver exceptional quality that matches this vibrant neighborhood\'s energy.',
-        customReviewsHeading: 'Community Reviews',
-        customLocationsSectionHeading: 'Serving All of Kaka\'ako',
-        customLocationsSectionDescription: 'Providing premium cleaning services throughout Kaka\'ako, from Ward Village to SALT at Our Kaka\'ako!',
-        customHowItWorksHeading: 'Cleaning & Maintenance Made Simple',
-        customHowItWorksSteps: [
+        heroDescription: 'Professional cleaning services designed for Kaka\'ako\'s residential and vacation rental properties. We deliver exceptional quality that matches this vibrant neighborhood\'s energy.',
+        reviewsHeading: 'Community Reviews',
+        locationsSectionHeading: 'Serving All of Kaka\'ako',
+        locationsSectionDescription: 'Providing premium cleaning services throughout Kaka\'ako, from Ward Village to SALT at Our Kaka\'ako!',
+        howItWorksHeading: 'Cleaning & Maintenance Made Simple',
+        howItWorksSteps: [
           {
             title: 'Quick Booking',
             description: (
@@ -79,8 +77,8 @@ export default function Kakaako() {
             ),
           },
         ],
-        customPricingSectionHeading: 'Our Services',
-        customPricingSectionDescription: (
+        pricingHeading: 'Our Services',
+        pricingDescription: (
           <>
             <p className="mb-4 text-left">
               Experience cleaning services tailored to Kaka'ako's lifestyle! From cozy homes to vacation rentals, we handle everything with meticulous attention to detail. Our specialized services address the unique needs of modern living spaces and Airbnb properties.
@@ -90,9 +88,9 @@ export default function Kakaako() {
             </p>
           </>
         ),
-        customFAQHeading: 'FAQs',
-        customFAQDescription: 'Find answers to frequently asked questions below. Our local team is always available to address any specific concerns.',
-        customFAQs: [
+        faqHeading: 'FAQs',
+        faqDescription: 'Find answers to frequently asked questions below. Our local team is always available to address any specific concerns.',
+        faqs: [
           {
             question: 'What makes your service perfect for Kaka\'ako properties?',
             answer: (
@@ -168,8 +166,8 @@ export default function Kakaako() {
             ),
           },
         ],
-        customCTAHeading: 'Ready for a Quote?',
-        customCTABody: (
+        ctaHeading: 'Ready for a Quote?',
+        ctaBody: (
           <>
             Get your
             {' '}

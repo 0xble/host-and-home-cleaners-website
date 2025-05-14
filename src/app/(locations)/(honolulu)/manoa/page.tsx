@@ -16,26 +16,24 @@ export const metadata: Metadata = {
 export default function Manoa() {
   return (
     <LocationLandingPage
-      locationKey="HONOLULU"
-      location={LOCATIONS.HONOLULU}
-      reviewsBadgeId="142009ae-6f8c-4599-9c7e-9d370298abc9"
+      location="HONOLULU"
       googleMapsEmbedUrl="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d237770.1723966727!2d-157.869932!3d21.3836454!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c4ce057e4bdff0b%3A0xa78d25a714d5f0ae!2sHost%20%26%20Home%20Cleaners%20Honolulu!5e0!3m2!1sen!2sus!4v1729395012053!5m2!1sen!2sus"
       photosFolder="honolulu"
       pricing={{ standard: 232, deep: 304, moveInOut: 340, vacationRental: 232 }}
       copy={{
-        customHeroHeading: (
+        heroHeading: (
           <>
             Professional House Cleaners
             <br />
             in Beautiful Manoa Valley
           </>
         ),
-        customHeroDescription: 'Professional cleaning services tailored for Manoa\'s unique homes and climate. From historic properties to family residences, we deliver exceptional quality that respects your home\'s character.',
-        customReviewsHeading: 'Neighbor Reviews',
-        customLocationsSectionHeading: 'Serving All of Manoa',
-        customLocationsSectionDescription: 'Providing premium cleaning services throughout Manoa Valley, from the University area to Upper Manoa!',
-        customHowItWorksHeading: 'Your Clean Home Journey',
-        customHowItWorksSteps: [
+        heroDescription: 'Professional cleaning services tailored for Manoa\'s unique homes and climate. From historic properties to family residences, we deliver exceptional quality that respects your home\'s character.',
+        reviewsHeading: 'Neighbor Reviews',
+        locationsSectionHeading: 'Serving All of Manoa',
+        locationsSectionDescription: 'Providing premium cleaning services throughout Manoa Valley, from the University area to Upper Manoa!',
+        howItWorksHeading: 'Your Clean Home Journey',
+        howItWorksSteps: [
           {
             title: 'Simple Scheduling',
             description: (
@@ -79,8 +77,8 @@ export default function Manoa() {
             ),
           },
         ],
-        customPricingSectionHeading: 'Our Services',
-        customPricingSectionDescription: (
+        pricingHeading: 'Our Services',
+        pricingDescription: (
           <>
             <p className="mb-4 text-left">
               Experience cleaning services designed for Manoa\'s distinct environment! We understand the unique challenges of valley living - from managing humidity to protecting wood floors and fixtures. Our comprehensive services address everything from regular maintenance to deep cleaning needs.
@@ -90,9 +88,9 @@ export default function Manoa() {
             </p>
           </>
         ),
-        customFAQHeading: 'FAQs',
-        customFAQDescription: 'Find answers to frequently asked questions below. Our local team is always available to address any specific concerns.',
-        customFAQs: [
+        faqHeading: 'FAQs',
+        faqDescription: 'Find answers to frequently asked questions below. Our local team is always available to address any specific concerns.',
+        faqs: [
           {
             question: 'What makes your service ideal for Manoa homes?',
             answer: (
@@ -168,8 +166,8 @@ export default function Manoa() {
             ),
           },
         ],
-        customCTAHeading: 'Ready for a Valley-Fresh Clean?',
-        customCTABody: (
+        ctaHeading: 'Ready for a Valley-Fresh Clean?',
+        ctaBody: (
           <>
             Get your
             {' '}
