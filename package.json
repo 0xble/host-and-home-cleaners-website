@@ -3,9 +3,9 @@
   "private": true,
   "scripts": {
     "dev:spotlight": "spotlight-sidecar",
-    "dev:next": "cross-env BROWSERSLIST_IGNORE_OLD_DATA=1 next dev --turbopack",
+    "dev:next": "cross-env BROWSERSLIST_IGNORE_OLD_DATA=1 next dev",
     "dev": "run-p dev:*",
-    "build": "cross-env BROWSERSLIST_IGNORE_OLD_DATA=1 next build --turbopack",
+    "build": "cross-env BROWSERSLIST_IGNORE_OLD_DATA=1 next build",
     "build-stats": "cross-env ANALYZE=true BROWSERSLIST_IGNORE_OLD_DATA=1 bun run build",
     "clean": "rimraf .next out node_modules bun.lock",
     "start": "next start",
