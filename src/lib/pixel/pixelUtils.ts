@@ -1,4 +1,4 @@
-const PIXEL_ID = process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID
+const PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID
 const isBrowser = typeof window !== 'undefined'
 let pixelInstance: any = null
 
