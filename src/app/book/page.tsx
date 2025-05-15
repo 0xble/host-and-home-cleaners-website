@@ -481,7 +481,7 @@ export default function BookingPage() {
             body: JSON.stringify(clientRequestBody),
           })
 
-          console.info('Meta CAPI Purchase event sent for booking.', { response })
+          console.info('Meta CAPI Purchase event sent for booking.', { response, testCode: process.env.NEXT_PUBLIC_TEST_EVENT_CODE })
         }
         catch (error) {
           // Not critical to the booking flow itself, so just log and continue
