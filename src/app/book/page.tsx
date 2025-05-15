@@ -471,7 +471,7 @@ export default function BookingPage() {
             event_id: uniqueEventId,
           }
 
-          if (process.env.NODE_ENV !== 'production' && process.env.NEXT_PUBLIC_TEST_EVENT_CODE != null) {
+          if (process.env.VERCEL_ENV !== 'production' && process.env.NEXT_PUBLIC_TEST_EVENT_CODE != null) {
             clientRequestBody.test_event_code = process.env.NEXT_PUBLIC_TEST_EVENT_CODE
           }
 
