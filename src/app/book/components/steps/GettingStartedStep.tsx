@@ -1,10 +1,10 @@
 'use client'
 
 import type { BaseStepProps } from '@/app/book/types'
+import Image from 'next/image'
 import { StepLayout } from '@/app/book/components/StepLayout'
 import { useStepValidation } from '@/app/book/hooks/useStepValidation'
 import { CardTitle } from '@/components/ui/card'
-import Image from 'next/image'
 
 export function GettingStartedStep({ form, onValidityChangeAction }: BaseStepProps) {
   // This step is always valid because it's just informational

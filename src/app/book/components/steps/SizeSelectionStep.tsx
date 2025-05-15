@@ -1,13 +1,13 @@
 'use client'
 
 import type { BaseStepProps } from '@/app/book/types'
+import Image from 'next/image'
 import { StepLayout } from '@/app/book/components/StepLayout'
 import { PRICING_PARAMETERS } from '@/app/book/constants'
 import { useStepValidation } from '@/app/book/hooks/useStepValidation'
 import { BookingFormOption } from '@/components/BookingFormOption'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { BEDROOMS } from '@/lib/constants'
-import Image from 'next/image'
 
 export function SizeSelectionStep({ form, onValidityChangeAction }: BaseStepProps) {
   const { setValue, getValues } = form

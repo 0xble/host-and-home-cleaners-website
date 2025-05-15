@@ -1,5 +1,6 @@
 import type { Location } from '@/lib/types'
 
+import { Suspense } from 'react'
 import BookNowButton from '@/components/BookNowButton'
 import FindLocationInput from '@/components/FindLocationInput'
 import ReviewsSection from '@/components/reviews/ReviewsSection'
@@ -10,7 +11,6 @@ import HeroSection from '@/components/templates/sections/HeroSection'
 import HowItWorksSection from '@/components/templates/sections/HowItWorksSection'
 import PricingSection from '@/components/templates/sections/PricingSection'
 import TrustSection from '@/components/templates/sections/TrustSection'
-import { Suspense } from 'react'
 
 export interface Step {
   title: string

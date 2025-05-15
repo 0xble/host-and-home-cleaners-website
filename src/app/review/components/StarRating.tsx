@@ -1,15 +1,14 @@
 'use client'
 
 import type { FC } from 'react'
-import { Button } from '@/components/ui/button'
-import { Spinner } from '@/components/ui/spinner'
-import { useToast } from '@/components/ui/use-toast'
-
-import { getLogger } from '@/lib/logger'
-import { slugify } from '@/lib/utils'
 import { Star } from 'lucide-react'
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
+
+import { Button } from '@/components/ui/button'
+import { Spinner } from '@/components/ui/spinner'
+import { useToast } from '@/components/ui/use-toast'
+import { slugify } from '@/lib/utils'
 
 const LOCATIONS = ['honolulu', 'myrtle-beach'] as const
 type Location = typeof LOCATIONS[number]
@@ -83,8 +82,6 @@ const RedirectingMessage: FC<RedirectingMessageProps> = ({ message = 'Thank you!
   </div>
 )
 
-const logger = getLogger('star-rating')
-
 export const StarRating: FC<StarRatingProps> = () => {
   const searchParams = useSearchParams()
   const { toast } = useToast()
@@ -107,7 +104,7 @@ export const StarRating: FC<StarRatingProps> = () => {
       return platformUrls[loc] || REVIEW_URLS.google[loc]
     }
     else {
-      logger.error(`No URL found for platform "${platformKey}", defaulting to Google...`)
+      console.error(`No URL found for platform "${platformKey}", defaulting to Google...`)
       return REVIEW_URLS.google[loc]
     }
   }

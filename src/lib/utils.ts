@@ -1,10 +1,10 @@
-import type { Location } from '@/lib/types'
 import type { ClassValue } from 'clsx'
+import type { Location } from '@/lib/types'
 
-import { EMAIL, LOCATIONS, PHONE } from '@/lib/constants'
-import { ROUTES } from '@/lib/routes'
 import { clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
+import { EMAIL, LOCATIONS, PHONE } from '@/lib/constants'
+import { ROUTES } from '@/lib/routes'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))

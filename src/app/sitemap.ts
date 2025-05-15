@@ -1,6 +1,6 @@
-import type { LocationRoute, RouteData } from '@/lib/routes'
-
 import type { MetadataRoute } from 'next'
+
+import type { LocationRoute, RouteData } from '@/lib/routes'
 import { ROUTES } from '@/lib/routes'
 import { getBaseUrl } from '@/lib/utils'
 

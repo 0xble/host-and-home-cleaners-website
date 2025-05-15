@@ -2,6 +2,7 @@
 
 import type { Coordinates } from '@/app/book/components/MapWithMarker'
 import type { BaseStepProps } from '@/app/book/types'
+import { useEffect, useState } from 'react'
 import { AddressAutocompleteInput } from '@/app/book/components/AddressAutocompleteInput'
 import { MapWithMarker } from '@/app/book/components/MapWithMarker'
 import { StepLayout } from '@/app/book/components/StepLayout'
@@ -10,7 +11,6 @@ import { constructFullAddress, extractAddressComponents } from '@/app/book/utils
 import { FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { cn, getLocation } from '@/lib/utils'
-import { useEffect, useState } from 'react'
 
 export function AddressInputStep({ form, onValidityChangeAction }: BaseStepProps) {
   const { watch, setValue, trigger } = form

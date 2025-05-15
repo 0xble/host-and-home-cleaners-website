@@ -2,11 +2,11 @@
 
 import type { Location } from '@/lib/types'
 
+import { useSearchParams } from 'next/navigation'
 import TrackedLink from '@/components/analytics/facebook/PixelTrackedLink'
 import { PixelEvent } from '@/lib/pixel'
 import { ROUTES } from '@/lib/routes'
 import { cn } from '@/lib/utils'
-import { useSearchParams } from 'next/navigation'
 
 interface BookNowButtonProps {
   className?: string

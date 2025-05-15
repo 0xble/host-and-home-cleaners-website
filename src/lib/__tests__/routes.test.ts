@@ -4,10 +4,10 @@ import type { RouteData } from '@/lib/routes'
 import { existsSync, readdirSync } from 'node:fs'
 import { resolve } from 'node:path'
 
-import { ROUTES } from '@/lib/routes'
-
 // @ts-expect-error Ignore type declarations
 import { describe, expect, it } from 'bun:test'
+
+import { ROUTES } from '@/lib/routes'
 
 describe('routes validation', () => {
   // Helper to check if a route exists in the app directory

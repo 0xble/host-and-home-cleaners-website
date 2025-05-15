@@ -5,14 +5,11 @@
 import type { RouteData } from '@/lib/routes'
 import fs from 'fs'
 import path from 'path'
-import sitemap from '@/app/sitemap'
-import { getLogger } from '@/lib/logger'
-
-import { ROUTES } from '@/lib/routes'
 // @ts-expect-error Ignore type declarations
 import { expect, mock, test } from 'bun:test'
 
-const logger = getLogger('sitemap-test')
+import sitemap from '@/app/sitemap'
+import { ROUTES } from '@/lib/routes'
 
 mock.module('@/lib/utils', () => ({
   getBaseUrl: () => 'https://example.com',
@@ -188,7 +185,7 @@ test('sitemap', () => {
         sitemapPath => normalizePath(sitemapPath) === normalizedAppRoute,
       )
       if (!routeExists) {
-        logger.warn(`Warning: App route ${appRoute} not found in sitemap`)
+        console.warn(`Warning: App route ${appRoute} not found in sitemap`)
       }
     })
 
@@ -203,7 +200,7 @@ test('sitemap', () => {
         appRoute => normalizePath(appRoute) === normalizedSitemapPath,
       )
       if (!routeExists) {
-        logger.warn(`Warning: Sitemap route ${sitemapPath} not found in app directory`)
+        console.warn(`Warning: Sitemap route ${sitemapPath} not found in app directory`)
       }
     })
   })

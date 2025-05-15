@@ -2,6 +2,8 @@
 
 import type { BaseStepProps, BookingFormState, BookingServiceCategory } from '@/app/book/types'
 import type { LottieAnimationProps } from '@/components/LottieAnimation'
+import { ClipboardList } from 'lucide-react'
+import { memo, useEffect, useRef } from 'react'
 import { StepLayout } from '@/app/book/components/StepLayout'
 import { PRICING_PARAMETERS } from '@/app/book/constants'
 import { useStepValidation } from '@/app/book/hooks/useStepValidation'
@@ -14,8 +16,6 @@ import ChecklistAnimation from '@/public/lottie/checklist.json'
 import HouseCleanAnimation from '@/public/lottie/house.json'
 import MansionAnimation from '@/public/lottie/mansion.json'
 import SprayAnimation from '@/public/lottie/spray.json'
-import { ClipboardList } from 'lucide-react'
-import { memo, useEffect, useRef } from 'react'
 
 const SERVICE_OPTIONS: {
   id: BookingServiceCategory

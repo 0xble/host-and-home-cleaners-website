@@ -1,7 +1,10 @@
 'use client'
 
-import type { BookingFormData } from '@/app/book/types'
 import type { UseFormReturn } from 'react-hook-form'
+import type { BookingFormData } from '@/app/book/types'
+import { InfoIcon, Lock, Shield } from 'lucide-react'
+import Image from 'next/image'
+import { useEffect, useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   FormControl,
@@ -16,9 +19,6 @@ import {
 } from '@/components/ui/hover-card'
 import { Input } from '@/components/ui/input'
 import { Skeleton } from '@/components/ui/skeleton'
-import { InfoIcon, Lock, Shield } from 'lucide-react'
-import Image from 'next/image'
-import { useEffect, useState } from 'react'
 
 export function PaymentMethodCard({ form }: { form: UseFormReturn<BookingFormData> }) {
   const [isLoading, setIsLoading] = useState(false)

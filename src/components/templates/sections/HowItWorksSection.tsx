@@ -1,9 +1,9 @@
 import type { ImageProps, StaticImageData } from 'next/image'
-import { CHECKLIST_NAME } from '@/lib/constants'
-import { ROUTES } from '@/lib/routes'
-
 import Image from 'next/image'
 import Link from 'next/link'
+
+import { CHECKLIST_NAME } from '@/lib/constants'
+import { ROUTES } from '@/lib/routes'
 
 interface HowItWorksCardType {
   src: ImageProps['src']

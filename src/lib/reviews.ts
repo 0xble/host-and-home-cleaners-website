@@ -1,12 +1,9 @@
 import type { QueryDatabaseParameters } from '@notionhq/client/build/src/api-endpoints'
 import { LOCATIONS, REVIEWS } from '0xble/notion/types'
-import { getLogger } from '@/lib/logger'
-import { queryDatabase } from '@/lib/notion'
-
 import { compareDesc, differenceInMinutes, hoursToSeconds } from 'date-fns'
-import { cache } from 'react'
 
-const logger = getLogger('reviews')
+import { cache } from 'react'
+import { queryDatabase } from '@/lib/notion'
 
 // In-memory cache for development
 let reviewsCache: ReviewsData | null = null
@@ -59,30 +56,30 @@ export const revalidate = hoursToSeconds(3) // Revalidate every 3 hours
 
 async function fetchReviewPagesNotion(filter?: QueryDatabaseParameters['filter']) {
   try {
-    logger.info('Fetching reviews from Notion...')
+    console.info('Fetching reviews from Notion...')
     const result = await queryDatabase({
       database_id: REVIEWS.id,
       filter,
       sorts: [{ property: 'Date', direction: 'descending' }],
     })
-    logger.info(`Successfully fetched ${result.length} reviews`)
+    console.info(`Successfully fetched ${result.length} reviews`)
     return result
   }
   catch (error) {
-    logger.error('Error fetching reviews:', error)
+    console.error('Error fetching reviews:', error)
     throw error
   }
 }
 
 async function fetchLocationsPagesNotion() {
   try {
-    logger.info('Fetching locations from Notion...')
+    console.info('Fetching locations from Notion...')
     const result = await queryDatabase({ database_id: LOCATIONS.id })
-    logger.info(`Successfully fetched ${result.length} locations`)
+    console.info(`Successfully fetched ${result.length} locations`)
     return result
   }
   catch (error) {
-    logger.error('Error fetching locations:', error)
+    console.error('Error fetching locations:', error)
     throw error
   }
 }
@@ -93,7 +90,7 @@ export const getLocations = cache(async (): Promise<LocationData> => {
   if (process.env.NODE_ENV !== 'production') {
     const now = Date.now()
     if (locationsCache && differenceInMinutes(now, lastFetchTime) < CACHE_DURATION_MIN) {
-      logger.info('Using cached locations data')
+      console.info('Using cached locations data')
       return locationsCache
     }
   }
@@ -128,7 +125,7 @@ export const getLocations = cache(async (): Promise<LocationData> => {
   if (process.env.NODE_ENV !== 'production') {
     locationsCache = locationsData
     lastFetchTime = Date.now()
-    logger.info('Updated locations cache')
+    console.info('Updated locations cache')
   }
 
   return locationsData
@@ -141,12 +138,12 @@ export const getReviews = cache(async (location?: string): Promise<ReviewsData> 
     if (process.env.NODE_ENV !== 'production') {
       const now = Date.now()
       if (reviewsCache && differenceInMinutes(now, lastFetchTime) < CACHE_DURATION_MIN) {
-        logger.info('Using cached reviews data')
+        console.info('Using cached reviews data')
         return reviewsCache
       }
     }
 
-    logger.info('Starting to fetch reviews and locations...')
+    console.info('Starting to fetch reviews and locations...')
     // Fetch locations first to get location ID for filtering
     const { locations } = await getLocations()
 
@@ -266,13 +263,13 @@ export const getReviews = cache(async (location?: string): Promise<ReviewsData> 
       locationsCache = { locations }
       reviewsCache = reviewsData
       lastFetchTime = Date.now()
-      logger.info('Updated reviews cache')
+      console.info('Updated reviews cache')
     }
 
     return reviewsData
   }
   catch (error) {
-    logger.error('Error fetching reviews:', error)
+    console.error('Error fetching reviews:', error)
     throw error
   }
 })

@@ -1,6 +1,9 @@
 'use client'
 
 import type { BaseStepProps } from '@/app/book/types'
+import { format, parse } from 'date-fns'
+import { Loader2 } from 'lucide-react'
+import Link from 'next/link'
 import { StepLayout } from '@/app/book/components/StepLayout'
 import { calculateDiscount } from '@/app/book/utils'
 import { GradientButton } from '@/components/GradientButton'
@@ -9,9 +12,6 @@ import { Card, CardContent } from '@/components/ui/card'
 import { BEDROOMS } from '@/lib/constants'
 import { ROUTES } from '@/lib/routes'
 import { cn, formatPrice } from '@/lib/utils'
-import { format, parse } from 'date-fns'
-import { Loader2 } from 'lucide-react'
-import Link from 'next/link'
 
 export function ConfirmationStep({ form, isSubmitting, onSubmit }: BaseStepProps) {
   const { watch } = form

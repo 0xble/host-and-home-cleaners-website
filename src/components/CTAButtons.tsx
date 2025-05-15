@@ -2,11 +2,11 @@
 
 import type { Location, Phone } from '@/lib/types'
 
+import { PhoneIcon } from '@heroicons/react/24/solid'
 import TrackedLink from '@/components/analytics/facebook/PixelTrackedLink'
 import BookNowButton from '@/components/BookNowButton'
 import { PixelEvent } from '@/lib/pixel'
 import { cn } from '@/lib/utils'
-import { PhoneIcon } from '@heroicons/react/24/solid'
 
 interface CTAButtonsProps {
   className?: string

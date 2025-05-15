@@ -1,3 +1,6 @@
+import Autoplay from 'embla-carousel-autoplay'
+import { useEffect, useRef } from 'react'
+
 import {
   Carousel,
   CarouselContent,
@@ -6,10 +9,7 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel'
 import { BUSINESS_NAME } from '@/lib/constants'
-
 import { cn } from '@/lib/utils'
-import Autoplay from 'embla-carousel-autoplay'
-import { useEffect, useRef } from 'react'
 
 function TestimonialVideo({ src }: { src: string }) {
   const videoRef = useRef<HTMLVideoElement>(null)

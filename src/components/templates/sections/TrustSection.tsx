@@ -2,13 +2,13 @@
 
 import type { StaticImageData } from 'next/image'
 
+import Image from 'next/image'
 import { cn } from '@/lib/utils'
 import airbnbIcon from '@/public/icons/brands/airbnb.svg'
 import bookingIcon from '@/public/icons/brands/booking.svg'
 import homeawayIcon from '@/public/icons/brands/homeaway.svg'
 import vrboIcon from '@/public/icons/brands/vrbo.svg'
 import zillowIcon from '@/public/icons/brands/zillow.svg'
-import Image from 'next/image'
 
 const icons: { icon: StaticImageData, alt: string }[] = [
   { icon: airbnbIcon as StaticImageData, alt: 'Airbnb icon' },

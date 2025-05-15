@@ -1,5 +1,5 @@
-import type { BookingFormData } from '@/app/book/types'
 import type { UseFormReturn } from 'react-hook-form'
+import type { BookingFormData } from '@/app/book/types'
 import { useEffect } from 'react'
 
 interface ValidationConfig {

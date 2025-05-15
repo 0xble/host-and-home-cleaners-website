@@ -2,14 +2,14 @@ import type { StaticImport } from 'next/dist/shared/lib/get-img-props'
 import fs from 'node:fs'
 
 import path from 'node:path'
+import Image from 'next/image'
+
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
 } from '@/components/ui/carousel'
-
 import { cn } from '@/lib/utils'
-import Image from 'next/image'
 
 async function getFeaturedImages(folder: string): Promise<{ name: string, image: StaticImport }[]> {
   const dir = path.join(process.cwd(), 'public', 'assets', 'featured', folder)

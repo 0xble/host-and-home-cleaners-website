@@ -1,10 +1,10 @@
 'use client'
 
 import type { BaseStepProps } from '@/app/book/types'
+import { useEffect } from 'react'
 import { StepLayout } from '@/app/book/components/StepLayout'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { useEffect } from 'react'
 
 export function CustomerDetailsStep({ form, onValidityChangeAction }: BaseStepProps) {
   const firstName = form.watch('customer.firstName') as string | undefined

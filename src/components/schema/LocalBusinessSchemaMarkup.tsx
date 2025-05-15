@@ -1,9 +1,9 @@
 import type { LocalBusiness, WithContext } from 'schema-dts'
-import { BUSINESS_NAME } from '@/lib/constants'
-import { getReviews } from '@/lib/reviews'
-
-import { slugify } from '@/lib/utils'
 import Script from 'next/script'
+import { BUSINESS_NAME } from '@/lib/constants'
+
+import { getReviews } from '@/lib/reviews'
+import { slugify } from '@/lib/utils'
 
 interface Address {
   streetAddress: string

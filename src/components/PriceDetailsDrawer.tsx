@@ -1,4 +1,5 @@
 import type { BookingFrequency, BookingPriceDetails, BookingPricingParams, BookingServiceCategory } from '@/app/book/types'
+import { InfoIcon } from 'lucide-react'
 import { calculateDiscount } from '@/app/book/utils'
 import { Button } from '@/components/ui/button'
 import {
@@ -9,7 +10,6 @@ import {
   DrawerTrigger,
 } from '@/components/ui/drawer'
 import { formatPrice } from '@/lib/utils'
-import { InfoIcon } from 'lucide-react'
 
 interface PriceDetailsDrawerProps {
   price: BookingPriceDetails

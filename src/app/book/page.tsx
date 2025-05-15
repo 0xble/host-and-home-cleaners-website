@@ -1,6 +1,7 @@
 'use client'
 
 import type { NotionDateParsed, NotionTimezone } from '0xble/notion/schemas'
+import type { ComponentType } from 'react'
 import type {
   BaseStepProps,
   BookingFormData,
@@ -9,7 +10,15 @@ import type {
 } from '@/app/book/types'
 import type { Location } from '@/lib/types'
 import type { RecordBookingPayload } from '@/lib/types/bookings'
-import type { ComponentType } from 'react'
+import { tz } from '@date-fns/tz'
+import { zodResolver } from '@hookform/resolvers/zod'
+import axios from 'axios'
+import { addDays, addHours, format, hoursToMinutes, parse } from 'date-fns'
+import { ArrowLeft } from 'lucide-react'
+import Link from 'next/link'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useForm } from 'react-hook-form'
 import { AnimatedStepTransition } from '@/app/book/components/AnimatedStepTransition'
 import { AddressInputStep } from '@/app/book/components/steps/AddressInputStep'
 import { ChooseYourServiceStep } from '@/app/book/components/steps/ChooseYourServiceStep'
@@ -34,19 +43,7 @@ import { Progress } from '@/components/ui/progress'
 import { toast } from '@/components/ui/use-toast'
 import { DOMAIN, LOCATIONS } from '@/lib/constants'
 import { GoogleMapsLoader } from '@/lib/google/GoogleMapsLoader'
-import { getLogger } from '@/lib/logger'
 import { ROUTES } from '@/lib/routes'
-import { tz } from '@date-fns/tz'
-import { zodResolver } from '@hookform/resolvers/zod'
-import axios from 'axios'
-import { addDays, addHours, format, hoursToMinutes, parse } from 'date-fns'
-import { ArrowLeft } from 'lucide-react'
-import Link from 'next/link'
-import { useRouter, useSearchParams } from 'next/navigation'
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import { useForm } from 'react-hook-form'
-
-const logger = getLogger('booking-page')
 
 // Defines the components for each step
 type StepComponent = ComponentType<BaseStepProps>
@@ -164,12 +161,9 @@ export default function BookingPage() {
   }
 
   // Save form state when values change
-  if (process.env.NODE_ENV !== 'production') {
+  if (process.env.VERCEL_ENV !== 'production') {
     useEffect(() => {
-      // Log form values if development mode
-      if (process.env.NODE_ENV !== 'production') {
-        logger.debug('Updated form values', getValues())
-      }
+      console.debug('Updated form values', getValues())
 
       const validateStep = async () => {
         const isValid = await isCurrentStepValid()
@@ -197,7 +191,7 @@ export default function BookingPage() {
       // If changing service category to a different type, reset pricing params
       const config = PRICING_PARAMETERS[selectedServiceCategory]
       if (selectedPricingParams.type !== config.type) {
-        logger.debug('Resetting pricing params for service category change')
+        console.debug('Resetting pricing params for service category change')
         // Clear pricing params
         form.setValue('pricingParams', undefined as unknown as BookingPricingParams)
       }
@@ -210,8 +204,8 @@ export default function BookingPage() {
           coupon,
         })
         form.setValue('price', price)
-        if (process.env.NODE_ENV !== 'production') {
-          logger.debug('Updated price:', price)
+        if (process.env.VERCEL_ENV !== 'production') {
+          console.debug('Updated price:', price)
         }
       }
     }
@@ -225,9 +219,7 @@ export default function BookingPage() {
 
   // Debug log for form errors
   useEffect(() => {
-    if (process.env.NODE_ENV !== 'production') {
-      logger.debug('Form errors:', errors)
-    }
+    console.debug('Form errors:', errors)
   }, [errors])
 
   const STEP_TRANSITIONS: Readonly<Record<BookingStep, { next: () => BookingStep | null, prev: () => BookingStep | null }>> = {
@@ -340,7 +332,7 @@ export default function BookingPage() {
           setIsLoadedGoogleMaps(true)
         }
         catch (error) {
-          logger.error('Failed to load Google Maps:', error)
+          console.error('Failed to load Google Maps:', error)
         }
         finally {
           setIsLoadingGoogleMaps(false)
@@ -456,7 +448,7 @@ export default function BookingPage() {
       }
     }
     catch (error) {
-      logger.error('Error creating booking:', error)
+      console.error('Error creating booking:', error)
 
       toast({
         title: 'Sorry, something went wrong 🙁',
@@ -615,7 +607,7 @@ export default function BookingPage() {
       </Form>
 
       {/* Skip button for development */}
-      {process.env.NODE_ENV !== 'production' && (
+      {process.env.VERCEL_ENV !== 'production' && (
         <div className="fixed inset-x-0 bottom-24 z-20 px-6 py-2 bg-transparent pointer-events-none">
           <div className="flex justify-end pointer-events-auto">
             <Button

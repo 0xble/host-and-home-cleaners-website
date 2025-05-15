@@ -1,10 +1,10 @@
 import type { Location } from '@/lib/types'
-import { BUSINESS_NAME } from '@/lib/constants'
+import Image from 'next/image'
 
+import Link from 'next/link'
+import { BUSINESS_NAME } from '@/lib/constants'
 import { ROUTES } from '@/lib/routes'
 import { cn, getUrl } from '@/lib/utils'
-import Image from 'next/image'
-import Link from 'next/link'
 
 interface BrandProps {
   className?: string

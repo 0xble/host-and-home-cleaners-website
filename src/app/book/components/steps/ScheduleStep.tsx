@@ -1,6 +1,9 @@
 'use client'
 
 import type { BaseStepProps, BookingFormState, BookingFrequency } from '@/app/book/types'
+import { tz } from '@date-fns/tz'
+import { addDays, format, isBefore, parse } from 'date-fns'
+import { round } from 'remeda'
 import { StepLayout } from '@/app/book/components/StepLayout'
 import { PRICING_PARAMETERS } from '@/app/book/constants'
 import { useStepValidation } from '@/app/book/hooks/useStepValidation'
@@ -9,9 +12,6 @@ import { Calendar } from '@/components/ui/calendar'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { LOCATIONS } from '@/lib/constants'
-import { tz } from '@date-fns/tz'
-import { addDays, format, isBefore, parse } from 'date-fns'
-import { round } from 'remeda'
 
 export function ScheduleStep({ form, onValidityChangeAction }: BaseStepProps) {
   const { watch, setValue, getValues } = form

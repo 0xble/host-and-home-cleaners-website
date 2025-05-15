@@ -1,13 +1,13 @@
 'use client'
 import type { Location } from '@/lib/types'
 
+import { useEffect } from 'react'
 import Footer from '@/components/layout/Footer'
 import Navbar from '@/components/layout/Navbar'
 import { PHONE } from '@/lib/constants'
-import { cn } from '@/lib/utils'
 
+import { cn } from '@/lib/utils'
 import { useLocationStore } from '@/store/useLocationStore'
-import { useEffect } from 'react'
 
 interface PageProps {
   children: React.ReactNode

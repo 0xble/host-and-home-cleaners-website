@@ -1,19 +1,16 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
-import { getLogger } from '@/lib/logger'
-import { cn } from '@/lib/utils'
 import { CookieIcon } from 'lucide-react'
-
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
+
+import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 
 interface CookieConsentProps {
   variant?: 'default' | 'small'
   forceShow?: boolean
 }
-
-const logger = getLogger('cookie-consent')
 
 export default function CookieConsent({ variant = 'default', forceShow = false }: CookieConsentProps) {
   const [isOpen, setIsOpen] = useState(false)
@@ -29,7 +26,7 @@ export default function CookieConsent({ variant = 'default', forceShow = false }
 
     // Update Google Analytics consent
     if (window.gtag != null) {
-      logger.info('Updating Google Analytics consent to granted')
+      console.info('Updating Google Analytics consent to granted')
       window.gtag('consent', 'update', {
         analytics_storage: 'granted',
         functionality_storage: 'granted',
@@ -41,7 +38,7 @@ export default function CookieConsent({ variant = 'default', forceShow = false }
       })
     }
     else {
-      logger.warn('Google Analytics gtag function not found')
+      console.warn('Google Analytics gtag function not found')
     }
   }
 
@@ -100,7 +97,7 @@ export default function CookieConsent({ variant = 'default', forceShow = false }
       }
     }
     catch (error) {
-      logger.error('Failed to update cookie consent: ', error)
+      console.error('Failed to update cookie consent: ', error)
     }
   }, [forceShow])
 

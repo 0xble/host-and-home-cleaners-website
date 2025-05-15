@@ -1,7 +1,7 @@
 import type { ButtonProps } from '@/components/ui/button'
+import { useEffect, useRef } from 'react'
 import { buttonVariants } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
-import { useEffect, useRef } from 'react'
 
 interface GradientButtonProps extends Omit<ButtonProps, 'variant'> {
   className?: string

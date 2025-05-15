@@ -18,7 +18,7 @@ export async function initializePixel() {
   try {
     const options = {
       autoConfig: true,
-      debug: process.env.NODE_ENV !== 'production',
+      debug: process.env.VERCEL_ENV !== 'production',
     }
     ReactPixel.init(PIXEL_ID, undefined, options)
     pixelInstance = ReactPixel

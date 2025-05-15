@@ -1,10 +1,10 @@
 'use client'
 
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { Spinner } from '@/components/ui/spinner'
 import { secondsToMilliseconds } from 'date-fns'
 import { AlertCircle } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { Spinner } from '@/components/ui/spinner'
 
 export default function Loading() {
   const [showSupport, setShowSupport] = useState(false)

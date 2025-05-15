@@ -1,6 +1,9 @@
 'use client'
 
 import type { Location, Phone } from '@/lib/types'
+import { Bars3Icon } from '@heroicons/react/24/solid'
+import { usePathname } from 'next/navigation'
+import { useState } from 'react'
 import TrackedLink from '@/components/analytics/facebook/PixelTrackedLink'
 import BookNowButton from '@/components/BookNowButton'
 import Brand from '@/components/Brand'
@@ -22,9 +25,6 @@ import { PixelEvent } from '@/lib/pixel'
 import { ROUTES } from '@/lib/routes'
 import { scrollToSection } from '@/lib/scroll'
 import { cn } from '@/lib/utils'
-import { Bars3Icon } from '@heroicons/react/24/solid'
-import { usePathname } from 'next/navigation'
-import { useState } from 'react'
 
 function splitIntoColumns<T>(items: T[], numColumns: number): T[][] {
   const itemsPerColumn = Math.ceil(items.length / numColumns)

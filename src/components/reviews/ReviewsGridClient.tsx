@@ -2,18 +2,17 @@
 
 import type { Platform, PlatformRating, Review, ReviewsData } from '@/lib/reviews'
 import type { Location } from '@/lib/types'
-import { Button } from '@/components/ui/button'
-import { Skeleton } from '@/components/ui/skeleton'
-import { getLogger } from '@/lib/logger'
-
-import { cn, constantCase } from '@/lib/utils'
 import { tz } from '@date-fns/tz'
 import { compareDesc, formatDistanceToNow, hoursToSeconds } from 'date-fns'
+
 import { AnimatePresence, motion } from 'framer-motion'
 import { ChevronLeft, ChevronRight, Star } from 'lucide-react'
 import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 import { round } from 'remeda'
+import { Button } from '@/components/ui/button'
+import { Skeleton } from '@/components/ui/skeleton'
+import { cn, constantCase } from '@/lib/utils'
 
 type ValidReview = Omit<Review, 'rating' | 'text' | 'date' | 'author'> & {
   rating: number
@@ -36,8 +35,6 @@ const PLATFORM_ICONS = {
   Thumbtack: '/icons/brands/thumbtack.png',
   Nextdoor: '/icons/brands/nextdoor.png',
 } as const
-
-const logger = getLogger('reviews-grid')
 
 // Platform Icon Component
 function PlatformIcon({ platform, className }: { platform: Platform, className?: string }) {
@@ -478,7 +475,7 @@ export default function ReviewsGridClient({ location }: ReviewsGridClientProps) 
         setData(reviewsData)
       }
       catch (error) {
-        logger.error('Error fetching reviews:', error)
+        console.error('Error fetching reviews:', error)
       }
     }
 

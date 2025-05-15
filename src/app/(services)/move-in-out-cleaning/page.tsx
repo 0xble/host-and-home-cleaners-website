@@ -1,13 +1,13 @@
 import type { Metadata } from 'next'
-import WhoAreWeSection from '@/app/(services)/components/WhoAreWeSection'
-import { ContentViewTracker } from '@/components/analytics/facebook/Pixel'
-import Page from '@/components/templates/Page'
-
-import CTASection from '@/components/templates/sections/CTASection'
-import { BUSINESS_NAME, SERVICES } from '@/lib/constants'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Suspense } from 'react'
+
+import WhoAreWeSection from '@/app/(services)/components/WhoAreWeSection'
+import { ContentViewTracker } from '@/components/analytics/facebook/Pixel'
+import Page from '@/components/templates/Page'
+import CTASection from '@/components/templates/sections/CTASection'
+import { BUSINESS_NAME, SERVICES } from '@/lib/constants'
 
 const title = `${BUSINESS_NAME} ${SERVICES.MOVE_IN_OUT}`
 

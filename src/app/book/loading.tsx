@@ -1,8 +1,8 @@
+import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
 import { Skeleton } from '@/components/ui/skeleton'
 import { ROUTES } from '@/lib/routes'
-import Link from 'next/link'
 
 export default function BookingLoading() {
   return (

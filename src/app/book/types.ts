@@ -1,10 +1,10 @@
-import type { Location } from '@/lib/types'
 import type { UseFormReturn } from 'react-hook-form'
-import { LOCATIONS } from '@/lib/constants'
-import { LocationSchema } from '@/lib/types'
+import type { Location } from '@/lib/types'
 import { tz } from '@date-fns/tz'
 import { addMonths, format, startOfMonth } from 'date-fns'
 import { z } from 'zod'
+import { LOCATIONS } from '@/lib/constants'
+import { LocationSchema } from '@/lib/types'
 
 export const BookingCouponCodeSchema = z.enum(['SPRING10'])
 export type BookingCouponCode = z.infer<typeof BookingCouponCodeSchema>

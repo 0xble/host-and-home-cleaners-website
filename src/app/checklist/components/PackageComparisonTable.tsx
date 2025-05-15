@@ -1,9 +1,9 @@
 import type { ServiceKey } from '@/lib/constants'
-import { SERVICES } from '@/lib/constants'
+import Link from 'next/link'
 
+import { SERVICES } from '@/lib/constants'
 import { ROUTES } from '@/lib/routes'
 import { cn } from '@/lib/utils'
-import Link from 'next/link'
 
 interface PackageComparisonTableProps {
   title: string | React.ReactNode

@@ -38,7 +38,7 @@ export default function GoogleAnalytics() {
               };
 
               // Log the event details to console in development
-              if (process.env.NODE_ENV === 'development') {
+              if (process.env.VERCEL_ENV !== 'production') {
                 console.debug('Google Analytics Event:', {
                   command,
                   action,
