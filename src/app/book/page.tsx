@@ -471,8 +471,9 @@ export default function BookingPage() {
             event_id: uniqueEventId,
           }
 
-          if (process.env.VERCEL_ENV !== 'production' && process.env.NEXT_PUBLIC_TEST_EVENT_CODE != null) {
-            clientRequestBody.test_event_code = process.env.NEXT_PUBLIC_TEST_EVENT_CODE
+          const testCode = process.env.NEXT_PUBLIC_META_CAPI_TEST_EVENT_CODE
+          if (process.env.VERCEL_ENV !== 'production' && testCode != null) {
+            clientRequestBody.test_event_code = testCode
           }
 
           const response = await fetch('/api/conversions-api', {
@@ -481,7 +482,7 @@ export default function BookingPage() {
             body: JSON.stringify(clientRequestBody),
           })
 
-          console.info('Meta CAPI Purchase event sent for booking.', { response, testCode: process.env.NEXT_PUBLIC_TEST_EVENT_CODE })
+          console.info('Meta CAPI Purchase event sent for booking.', { response, testCode })
         }
         catch (error) {
           // Not critical to the booking flow itself, so just log and continue
