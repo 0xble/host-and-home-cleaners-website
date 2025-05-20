@@ -16,7 +16,7 @@ export function getBaseUrl() {
   }
 
   if (
-    process.env.VERCEL_ENV === 'production'
+    process.env.NODE_ENV === 'production'
     && process.env.VERCEL_PROJECT_PRODUCTION_URL != null
   ) {
     return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
