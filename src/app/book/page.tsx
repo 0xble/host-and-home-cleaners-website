@@ -161,7 +161,7 @@ export default function BookingPage() {
   }
 
   // Save form state when values change
-  if (process.env.VERCEL_ENV !== 'production') {
+  if (process.env.NODE_ENV !== 'production') {
     useEffect(() => {
       console.debug('Updated form values', getValues())
 
@@ -204,7 +204,7 @@ export default function BookingPage() {
           coupon,
         })
         form.setValue('price', price)
-        if (process.env.VERCEL_ENV !== 'production') {
+        if (process.env.NODE_ENV !== 'production') {
           console.debug('Updated price:', price)
         }
       }
@@ -607,7 +607,7 @@ export default function BookingPage() {
       </Form>
 
       {/* Skip button for development */}
-      {process.env.VERCEL_ENV !== 'production' && (
+      {process.env.NODE_ENV !== 'production' && (
         <div className="fixed inset-x-0 bottom-24 z-20 px-6 py-2 bg-transparent pointer-events-none">
           <div className="flex justify-end pointer-events-auto">
             <Button

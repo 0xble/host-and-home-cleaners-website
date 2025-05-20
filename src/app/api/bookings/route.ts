@@ -145,7 +145,7 @@ export async function POST(request: Request) {
 
       // Notify to add the booking manually to BookingKoala
       const slackResponse = await new WebClient(process.env.SLACK_BOT_TOKEN).chat.postMessage({
-        channel: process.env.VERCEL_ENV !== 'production' ? `#test` : `#${slugify(payload.values.location)}-important`,
+        channel: process.env.NODE_ENV !== 'production' ? `#test` : `#${slugify(payload.values.location)}-important`,
         blocks: [
           {
             type: 'section',
