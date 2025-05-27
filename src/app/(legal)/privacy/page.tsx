@@ -1,11 +1,32 @@
 import type { Metadata } from 'next'
 
 import { ContentViewTracker } from '@/components/analytics/facebook/Pixel'
-import { BUSINESS_NAME, EMAIL } from '@/lib/constants'
+import { BUSINESS_NAME, EMAIL, SITE_IMAGE } from '@/lib/constants'
+import { getBaseUrl } from '@/lib/utils'
 
 export const metadata: Metadata = {
   title: 'Privacy Policy',
   description: 'Learn how Host & Home Cleaners protects and handles your personal data, including what we collect, how we use it, and your privacy rights as our customer.',
+  openGraph: {
+    title: 'Privacy Policy',
+    description: 'Learn how Host & Home Cleaners protects and handles your personal data, including what we collect, how we use it, and your privacy rights as our customer.',
+    url: `${getBaseUrl()}/privacy`,
+    type: 'website',
+    images: [
+      {
+        url: `${getBaseUrl()}${SITE_IMAGE}`,
+        width: 1200,
+        height: 630,
+        alt: `${BUSINESS_NAME} Privacy Policy`,
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Privacy Policy',
+    description: 'Learn how Host & Home Cleaners protects and handles your personal data, including what we collect, how we use it, and your privacy rights as our customer.',
+    images: [`${getBaseUrl()}${SITE_IMAGE}`],
+  },
 }
 
 export default function PrivacyPolicy() {

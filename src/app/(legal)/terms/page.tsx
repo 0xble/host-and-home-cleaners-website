@@ -1,11 +1,32 @@
 import type { Metadata } from 'next'
 
 import { ContentViewTracker } from '@/components/analytics/facebook/Pixel'
-import { BUSINESS_NAME, DOMAIN, EMAIL } from '@/lib/constants'
+import { BUSINESS_NAME, DOMAIN, EMAIL, SITE_IMAGE } from '@/lib/constants'
+import { getBaseUrl } from '@/lib/utils'
 
 export const metadata: Metadata = {
   title: 'Terms of Service',
   description: 'Understand our Terms of Service that protect both customers and our business. Clear policies and guidelines for using our professional cleaning services.',
+  openGraph: {
+    title: 'Terms of Service',
+    description: 'Understand our Terms of Service that protect both customers and our business. Clear policies and guidelines for using our professional cleaning services.',
+    url: `${getBaseUrl()}/terms`,
+    type: 'website',
+    images: [
+      {
+        url: `${getBaseUrl()}${SITE_IMAGE}`,
+        width: 1200,
+        height: 630,
+        alt: `${BUSINESS_NAME} Terms of Service`,
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Terms of Service',
+    description: 'Understand our Terms of Service that protect both customers and our business. Clear policies and guidelines for using our professional cleaning services.',
+    images: [`${getBaseUrl()}${SITE_IMAGE}`],
+  },
 }
 
 export default function TermsOfService() {
