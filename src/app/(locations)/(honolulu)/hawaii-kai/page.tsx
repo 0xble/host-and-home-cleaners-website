@@ -4,15 +4,36 @@ import Link from 'next/link'
 import TrackedLink from '@/components/analytics/facebook/PixelTrackedLink'
 import CompetitorComparisonTable from '@/components/CompetitorComparisonTable'
 import LocationLandingPage from '@/components/templates/LocationLandingPage'
-import { BUSINESS_NAME, LOCATIONS, PHONE, TAGLINE } from '@/lib/constants'
+import { BUSINESS_NAME, LOCATIONS, PHONE, SITE_IMAGE, TAGLINE } from '@/lib/constants'
 import { PixelEvent } from '@/lib/pixel'
 import { ROUTES } from '@/lib/routes'
+import { getBaseUrl } from '@/lib/utils'
 
 const SPECIFIC_BUSINESS_NAME = `${BUSINESS_NAME} ${LOCATIONS.HONOLULU.name}`
 
 export const metadata: Metadata = {
   title: `Professional Home & Vacation Rental Cleaners in Hawaii Kai | ${BUSINESS_NAME}`,
   description: `${TAGLINE}. Serving Hawaii Kai\'s residential and vacation rental properties. 5-star rated cleaners with outstanding reviews. Book today!`,
+  openGraph: {
+    title: `Professional Home & Vacation Rental Cleaners in Hawaii Kai | ${BUSINESS_NAME}`,
+    description: `${TAGLINE}. Serving Hawaii Kai\'s residential and vacation rental properties. 5-star rated cleaners with outstanding reviews. Book today!`,
+    url: `${getBaseUrl()}/hawaii-kai`,
+    type: 'website',
+    images: [
+      {
+        url: `${getBaseUrl()}${SITE_IMAGE}`,
+        width: 1200,
+        height: 630,
+        alt: `${BUSINESS_NAME} in Hawaii Kai`,
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: `Professional Home & Vacation Rental Cleaners in Hawaii Kai | ${BUSINESS_NAME}`,
+    description: `${TAGLINE}. Serving Hawaii Kai\'s residential and vacation rental properties. 5-star rated cleaners with outstanding reviews. Book today!`,
+    images: [`${getBaseUrl()}${SITE_IMAGE}`],
+  },
 }
 
 export default function HawaiiKai() {

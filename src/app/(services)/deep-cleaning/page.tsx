@@ -7,14 +7,35 @@ import WhoAreWeSection from '@/app/(services)/components/WhoAreWeSection'
 import { ContentViewTracker } from '@/components/analytics/facebook/Pixel'
 import Page from '@/components/templates/Page'
 import CTASection from '@/components/templates/sections/CTASection'
-import { BUSINESS_NAME, SERVICES } from '@/lib/constants'
+import { BUSINESS_NAME, SERVICES, SITE_IMAGE } from '@/lib/constants'
+import { getBaseUrl } from '@/lib/utils'
 
 const title = `${BUSINESS_NAME} ${SERVICES.DEEP}`
+const description = 'Recommended as an initial cleaning to get your home to a high standard of cleanliness to maintain with recurring standard cleanings.'
 
 export const metadata: Metadata = {
   title,
-  description:
-    'Recommended as an initial cleaning to get your home to a high standard of cleanliness to maintain with recurring standard cleanings.',
+  description,
+  openGraph: {
+    title,
+    description,
+    url: `${getBaseUrl()}/deep-cleaning`,
+    type: 'website',
+    images: [
+      {
+        url: `${getBaseUrl()}${SITE_IMAGE}`,
+        width: 1200,
+        height: 630,
+        alt: title,
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title,
+    description,
+    images: [`${getBaseUrl()}${SITE_IMAGE}`],
+  },
 }
 
 export default function DeepCleaning() {
@@ -28,7 +49,7 @@ export default function DeepCleaning() {
       <section className="px-4 text-center">
         <Image
           className="mx-auto mb-24 h-[300px] w-full max-w-screen-lg md:h-[450px] lg:rounded-b"
-          src="/assets/home2.jpeg"
+          src="/assets/featured/home/2.jpg"
           alt="cleaner walking with supplies"
           style={{ objectFit: 'cover' }}
           width={1280}

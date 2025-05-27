@@ -7,14 +7,35 @@ import WhoAreWeSection from '@/app/(services)/components/WhoAreWeSection'
 import { ContentViewTracker } from '@/components/analytics/facebook/Pixel'
 import Page from '@/components/templates/Page'
 import CTASection from '@/components/templates/sections/CTASection'
-import { BUSINESS_NAME, SERVICES } from '@/lib/constants'
+import { BUSINESS_NAME, SERVICES, SITE_IMAGE } from '@/lib/constants'
+import { getBaseUrl } from '@/lib/utils'
 
 const title = `${BUSINESS_NAME} ${SERVICES.VACATION_RENTAL}`
+const description = 'Professional Airbnb cleaning services that keep your property guest-ready. We handle scheduling, cleaning, and restocking for total peace of mind.'
 
 export const metadata: Metadata = {
   title,
-  description:
-    'Professional Airbnb cleaning services that keep your property guest-ready. We handle scheduling, cleaning, and restocking for total peace of mind.',
+  description,
+  openGraph: {
+    title,
+    description,
+    url: `${getBaseUrl()}/vacation-rental-cleaning`,
+    type: 'website',
+    images: [
+      {
+        url: `${getBaseUrl()}${SITE_IMAGE}`,
+        width: 1200,
+        height: 630,
+        alt: title,
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title,
+    description,
+    images: [`${getBaseUrl()}${SITE_IMAGE}`],
+  },
 }
 
 export default function AirbnbCleaning() {

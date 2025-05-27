@@ -7,14 +7,36 @@ import WhoAreWeSection from '@/app/(services)/components/WhoAreWeSection'
 import { ContentViewTracker } from '@/components/analytics/facebook/Pixel'
 import Page from '@/components/templates/Page'
 import CTASection from '@/components/templates/sections/CTASection'
-import { BUSINESS_NAME, SERVICES } from '@/lib/constants'
-import homeImage from '@/public/assets/home3.jpeg'
+import { BUSINESS_NAME, SERVICES, SITE_IMAGE } from '@/lib/constants'
+import { getBaseUrl } from '@/lib/utils'
+import homeImage from '@/public/assets/featured/home/3.jpg'
 
 const title = `Host & Home ${SERVICES.STANDARD}`
+const description = 'Experience our professional standard cleaning service - perfect for maintaining a spotless home with regular visits. Book your recurring cleaning today!'
 
 export const metadata: Metadata = {
   title,
-  description: 'Experience our professional standard cleaning service - perfect for maintaining a spotless home with regular visits. Book your recurring cleaning today!',
+  description,
+  openGraph: {
+    title,
+    description,
+    url: `${getBaseUrl()}/standard-cleaning`,
+    type: 'website',
+    images: [
+      {
+        url: `${getBaseUrl()}${SITE_IMAGE}`,
+        width: 1200,
+        height: 630,
+        alt: title,
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title,
+    description,
+    images: [`${getBaseUrl()}${SITE_IMAGE}`],
+  },
 }
 
 export default function StandardCleaning() {

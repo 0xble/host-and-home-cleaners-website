@@ -4,15 +4,36 @@ import TrackedLink from '@/components/analytics/facebook/PixelTrackedLink'
 import CompetitorComparisonTable from '@/components/CompetitorComparisonTable'
 import LocalBusinessSchemaMarkup from '@/components/schema/LocalBusinessSchemaMarkup'
 import LocationLandingPage from '@/components/templates/LocationLandingPage'
-import { BUSINESS_NAME, DOMAIN, EMAIL, LOCATIONS, PHONE, TAGLINE } from '@/lib/constants'
+import { BUSINESS_NAME, DOMAIN, EMAIL, LOCATIONS, PHONE, SITE_IMAGE, TAGLINE } from '@/lib/constants'
 import { PixelEvent } from '@/lib/pixel'
 import { ROUTES } from '@/lib/routes'
+import { getBaseUrl } from '@/lib/utils'
 
 const SPECIFIC_BUSINESS_NAME = `${BUSINESS_NAME} ${LOCATIONS.YORK.name}`
 
 export const metadata: Metadata = {
   title: `Professional House & Airbnb Cleaners in York | ${BUSINESS_NAME}`,
   description: `${TAGLINE}. Proudly serving the York area. Professional 5-star cleaners with dozens of testimonials. Book today!`,
+  openGraph: {
+    title: `Professional House & Airbnb Cleaners in York | ${BUSINESS_NAME}`,
+    description: `${TAGLINE}. Proudly serving the York area. Professional 5-star cleaners with dozens of testimonials. Book today!`,
+    url: `${getBaseUrl()}/york`,
+    type: 'website',
+    images: [
+      {
+        url: `${getBaseUrl()}${SITE_IMAGE}`,
+        width: 1200,
+        height: 630,
+        alt: `${BUSINESS_NAME} in York, PA`,
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: `Professional House & Airbnb Cleaners in York | ${BUSINESS_NAME}`,
+    description: `${TAGLINE}. Proudly serving the York area. Professional 5-star cleaners with dozens of testimonials. Book today!`,
+    images: [`${getBaseUrl()}${SITE_IMAGE}`],
+  },
 }
 
 export default function YorkPage() {

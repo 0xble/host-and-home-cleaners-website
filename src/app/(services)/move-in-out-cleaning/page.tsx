@@ -7,13 +7,35 @@ import WhoAreWeSection from '@/app/(services)/components/WhoAreWeSection'
 import { ContentViewTracker } from '@/components/analytics/facebook/Pixel'
 import Page from '@/components/templates/Page'
 import CTASection from '@/components/templates/sections/CTASection'
-import { BUSINESS_NAME, SERVICES } from '@/lib/constants'
+import { BUSINESS_NAME, SERVICES, SITE_IMAGE } from '@/lib/constants'
+import { getBaseUrl } from '@/lib/utils'
 
 const title = `${BUSINESS_NAME} ${SERVICES.MOVE_IN_OUT}`
+const description = 'Move in/out cleaning services provide deep cleaning, sanitization and detailed attention to every surface. Professional cleaners ensure a pristine space for your transition. Book now!'
 
 export const metadata: Metadata = {
   title,
-  description: 'Move in/out cleaning services provide deep cleaning, sanitization and detailed attention to every surface. Professional cleaners ensure a pristine space for your transition. Book now!',
+  description,
+  openGraph: {
+    title,
+    description,
+    url: `${getBaseUrl()}/move-in-out-cleaning`,
+    type: 'website',
+    images: [
+      {
+        url: `${getBaseUrl()}${SITE_IMAGE}`,
+        width: 1200,
+        height: 630,
+        alt: title,
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title,
+    description,
+    images: [`${getBaseUrl()}${SITE_IMAGE}`],
+  },
 }
 
 export default function MoveCleaning() {
@@ -27,7 +49,7 @@ export default function MoveCleaning() {
       <section className="px-4 text-center">
         <Image
           className="mx-auto mb-24 h-[300px] w-full max-w-screen-lg md:h-[450px] lg:rounded-b"
-          src="/assets/home1.jpeg"
+          src={SITE_IMAGE}
           alt="cleaner preparing for move out"
           style={{ objectFit: 'cover' }}
           width={1280}

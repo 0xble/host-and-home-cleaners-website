@@ -4,15 +4,36 @@ import Link from 'next/link'
 import TrackedLink from '@/components/analytics/facebook/PixelTrackedLink'
 import CompetitorComparisonTable from '@/components/CompetitorComparisonTable'
 import LocationLandingPage from '@/components/templates/LocationLandingPage'
-import { BUSINESS_NAME, LOCATIONS, PHONE, TAGLINE } from '@/lib/constants'
+import { BUSINESS_NAME, LOCATIONS, PHONE, SITE_IMAGE, TAGLINE } from '@/lib/constants'
 import { PixelEvent } from '@/lib/pixel'
 import { ROUTES } from '@/lib/routes'
+import { getBaseUrl } from '@/lib/utils'
 
 const SPECIFIC_BUSINESS_NAME = `${BUSINESS_NAME} ${LOCATIONS.HONOLULU.name}`
 
 export const metadata: Metadata = {
   title: `Professional House & Airbnb Cleaners in Ala Moana | ${BUSINESS_NAME}`,
   description: `${TAGLINE}. Serving Ala Moana\'s residents and vacation rental owners. 5-star rated cleaners with outstanding testimonials. Book today!`,
+  openGraph: {
+    title: `Professional House & Airbnb Cleaners in Ala Moana | ${BUSINESS_NAME}`,
+    description: `${TAGLINE}. Serving Ala Moana\'s residents and vacation rental owners. 5-star rated cleaners with outstanding testimonials. Book today!`,
+    url: `${getBaseUrl()}/ala-moana`,
+    type: 'website',
+    images: [
+      {
+        url: `${getBaseUrl()}${SITE_IMAGE}`,
+        width: 1200,
+        height: 630,
+        alt: `${BUSINESS_NAME} in Ala Moana`,
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: `Professional House & Airbnb Cleaners in Ala Moana | ${BUSINESS_NAME}`,
+    description: `${TAGLINE}. Serving Ala Moana\'s residents and vacation rental owners. 5-star rated cleaners with outstanding testimonials. Book today!`,
+    images: [`${getBaseUrl()}${SITE_IMAGE}`],
+  },
 }
 
 export default function AlaMoana() {

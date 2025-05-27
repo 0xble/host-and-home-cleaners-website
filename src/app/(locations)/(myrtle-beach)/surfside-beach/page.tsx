@@ -3,14 +3,35 @@ import Link from 'next/link'
 
 import CompetitorComparisonTable from '@/components/CompetitorComparisonTable'
 import LocationLandingPage from '@/components/templates/LocationLandingPage'
-import { BUSINESS_NAME, LOCATIONS, PHONE, TAGLINE } from '@/lib/constants'
+import { BUSINESS_NAME, LOCATIONS, PHONE, SITE_IMAGE, TAGLINE } from '@/lib/constants'
 import { ROUTES } from '@/lib/routes'
+import { getBaseUrl } from '@/lib/utils'
 
 const SPECIFIC_BUSINESS_NAME = `${BUSINESS_NAME} ${LOCATIONS.MYRTLE_BEACH.name}`
 
 export const metadata: Metadata = {
   title: `Professional House & Airbnb Cleaners in Surfside Beach | ${BUSINESS_NAME}`,
   description: `${TAGLINE}. Serving Surfside Beach and surrounding areas. House & vacation rental cleaners with 5-star ratings and excellent testimonials. Book today!`,
+  openGraph: {
+    title: `Professional House & Airbnb Cleaners in Surfside Beach | ${BUSINESS_NAME}`,
+    description: `${TAGLINE}. Serving Surfside Beach and surrounding areas. House & vacation rental cleaners with 5-star ratings and excellent testimonials. Book today!`,
+    url: `${getBaseUrl()}/surfside-beach`,
+    type: 'website',
+    images: [
+      {
+        url: `${getBaseUrl()}${SITE_IMAGE}`,
+        width: 1200,
+        height: 630,
+        alt: `${BUSINESS_NAME} in Surfside Beach`,
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: `Professional House & Airbnb Cleaners in Surfside Beach | ${BUSINESS_NAME}`,
+    description: `${TAGLINE}. Serving Surfside Beach and surrounding areas. House & vacation rental cleaners with 5-star ratings and excellent testimonials. Book today!`,
+    images: [`${getBaseUrl()}${SITE_IMAGE}`],
+  },
 }
 
 export default function SurfsideBeach() {

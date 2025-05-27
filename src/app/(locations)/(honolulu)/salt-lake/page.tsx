@@ -3,14 +3,35 @@ import Link from 'next/link'
 
 import CompetitorComparisonTable from '@/components/CompetitorComparisonTable'
 import LocationLandingPage from '@/components/templates/LocationLandingPage'
-import { BUSINESS_NAME, LOCATIONS, PHONE, TAGLINE } from '@/lib/constants'
+import { BUSINESS_NAME, LOCATIONS, PHONE, SITE_IMAGE, TAGLINE } from '@/lib/constants'
 import { ROUTES } from '@/lib/routes'
+import { getBaseUrl } from '@/lib/utils'
 
 const SPECIFIC_BUSINESS_NAME = `${BUSINESS_NAME} ${LOCATIONS.HONOLULU.name}`
 
 export const metadata: Metadata = {
   title: `Professional Condo & House Cleaners in Salt Lake | ${BUSINESS_NAME}`,
   description: `${TAGLINE}. Serving Salt Lake\'s residential and Airbnb properties. 5-star rated cleaners with outstanding testimonials. Book today!`,
+  openGraph: {
+    title: `Professional Condo & House Cleaners in Salt Lake | ${BUSINESS_NAME}`,
+    description: `${TAGLINE}. Serving Salt Lake\'s residential and Airbnb properties. 5-star rated cleaners with outstanding testimonials. Book today!`,
+    url: `${getBaseUrl()}/salt-lake`,
+    type: 'website',
+    images: [
+      {
+        url: `${getBaseUrl()}${SITE_IMAGE}`,
+        width: 1200,
+        height: 630,
+        alt: `${BUSINESS_NAME} in Salt Lake`,
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: `Professional Condo & House Cleaners in Salt Lake | ${BUSINESS_NAME}`,
+    description: `${TAGLINE}. Serving Salt Lake\'s residential and Airbnb properties. 5-star rated cleaners with outstanding testimonials. Book today!`,
+    images: [`${getBaseUrl()}${SITE_IMAGE}`],
+  },
 }
 
 export default function SaltLake() {
