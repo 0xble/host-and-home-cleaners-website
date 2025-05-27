@@ -8,6 +8,7 @@ import { PixelInitializer } from '@/components/analytics/facebook/Pixel'
 import GoogleAnalytics from '@/components/analytics/google/GoogleAnalytics'
 import { PostHogProvider } from '@/components/analytics/posthog/PostHogProvider'
 import { Toaster } from '@/components/ui/toaster'
+import { SITE_DESCRIPTION, SITE_IMAGE, SITE_NAME } from '@/lib/constants'
 import { getBaseUrl } from '@/lib/utils'
 import '@/app/globals.css'
 
@@ -15,9 +16,14 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   metadataBase: new URL(getBaseUrl()),
+  title: {
+    default: SITE_NAME,
+    template: `%s | ${SITE_NAME}`,
+  },
+  description: SITE_DESCRIPTION,
   manifest: '/site.webmanifest',
   appleWebApp: {
-    title: 'Host & Home Cleaners',
+    title: SITE_NAME,
     capable: true,
     statusBarStyle: 'default',
   },
@@ -46,9 +52,38 @@ export const metadata: Metadata = {
     ],
   },
   openGraph: {
+    title: {
+      default: SITE_NAME,
+      template: `%s | ${SITE_NAME}`,
+    },
+    description: SITE_DESCRIPTION,
+    url: getBaseUrl(),
+    siteName: SITE_NAME,
+    images: [
+      {
+        url: SITE_IMAGE,
+        width: 1200,
+        height: 630,
+        alt: `${SITE_NAME} - Professional Cleaning Services`,
+      },
+    ],
     type: 'website',
-    images: 'assets/home/1.jpg',
-    url: './',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: {
+      default: SITE_NAME,
+      template: `%s | ${SITE_NAME}`,
+    },
+    description: SITE_DESCRIPTION,
+    images: [
+      {
+        url: SITE_IMAGE,
+        width: 1200,
+        height: 630,
+        alt: `${SITE_NAME} - Professional Cleaning Services`,
+      },
+    ],
   },
 }
 
