@@ -6,12 +6,32 @@ import PackageComparisonTable from '@/app/checklist/components/PackageComparison
 import { ContentViewTracker } from '@/components/analytics/facebook/Pixel'
 import Page from '@/components/templates/Page'
 import CTASection from '@/components/templates/sections/CTASection'
-
-import { BUSINESS_NAME, CHECKLIST_NAME, SERVICE_CHECKLIST } from '@/lib/constants'
+import { BUSINESS_NAME, CHECKLIST_NAME, SERVICE_CHECKLIST, SITE_IMAGE } from '@/lib/constants'
+import { getBaseUrl } from '@/lib/utils'
 
 export const metadata: Metadata = {
   title: CHECKLIST_NAME,
   description: 'View our comprehensive house cleaning checklist to see exactly what we clean during each visit. Learn how we ensure a spotless home every time.',
+  openGraph: {
+    title: CHECKLIST_NAME,
+    description: 'View our comprehensive house cleaning checklist to see exactly what we clean during each visit. Learn how we ensure a spotless home every time.',
+    url: `${getBaseUrl()}/checklist`,
+    type: 'website',
+    images: [
+      {
+        url: `${getBaseUrl()}${SITE_IMAGE}`,
+        width: 1200,
+        height: 630,
+        alt: `${BUSINESS_NAME} Checklist`,
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: CHECKLIST_NAME,
+    description: 'View our comprehensive house cleaning checklist to see exactly what we clean during each visit. Learn how we ensure a spotless home every time.',
+    images: [`${getBaseUrl()}${SITE_IMAGE}`],
+  },
 }
 
 export default function Checklist() {

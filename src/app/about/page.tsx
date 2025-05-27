@@ -7,11 +7,35 @@ import { ContentViewTracker } from '@/components/analytics/facebook/Pixel'
 import Page from '@/components/templates/Page'
 import CTASection from '@/components/templates/sections/CTASection'
 
-import { BUSINESS_NAME } from '@/lib/constants'
+import { BUSINESS_NAME, SITE_IMAGE } from '@/lib/constants'
+import { getBaseUrl } from '@/lib/utils'
+
+const title = `About Us`
+const description = `Learn more about ${BUSINESS_NAME} and our commitment to excellence, reliability, and customer satisfaction.`
 
 export const metadata: Metadata = {
-  title: `About Us`,
-  description: `Learn more about ${BUSINESS_NAME} and our commitment to excellence, reliability, and customer satisfaction.`,
+  title,
+  description,
+  openGraph: {
+    title,
+    description,
+    url: `${getBaseUrl()}/about`,
+    type: 'website',
+    images: [
+      {
+        url: `${getBaseUrl()}${SITE_IMAGE}`,
+        width: 1200,
+        height: 630,
+        alt: title,
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title,
+    description,
+    images: [`${getBaseUrl()}${SITE_IMAGE}`],
+  },
 }
 
 export default function About() {

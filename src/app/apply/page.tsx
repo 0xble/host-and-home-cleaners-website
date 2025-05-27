@@ -7,7 +7,8 @@ import BonusesTable from '@/app/apply/components/BonusesTable'
 import { ContentViewTracker } from '@/components/analytics/facebook/Pixel'
 import Page from '@/components/templates/Page'
 
-import { BUSINESS_NAME } from '@/lib/constants'
+import { BUSINESS_NAME, SITE_IMAGE } from '@/lib/constants'
+import { getBaseUrl } from '@/lib/utils'
 import heroImage from '@/public/assets/cleaner-work.gif'
 
 const badges = [
@@ -98,9 +99,32 @@ const badges = [
 ]
 
 // TODO: Do not make location specific, update form to redirect to appropriate location
+const title = 'Apply Now! | Cleaners Wanted'
+const description = `Ready to work at the #1 fastest growing home and Airbnb cleaning business? Let us get you more booking in less time!`
+
 export const metadata: Metadata = {
-  title: 'Apply Now! | Cleaners Wanted',
-  description: `Ready to work at the #1 fastest growing home and Airbnb cleaning business? Let us get you more booking in less time!`,
+  title,
+  description,
+  openGraph: {
+    title,
+    description,
+    url: `${getBaseUrl()}/apply`,
+    type: 'website',
+    images: [
+      {
+        url: `${getBaseUrl()}${SITE_IMAGE}`,
+        width: 1200,
+        height: 630,
+        alt: title,
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title,
+    description,
+    images: [`${getBaseUrl()}${SITE_IMAGE}`],
+  },
 }
 
 export default function Apply() {
