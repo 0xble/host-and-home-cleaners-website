@@ -1,4 +1,4 @@
-import type { NotionTimezone } from '0xble/notion/schemas'
+import type { NotionTimezone } from '0xble/notion'
 import type { SectionBlock } from '@slack/web-api'
 import type { TriggerTaskPayload } from '@/lib/types/trigger'
 import { formatAddress } from '0xble/address'

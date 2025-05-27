@@ -1,4 +1,4 @@
-import { NotionDateParsedSchema } from '0xble/notion/schemas'
+import { NotionDateParsedSchema } from '0xble/notion'
 import { NotionBookingsFrequencyOptionSchema, NotionBookingsPaymentMethodOptionSchema, NotionBookingsServiceOptionSchema, NotionBookingsStatusOptionSchema, NotionBookingsTagsOptionSchema, NotionClientsSourceOptionSchema, NotionClientsStatusOptionSchema } from '0xble/notion/types'
 import { unique } from 'remeda'
 import { z } from 'zod'
