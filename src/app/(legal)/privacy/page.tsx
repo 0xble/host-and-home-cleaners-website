@@ -495,9 +495,13 @@ export default function PrivacyPolicy() {
           We use Google Analytics to understand how visitors interact with our website. This tool collects information such as pages visited, time spent on pages, and user interactions. The data is used to improve our website's performance and user experience. Google Analytics uses cookies and similar technologies to collect this information.
         </li>
         <li>
-          <strong>Facebook Pixel:</strong>
+          <strong>Meta Pixel & Meta Conversions API:</strong>
           {' '}
-          We use Facebook Pixel to measure the effectiveness of our advertising campaigns and to understand how visitors interact with our website. This tool helps us show relevant advertisements to you on Facebook and Instagram. Facebook Pixel uses cookies and similar technologies to collect this information.
+          We use Meta Pixel and Meta Conversions API to measure the effectiveness of our advertising campaigns and to understand how visitors interact with our website. These tools help us show relevant advertisements to you on Facebook and Instagram, and improve our marketing and analytics.
+          <br />
+          <strong>How data is collected:</strong>
+          {' '}
+          Meta Pixel collects data via your browser using cookies and similar technologies. The Meta Conversions API may also send certain event data (such as purchases or bookings) directly from our server to Meta, which can include hashed personal information (like email or phone) for improved ad targeting and measurement. This server-to-server sharing is done securely and in accordance with Meta's privacy policies.
         </li>
       </ul>
 
@@ -516,10 +520,17 @@ export default function PrivacyPolicy() {
           .
         </li>
         <li>
-          For Facebook Pixel: You can opt-out of Facebook's use of cookies and similar technologies by visiting
+          For Meta (Facebook) tracking: You can opt-out of Meta's use of cookies and similar technologies for advertising by visiting
           {' '}
           <a href="https://www.facebook.com/ads/preferences" target="_blank" rel="noopener noreferrer">
-            Facebook Ad Preferences
+            Meta Ad Preferences
+          </a>
+          .
+          <br />
+          Please note: While opting out of cookies will limit browser-based tracking (Meta Pixel), some event data (such as purchases or bookings) may still be sent to Meta via secure server-to-server connections (Meta Conversions API) for advertising and analytics purposes. For more information on how Meta uses your data, see the
+          {' '}
+          <a href="https://www.facebook.com/policy.php" target="_blank" rel="noopener noreferrer">
+            Meta Data Policy
           </a>
           .
         </li>
