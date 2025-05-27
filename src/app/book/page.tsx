@@ -1,6 +1,6 @@
 'use client'
 
-import type { NotionDateParsed, NotionTimezone } from '0xble/notion/schemas'
+import type { NotionDateParsed, NotionTimezone } from '0xble/notion'
 import type { ComponentType } from 'react'
 import type {
   BaseStepProps,
