@@ -1,5 +1,10 @@
 import type { Location, SocialLink, SocialPlatform } from '@/lib/types'
 
+export const SITE_NAME = 'Host & Home Cleaners'
+export const SITE_DESCRIPTION = 'Host & Home Cleaners offers top-rated professional home cleaning services in Honolulu and Myrtle Beach. Book your trusted, local cleaners today for a spotless and refreshed home.'
+// TODO: Change to more specific images instead of using frequently throughout the app
+export const SITE_IMAGE = '/assets/featured/home/1.jpg'
+
 export const BUSINESS_NAME = 'Host & Home Cleaners'
 export const TAGLINE = '100% satisfaction guaranteed, or we\'ll redo it for FREE'
 export const DOMAIN = 'hostandhomecleaners.com'

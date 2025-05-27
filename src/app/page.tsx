@@ -7,11 +7,33 @@ import CompetitorComparisonTable from '@/components/CompetitorComparisonTable'
 import FindLocationInput from '@/components/FindLocationInput'
 import LandingPage from '@/components/templates/LandingPage'
 // import ReviewsFloatingBadge from '@/components/ReviewsFloatingBadge'
-import { BUSINESS_NAME, TAGLINE } from '@/lib/constants'
+import { BUSINESS_NAME, SITE_IMAGE, TAGLINE } from '@/lib/constants'
+
+const PAGE_TITLE = `${BUSINESS_NAME} | Professional House & Airbnb Cleaning`
+const PAGE_DESCRIPTION = `${TAGLINE}. Professional 5-star cleaners with dozens of reviews. Book today!`
 
 export const metadata: Metadata = {
-  title: `${BUSINESS_NAME} | Professional House & Airbnb Cleaning`,
-  description: `${TAGLINE}. Professional 5-star cleaners with dozens of reviews. Book today!`,
+  title: PAGE_TITLE,
+  description: PAGE_DESCRIPTION,
+  openGraph: {
+    title: PAGE_TITLE,
+    description: PAGE_DESCRIPTION,
+    images: [
+      {
+        url: SITE_IMAGE,
+        width: 1200,
+        height: 630,
+        alt: PAGE_TITLE,
+      },
+    ],
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: PAGE_TITLE,
+    description: PAGE_DESCRIPTION,
+    images: [SITE_IMAGE],
+  },
 }
 
 export default function Home() {
