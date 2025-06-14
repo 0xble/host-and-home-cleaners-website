@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 import CompetitorComparisonTable from '@/components/CompetitorComparisonTable'
 import LocationLandingPage from '@/components/templates/LocationLandingPage'
-import { BUSINESS_NAME, LOCATIONS, PHONE, SITE_IMAGE, TAGLINE } from '@/lib/constants'
+import { BUSINESS_NAME, LOCATIONS, PHONE, PRICING, SITE_IMAGE, TAGLINE } from '@/lib/constants'
 import { ROUTES } from '@/lib/routes'
 import { getBaseUrl } from '@/lib/utils'
 
@@ -40,7 +40,7 @@ export default function Kapahulu() {
       location="HONOLULU"
       googleMapsEmbedUrl="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d237770.1723966727!2d-157.869932!3d21.3836454!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c4ce057e4bdff0b%3A0xa78d25a714d5f0ae!2sHost%20%26%20Home%20Cleaners%20Honolulu!5e0!3m2!1sen!2sus!4v1729395012053!5m2!1sen!2sus"
       photosFolder="honolulu"
-      pricing={{ standard: 232, deep: 304, moveInOut: 340, vacationRental: 232 }}
+      pricing={PRICING.HONOLULU}
       copy={{
         heroHeading: (
           <>Kapahulu's Trusted Local Residential & Airbnb Cleaners</>

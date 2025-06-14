@@ -6,8 +6,7 @@ import BookNowButton from '@/components/BookNowButton'
 import CompetitorComparisonTable from '@/components/CompetitorComparisonTable'
 import FindLocationInput from '@/components/FindLocationInput'
 import LandingPage from '@/components/templates/LandingPage'
-// import ReviewsFloatingBadge from '@/components/ReviewsFloatingBadge'
-import { BUSINESS_NAME, SITE_IMAGE, TAGLINE } from '@/lib/constants'
+import { BUSINESS_NAME, PRICING, SITE_IMAGE, TAGLINE } from '@/lib/constants'
 
 const PAGE_TITLE = `${BUSINESS_NAME} | Professional House & Airbnb Cleaning`
 const PAGE_DESCRIPTION = `${TAGLINE}. Professional 5-star cleaners with dozens of reviews. Book today!`
@@ -50,7 +49,7 @@ export default function Home() {
       <LandingPage
         location={null}
         photosFolder="home"
-        pricing={{ standard: 129, deep: 169, moveInOut: 189, vacationRental: 129 }}
+        pricing={PRICING.MYRTLE_BEACH}
         copy={{
           heroHeading: (
             <>

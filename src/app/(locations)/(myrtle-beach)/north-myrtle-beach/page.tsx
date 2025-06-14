@@ -4,7 +4,7 @@ import Link from 'next/link'
 import TrackedLink from '@/components/analytics/facebook/PixelTrackedLink'
 import CompetitorComparisonTable from '@/components/CompetitorComparisonTable'
 import LocationLandingPage from '@/components/templates/LocationLandingPage'
-import { BUSINESS_NAME, LOCATIONS, PHONE, SITE_IMAGE, TAGLINE } from '@/lib/constants'
+import { BUSINESS_NAME, LOCATIONS, PHONE, PRICING, SITE_IMAGE, TAGLINE } from '@/lib/constants'
 import { PixelEvent } from '@/lib/pixel'
 import { ROUTES } from '@/lib/routes'
 import { getBaseUrl } from '@/lib/utils'
@@ -42,14 +42,10 @@ export default function NorthMyrtleBeach() {
       location="MYRTLE_BEACH"
       googleMapsEmbedUrl="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d106194.64630830522!2d-78.8788075!3d33.7197455!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x432592cd81e1d561%3A0x2bb5e85088c224ee!2sPristine%20Maid%20Cleaning!5e0!3m2!1sen!2sus!4v1709048737136!5m2!1sen!2sus"
       photosFolder="myrtle-beach"
-      pricing={{ standard: 129, deep: 169, moveInOut: 189, vacationRental: 129 }}
+      pricing={PRICING.MYRTLE_BEACH}
       copy={{
-        heroHeading: (
-          <>
-            North Myrtle Beach&apos;s Trusted Choice
-          </>
-        ),
-        heroDescription: 'Discover the difference professional cleaning makes - where meticulous attention to detail meets unmatched reliability. Trusted by homeowners, vacation rental managers, and real estate professionals across North Myrtle Beach.',
+        heroHeading: 'North Myrtle Beach\'s Premier Home Cleaning',
+        heroDescription: 'In a city known for its vibrant entertainment and beautiful coastline, your home should be a peaceful retreat. We provide meticulous cleaning that lets you enjoy all that North Myrtle Beach has to offer, worry-free.',
         reviewsHeading: 'Hear From Your Neighbors!',
         locationsSectionHeading: 'Areas We Service',
         locationsSectionDescription: 'Bringing exceptional cleaning services to North Myrtle Beach and all surrounding coastal communities!',
