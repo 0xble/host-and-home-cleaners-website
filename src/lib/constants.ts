@@ -699,6 +699,21 @@ export const BEDROOMS: ReadonlyMap<number, Bedroom> = new Map([
   [4, { label: 'Four Bedroom', maxSqFt: '3,000', icon: 'four-bedroom' }],
 ])
 
+export const PRICING = {
+  MYRTLE_BEACH: {
+    standard: 149,
+    deep: 217,
+    moveInOut: 242,
+    vacationRental: 127,
+  },
+  HONOLULU: {
+    standard: 184,
+    deep: 236,
+    moveInOut: 294,
+    vacationRental: 146,
+  },
+} as const
+
 export const LOCATIONS = {
   MYRTLE_BEACH: {
     id: 'c202ac2d56404655ba4620ec3e1dcf62',
