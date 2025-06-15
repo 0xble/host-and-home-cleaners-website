@@ -34,7 +34,7 @@ export default function WhoAreWeSection({ className, showImage = true }: WhoAreW
         {showImage && (
           <div className="shrink-0">
             <Image
-              src="/housekeeper-kitchen.webp"
+              src="/assets/housekeeper-kitchen.webp"
               alt="Professional housekeeper cleaning a kitchen"
               width={515}
               height={290}
