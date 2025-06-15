@@ -103,8 +103,8 @@ export default function RootLayout({ children }: LayoutProps) {
           <Script src="https://tally.so/widgets/embed.js" strategy="lazyOnload" />
 
           {/* Analytics */}
-          {process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID !== undefined && process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID !== '' && <GoogleAnalytics />}
-          {process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID !== undefined && process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID !== '' && <PixelInitializer />}
+          {process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID != null && <GoogleAnalytics />}
+          {process.env.NEXT_PUBLIC_META_PIXEL_ID != null && <PixelInitializer />}
 
           {/* UI Components */}
           <Toaster />

@@ -2,6 +2,7 @@
 
 import type { NotionDateParsed, NotionTimezone } from '0xble/notion'
 import type { ComponentType } from 'react'
+import type { ClientRequestBody } from '@/app/api/conversions-api/types'
 import type {
   BaseStepProps,
   BookingFormData,
@@ -19,6 +20,7 @@ import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { CustomDataSchema, UserDataSchema } from '@/app/api/conversions-api/types'
 import { AnimatedStepTransition } from '@/app/book/components/AnimatedStepTransition'
 import { AddressInputStep } from '@/app/book/components/steps/AddressInputStep'
 import { ChooseYourServiceStep } from '@/app/book/components/steps/ChooseYourServiceStep'
@@ -437,6 +439,55 @@ export default function BookingPage() {
           description: 'You will receive a confirmation email shortly.',
           variant: 'success',
         })
+
+        // Send Meta Conversions API Event for Purchase
+        try {
+          // Generate a unique event_id for deduplication
+          const uniqueEventId = `booking_${Math.random().toString(36).substring(2, 15)}`
+
+          const userData = UserDataSchema.parse({
+            em: data.customer.email ? [data.customer.email] : undefined,
+            ph: data.customer.phone ? [data.customer.phone.replace(/\D/g, '')] : undefined,
+            fn: data.customer.firstName ? [data.customer.firstName] : undefined,
+            ln: data.customer.lastName ? [data.customer.lastName] : undefined,
+            zp: data.customer.zipCode ? [data.customer.zipCode] : undefined,
+            ct: data.customer.city ? [data.customer.city] : undefined,
+            st: data.customer.state ? [data.customer.state] : undefined,
+            country: ['US'],
+          })
+
+          const customData = CustomDataSchema.parse({
+            value: data.price.totalInitial,
+            currency: 'USD',
+            content_category: data.serviceCategory,
+          })
+
+          // Construct the body according to ClientRequestBodySchema for the API route
+          const clientRequestBody: ClientRequestBody = {
+            event_name: 'Purchase',
+            user_data: userData,
+            custom_data: customData,
+            event_source_url: window.location.href,
+            event_id: uniqueEventId,
+          }
+
+          const testCode = process.env.NEXT_PUBLIC_META_CAPI_TEST_EVENT_CODE
+          if (process.env.NODE_ENV !== 'production' && testCode != null) {
+            clientRequestBody.test_event_code = testCode
+          }
+
+          const response = await fetch('/api/conversions-api', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(clientRequestBody),
+          })
+
+          console.info('Meta CAPI Purchase event sent for booking.', { response, testCode })
+        }
+        catch (error) {
+          // Not critical to the booking flow itself, so just log and continue
+          console.error('Failed to send Meta CAPI Purchase event:', error)
+        }
 
         // Clear session storage on successful submission
         sessionStorage.removeItem('bookingFormState')
