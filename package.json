@@ -5,7 +5,7 @@
     "dev:spotlight": "spotlight-sidecar",
     "dev:next": "cross-env BROWSERSLIST_IGNORE_OLD_DATA=1 next dev",
     "dev": "run-p dev:*",
-    "build": "bun add 0xble@latest && cross-env BROWSERSLIST_IGNORE_OLD_DATA=1 next build",
+    "build": "cross-env BROWSERSLIST_IGNORE_OLD_DATA=1 next build",
     "build-stats": "cross-env ANALYZE=true BROWSERSLIST_IGNORE_OLD_DATA=1 bun run build",
     "clean": "rm -rf .next out node_modules bun.lockb",
     "setup": "bun run clean && bun install",
@@ -13,15 +13,13 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "lint:watch": "nodemon --exec bun run lint",
-    "link:0xble": "bun link 0xble --save",
-    "unlink:0xble": "bun add 0xble@latest",
-    "check-types": "tsc --noEmit --pretty",
+    "typecheck": "tsc --noEmit --pretty",
     "prepare": "husky",
     "test": "bun test",
     "test:watch": "bun test --watch"
   },
   "dependencies": {
-    "0xble": "^15.6.1",
+    "0xble": "^18.2.0",
     "@date-fns/tz": "^1.2.0",
     "@heroicons/react": "^2.2.0",
     "@hookform/resolvers": "^5.0.1",
@@ -85,7 +83,7 @@
     "zustand": "^4.5.6"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^4.12.0",
+    "@antfu/eslint-config": "^4.14.1",
     "@commitlint/config-conventional": "^19.8.0",
     "@commitlint/types": "^19.8.0",
     "@eslint-react/eslint-plugin": "^1.38.4",
@@ -118,8 +116,6 @@
     "postcss": "^8.5.3",
     "rimraf": "^6.0.1",
     "tailwindcss": "^3.4.17",
-    "ts-jest": "^29.3.2",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.8.2"
+    "ts-jest": "^29.3.2"
   }
 }
