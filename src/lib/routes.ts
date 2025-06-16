@@ -50,7 +50,7 @@ export const ROUTES = {
   },
   BOOKING: {
     name: 'Booking',
-    href: `/book`,
+    href: `${BOOKINGKOALA_URL}/booknow/home_cleaning?form_id=1&coupon=FIREWORKS10`,
     priority: 0.8,
     changeFrequency: 'weekly',
   },
