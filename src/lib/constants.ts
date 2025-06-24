@@ -83,7 +83,7 @@ export const SERVICE_CHECKLIST: Record<string, ServiceInclusions> = {
         },
       },
       {
-        name: 'Clean windowpanes inside',
+        name: 'Clean windowpanes (interior only)',
         services: {
           STANDARD: false,
           DEEP: true,
@@ -268,7 +268,7 @@ export const SERVICE_CHECKLIST: Record<string, ServiceInclusions> = {
         },
       },
       {
-        name: 'Clean windowpanes inside',
+        name: 'Clean windowpanes (interior only)',
         services: {
           STANDARD: false,
           DEEP: true,
@@ -444,7 +444,7 @@ export const SERVICE_CHECKLIST: Record<string, ServiceInclusions> = {
         },
       },
       {
-        name: 'Cleaning of windowpanes insdes',
+        name: 'Clean windowpanes (interior only)',
         services: {
           STANDARD: false,
           DEEP: true,
@@ -638,7 +638,7 @@ export const SERVICE_CHECKLIST: Record<string, ServiceInclusions> = {
         },
       },
       {
-        name: 'Cleaning of inside glass doorways & windows',
+        name: 'Clean glass doorways & windows (interior only)',
         services: {
           STANDARD: false,
           DEEP: false,
