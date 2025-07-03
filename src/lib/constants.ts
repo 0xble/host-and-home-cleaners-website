@@ -56,7 +56,7 @@ export const SERVICE_CHECKLIST: Record<string, ServiceInclusions> = {
     title: 'Living Rooms / Bedrooms / Hallways',
     inclusions: [
       {
-        name: 'Removing cobwebs from ceiling',
+        name: 'Removing accessible cobwebs from ceiling',
         services: {
           STANDARD: true,
           DEEP: true,
@@ -209,7 +209,7 @@ export const SERVICE_CHECKLIST: Record<string, ServiceInclusions> = {
         },
       },
       {
-        name: 'Vacuum / clean furniture',
+        name: 'Vacuum / clean exteriors of furnitures',
         services: {
           STANDARD: true,
           DEEP: true,
@@ -340,7 +340,7 @@ export const SERVICE_CHECKLIST: Record<string, ServiceInclusions> = {
         },
       },
       {
-        name: 'Hand detailing & cleaning of baseboards',
+        name: 'Wipe down exposed baseboards',
         services: {
           STANDARD: false,
           DEEP: true,
@@ -510,15 +510,6 @@ export const SERVICE_CHECKLIST: Record<string, ServiceInclusions> = {
         name: 'Cleaning of stove tops',
         services: {
           STANDARD: true,
-          DEEP: true,
-          MOVE_IN_OUT: true,
-          VACATION_RENTAL: true,
-        },
-      },
-      {
-        name: 'Clean hood vents',
-        services: {
-          STANDARD: false,
           DEEP: true,
           MOVE_IN_OUT: true,
           VACATION_RENTAL: true,
