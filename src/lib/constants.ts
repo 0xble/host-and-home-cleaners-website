@@ -209,7 +209,7 @@ export const SERVICE_CHECKLIST: Record<string, ServiceInclusions> = {
         },
       },
       {
-        name: 'Vacuum / clean inside furniture',
+        name: 'Vacuum / clean furniture',
         services: {
           STANDARD: true,
           DEEP: true,
