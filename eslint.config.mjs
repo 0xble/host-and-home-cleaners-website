@@ -13,7 +13,7 @@ export default antfu(
       'no-cond-assign': ['error', 'except-parens'],
     },
     typescript: {
-      tsconfigPath: 'tsconfig.json'
+      tsconfigPath: 'tsconfig.json',
     },
   },
   {
