@@ -62,7 +62,21 @@ const DropdownMenuContent = React.forwardRef<
 >(({ className, sideOffset = 4, ...props }, ref) => (
   <DropdownMenuPrimitive.Portal>
     <DropdownMenuPrimitive.Content
-      onCloseAutoFocus={e => e.preventDefault()}
+      onCloseAutoFocus={(e: Event) => {
+        // Prevent Radix from restoring focus to a possibly unmounted trigger
+        // when the menu closes. This avoids runtime "Cannot read properties
+        // of null (reading 'focus')" errors that can happen if the trigger
+        // is removed from the DOM before focus restoration occurs.
+        e.preventDefault()
+      }}
+      onEscapeKeyDown={(e: KeyboardEvent) => {
+        e.preventDefault()
+        // Handle escape key properly for nested dropdowns
+        const activeElement = document.activeElement
+        if (activeElement instanceof HTMLElement) {
+          activeElement.blur()
+        }
+      }}
       ref={ref}
       sideOffset={sideOffset}
       className={cn(
