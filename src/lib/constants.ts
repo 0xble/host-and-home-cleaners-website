@@ -740,6 +740,7 @@ export const LOCATIONS = {
       '29544',
     ] as const,
     timezone: 'America/New_York',
+    googleMapsEmbedUrl: 'https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d106194.64630830522!2d-78.8788075!3d33.7197455!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x432592cd81e1d561%3A0x2bb5e85088c224ee!2sPristine%20Maid%20Cleaning!5e0!3m2!1sen!2sus!4v1709048737136!5m2!1sen!2sus',
   },
   HONOLULU: {
     id: '5ae41ba1a59649679c18d2a77062fea8',
@@ -750,7 +751,7 @@ export const LOCATIONS = {
       'Honolulu',
       'Waikiki',
       'Ala Moana',
-      'Kaka\'ako',
+      'Kakaako',
       'Manoa',
       'Kaimuki',
       'Kapahulu',
@@ -832,6 +833,7 @@ export const LOCATIONS = {
       '96863',
     ] as const,
     timezone: 'Pacific/Honolulu',
+    googleMapsEmbedUrl: 'https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d237770.1723966727!2d-157.869932!3d21.3836454!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c4ce057e4bdff0b%3A0xa78d25a714d5f0ae!2sHost%20%26%20Home%20Cleaners%20Honolulu!5e0!3m2!1sen!2sus!4v1729395012053!5m2!1sen!2sus',
   },
   YORK: {
     id: '1e92fe6126cd808eac63c39af29d4187',
@@ -898,6 +900,7 @@ export const LOCATIONS = {
       '17368',
     ] as const,
     timezone: 'America/New_York',
+    googleMapsEmbedUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d24462.59827083503!2d-76.73113105!3d39.96767!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xa2728d94ade6b553%3A0x2b75bba40d4e3026!2sHost%20%26%20Home%20Cleaners%20York!5e0!3m2!1sen!2sus!4v1751603550055!5m2!1sen!2sus',
   },
 } as const
 
