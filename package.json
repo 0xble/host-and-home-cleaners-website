@@ -7,7 +7,7 @@
     "dev": "run-p dev:*",
     "build": "cross-env BROWSERSLIST_IGNORE_OLD_DATA=1 next build",
     "build-stats": "cross-env ANALYZE=true BROWSERSLIST_IGNORE_OLD_DATA=1 bun run build",
-    "clean": "rm -rf .next out node_modules bun.lockb",
+    "clean": "rm -rf .next out node_modules bun.lock",
     "setup": "bun run clean && bun install",
     "start": "next start",
     "lint": "eslint .",
@@ -15,8 +15,8 @@
     "lint:watch": "nodemon --exec bun run lint",
     "typecheck": "tsc --noEmit --pretty",
     "prepare": "husky",
-    "test": "bun test",
-    "test:watch": "bun test --watch"
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "0xble": "^18.2.0",
@@ -92,10 +92,13 @@
     "@types/cssnano": "^5.1.3",
     "@types/dedent": "^0.7.2",
     "@types/eslint-plugin-tailwindcss": "^3.17.0",
+    "@types/glob": "^9.0.0",
     "@types/node": "^22.13.14",
     "@types/react": "^18.3.20",
     "@types/react-dom": "^18.3.5",
     "@types/string": "^0.0.34",
+    "@vitejs/plugin-react": "^4.6.0",
+    "@vitest/ui": "^3.2.4",
     "autoprefixer": "^10.4.21",
     "cross-env": "^7.0.3",
     "cssnano": "^7.0.6",
@@ -107,7 +110,9 @@
     "eslint-plugin-react-refresh": "^0.4.19",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "eslint-plugin-tailwindcss": "^3.18.0",
+    "glob": "^11.0.3",
     "husky": "^9.1.7",
+    "jsdom": "^26.1.0",
     "lint-staged": "^15.5.0",
     "nodemon": "^3.1.9",
     "npm-run-all": "^4.1.5",
@@ -115,6 +120,7 @@
     "postcss": "^8.5.3",
     "rimraf": "^6.0.1",
     "tailwindcss": "^3.4.17",
-    "ts-jest": "^29.3.2"
+    "ts-jest": "^29.3.2",
+    "vitest": "^3.2.4"
   }
 }

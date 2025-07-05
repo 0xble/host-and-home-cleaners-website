@@ -1,62 +1,46 @@
+// @ts-check
 import antfu from '@antfu/eslint-config'
 
-export default antfu({
-  ignores: ['**/*.md'],
-  formatters: true,
-  typescript: {
-    tsconfigPath: 'tsconfig.json',
-  },
-  rules: {
-    // Allow using `process.env` directly without global declaration
-    'node/prefer-global/process': 'off',
-
-    // Allow using window.alert, window.confirm, window.prompt
-    'no-alert': 'off',
-
-    // Allow using console.log
-    'no-console': 'off',
-
-    // Prevent accidental fall-through in switch statements
-    'no-fallthrough': 'error',
-
-    // Disable requirement to use 'node:' protocol for Node.js built-in modules
-    'unicorn/prefer-node-protocol': 'off',
-  },
-  // TypeScript-specific rules in a separate override
-  overrides: {
-    files: ['**/*.ts', '**/*.tsx', '**/*.mts', '**/*.cts'],
+export default antfu(
+  {
+    // Base config
     rules: {
-      'ts/no-floating-promises': [
+      'no-console': 'off',
+      'no-alert': 'off',
+      'node/prefer-global/process': 'off',
+      'unicorn/prefer-node-protocol': 'off',
+      'no-extra-boolean-cast': 'off',
+      'no-cond-assign': ['error', 'except-parens'],
+    },
+    typescript: {
+      tsconfigPath: 'tsconfig.json'
+    },
+  },
+  {
+    // React specific overrides
+    files: ['**/*.tsx'],
+    rules: {
+      'no-restricted-imports': [
         'error',
         {
-          allowForKnownSafeCalls: [],
-          allowForKnownSafePromises: [],
-          checkThenables: false,
-          ignoreIIFE: false,
-          ignoreVoid: true,
+          patterns: ['node:*'],
         },
       ],
-      'ts/require-await': 'error',
-      'ts/no-unused-vars': [
-        'warn',
-        {
-          argsIgnorePattern: '_',
-          varsIgnorePattern: '_',
-        },
-      ],
+    },
+  },
+  {
+    // TypeScript specific overrides
+    files: ['**/*.ts', '**/*.tsx'],
+    rules: {
       'ts/strict-boolean-expressions': [
         'error',
         {
-          allowAny: true,
           allowNullableBoolean: true,
-          allowNullableEnum: true,
-          allowNullableNumber: false,
           allowNullableObject: true,
           allowNullableString: true,
-          allowNumber: false,
           allowString: true,
         },
       ],
     },
   },
-})
+)
