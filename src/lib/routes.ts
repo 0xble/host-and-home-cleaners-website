@@ -64,6 +64,12 @@ export const ROUTES = {
     href: '/review',
     priority: null,
   },
+  BOOK: {
+    name: 'Book',
+    href: '/book',
+    priority: 0.8,
+    changeFrequency: 'weekly',
+  },
   SERVICES: Object.entries(SERVICES).reduce((acc, [service, name]) => {
     return {
       ...acc,
@@ -85,11 +91,14 @@ export const ROUTES = {
         priority: 1,
         changeFrequency: 'weekly',
         SERVICE_AREAS: serviceAreas.reduce((acc, area) => {
+          const locationSlug = slugify(name)
+          const areaSlug = slugify(area)
+          const href = locationSlug === areaSlug ? `/${locationSlug}` : `/${locationSlug}/${areaSlug}`
           return {
             ...acc,
-            [slugify(area).toUpperCase()]: {
+            [slugify(area).toUpperCase().replace(/-/g, '_')]: {
               name: area,
-              href: `/${slugify(name)}/${slugify(area)}`,
+              href,
               priority: 1,
               changeFrequency: 'weekly',
             },
