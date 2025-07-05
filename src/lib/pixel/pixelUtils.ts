@@ -24,7 +24,7 @@ export async function initializePixel() {
     pixelInstance = ReactPixel
     return pixelInstance as typeof ReactPixel
   }
-  catch (error) {
+  catch {
     return null
   }
 }
