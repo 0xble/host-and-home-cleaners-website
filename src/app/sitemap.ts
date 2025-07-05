@@ -13,30 +13,32 @@ function isLocationRoute(value: unknown): value is LocationRoute[keyof LocationR
 }
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const routes = Object.entries(ROUTES).flatMap(([key, route]): RouteData[] => {
-    if (isRoute(route)) {
-      return [route]
+  // Flatten the ROUTES object into a single array of RouteData objects.
+  const routes = Object.values(ROUTES).flatMap((routeOrGroup) => {
+    // If the value is a single route, return it in an array.
+    if (isRoute(routeOrGroup)) {
+      return [routeOrGroup]
     }
-    else if (typeof route === 'object' && route !== null) {
-      if (key === 'LOCATIONS') {
-        return Object.values(route).flatMap((location) => {
-          if (isLocationRoute(location)) {
-            const uniqueServiceAreas = Object.values(location.SERVICE_AREAS).filter(
-              area => area.href !== location.href,
-            )
-            return [location, ...uniqueServiceAreas]
-          }
-          return []
-        })
-      }
-      return Object.values(route).filter(isRoute)
+    // If the value is a group of routes, process them.
+    if (typeof routeOrGroup === 'object' && routeOrGroup !== null) {
+      return Object.values(routeOrGroup).flatMap((route) => {
+        // If the route is a location, include its service areas.
+        if (isLocationRoute(route)) {
+          return [route, ...Object.values(route.SERVICE_AREAS)]
+        }
+        // Otherwise, just include the route if it's valid.
+        return isRoute(route) ? [route] : []
+      })
     }
+    // If the value is not a route or a group, return an empty array.
     return []
   })
 
   const uniqueRoutes = new Map<string, RouteData>()
   routes
+    // Filter out routes that have no priority or are external.
     .filter(page => page.priority && page.href.startsWith('/'))
+    // Add each unique route to the Map.
     .forEach(page => uniqueRoutes.set(page.href, page))
 
   return Array.from(uniqueRoutes.values()).map(page => ({
