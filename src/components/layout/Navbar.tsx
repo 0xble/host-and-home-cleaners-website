@@ -317,16 +317,19 @@ export default function Navbar({
                                       )
                                     }
 
-                                    const numColumns = Math.ceil(serviceAreas.length / 8)
-                                    const columns = splitIntoColumns(serviceAreas, numColumns)
+                                    // Cap at 6 columns to ensure CSS grid classes exist for the calculated value
+                                    const columnCount = Math.min(6, Math.ceil(serviceAreas.length / 8))
+                                    const columns = splitIntoColumns(serviceAreas, columnCount)
 
                                     return (
                                       <div className={cn(
                                         'grid gap-4',
-                                        numColumns === 1 && 'grid-cols-1',
-                                        numColumns === 2 && 'grid-cols-2',
-                                        numColumns === 3 && 'grid-cols-3',
-                                        numColumns === 4 && 'grid-cols-4',
+                                        columnCount === 1 && 'grid-cols-1',
+                                        columnCount === 2 && 'grid-cols-2',
+                                        columnCount === 3 && 'grid-cols-3',
+                                        columnCount === 4 && 'grid-cols-4',
+                                        columnCount === 5 && 'grid-cols-5',
+                                        columnCount === 6 && 'grid-cols-6',
                                       )}
                                       >
                                         {columns.map((column, columnIndex) => (
@@ -620,16 +623,19 @@ export default function Navbar({
                               )
                             }
 
-                            const numColumns = Math.ceil(serviceAreas.length / 8)
-                            const columns = splitIntoColumns(serviceAreas, numColumns)
+                            // Cap at 6 columns to ensure CSS grid classes exist for the calculated value
+                            const columnCount = Math.min(6, Math.ceil(serviceAreas.length / 8))
+                            const columns = splitIntoColumns(serviceAreas, columnCount)
 
                             return (
                               <div className={cn(
                                 'grid gap-4',
-                                numColumns === 1 && 'grid-cols-1',
-                                numColumns === 2 && 'grid-cols-2',
-                                numColumns === 3 && 'grid-cols-3',
-                                numColumns === 4 && 'grid-cols-4',
+                                columnCount === 1 && 'grid-cols-1',
+                                columnCount === 2 && 'grid-cols-2',
+                                columnCount === 3 && 'grid-cols-3',
+                                columnCount === 4 && 'grid-cols-4',
+                                columnCount === 5 && 'grid-cols-5',
+                                columnCount === 6 && 'grid-cols-6',
                               )}
                               >
                                 {columns.map((column, columnIndex) => (
