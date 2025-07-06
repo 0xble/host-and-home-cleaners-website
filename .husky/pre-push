@@ -21,7 +21,7 @@ cd "$(dirname "$0")/.." && bunx lint-staged --concurrent false
 
 confirm "Run tests?" || exit 0
 
-bun test
+bun run test
 
 confirm "Run build?" || exit 0
 
