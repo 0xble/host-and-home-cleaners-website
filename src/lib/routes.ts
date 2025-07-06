@@ -64,12 +64,6 @@ export const ROUTES = {
     href: '/review',
     priority: null,
   },
-  BOOK: {
-    name: 'Book',
-    href: '/book',
-    priority: 0.8,
-    changeFrequency: 'weekly',
-  },
   SERVICES: Object.entries(SERVICES).reduce((acc, [service, name]) => {
     return {
       ...acc,
@@ -120,11 +114,6 @@ export const ROUTES = {
       priority: 0.1,
       changeFrequency: 'monthly',
     },
-  },
-  CONFIRMATION: {
-    name: 'Thank You',
-    href: '/book/confirmation',
-    priority: null,
   },
 } as const satisfies Record<string, RouteData | Record<string, RouteData>>
 
