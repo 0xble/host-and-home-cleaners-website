@@ -1,7 +1,7 @@
 import type { StaticImport } from 'next/dist/shared/lib/get-img-props'
-import fs from 'node:fs'
+import fs from 'fs'
 
-import path from 'node:path'
+import path from 'path'
 import Image from 'next/image'
 
 import {
