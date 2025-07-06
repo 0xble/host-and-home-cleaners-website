@@ -4,25 +4,16 @@
 /* eslint-disable ts/no-unsafe-call */
 import type { RouteData } from '@/lib/routes'
 import path from 'path'
-import { afterAll, beforeAll, describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import sitemap from '@/app/sitemap'
 import { ROUTES } from '@/lib/routes'
 import { getAppFileSystemRoutes, normalizePath } from './utils/getAppRoutes'
 
-// Set up consistent environment for testing
-let originalUrl: string | undefined
-
-beforeAll(() => {
-  originalUrl = process.env.NEXT_PUBLIC_APP_URL
-  process.env.NEXT_PUBLIC_APP_URL = 'https://example.com'
-})
-
-afterAll(() => {
-  if (originalUrl) {
-    process.env.NEXT_PUBLIC_APP_URL = originalUrl
-  }
-  else {
-    delete process.env.NEXT_PUBLIC_APP_URL
+vi.mock('@/lib/utils', async (importOriginal) => {
+  const mod = await importOriginal<typeof import('@/lib/utils')>()
+  return {
+    ...mod,
+    getBaseUrl: () => 'https://example.com',
   }
 })
 
