@@ -12,8 +12,10 @@
     "start": "next start",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "lint:watch": "nodemon --exec bun run lint",
+    "lint:watch": "bun run lint --watch",
+    "lint:fix:watch": "bun run lint:fix --watch",
     "typecheck": "tsc --noEmit --pretty",
+    "typecheck:watch": "tsc --noEmit --pretty --watch",
     "prepare": "husky",
     "test": "vitest run",
     "test:watch": "vitest"
