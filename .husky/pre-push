@@ -3,7 +3,7 @@
 # Define confirm function
 confirm() {
     # Default to Yes if no answer is given
-    read -r -p "$1 [Y/n] " response
+    read -r "$1 [Y/n] " response
     case "$response" in
         [nN][oO]|[nN])
             return 1
