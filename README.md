@@ -27,7 +27,7 @@ Uses the following tech stack:
 First, run the development server:
 
 ```bash
-yarn dev
+bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
@@ -35,6 +35,37 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+
+## Project Constitution
+
+This document defines the stable rules, structure, and conventions for the Host and Home Cleaners Website project.
+
+### Project Type
+
+- Next.js app router project
+
+### Directory Structure
+
+- Main source code is in the `src/` directory.
+- Components are in `src/components/` unless from shadcn/ui, which go in `src/components/ui/`.
+- Public assets are in `public/`.
+
+### Naming Conventions
+
+- Component files use PascalCase.
+- Use absolute path imports over relative imports where possible.
+
+### Styling
+
+- Use Tailwind CSS only. No inline CSS or other styling libraries.
+
+### Package Management
+
+- Use bun as the default package manager.
+
+### Testing
+
+- Use Vitest for testing.
 
 ## Learn More
 
