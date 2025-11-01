@@ -534,7 +534,7 @@ export default function ReviewsGridClient({ location }: ReviewsGridClientProps) 
     <div className="px-4 sm:px-4 lg:px-20">
       <div className="space-y-8 sm:space-y-6">
         <PlatformRatingTabs
-          className="justify-center"
+          className="-mt-4 justify-center sm:-mt-2 lg:-mt-6"
           ratings={data.platform_ratings}
           selectedPlatform={selectedPlatform}
           onSelectPlatform={(platform) => {
