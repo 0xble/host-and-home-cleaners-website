@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [ -x ./bin/ci-fast ]; then
+  exec ./bin/ci-fast
+fi
+
+exec ./bin/ci
