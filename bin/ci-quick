@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Get staged TS/JS files (excluding deleted)
+staged_ts=$(git diff --cached --name-only --diff-filter=ACMR | grep -E '\.(ts|tsx|js|jsx)$' || true)
+
+if [ -z "$staged_ts" ]; then
+  echo "No staged TS/JS files, skipping lint"
+  exit 0
+fi
+
+bun install
+
+echo "Linting staged files..."
+echo "$staged_ts" | xargs bunx eslint
+
+echo "Staged lint complete"
